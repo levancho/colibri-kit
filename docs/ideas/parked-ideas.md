@@ -28,17 +28,18 @@ An Android-based device or app where an agent lives on the phone and can act lik
 - **Consent and safety:** explicit user consent for outbound calls and messages, disclosure that an AI is speaking where the law requires it, audit log and a kill switch.
 - **Scope:** its own project, separate from Colibri Kit.
 
-## Idea 3: Agents that act as humans and talk to each other
+## Idea 3: Agent-native ecosystem (agent-only apps and dual-mode platforms)
 
 **Status:** parked
 
-Agents that represent a person and exchange information or negotiate with other agents. Example: **sell a guitar**. Your agent lists it on marketplaces, answers buyers, talks to buyers' agents, and negotiates a sale.
+**Core insight:** agents that act for people need apps built *for agents*, not human websites they have to scrape. Picture an **agent-targeted ecosystem**: agent-only applications and agent-to-agent (A2A) protocols, plus **dual-mode platforms** where the same service has a **Human Mode** and an **Agent Mode**.
 
-- **A2A negotiation:** an agent-to-agent protocol for offers, counter-offers and the user's limits (minimum price, pickup or shipping).
-- **Listings:** create and maintain listings across marketplaces from one description and photos.
-- **Trust/escrow:** identity, reputation and payment held until hand-over; fraud and scam protection.
-- **Platform limits:** marketplace terms of service and anti-bot rules; prefer official APIs, and respect them.
-- **Early version:** the agent talks to humans through normal marketplace UIs (with user approval for each message or deal), with opt-in A2A between agents that support it.
+- **Agent-native apps and protocols (A2A commerce):** structured listings, offers and counter-offers, negotiation within limits the owner sets, agreements, payment and hand-over, all through machine-readable APIs and protocols.
+- **Dual-mode platforms:** e.g. an "eBay Agent Mode + Human Mode". One marketplace, one inventory, two front doors: a UI for people and an API/protocol for agents. Agents get structured data, identity, reputation and rate limits designed for them, not anti-bot walls.
+- **Identity, reputation, trust:** verified agent identity tied to a real owner, a reputation history, escrow, dispute handling and audit logs, so agents can safely trade with agents.
+- **Ecosystem we might help create:** standards, SDKs and reference apps that let platforms add an Agent Mode and let new agent-only apps exist, rather than one-off automation of existing human sites.
+- **Scenario (not the product definition):** *selling a guitar*. Your agent publishes a structured listing to agent-mode marketplaces, negotiates with buyers' agents within your limits, and closes through escrow, while humans can still see and buy it in Human Mode.
+- **Bridge for today:** where no agent mode exists yet, an assisted agent works through the human UI with the owner's approval for each step, under the platform's terms of service. That's a stopgap, not the vision.
 
 ---
 
