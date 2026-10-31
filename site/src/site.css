@@ -91,3 +91,6 @@ body { background:
 :is(header.site, footer) a.gh-btn, a.gh-btn:visited { color: var(--c-bg); text-decoration: none; }
 header.site a.gh-btn { padding-block: .3em; }
 @container (inline-size < 40rem) { header.site a.gh-btn span { display: none; } }
+
+.kit-theme-pick select{font:inherit;font-size:var(--c-text-sm);padding:.25rem .5rem;border:1px solid var(--c-line);border-radius:var(--c-radius-s);background:var(--c-surface);color:var(--c-fg)}
+html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--c-font)}

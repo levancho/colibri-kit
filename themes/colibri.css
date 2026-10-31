@@ -471,6 +471,32 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 :where(.ui-root) [data-ui=cell] [data-ui-part=body]{flex:1;padding:10px 12px;overflow:auto;font-size:var(--ui-text-sm,.8125rem)}
 :where(.ui-root) [data-ui=cell] [data-ui-part=body] p{margin:0}
 :where(.ui-root) [data-ui=cell] [data-ui-part=resize]{position:absolute;right:0;bottom:0;width:14px;height:14px;cursor:nwse-resize;touch-action:none;background:linear-gradient(135deg,transparent 50%,var(--ui-border) 50%,var(--ui-border) 60%,transparent 60%,transparent 75%,var(--ui-border) 75%,var(--ui-border) 85%,transparent 85%)}
+:where(.ui-root) [data-ui=cell] [data-ui-part=resize][data-edge]:not([data-edge=se]){background:none}
+:where(.ui-root) [data-ui=cell] [data-ui-part=resize][data-edge=nw]{left:0;top:0;right:auto;bottom:auto;cursor:nwse-resize}
+:where(.ui-root) [data-ui=cell] [data-ui-part=resize][data-edge=ne]{right:0;top:0;left:auto;bottom:auto;cursor:nesw-resize}
+:where(.ui-root) [data-ui=cell] [data-ui-part=resize][data-edge=sw]{left:0;bottom:0;right:auto;top:auto;cursor:nesw-resize}
+:where(.ui-root) [data-ui=cell][data-maximized] [data-ui-part=resize],:where(.ui-root) [data-ui=cell][data-size=tiny] [data-ui-part=resize]{display:none}
+:where(.ui-root) [data-ui=cell] [data-ui-part=header] [data-ui-part=mark]{cursor:pointer;border-radius:4px;padding:0 3px;transition:transform .15s}
+:where(.ui-root) [data-ui=cell] [data-ui-part=header] [data-ui-part=mark]:hover,:where(.ui-root) [data-ui=cell] [data-ui-part=header] [data-ui-part=mark][aria-expanded=true]{transform:rotate(45deg) scale(1.15)}
+:where(.ui-root) [data-ui=cell] [data-ui-part=header] [data-ui-part=mark]:focus-visible{outline:none;box-shadow:var(--ui-focus-shadow)}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel]{position:absolute;z-index:3;top:38px;left:6px;display:grid;gap:8px;min-width:190px;padding:10px;border:1px solid var(--ui-border);border-radius:var(--ui-radius);background:var(--ui-popover,var(--ui-card,var(--ui-background)));box-shadow:0 8px 24px rgb(0 0 0/.14);font-size:12px;cursor:default}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel][hidden]{display:none}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] label{display:grid;gap:4px;color:var(--ui-muted-foreground)}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] input[type=range]{accent-color:var(--ui-primary);width:100%}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] fieldset{display:flex;gap:6px;flex-wrap:wrap;margin:0;padding:0;border:0}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] legend{padding:0 0 4px;color:var(--ui-muted-foreground)}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] button{flex:1;height:28px;padding:0 8px;border:1px solid var(--ui-input,var(--ui-border));border-radius:calc(var(--ui-radius) - 2px);background:var(--ui-background);color:var(--ui-foreground);font:inherit;cursor:pointer}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel] button[aria-pressed=true]{border-color:var(--ui-primary);background:color-mix(in srgb,var(--ui-primary) 12%,var(--ui-background));color:var(--ui-primary)}
+:where(.ui-root) [data-ui=cell][data-transparent]{opacity:var(--cell-alpha,1);transition:opacity .2s}
+:where(.ui-root) [data-ui=cell][data-transparent]:is(:hover,:focus-within){opacity:1}
+:where(.ui-root) [data-ui=cell][data-stretch*=v]{top:0!important;height:100%!important}
+:where(.ui-root) [data-ui=cell][data-stretch*=h]{left:0!important;width:100%!important}
+:where(.ui-root) [data-ui=cell][data-size=tiny]{width:auto!important;height:auto!important;min-height:0;cursor:pointer}
+:where(.ui-root) [data-ui=cell][data-size=tiny] [data-ui-part=header]{border-bottom:0;cursor:pointer;border-radius:var(--ui-radius)}
+:where(.ui-root) [data-ui=cell][data-size=tiny] :is([data-ui-part=body],[data-ui-part=maximize]){display:none}
+:where(.ui-root) [data-ui=cell][data-kind=menu] [data-ui-part=body]{padding:4px}
+:where(.ui-root) [data-ui=cell][data-kind=menu] [data-ui-part=body] :is(a,button){display:flex;width:100%;padding:6px 8px;border:0;border-radius:calc(var(--ui-radius) - 2px);background:none;color:var(--ui-foreground);font:inherit;text-align:start;text-decoration:none;cursor:pointer}
+:where(.ui-root) [data-ui=cell][data-kind=menu] [data-ui-part=body] :is(a,button):is(:hover,:focus-visible){background:var(--ui-muted);outline:none}
 
 /* ======================================================================
    Conversation + AI elements (bubble, message, marker, trace, spinner, attachment,

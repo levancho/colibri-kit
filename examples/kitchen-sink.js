@@ -81,15 +81,18 @@ window.__sinkReady = true;
 
 // ---- theming + motion controls (tokens only; no JS inside components) ----
 const H = document.documentElement, TS = "colibri.sink.tokens";
-const tok = Object.assign({ accent: "", radius: "8px", motion: true }, JSON.parse(localStorage.getItem(TS) || "{}"));
+const tok = Object.assign({ accent: "", radius: "", kit: "", motion: true }, JSON.parse(localStorage.getItem(TS) || "{}"));
+const qTheme = new URLSearchParams(location.search).get("theme"); if (qTheme !== null) tok.kit = qTheme;
 const applyTok = () => {
   tok.accent ? (H.dataset.uiTheme = tok.accent) : delete H.dataset.uiTheme;
-  H.style.setProperty("--ui-radius", tok.radius);
+  tok.kit ? (H.dataset.kitTheme = tok.kit) : delete H.dataset.kitTheme;
+  tok.radius ? H.style.setProperty("--ui-radius", tok.radius) : H.style.removeProperty("--ui-radius");
   tok.motion ? delete H.dataset.uiMotion : (H.dataset.uiMotion = "off");
-  $("#accent").value = tok.accent; $("#radius").value = tok.radius; $("#motion-toggle").checked = tok.motion;
+  $("#kit-theme").value = tok.kit; $("#accent").value = tok.accent; $("#radius").value = tok.radius; $("#motion-toggle").checked = tok.motion;
   localStorage.setItem(TS, JSON.stringify(tok));
 };
 $("#accent").onchange = (e) => { tok.accent = e.target.value; applyTok(); };
+$("#kit-theme").onchange = (e) => { tok.kit = e.target.value; applyTok(); };
 $("#radius").onchange = (e) => { tok.radius = e.target.value; applyTok(); };
 $("#motion-toggle").onchange = (e) => { tok.motion = e.target.checked; applyTok(); };
 applyTok();

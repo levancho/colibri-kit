@@ -1,0 +1,24 @@
+/* Colibri Kit theme pack: MIDNIGHT — dark-first, electric. Ink navy, violet primary, neon-mint highlights, glow focus.
+   Forces the dark scheme (ignores light toggle) — built for dashboards & ops screens.
+   Use: <link rel="stylesheet" href="themes/packs/midnight.css"> then <html data-kit-theme="midnight">. */
+html[data-kit-theme=midnight],html[data-kit-theme=midnight][data-theme]{
+  color-scheme:dark;
+  --c-hue:285; --c-chroma:.2;
+  --c-brand:oklch(66% .2 285); --c-brand-fg:#fff;
+  --c-bg:oklch(14% .03 280); --c-surface:oklch(18.5% .04 282); --c-sunken:oklch(11.5% .025 280);
+  --c-fg:oklch(95% .015 280); --c-muted:oklch(70% .04 280); --c-line:oklch(28% .05 282);
+  --c-accent:oklch(72% .19 290); --c-ok:oklch(84% .17 165); --c-warn:oklch(85% .15 85); --c-bad:oklch(70% .2 15);
+  --c-font:"Space Grotesk","Geist",ui-sans-serif,system-ui,sans-serif;
+  --c-radius-s:6px; --c-radius:12px; --c-radius-l:18px;
+  --c-shadow-color:oklch(0% 0 0 / .6);
+  --c-shadow:0 0 0 1px oklch(72% .19 290 / .08),0 10px 30px -10px var(--c-shadow-color);
+  --ui-background:#0b0a1a; --ui-foreground:#ecebff; --ui-card:#13112a; --ui-popover:#16133a;
+  --ui-muted:#1d1a3a; --ui-muted-foreground:#a5a1d4; --ui-accent:#25205a; --ui-accent-foreground:#ecebff;
+  --ui-primary:#8b5cf6; --ui-primary-foreground:#fff; --ui-ring:#5eead4;
+  --ui-destructive:#fb7185; --ui-destructive-foreground:#1a0610; --ui-success:#5eead4; --ui-warning:#fcd34d;
+  --ui-border:#26224d; --ui-input:#332d66; --ui-radius:12px;
+  --ui-font:"Space Grotesk","Geist",ui-sans-serif,system-ui,sans-serif;
+  --ui-focus-shadow:0 0 0 3px #5eead455,0 0 18px #8b5cf655;
+  --ui-shadow-sm:0 0 0 1px #8b5cf61a; --ui-shadow:0 0 0 1px #8b5cf622,0 20px 50px -15px #000;
+}
+html[data-kit-theme=midnight] body{background:var(--ui-background);color:var(--ui-foreground)}

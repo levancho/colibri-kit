@@ -59,15 +59,16 @@ chrome_css = (HERE / "sink_chrome.css").read_text()
 page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Colibri UI · Component gallery</title><link rel="icon" href="data:,">
 <style id="sink-chrome">{chrome_css}</style>
-<link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"></head>
+<link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>
 <header class="sink-top" data-ui="sticky">
 <button class="sink-icon" data-ui-sidebar-toggle="#sink-sidebar" aria-label="Show or hide the component list (Ctrl/⌘+B)" title="Component list (Ctrl/⌘+B)">☰</button>
 <div class="sink-brand"><strong>Colibri UI</strong><span>Component gallery</span></div>
 <div class="sink-controls">
 <label class="sink-chk" title="Off = the raw, unstyled components exactly as the library ships them"><input type="checkbox" id="css-toggle" checked> Demo styling</label>
+<label class="sink-sel" title="Kit theme pack (sets data-kit-theme on html; themes/packs/)">Theme <select id="kit-theme"><option value="">Colibri</option><option value="glacier">Glacier</option><option value="ember">Ember</option><option value="midnight">Midnight</option></select></label>
 <label class="sink-sel" title="Accent colour (sets data-ui-theme on html)">Accent <select id="accent"><option value="">Neutral</option><option>blue</option><option>green</option><option>rose</option><option>orange</option><option>violet</option></select></label>
-<label class="sink-sel" title="Corner radius token --ui-radius">Radius <select id="radius"><option value="0px">0</option><option value="4px">4</option><option value="8px" selected>8</option><option value="12px">12</option><option value="16px">16</option></select></label>
+<label class="sink-sel" title="Corner radius token --ui-radius">Radius <select id="radius"><option value="">Theme</option><option value="0px">0</option><option value="4px">4</option><option value="8px">8</option><option value="12px">12</option><option value="16px">16</option></select></label>
 <label class="sink-chk" title="Turns the animation library off (same as prefers-reduced-motion)"><input type="checkbox" id="motion-toggle" checked> Animations</label>
 <button class="sink-btn" data-ui="theme-switch" data-storage-key="colibri.sink.theme" title="Cycle light / dark / system">🌓 <span class="mode-label">Theme</span></button>
 <button class="sink-btn" id="log-open" aria-controls="sink-log" aria-expanded="false" title="Show events the components fire (for developers)">⚡ Events <span id="log-count" class="sink-count">0</span></button>
