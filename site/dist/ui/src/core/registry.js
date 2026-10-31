@@ -12,11 +12,14 @@ import { createField, createSlider, createPinInput, createTogglePassword, create
 import { createCalendar, createDatePicker } from "./calendar.js";
 import { createPagination, createStepper, createScrollspy, createScrollTo, createSticky, createSidebar } from "./navigation.js";
 import * as AI from "./ai.js";
+import { createToolbar, createSegmentedControl, createCheckboxCards, createRadioCards, createCheckboxGroup, createTabNav, createAccessibleIcon } from "./extras.js";
 import { createAuthForm } from "./blocks.js";
 import { createClothline, createCell } from "./clothline.js";
 import { createDismiss, createToaster, createProgress, createCarousel, createAvatar, createThemeSwitch, createDataTable, createResizable, createReparent, createScrollArea, createMessageScroller, createClipboard, createButton, createSeparator, createItemGroup, createBadge } from "./base.js";
 
 export const registry = {
+  toolbar: createToolbar, "segmented-control": createSegmentedControl, "checkbox-cards": createCheckboxCards, "radio-cards": createRadioCards,
+  "checkbox-group": createCheckboxGroup, "tab-nav": createTabNav, "accessible-icon": createAccessibleIcon,
   tabs: createTabs, dialog: createDialog, "alert-dialog": createDialog, sheet: AI.withDragDismiss(createDialog), drawer: AI.withDragDismiss(createDialog),
   collapsible: createCollapsible, accordion: createAccordion,
   toggle: createToggle, "toggle-group": createToggleGroup, "button-group": createButtonGroup, spinner: createSpinner,
