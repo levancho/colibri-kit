@@ -34,6 +34,7 @@
     if (o.harmony) t.harmony = String(o.harmony).slice(0, 40);
     if (o.base && [o.base.h, o.base.s, o.base.l].every((n) => typeof n === "number")) t.base = { h: o.base.h, s: o.base.s, l: o.base.l };
     if (o.kit && typeof o.kit === "object") t.kit = Object.fromEntries(Object.entries(o.kit).filter(([k, v]) => /^[a-z]{2,10}$/.test(k) && /^[\w.-]{0,16}$/.test(String(v))).slice(0, 24));
+    if (o.gen && typeof o.gen === "object" && window.ColibriThemeGen) { const g = window.ColibriThemeGen.sanitize(o.gen); if (g) { t.gen = g; t.scheme = g.scheme; } }
     return t;
   }
   const encode = (t) => b64e(JSON.stringify(t));
@@ -60,6 +61,12 @@
   }
   function apply(root, t, opts) {
     root = root || document.documentElement; opts = opts || {};
+    if (t.gen && window.ColibriThemeGen) { // a full generated theme: install its pack CSS and looks instead of recolouring
+      const G = window.ColibriThemeGen, doc = root.ownerDocument; let st = doc.getElementById("colibri-gen-theme");
+      if (!st) { st = doc.createElement("style"); st.id = "colibri-gen-theme"; (doc.head || doc.documentElement).appendChild(st); } st.textContent = G.css(t.gen);
+      const a = G.attrs(t.gen); if (opts.setScheme === false) delete a["data-theme"]; for (const [k, v] of Object.entries(a)) root.setAttribute(k, v);
+      root.dataset.bridge = t.source; return {};
+    }
     if (opts.setScheme !== false && t.scheme) root.dataset.theme = t.scheme;
     const tok = tokens(t, opts.setScheme === false ? root.dataset.theme : t.scheme);
     for (const [k, v] of Object.entries(tok)) root.style.setProperty(k, String(v));

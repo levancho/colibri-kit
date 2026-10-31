@@ -26,6 +26,7 @@ $$(".seg[data-opts]").forEach((g) => { g.innerHTML = g.dataset.opts.split(",").m
 // ---------- state changes ----------
 function set(patch, push = true) {
   const next = { ...S, ...patch };
+  if (S.gen && "pack" in patch && !("gen" in patch)) { next.gen = null; next.bridge = null; } // picking a built-in pack leaves the generated theme
   if (JSON.stringify(next) === JSON.stringify(S)) return;
   if (push) { past.push(S); if (past.length > 100) past.shift(); future = []; }
   S = next; save(); render();
@@ -67,7 +68,7 @@ function render() {
   const scheme = CS.resolveScheme(S), r = document.documentElement, dark = !!CS.DARK_ONLY[S.pack];
   r.dataset.chrome = scheme; r.style.colorScheme = scheme; // Studio chrome follows the theme's appearance
   packCards();
-  $$("#packs [data-pack]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.pack === (S.pack || ""))));
+  $$("#packs [data-pack]").forEach((b) => b.setAttribute("aria-checked", String(!S.gen && b.dataset.pack === (S.pack || ""))));
   const p = PACKS.find((x) => x.id === (S.pack || ""));
   $("#packnote").innerHTML = `<b>${p.name}</b>: ${p.what}`;
   $$("#hues [data-hue]").forEach((b) => b.setAttribute("aria-checked", String((b.dataset.hue === "" ? null : +b.dataset.hue) === (S.hue == null ? null : +S.hue))));
@@ -133,7 +134,7 @@ const B = window.ColibriBridge;
 const toHex = (doc, css) => { const i = doc.createElement("i"); i.style.cssText = "position:absolute;opacity:0;background:" + css; doc.body.append(i); const c = doc.defaultView.getComputedStyle(i).backgroundColor; i.remove(); const cv = document.createElement("canvas"); cv.width = cv.height = 1; const x = cv.getContext("2d"); x.fillStyle = c; x.fillRect(0, 0, 1, 1); const d = x.getImageData(0, 0, 1, 1).data; return "#" + [d[0], d[1], d[2]].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase(); };
 function currentTheme() {
   const kit = Object.fromEntries(["pack", "radius", "btn", "acc", "tabs", "card", "input", "shadow", "font", "hfont", "scaling"].map((k) => [k, String(S[k] ?? "")]));
-  if (S.bridge) return B.validate({ ...S.bridge, source: "colibri-kit", kit });
+  if (S.bridge) return B.validate({ ...S.bridge, source: "colibri-kit", kit, gen: S.gen ? { ...S.gen, components: { btn: S.btn === "pack" ? S.gen.components.btn : S.btn, card: S.card === "pack" ? S.gen.components.card : S.card, tabs: S.tabs === "pack" ? S.gen.components.tabs : S.tabs, acc: S.acc === "pack" ? S.gen.components.acc : S.acc, input: S.input === "pack" ? S.gen.components.input : S.input }, scheme: CS.resolveScheme(S) } : undefined });
   const d = pvA.contentDocument, v = (n) => toHex(d, `var(${n})`);
   const r = { text: v("--ui-foreground"), surface: v("--ui-card"), accent: v("--ui-primary"), background: v("--ui-background") };
   const soft = toHex(d, "color-mix(in oklab,var(--ui-primary) 40%,var(--ui-background))");
@@ -143,13 +144,23 @@ function currentTheme() {
 const studioURL = () => location.origin + location.pathname;
 $("#toColibria").onclick = () => { const t = currentTheme(); if (t) window.open(B.link(B.COLIBRIA, t, studioURL()), "colibria"); };
 $("#toDash").onclick = () => { const t = currentTheme(); if (t) window.open(B.link(location.origin + "/kitchen-sink/examples/dashboards/analytics.html", t, null), "_blank"); };
-$("#unlink").onclick = () => set({ bridge: null });
-function adopt(t, how) { const patch = { bridge: t, hue: null, scheme: t.scheme }; if (t.kit) for (const [k, v] of Object.entries(t.kit)) if (k in DEF && k !== "bridge") patch[k] = v; if (CS.DARK_ONLY[patch.pack ?? S.pack] && t.scheme === "light") patch.pack = "glacier"; set(patch); toast(how); }
+$("#unlink").onclick = () => set({ bridge: null, gen: null });
+// import a generated theme: theme.json or the ZIP downloaded from colibria.ai
+$("#importTheme").onclick = () => $("#importFile").click();
+$("#importFile").onchange = async (e) => { const f = e.target.files[0]; e.target.value = ""; if (!f) return; const g = await window.ColibriThemeGen.readFile(f).catch(() => null);
+  if (!g) { toast("That file is not a Colibri Kit theme (theme.json or theme ZIP)"); return; } adoptGen(g, `Imported theme: ${g.name}`); };
+function adoptGen(g, how) { const c = g.colors[g.scheme]; const t = B.validate({ v: 1, source: "colibria", name: g.name, colors: [c.bg, c.surface, c.fg, c.primary, c.muted], roles: { background: c.bg, surface: c.surface, text: c.fg, accent: c.primary }, scheme: g.scheme, gen: g }); if (t) adopt(t, how); }
+addEventListener("dragover", (e) => { if (e.dataTransfer?.types?.includes("Files")) e.preventDefault(); });
+addEventListener("drop", async (e) => { const f = e.dataTransfer?.files?.[0]; if (!f || !/\.(zip|json)$/i.test(f.name)) return; e.preventDefault(); const g = await window.ColibriThemeGen.readFile(f).catch(() => null); g ? adoptGen(g, `Imported theme: ${g.name}`) : toast("That file is not a Colibri Kit theme"); });
+const GEN_RESET = { radius: "pack", font: "pack", hfont: "pack", hweight: "pack", shadow: "pack", motion: "pack", focus: "pack", tscale: 100, scaling: "100", chroma: 0.17 };
+function adopt(t, how) { const patch = { bridge: t, hue: null, scheme: t.scheme, gen: t.gen || null }; if (t.gen) Object.assign(patch, GEN_RESET, window.ColibriThemeGen.studio(t.gen)); if (t.kit) for (const [k, v] of Object.entries(t.kit)) if (k in DEF && k !== "bridge" && k !== "gen" && !t.gen) patch[k] = v; if (CS.DARK_ONLY[patch.pack ?? S.pack] && t.scheme === "light") patch.pack = "glacier"; set(patch); toast(how); }
 addEventListener("message", (e) => { if (e.data?.type !== "colibri-theme" || !B.okOrigin(e.origin)) return; const t = B.validate(e.data.theme); if (t) { adopt(t, "Palette received from Colibria"); window.focus(); } });
 function renderBridge() {
   const t = S.bridge, rl = t ? Object.fromEntries(Object.entries(t.roles).map(([k, v]) => [v, k])) : {};
   $("#bsw").innerHTML = t ? t.colors.map((c) => `<i style="background:${c}" title="${c}${rl[c] ? " · " + rl[c] : ""}"${rl[c] ? ` data-r="${rl[c] === "background" ? "bg" : rl[c]}"` : ""}></i>`).join("") : "";
   $("#bsub").textContent = t ? `${t.source === "colibria" ? "From Colibria" : "Linked"}${t.name ? ": " + t.name : ""} · ${t.scheme}` : "Design colours on colibria.ai, test them here";
+  if (S.gen) $("#bsub").textContent = `Generated theme: ${S.gen.name} · ${S.gen.slug} · ${CS.resolveScheme(S)}`; $("#bridge").classList.toggle("gen", !!S.gen); $("#genTag").hidden = !S.gen;
+  $("#unlink").textContent = S.gen ? "Remove generated theme" : "Unlink palette";
   $("#unlink").hidden = !t; $("#toColibria").textContent = t ? "Refine in Colibria ↗" : "Open in Colibria ↗";
 }
 try { const inc = JSON.parse(sessionStorage.getItem("colibri-bridge-incoming") || "null"); if (inc) { sessionStorage.removeItem("colibri-bridge-incoming"); setTimeout(() => toast(inc.source === "colibria" ? `Palette from Colibria applied${inc.name ? ": " + inc.name : ""}` : "Linked palette applied"), 400); } } catch {}
