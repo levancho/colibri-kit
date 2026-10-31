@@ -142,7 +142,6 @@
     <h3>1. Add it to your project</h3>
     <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri.css&quot;&gt;
-&lt;!-- optional: class helpers --&gt;
 &lt;!-- 2. the behaviour: every data-ui element wires itself --&gt;
 &lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
 [#import &quot;/colibri/ui.ftl&quot; as ui]
@@ -152,7 +151,6 @@
 [#-- then use macros anywhere --]
 [@ui.button variant=&quot;outline&quot;]Save[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// npm i @colibri-kit/css @colibri-kit/ui
 import &quot;@colibri-kit/css&quot;;            // the look (tokens + primitives)
-import &quot;@colibri-kit/css/classes&quot;;    // optional: className helpers
 import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
 // No auto-init in React: each wrapper wires itself on mount.</code></pre></div></div>
     <h3>2. A dialog</h3>
@@ -288,6 +286,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
   t.onclick = () => { const d = document.documentElement, dark = d.dataset.theme ? d.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; d.dataset.theme = dark ? "light" : "dark"; localStorage.setItem(k, d.dataset.theme); };
 </script>
 <script type="module">
+import { highlightAll } from "/kitchen-sink/examples/code-highlight.js"; highlightAll();
   import "/ui/src/core/auto.js";
   // keep every code-tab group on the same language, remembered across visits
   const K = "colibri.kit.lang", groups = [...document.querySelectorAll('[data-sync="lang"]')];

@@ -1,3 +1,5 @@
+import { highlightAll } from "./code-highlight.js";
+highlightAll();
 // Kitchen-sink page glue (demo only, not part of the library).
 const $ = (s, r = document) => r.querySelector(s);
 const panel = $("#sink-log"), list = $("#sink-log-list"), count = $("#log-count"), openBtn = $("#log-open");
