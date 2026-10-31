@@ -60,20 +60,20 @@ chrome_css = (HERE / "sink_chrome.css").read_text()
 page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Colibri UI · Component gallery</title><script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{{var H=document.documentElement,m=localStorage.getItem("colibri.sink.theme")||"system",e=m==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m;H.dataset.theme=e;H.style.colorScheme=e;var t=JSON.parse(localStorage.getItem("colibri.sink.tokens")||"{{}}"),q=new URLSearchParams(location.search).get("theme");if(q!==null)t.kit=q;if(t.kit)H.dataset.kitTheme=t.kit;if(t.accent)H.dataset.uiTheme=t.accent;if(t.radius)H.style.setProperty("--ui-radius",t.radius);if(t.motion===false)H.dataset.uiMotion="off"}}catch(_){{}}</script><link rel="icon" href="data:,">
 <style id="sink-chrome">{chrome_css}</style>
-<link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
+<link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"><link rel="stylesheet" href="kit-bar.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>
-<header class="sink-top" data-ui="sticky">
-<button class="sink-icon" data-ui-sidebar-toggle="#sink-sidebar" aria-label="Show or hide the component list (Ctrl/⌘+B)" title="Component list (Ctrl/⌘+B)">☰</button>
-<div class="sink-brand"><strong>Colibri UI</strong><span>Component gallery</span></div>
-<div class="sink-controls">
-<label class="sink-chk" title="Off = the raw, unstyled components exactly as the library ships them"><input type="checkbox" id="css-toggle" checked> Demo styling</label>
-<label class="sink-sel" title="Kit theme pack (sets data-kit-theme on html; themes/packs/)">Theme pack <select id="kit-theme"><option value="">Colibri</option><option value="glacier">Glacier</option><option value="ember">Ember</option><option value="midnight">Midnight</option></select></label>
-<label class="sink-sel" title="Accent colour (sets data-ui-theme on html)">Accent <select id="accent"><option value="">Neutral</option><option>blue</option><option>green</option><option>rose</option><option>orange</option><option>violet</option></select></label>
-<label class="sink-sel" title="Corner radius token --ui-radius">Radius <select id="radius"><option value="">Pack default</option><option value="0px">0</option><option value="4px">4</option><option value="8px">8</option><option value="12px">12</option><option value="16px">16</option></select></label>
-<label class="sink-chk" title="Turns the animation library off (same as prefers-reduced-motion)"><input type="checkbox" id="motion-toggle" checked> Animations</label>
-<button class="sink-btn" data-ui="theme-switch" data-storage-key="colibri.sink.theme" title="Cycle light / dark / system">🌓 <span class="mode-label">Mode</span></button>
-<button class="sink-btn" id="log-open" aria-controls="sink-log" aria-expanded="false" title="Show events the components fire (for developers)">⚡ Events <span id="log-count" class="sink-count">0</span></button>
-<a class="sink-btn" href="index.html">All examples</a></div></header>
+<header class="kbar" data-active="components">
+<div data-kbar-lead><button class="sink-icon" data-ui-sidebar-toggle="#sink-sidebar" aria-label="Show or hide the component list (Ctrl/⌘+B)" title="Component list (Ctrl/⌘+B)">☰</button></div>
+<button class="sink-btn kbar-icon" data-kbar-tool data-ui="theme-switch" data-storage-key="colibri.sink.theme" title="Cycle light / dark / system" aria-label="Colour mode"><span aria-hidden="true">◐</span><span class="mode-label" hidden>Mode</span></button>
+<div data-kbar-custom data-title="Component gallery" hidden>
+<label title="Kit theme pack (sets data-kit-theme on html; themes/packs/)">Theme pack <select id="kit-theme"><option value="">Colibri</option><option value="glacier">Glacier</option><option value="ember">Ember</option><option value="midnight">Midnight</option></select></label>
+<label title="Accent colour (sets data-ui-theme on html)">Accent <select id="accent"><option value="">Neutral</option><option>blue</option><option>green</option><option>rose</option><option>orange</option><option>violet</option></select></label>
+<label title="Corner radius token --ui-radius">Radius <select id="radius"><option value="">Pack default</option><option value="0px">0</option><option value="4px">4</option><option value="8px">8</option><option value="12px">12</option><option value="16px">16</option></select></label>
+<label title="Off = the raw, unstyled components exactly as the library ships them">Demo styling <input type="checkbox" id="css-toggle" checked></label>
+<label title="Turns the animation library off (same as prefers-reduced-motion)">Animations <input type="checkbox" id="motion-toggle" checked></label>
+<button class="kbar-btn" id="log-open" aria-controls="sink-log" aria-expanded="false" title="Show events the components fire (for developers)">⚡ Event log <span id="log-count" class="sink-count">0</span></button>
+<a class="kbar-btn" href="index.html">All raw examples</a>
+</div></header>
 <div class="sink-wrap">
 <aside id="sink-sidebar" data-ui="sidebar" data-collapsible="offcanvas" data-storage-key="colibri.sink.sidebar" aria-label="Components">
 <input class="sink-filter" id="sink-filter" type="search" placeholder="Find a component…" aria-label="Filter components">
@@ -91,6 +91,6 @@ page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset
 <button class="sink-icon" id="log-min" aria-expanded="true" title="Collapse">▾</button><button class="sink-icon" id="log-close" aria-label="Close event log" title="Close">×</button></span></header>
 <ol id="sink-log-list" class="sink-log-list" aria-live="off"></ol></section>
 <ol data-ui="toaster" data-position="bottom-right" data-max="4" aria-label="Notifications"></ol>
-<script type="module" src="kitchen-sink.js"></script></body></html>'''
+<script type="module" src="kit-bar.js"></script><script type="module" src="kitchen-sink.js"></script></body></html>'''
 out = HERE.parent / "examples" / "kitchen-sink.html"; out.write_text(page)
 print(f"wrote {out}: {len(C)} components {counts}")

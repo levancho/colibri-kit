@@ -5,18 +5,18 @@
 <link rel="stylesheet" href="../../themes/packs/index.css">
 <link rel="stylesheet" href="blocks.css">
 <link rel="stylesheet" href="gallery.css">
+<link rel="stylesheet" href="../kit-bar.css">
 </head>
 <body>
-<header class="g-top"><a class="g-brand" href="/"><i aria-hidden="true"></i>Colibri Kit <span>/ Blocks</span></a>
-  <nav class="g-nav" aria-label="Blocks"><a href="#hero">Hero</a><a href="#pricing">Pricing</a><a href="#signup">Signup</a></nav>
-  <div class="g-ctl">
+<header class="kbar" data-active="blocks">
+  <button class="kbar-btn kbar-icon" data-kbar-tool id="scheme" type="button" aria-label="Toggle light/dark">◐</button>
+  <div data-kbar-custom data-title="Blocks" hidden>
     <label>Theme pack <select id="pack"></select></label>
-    <label title="Colour only: shifts the accent hue on top of the pack">Colour <input id="hue" type="range" min="0" max="360" value="255"><output id="hue-out">pack</output></label>
-    <button class="btn" id="scheme" data-variant="ghost" data-size="s" type="button" aria-label="Toggle light/dark">◐</button>
-    <a class="btn" data-variant="outline" data-size="s" href="https://github.com/levancho/colibri-kit">GitHub</a>
+    <label title="Colour only: shifts the accent hue on top of the pack">Colour <input id="hue" type="range" min="0" max="360" value="255"></label>
+    <label>Hue <output id="hue-out">pack</output></label>
   </div></header>
 <main class="g-main">
-<section class="g-intro"><h1>Marketing blocks</h1><p>Pilot set: three production-quality blocks built only from Colibri tokens and primitives. Switch the <b>theme pack</b> to change shape, type, shadows and chrome, or the <b>colour</b> for hue alone. Every block has a device preview and HTML, FreeMarker and React source.</p></section>
+<section class="g-intro"><h1>Marketing blocks</h1><nav class="kbar-sub" aria-label="Blocks" style="justify-content:flex-start;border:0;padding:0 0 8px"><a href="#hero">Hero</a><a href="#pricing">Pricing</a><a href="#signup">Signup</a></nav><p>Pilot set: three production-quality blocks built only from Colibri tokens and primitives. Switch the <b>theme pack</b> to change shape, type, shadows and chrome, or the <b>colour</b> for hue alone. Every block has a device preview and HTML, FreeMarker and React source.</p></section>
 <article class="g-block" id="hero">
   <header class="g-head"><div><h2>Hero</h2><p>Marketing hero with announcement pill, gradient headline, social proof, product mock and logo cloud.</p><ul class="g-uses" aria-label="Colibri UI used"><li><code>&lt;ui-dialog&gt; (demo video modal)</code></li><li><code>&lt;ui-tabs&gt; (app preview: Overview / Reports / Team)</code></li><li><code>data-ui=&quot;tooltip&quot; (rating)</code></li><li><code>data-ui=&quot;avatar&quot; ×9</code></li><li><code>data-ui=&quot;badge&quot;</code></li><li><code>data-ui=&quot;progress&quot;</code></li></ul></div>
     <div class="g-tools"><div class="g-tabs" role="tablist" aria-label="Hero views"><button type="button" role="tab" data-tab="preview" aria-selected="true">Preview</button><button type="button" role="tab" data-tab="html" aria-selected="false">HTML</button><button type="button" role="tab" data-tab="ftl" aria-selected="false">FreeMarker</button><button type="button" role="tab" data-tab="react" aria-selected="false">React</button></div><div class="g-dev" role="group" aria-label="Preview width"><button type="button" data-w="100%" aria-pressed="true" title="Desktop" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></button><button type="button" data-w="768px" aria-pressed="false" title="Tablet" aria-label="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></button><button type="button" data-w="390px" aria-pressed="false" title="Phone" aria-label="Phone preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button></div><a class="btn" data-variant="ghost" data-size="s" href="hero.html" target="_blank" rel="noopener">Open ↗</a></div></header>
@@ -804,5 +804,5 @@ export function SignupBlock() {
 </code></pre></div>
 </article>
 </main>
-<script type="module" src="gallery.js"></script>
+<script type="module" src="../kit-bar.js"></script><script type="module" src="gallery.js"></script>
 </body></html>

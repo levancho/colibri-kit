@@ -52,21 +52,20 @@ def gallery():
   <div class="g-panel" data-panel="preview"><div class="g-stage"><iframe src="{bid}.html" title="{title} block preview" loading="lazy"></iframe></div></div>
   {code("html", html)}{code("ftl", ftl)}{code("react", react(bid, html))}
 </article>""")
-    return HEAD.format(title="Marketing blocks — Colibri Kit", extra='\n<link rel="stylesheet" href="gallery.css">') + f"""
+    return HEAD.format(title="Marketing blocks — Colibri Kit", extra='\n<link rel="stylesheet" href="gallery.css">\n<link rel="stylesheet" href="../kit-bar.css">') + f"""
 <body>
-<header class="g-top"><a class="g-brand" href="/"><i aria-hidden="true"></i>Colibri Kit <span>/ Blocks</span></a>
-  <nav class="g-nav" aria-label="Blocks">{"".join(f'<a href="#{b[0]}">{b[1]}</a>' for b in BLOCKS)}</nav>
-  <div class="g-ctl">
+<header class="kbar" data-active="blocks">
+  <button class="kbar-btn kbar-icon" data-kbar-tool id="scheme" type="button" aria-label="Toggle light/dark">◐</button>
+  <div data-kbar-custom data-title="Blocks" hidden>
     <label>Theme pack <select id="pack"></select></label>
-    <label title="Colour only: shifts the accent hue on top of the pack">Colour <input id="hue" type="range" min="0" max="360" value="255"><output id="hue-out">pack</output></label>
-    <button class="btn" id="scheme" data-variant="ghost" data-size="s" type="button" aria-label="Toggle light/dark">◐</button>
-    <a class="btn" data-variant="outline" data-size="s" href="https://github.com/levancho/colibri-kit">GitHub</a>
+    <label title="Colour only: shifts the accent hue on top of the pack">Colour <input id="hue" type="range" min="0" max="360" value="255"></label>
+    <label>Hue <output id="hue-out">pack</output></label>
   </div></header>
 <main class="g-main">
-<section class="g-intro"><h1>Marketing blocks</h1><p>Pilot set: three production-quality blocks built only from Colibri tokens and primitives. Switch the <b>theme pack</b> to change shape, type, shadows and chrome, or the <b>colour</b> for hue alone. Every block has a device preview and HTML, FreeMarker and React source.</p></section>
+<section class="g-intro"><h1>Marketing blocks</h1><nav class="kbar-sub" aria-label="Blocks" style="justify-content:flex-start;border:0;padding:0 0 8px">{"".join(f'<a href="#{b[0]}">{b[1]}</a>' for b in BLOCKS)}</nav><p>Pilot set: three production-quality blocks built only from Colibri tokens and primitives. Switch the <b>theme pack</b> to change shape, type, shadows and chrome, or the <b>colour</b> for hue alone. Every block has a device preview and HTML, FreeMarker and React source.</p></section>
 {chr(10).join(cards)}
 </main>
-<script type="module" src="gallery.js"></script>
+<script type="module" src="../kit-bar.js"></script><script type="module" src="gallery.js"></script>
 </body></html>
 """
 

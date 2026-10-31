@@ -1,0 +1,34 @@
+/* Colibri Kit site chrome: ONE sticky top bar shared by Home, Components, Blocks, Dashboards and Studio.
+   Self-contained tokens (follows html[data-theme=dark] / data-chrome=dark), so it looks identical on every page and pack. */
+:root{--kb-h:56px;--kb-fg:light-dark(#0f1419,#e8ecf2);--kb-muted:light-dark(#5f6b7a,#8f99a8);--kb-line:light-dark(#e6e8ec,#1f2530);--kb-soft:light-dark(#f1f3f6,#171c25);--kb-bg:light-dark(rgb(255 255 255 / .82),rgb(11 14 19 / .8));--kb-pop:light-dark(#fff,#12161d);--kb-acc:light-dark(#3b5bdb,#8ea2ff);--kb-font:"Inter","Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+html[data-theme=dark],html[data-chrome=dark]{--kb-fg:#e8ecf2;--kb-muted:#8f99a8;--kb-line:#1f2530;--kb-soft:#171c25;--kb-bg:rgb(11 14 19 / .8);--kb-pop:#12161d;--kb-acc:#8ea2ff}
+.kbar-spacer{height:var(--kb-h)}
+.kbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:6px;height:var(--kb-h);padding:0 max(14px,calc((100vw - 1440px)/2));padding-inline:clamp(12px,2vw,24px);border-bottom:1px solid var(--kb-line);background:var(--kb-bg);backdrop-filter:saturate(1.6) blur(12px);-webkit-backdrop-filter:saturate(1.6) blur(12px);color:var(--kb-fg);font:500 13.5px/1 var(--kb-font);letter-spacing:0;box-sizing:border-box}
+.kbar *{box-sizing:border-box}
+.kbar-brand{display:inline-flex;align-items:center;gap:9px;margin-right:10px;color:inherit;text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
+.kbar-brand i{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 210deg,#3b5bdb,#22b8cf,#40c057,#f59f00,#e64980,#3b5bdb);box-shadow:inset 0 0 0 1px #0002}
+.kbar-nav{display:flex;align-items:center;gap:2px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.kbar-nav a{position:relative;padding:8px 11px;border-radius:8px;color:var(--kb-muted);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s}
+.kbar-nav a:hover{color:var(--kb-fg);background:var(--kb-soft)}
+.kbar-nav a[aria-current=page]{color:var(--kb-fg)}
+.kbar-nav a[aria-current=page]::after{content:"";position:absolute;left:11px;right:11px;bottom:-11px;height:2px;border-radius:2px;background:var(--kb-acc)}
+.kbar-sp{flex:1}
+.kbar-tools{display:flex;align-items:center;gap:6px}
+.kbar-btn,.kbar .kbar-tools :is(button,a.btn,.sink-btn){display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 11px;border:1px solid var(--kb-line);border-radius:8px;background:transparent;color:var(--kb-fg);font:500 13px/1 var(--kb-font);text-decoration:none;cursor:pointer;white-space:nowrap}
+.kbar-btn:hover,.kbar .kbar-tools :is(button,a.btn,.sink-btn):hover{background:var(--kb-soft)}
+.kbar-icon{width:32px;padding:0!important;justify-content:center}
+.kbar-icon svg{width:17px;height:17px}
+.kbar :focus-visible{outline:2px solid var(--kb-acc);outline-offset:2px}
+.kbar-lead{display:flex;align-items:center;margin-right:4px}.kbar-lead button{width:32px;height:32px;border:0;border-radius:8px;background:none;color:var(--kb-fg);cursor:pointer;font-size:16px}.kbar-lead button:hover{background:var(--kb-soft)}
+.kbar-pop{position:fixed;inset:auto;margin:0;padding:14px;min-width:260px;border:1px solid var(--kb-line);border-radius:14px;background:var(--kb-pop);color:var(--kb-fg);font:13px/1.3 var(--kb-font);box-shadow:0 18px 50px -20px #0006,0 2px 6px #0001}
+.kbar-pop h4{margin:0 0 10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--kb-muted)}
+.kbar-pop>div{display:grid;gap:10px}
+.kbar-pop label{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;color:var(--kb-fg)}
+.kbar-pop select{min-width:130px;height:30px;border:1px solid var(--kb-line);border-radius:8px;background:var(--kb-pop);color:var(--kb-fg);font:inherit;padding:0 6px}
+.kbar-pop input[type=checkbox]{accent-color:var(--kb-acc);width:16px;height:16px;margin:0}
+.kbar-pop :is(button,a){justify-content:center}
+.kbar-sub{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;padding:10px 16px;border-bottom:1px solid var(--kb-line);font:500 13px/1 var(--kb-font)}
+.kbar-sub a{padding:6px 10px;border-radius:999px;color:var(--kb-muted);text-decoration:none}.kbar-sub a:hover{background:var(--kb-soft);color:var(--kb-fg)}
+@media (max-width:760px){.kbar{gap:4px}.kbar-brand b{display:none}.kbar-nav a{padding:8px 8px}.kbar-nav a[aria-current=page]::after{left:8px;right:8px}.kbar-hide-sm{display:none!important}}
+.kbar:not([data-mounted])>*{visibility:hidden}
+html{scroll-padding-top:calc(var(--kb-h) + 12px)}

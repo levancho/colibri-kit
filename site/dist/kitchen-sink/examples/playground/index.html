@@ -37,11 +37,9 @@ input[type=range]{width:100%;accent-color:var(--acc)}select{width:100%;height:32
 .ctabs{display:flex;align-items:center;gap:2px;padding:6px 12px}.ctabs button{border:0;background:none;color:var(--muted);font:inherit;padding:6px 10px;border-radius:7px;cursor:pointer}.ctabs button[aria-selected=true]{background:var(--soft);color:var(--fg);font-weight:600}
 .ctabs .sp{flex:1}.cbody{overflow:auto;padding:0 12px 12px}.cbody pre{margin:0;padding:12px 14px;border-radius:10px;background:var(--bg);border:1px solid var(--line);font:12px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;overflow:auto}
 @media (max-width:900px){.wrap{grid-template-columns:1fr}.rail{max-height:42vh;border-right:0;border-bottom:1px solid var(--line)}.top nav{display:none}}
-</style></head>
+</style><link rel="stylesheet" href="../kit-bar.css"></head>
 <body>
-<header class="top"><a class="brand" href="/"><i></i>Colibri Kit <span>/ Themes Studio</span></a>
- <nav aria-label="Kit"><a href="/kitchen-sink/examples/kitchen-sink.html">Components</a><a href="/kitchen-sink/examples/blocks/">Blocks</a><a href="/kitchen-sink/examples/dashboards/">Dashboards</a><a href="./" aria-current="page">Studio</a></nav>
- <span class="sp"></span><button class="ib" id="share" type="button">Copy link</button><button class="ib" id="chrome" type="button" aria-label="Toggle studio light/dark">◐</button></header>
+<header class="kbar" data-active="studio"><button class="kbar-btn" data-kbar-tool id="share" type="button">Copy link</button><button class="kbar-btn kbar-icon" data-kbar-tool id="chrome" type="button" aria-label="Toggle studio light/dark">◐</button></header>
 <div class="wrap">
 <aside class="rail" aria-label="Theme settings">
  <h3>Theme pack <button type="button" id="reset">Reset all</button></h3>
@@ -68,5 +66,5 @@ input[type=range]{width:100%;accent-color:var(--acc)}select{width:100%;height:32
   <div class="ctabs" role="tablist" aria-label="Export"><button role="tab" data-l="html" aria-selected="true">HTML</button><button role="tab" data-l="ftl" aria-selected="false">FreeMarker</button><button role="tab" data-l="react" aria-selected="false">React</button><button role="tab" data-l="css" aria-selected="false">CSS tokens</button><span class="sp"></span><button id="copy" type="button">Copy</button><button id="toggle" type="button" aria-expanded="true">Hide code</button></div>
   <div class="cbody"><div id="out" data-lang="html"><pre><code></code></pre></div></div></div>
 </section></div>
-<script type="module" src="playground.js"></script>
+<script type="module" src="../kit-bar.js"></script><script type="module" src="playground.js"></script>
 </body></html>
