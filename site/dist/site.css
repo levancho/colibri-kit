@@ -25,3 +25,36 @@ pre.code { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size:
 .steps { padding-inline-start: 1.3em; --gap: var(--c-space-m); & li::marker { font-weight: 700; color: var(--c-accent); } & pre { margin-block-start: var(--c-space-2xs); } }
 footer { padding-block: var(--c-space-l); border-block-start: 1px solid var(--c-line); font-size: var(--c-text-sm); }
 .skip:focus { position: fixed; inset: 1rem auto auto 1rem; z-index: 99; padding: .5rem 1rem; background: var(--c-surface); }
+/* "Two pieces" explainer */
+.kit-diagram { display: grid; gap: var(--c-space-s); padding: var(--c-space-m); border: 1px dashed var(--c-line); border-radius: var(--c-radius-l); background: var(--c-sunken); }
+.kd-kit { justify-self: center; padding: var(--c-space-2xs) var(--c-space-m); border-radius: var(--c-radius-full); background: var(--c-accent); color: var(--c-brand-fg); font-weight: 700;
+  & small { font-weight: 400; opacity: .8; margin-inline-start: .4em; } }
+.kd-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--c-space-s); align-items: stretch; }
+@container (inline-size < 40rem) { .kd-row { grid-template-columns: 1fr; } .kd-plus { justify-self: center; } }
+.kd-box { display: grid; gap: var(--c-space-3xs); align-content: start; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface);
+  & b { font-size: var(--c-text-lg); } & p { color: var(--c-muted); font-size: var(--c-text-sm); } }
+.kd-tag { justify-self: start; padding: .1em .6em; border-radius: var(--c-radius-full); background: var(--c-accent-soft); color: var(--c-accent); font-weight: 700; font-size: var(--c-text-sm); }
+.kd-plus { align-self: center; font-size: var(--c-text-2xl); font-weight: 300; color: var(--c-muted); }
+.headless-def { line-height: 1.7; }
+/* code tabs (Colibri UI tabs, styled here: the component itself is headless) */
+.codetabs { border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); overflow: hidden; min-inline-size: 0; }
+.codetabs > [data-ui-part=list], .demo-tabs > [data-ui-part=list] { display: flex; gap: 2px; padding: var(--c-space-3xs); border-block-end: 1px solid var(--c-line); background: var(--c-sunken); }
+:is(.codetabs, .demo-tabs) [data-ui-part=trigger] { all: unset; cursor: pointer; padding: .45em 1em; border-radius: var(--c-radius-s); font-size: var(--c-text-sm); font-weight: 600; color: var(--c-muted); transition: background var(--c-dur-fast), color var(--c-dur-fast);
+  &:hover { color: var(--c-fg); }
+  &[aria-selected=true] { background: var(--c-surface); color: var(--c-fg); box-shadow: var(--c-shadow-s); }
+  &:focus-visible { outline: var(--c-ring); outline-offset: 1px; } }
+.codetabs [data-ui-part=panel] { position: relative; }
+.codetabs [data-ui-part=panel] pre.code { border: 0; border-radius: 0; margin: 0; min-block-size: 9rem; padding-inline-end: 5rem; }
+.copy { all: unset; cursor: pointer; position: absolute; inset-block-start: var(--c-space-xs); inset-inline-end: var(--c-space-xs); padding: .25em .7em; border: 1px solid var(--c-line); border-radius: var(--c-radius-s); background: var(--c-surface); font-size: var(--c-text-xs); font-weight: 600;
+  &:hover { background: var(--c-sunken); } &:focus-visible { outline: var(--c-ring); } }
+.demo-row { display: grid; grid-template-columns: minmax(14rem, 1fr) 2fr; gap: var(--c-space-m); align-items: start; }
+@container (inline-size < 52rem) { .demo-row { grid-template-columns: 1fr; } }
+.live { position: relative; display: grid; place-items: center; min-block-size: 12rem; padding: var(--c-space-l) var(--c-space-m) var(--c-space-m); border: 1px dashed var(--c-line); border-radius: var(--c-radius-l);
+  background: radial-gradient(circle at 1px 1px, var(--c-line) 1px, transparent 0) 0 0 / 14px 14px, var(--c-bg); }
+.live-tag { position: absolute; inset-block-start: var(--c-space-2xs); inset-inline-start: var(--c-space-xs); font-size: var(--c-text-xs); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--c-ok); }
+.demo-tabs { inline-size: min(100%, 22rem); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface); overflow: hidden;
+  & [data-ui-part=panel] { padding: var(--c-space-s); font-size: var(--c-text-sm); } }
+dialog[data-ui-part=content]::backdrop { background: oklch(0% 0 0 / .45); backdrop-filter: blur(2px); }
+dialog[data-ui-part=content] { border: 1px solid var(--c-line); color: var(--c-fg); }
+#start h3, #styling h3 { font-size: var(--c-text-lg); }
+.path pre.code { margin-block-start: auto; }

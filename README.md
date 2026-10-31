@@ -20,6 +20,8 @@ More Kit packages to come.
 
 Re-brand: `:root { --c-hue: 160; }` · Force dark: `<html data-theme="dark">`
 
+Optional: add `colibri-classes.css` for React-style `className` styling (`c-stack c-gap-m c-p-l`). React: `import { Dialog, Tabs, Part } from "@colibri-kit/ui/react"`. Every snippet is shown in HTML, FreeMarker and React at https://colibri.l3v.ai/#start.
+
 ## Explore
 
 - `examples/kitchen-sink.html` — every component, live
