@@ -1,0 +1,4 @@
+{ "name": "@colibri/css", "version": "0.1.0", "description": "Colibri CSS: a small, modern, token-first CSS library (layers, container queries, :has(), nesting, fluid type, light-dark).",
+  "type": "module", "main": "dist/colibri.css", "style": "dist/colibri.css",
+  "exports": { ".": "./dist/colibri.css", "./min": "./dist/colibri.min.css", "./bridge": "./dist/colibri-ui-bridge.css", "./src/*": "./src/*" },
+  "files": ["dist", "src"], "scripts": { "build": "node build.mjs" }, "license": "MIT" }

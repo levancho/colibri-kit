@@ -1,0 +1,37 @@
+/* Layout primitives — a handful, configured with custom properties instead of hundreds of classes. */
+@layer colibri.layout {
+  /* .stack: vertical rhythm.  --gap */
+  .stack { display: flex; flex-direction: column; gap: var(--gap, var(--c-space-s)); }
+  /* .cluster: wrapping row of things (buttons, tags).  --gap, --align, --justify */
+  .cluster { display: flex; flex-wrap: wrap; gap: var(--gap, var(--c-space-xs)); align-items: var(--align, center); justify-content: var(--justify, flex-start); }
+  /* .grid: auto-fitting responsive grid, no breakpoints.  --min, --gap */
+  .grid { display: grid; gap: var(--gap, var(--c-space-m)); grid-template-columns: repeat(auto-fill, minmax(min(var(--min, 16rem), 100%), 1fr)); }
+  /* .split: sidebar + main that wraps when there is no room.  --side, --gap */
+  .split { display: flex; flex-wrap: wrap; gap: var(--gap, var(--c-space-m));
+    & > :first-child { flex: 1 1 var(--side, 16rem); }
+    & > :last-child { flex: 999 1 0; min-inline-size: 55%; } }
+  /* .center: centred readable column.  --max */
+  .center { box-sizing: content-box; max-inline-size: var(--max, var(--c-content)); margin-inline: auto; padding-inline: var(--c-space-m); }
+  /* .bleed: a full-width child inside .center */
+  .bleed { inline-size: 100vw; margin-inline: calc(50% - 50vw); }
+  /* .switcher: row that flips to a column under --at */
+  .switcher { display: flex; flex-wrap: wrap; gap: var(--gap, var(--c-space-m));
+    & > * { flex-grow: 1; flex-basis: calc((var(--at, 36rem) - 100%) * 999); } }
+  /* .cover: vertically centred hero area */
+  .cover { display: grid; min-block-size: var(--min-h, 60svh); place-items: center; padding: var(--c-space-l); }
+  /* .frame: aspect-ratio box.  --ratio */
+  .frame { aspect-ratio: var(--ratio, 16 / 9); overflow: hidden; & > :is(img, video) { inline-size: 100%; block-size: 100%; object-fit: cover; } }
+  /* .reel: horizontal scroll-snap strip */
+  .reel { display: flex; gap: var(--gap, var(--c-space-s)); overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain;
+    & > * { flex: 0 0 var(--item, 80%); scroll-snap-align: start; } }
+  /* .container: makes an element a size container so children respond to IT, not the viewport */
+  .container { container-type: inline-size; }
+  /* .prose: readable flow for markdown/HTML you don't control */
+  .prose { max-inline-size: var(--c-measure);
+    & > * + * { margin-block-start: var(--flow, 1.1em); }
+    & :is(h2, h3) { margin-block-start: 1.8em; }
+    & :is(h2, h3, h4) + * { margin-block-start: 0.5em; }
+    & :is(ul, ol) { padding-inline-start: 1.4em; }
+    & li + li { margin-block-start: 0.3em; }
+    & img { border-radius: var(--c-radius); } }
+}

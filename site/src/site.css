@@ -1,0 +1,27 @@
+/* Colibri Kit site: everything here builds on Colibri CSS tokens */
+:root { --c-hue: 250; }
+body { overflow-x: hidden; }
+header.site { position: sticky; inset-block-start: 0; z-index: 10; padding-block: var(--c-space-xs); background: color-mix(in oklch, var(--c-bg) 82%, transparent); backdrop-filter: blur(10px); border-block-end: 1px solid var(--c-line);
+  & a:not(.btn) { color: var(--c-fg); text-decoration: none; font-size: var(--c-text-sm); &:hover { color: var(--c-accent); } }
+  & .brand { font-weight: 800; font-size: var(--c-text-md); letter-spacing: -.01em; } }
+@container (inline-size < 40rem) { header.site nav a:not(.btn):not(:last-of-type) { display: none; } }
+body { container-type: inline-size; }
+main > section { padding-block: var(--c-space-xl); }
+.hero { padding-block: var(--c-space-2xl) var(--c-space-xl) !important; --gap: var(--c-space-m);
+  & h1 { font-size: clamp(2.4rem, 1.6rem + 4vw, 4.6rem); letter-spacing: -.035em; }
+  & .lede { max-inline-size: 58ch; font-size: var(--c-text-lg); color: var(--c-muted); }
+  & .lede b { color: var(--c-fg); } }
+.grad { background: linear-gradient(100deg, var(--c-accent), oklch(65% .2 calc(var(--c-hue) + 70))); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats { margin-block-start: var(--c-space-s); & div { display: grid; } & b { font-size: var(--c-text-xl); letter-spacing: -.02em; } & span { font-size: var(--c-text-xs); color: var(--c-muted); text-transform: uppercase; letter-spacing: .06em; } }
+.pk .card { --gap: var(--c-space-s); padding: var(--c-space-l); & h2 { font-size: var(--c-text-xl); } & code { font-size: var(--c-text-xs); } }
+.ticks { list-style: none; padding: 0; display: grid; gap: var(--c-space-2xs);
+  & li { padding-inline-start: 1.6em; position: relative; }
+  & li::before { content: "✓"; position: absolute; inset-inline-start: 0; color: var(--c-ok); font-weight: 700; } }
+.more { font-weight: 600; text-decoration: none; margin-block-start: auto; }
+.card h3 { font-size: var(--c-text-lg); }
+.tok p { line-height: 2; } .tok code { white-space: nowrap; }
+pre.code { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: var(--c-text-sm); line-height: 1.65; border: 1px solid var(--c-line);
+  & b { color: var(--c-accent); font-weight: 600; } & .c { color: var(--c-muted); } }
+.steps { padding-inline-start: 1.3em; --gap: var(--c-space-m); & li::marker { font-weight: 700; color: var(--c-accent); } & pre { margin-block-start: var(--c-space-2xs); } }
+footer { padding-block: var(--c-space-l); border-block-start: 1px solid var(--c-line); font-size: var(--c-text-sm); }
+.skip:focus { position: fixed; inset: 1rem auto auto 1rem; z-index: 99; padding: .5rem 1rem; background: var(--c-surface); }

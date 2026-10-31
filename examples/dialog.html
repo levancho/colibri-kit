@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8"><title>Colibri UI – Dialog (headless)</title>
+<!-- OPTIONAL demo styling; the dialog works with zero CSS (browser default <dialog>). -->
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+  [data-ui-part="content"] { border: 1px solid #ccc; border-radius: 8px; padding: 1.25rem; max-width: 28rem; }
+  [data-ui-part="content"]::backdrop { background: rgb(0 0 0 / .4); }
+  [data-ui-part="content"][data-state="open"] { animation: in .12s ease-out; }
+  @keyframes in { from { opacity: 0; transform: translateY(4px); } }
+  [data-ui-part="title"] { margin-top: 0; }
+  .row { display: flex; gap: .5rem; justify-content: flex-end; }
+</style>
+</head>
+<body>
+<p><a href="./">← Colibri UI examples</a></p>
+<h1>Colibri UI · Dialog</h1>
+
+<h2>1) Modal confirm (data attributes)</h2>
+<div data-ui="dialog" id="confirm">
+  <button data-ui-part="trigger">სტატიის წაშლა…</button>
+  <dialog data-ui-part="content">
+    <h2 data-ui-part="title">წავშალო სტატია?</h2>
+    <p data-ui-part="description">ამ მოქმედების გაუქმება შეუძლებელია.</p>
+    <div class="row">
+      <button data-ui-part="close" data-ui-return="cancel">Cancel</button>
+      <button data-ui-part="close" data-ui-return="ok" autofocus>Delete</button>
+    </div>
+  </dialog>
+</div>
+
+<h2>2) Form inside, non-dismissible (must choose)</h2>
+<div data-ui="dialog" data-dismissible="false">
+  <button data-ui-part="trigger">Edit title</button>
+  <dialog data-ui-part="content">
+    <h2 data-ui-part="title">Edit title</h2>
+    <form method="dialog">
+      <label>Title <input name="t" value="Despani" autofocus></label>
+      <div class="row"><button value="cancel">Cancel</button><button value="save">Save</button></div>
+    </form>
+  </dialog>
+</div>
+
+<h2>3) Custom element + Tabs nested inside</h2>
+<ui-dialog>
+  <button data-ui-part="trigger">Settings</button>
+  <dialog data-ui-part="content">
+    <h2 data-ui-part="title">Settings</h2>
+    <div data-ui="tabs">
+      <div data-ui-part="list">
+        <button data-ui-part="trigger" data-value="g">General</button>
+        <button data-ui-part="trigger" data-value="s">SEO</button>
+      </div>
+      <div data-ui-part="panel" data-value="g">General settings…</div>
+      <div data-ui-part="panel" data-value="s">SEO settings…</div>
+    </div>
+    <div class="row"><button data-ui-part="close">Done</button></div>
+  </dialog>
+</ui-dialog>
+
+<p>Events: <output id="log">–</output></p>
+<script type="module">
+  import "../src/core/auto.js";
+  import "../src/elements/dialog.js";
+  const log = (m) => (document.getElementById("log").textContent = m);
+  document.addEventListener("ui:open",  (e) => log(`open (${e.target.id || e.target.tagName.toLowerCase()})`));
+  document.addEventListener("ui:close", (e) => log(`close → returnValue="${e.detail.returnValue}"`));
+</script>
+</body>
+</html>

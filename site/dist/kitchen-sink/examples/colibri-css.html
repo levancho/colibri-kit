@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colibri CSS</title>
+<link rel="stylesheet" href="../packages/colibri-css/dist/colibri.css">
+<style>
+  header.site { position: sticky; inset-block-start: 0; z-index: 1; padding-block: var(--c-space-xs); background: color-mix(in oklch, var(--c-bg) 85%, transparent); backdrop-filter: blur(8px); border-block-end: 1px solid var(--c-line); }
+  .hero { padding-block: var(--c-space-2xl); }
+  .feature h3 { font-size: var(--c-text-lg); }
+  section { padding-block: var(--c-space-xl); }
+</style>
+</head>
+<body>
+<header class="site"><div class="center cluster" style="--justify:space-between">
+  <b>🐦 Colibri CSS</b><nav class="cluster" aria-label="Sections" style="--gap:var(--c-space-s);font-size:var(--c-text-sm)"><a href="#why">Why</a><a href="#how">How it works</a><a href="#better">Comparison</a><a href="#start">Get started</a></nav>
+  <div class="cluster" role="group" aria-label="Colour scheme">
+    <button class="btn" data-variant="ghost" data-size="s" onclick="document.documentElement.removeAttribute('data-theme')">System</button>
+    <button class="btn" data-variant="ghost" data-size="s" onclick="document.documentElement.dataset.theme='light'">Light</button>
+    <button class="btn" data-variant="ghost" data-size="s" onclick="document.documentElement.dataset.theme='dark'">Dark</button>
+  </div>
+</div></header>
+<main>
+  <div class="center hero stack enter" style="--gap:var(--c-space-m)">
+    <span class="badge" data-tone="accent">@colibri/css 0.1</span>
+    <h1>Modern CSS, not class soup.</h1>
+    <p class="muted" style="max-inline-size:50ch;font-size:var(--c-text-lg)">Reset, OKLCH tokens, fluid type, cascade layers, container queries, :has() and native nesting, in one 15 KB stylesheet.</p>
+    <div class="cluster"><a class="btn" data-size="l" href="kitchen-sink.html#css-start">See it in the kitchen sink</a><a class="btn" data-variant="outline" data-size="l" href="../packages/colibri-css/README.md">Read the docs</a></div>
+  </div>
+  <section class="center"><div class="grid" style="--min:15rem">
+    <div class="card stack enter" style="--i:1"><h3>Layers</h3><p class="muted">Your unlayered CSS always wins.</p></div>
+    <div class="card stack enter" style="--i:2"><h3>Tokens</h3><p class="muted">Change <code>--c-hue</code>, re-brand everything.</p></div>
+    <div class="card stack enter" style="--i:3"><h3>Containers</h3><p class="muted">Cards adapt to where they live.</p></div>
+    <div class="card stack enter" style="--i:4"><h3>Light & dark</h3><p class="muted"><code>light-dark()</code> everywhere.</p></div>
+  </div></section>
+
+  <section class="center stack" id="what" style="--gap:var(--c-space-m)">
+    <h2>What it is</h2>
+    <p class="muted" style="max-inline-size:var(--c-measure);font-size:var(--c-text-lg)">One small stylesheet (15&nbsp;KB, 11&nbsp;KB minified, zero dependencies, no build step) that gives a page finished defaults, a themable token system, a handful of layout primitives and a few opt-in components. It is the styling half of Colibri: <b>Colibri UI</b> provides headless behaviour, <b>Colibri CSS</b> provides the look.</p>
+  </section>
+  <section class="center stack" id="why" style="--gap:var(--c-space-m)">
+    <h2>Why we built it</h2>
+    <p style="max-inline-size:var(--c-measure)">We wanted pages that look right with plain, semantic HTML, the kind FreeMarker templates and CMS content produce, without picking between two bad options:</p>
+    <div class="grid" style="--min:18rem">
+      <div class="callout" data-tone="warn"><b>Utility frameworks</b><br>Every element gets twenty classes, you need a compiler, and the design is spread across thousands of lines of markup. Changing the design means editing templates.</div>
+      <div class="callout" data-tone="bad"><b>Heavy frameworks</b><br>Hundreds of KB, specificity fights, and a site that looks like the framework instead of your product.</div>
+    </div>
+    <p style="max-inline-size:var(--c-measure)">Modern CSS now does natively what those tools were invented to work around. Colibri CSS is a thin, opinionated layer over the platform.</p>
+  </section>
+  <section class="center stack" id="how" style="--gap:var(--c-space-m)">
+    <h2>How it works</h2>
+    <div class="grid" style="--min:16rem">
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Cascade layers</h3><p class="muted">Everything sits in <code>@layer colibri.*</code>. Your own CSS outside a layer always wins: no <code>!important</code>, no specificity wars.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Design tokens</h3><p class="muted">Colour, space, type, radius, shadow and motion are custom properties. OKLCH colours come from one <code>--c-hue</code>, so one number re-brands everything.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Dark mode built in</h3><p class="muted">Every colour is a <code>light-dark()</code> pair. Follows the OS; <code>data-theme</code> forces it on any element.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Fluid type &amp; space</h3><p class="muted"><code>clamp()</code> scales grow smoothly from phone to desktop, with no breakpoints to maintain.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Layout primitives</h3><p class="muted"><code>.stack .cluster .grid .split .switcher .center .reel .prose</code>, tuned with <code>--gap</code>, <code>--min</code> and <code>--side</code> instead of new classes.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Container queries</h3><p class="muted">Cards respond to the space they're in, so one piece of markup fits a sidebar and a main column.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>:has() patterns</h3><p class="muted">Selected cards, invalid-field labels and required markers, with no JavaScript.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Native nesting</h3><p class="muted">States and variants live in one readable block. Variants are attributes: <code>data-variant</code>, <code>data-size</code>, <code>data-tone</code>.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Accessible defaults</h3><p class="muted">Keyboard focus rings, reduced-motion tokens, high-contrast borders, slim scrollbars and tinted native controls.</p></div>
+      <div class="card stack" style="--gap:var(--c-space-2xs)"><h3>Bridge to Colibri UI</h3><p class="muted"><code>colibri-ui-bridge.css</code> maps <code>--ui-*</code> to <code>--c-*</code>: headless components and your page share one palette and one dark mode.</p></div>
+    </div>
+  </section>
+  <section class="center stack" id="better" style="--gap:var(--c-space-m)">
+    <h2>Why it's better</h2>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th></th><th>Colibri CSS</th><th>Utility framework</th><th>Heavy framework</th></tr></thead>
+      <tbody>
+        <tr><th>Size</th><td>15 KB, readable source</td><td>Depends on the compiler</td><td>150–300 KB+</td></tr>
+        <tr><th>Build step</th><td>None</td><td>Required</td><td>Usually Sass</td></tr>
+        <tr><th>Markup</th><td>Semantic HTML + a few primitives</td><td>Long class lists on everything</td><td>Framework classes and wrappers</td></tr>
+        <tr><th>Re-theme</th><td>One token, global or per section</td><td>Config + rebuild</td><td>Override variables, then fight specificity</td></tr>
+        <tr><th>Overrides</th><td>Your CSS wins (layers)</td><td>More utilities or arbitrary values</td><td><code>!important</code></td></tr>
+        <tr><th>Modern CSS</th><td>Layers, :has(), containers, nesting, light-dark()</td><td>Abstracted away</td><td>Partly</td></tr>
+        <tr><th>Pairs with Colibri UI</th><td>Yes, through the token bridge</td><td>Manual</td><td>Conflicts</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+  <section class="center stack" id="start" style="--gap:var(--c-space-m)">
+    <h2>Getting started</h2>
+    <pre><code>&lt;link rel="stylesheet" href="packages/colibri-css/dist/colibri.css"&gt;
+
+&lt;!-- with Colibri UI components --&gt;
+&lt;link rel="stylesheet" href="themes/colibri.css"&gt;
+&lt;link rel="stylesheet" href="packages/colibri-css/dist/colibri.css"&gt;
+&lt;link rel="stylesheet" href="packages/colibri-css/dist/colibri-ui-bridge.css"&gt;</code></pre>
+    <div class="cluster"><span>Re-brand: <code>:root { --c-hue: 160; }</code></span><span>Force dark: <code>&lt;html data-theme="dark"&gt;</code></span></div>
+    <div class="cluster"><a class="btn" href="kitchen-sink.html#grp-colibri-css">Live examples in the kitchen sink</a><a class="btn" data-variant="outline" href="../packages/colibri-css/README.md">README</a></div>
+  </section>
+  <section class="center"><article class="prose">
+    <h2>Prose for content you don't control</h2>
+    <p>Wrap CMS or markdown output in <code>.prose</code> and it gets a readable measure, rhythm and lists. Press <kbd>Tab</kbd> to see focus rings.</p>
+    <ul><li>No build step</li><li>No utility explosion</li><li>Works with Colibri UI through the bridge file</li></ul>
+  </article></section>
+</main>
+</body>
+</html>

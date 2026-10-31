@@ -1,0 +1,29 @@
+{
+  "name": "@colibri/ui",
+  "version": "0.1.0",
+  "description": "Colibri UI: headless, unstyled, framework-agnostic UI primitives",
+  "type": "module",
+  "sideEffects": [
+    "./src/elements/*.js"
+  ],
+  "exports": {
+    "./core/*": "./src/core/*.js",
+    "./elements/*": "./src/elements/*.js"
+  },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "serve": "python3 -m http.server 8395",
+    "test:e2e": "node test/e2e/kitchen-sink.e2e.mjs && node test/e2e/blocks.e2e.mjs && node test/e2e/ftl-output.e2e.mjs",
+    "sink": "python3 tools/kitchen-sink.py && python3 tools/readme-catalog.py && python3 tools/registry.py",
+    "registry": "python3 tools/registry.py"
+  },
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "jsdom": "^25.0.0",
+    "puppeteer-core": "^23.0.0"
+  },
+  "bin": {
+    "colibri": "bin/colibri.mjs",
+    "colibri-mcp": "bin/colibri-mcp.mjs"
+  }
+}

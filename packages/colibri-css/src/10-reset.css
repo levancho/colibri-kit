@@ -1,0 +1,15 @@
+@layer colibri.reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  html { -webkit-text-size-adjust: none; text-size-adjust: none; interpolate-size: allow-keywords; hanging-punctuation: first last; }
+  body { min-block-size: 100svh; line-height: var(--c-leading, 1.6); -webkit-font-smoothing: antialiased; }
+  img, picture, video, canvas, svg { display: block; max-inline-size: 100%; block-size: auto; }
+  input, button, textarea, select { font: inherit; color: inherit; letter-spacing: inherit; }
+  textarea { field-sizing: content; min-block-size: 3lh; resize: vertical; }
+  p, li, figcaption { text-wrap: pretty; overflow-wrap: break-word; }
+  h1, h2, h3, h4, h5, h6 { text-wrap: balance; overflow-wrap: break-word; }
+  :target { scroll-margin-block: 5ex; }
+  [hidden]:not([hidden="until-found"]) { display: none !important; }
+  table { border-collapse: collapse; }
+  dialog, [popover] { color: inherit; }
+}

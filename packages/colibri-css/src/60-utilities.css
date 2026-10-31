@@ -1,0 +1,7 @@
+/* Deliberately tiny. If you need more than this, write CSS. */
+@layer colibri.utilities {
+  .visually-hidden:not(:focus-within, :active) { position: absolute !important; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .muted { color: var(--c-muted); }
+  .flow > * + * { margin-block-start: var(--flow, 1em); }
+  .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}

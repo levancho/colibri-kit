@@ -1,0 +1,14 @@
+/* Bridge: Colibri UI components read --ui-* tokens. Load Colibri CSS AFTER themes/colibri.css to drive them from --c-* tokens.
+   Change --c-hue and the components follow. Unlayered on purpose so it wins over the theme's :root values. */
+:root, [data-theme] {
+  --ui-background: var(--c-bg); --ui-foreground: var(--c-fg);
+  --ui-card: var(--c-surface); --ui-popover: var(--c-surface);
+  --ui-muted: var(--c-sunken); --ui-muted-foreground: var(--c-muted);
+  --ui-border: var(--c-line); --ui-input: var(--c-line);
+  --ui-primary: var(--c-accent); --ui-primary-foreground: var(--c-brand-fg);
+  --ui-accent: var(--c-sunken); --ui-accent-foreground: var(--c-fg);
+  --ui-ring: var(--c-accent); --ui-destructive: var(--c-bad); --ui-success: var(--c-ok); --ui-warning: var(--c-warn);
+  --ui-radius: var(--c-radius); --ui-radius-sm: var(--c-radius-s); --ui-radius-lg: var(--c-radius-l);
+  --ui-shadow-sm: var(--c-shadow-s); --ui-shadow: var(--c-shadow);
+  --ui-font: var(--c-font); --ui-font-mono: var(--c-font-mono);
+}

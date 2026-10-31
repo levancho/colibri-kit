@@ -1,0 +1,42 @@
+@layer colibri.base {
+  html { background: var(--c-bg); color: var(--c-fg); font-family: var(--c-font); font-size: 100%; scrollbar-color: var(--c-line) transparent; accent-color: var(--c-accent); }
+  @media (prefers-reduced-motion: no-preference) { html:focus-within { scroll-behavior: smooth; } }
+  body { font-size: var(--c-text-md); }
+  ::selection { background: color-mix(in oklch, var(--c-accent) 28%, transparent); color: inherit; }
+  :focus-visible { outline: var(--c-ring); outline-offset: 2px; }
+  :focus:not(:focus-visible) { outline: none; }
+
+  h1, h2, h3, h4 { line-height: var(--c-leading-tight); letter-spacing: -0.015em; font-weight: 700; }
+  h1 { font-size: var(--c-text-3xl); } h2 { font-size: var(--c-text-2xl); } h3 { font-size: var(--c-text-xl); } h4 { font-size: var(--c-text-lg); }
+  small { font-size: var(--c-text-sm); }
+  a { color: var(--c-accent); text-underline-offset: 0.2em; text-decoration-thickness: 1px;
+      &:hover { text-decoration-thickness: 2px; } }
+  code, kbd, samp, pre { font-family: var(--c-font-mono); font-size: 0.9em; }
+  :not(pre) > code { padding: 0.1em 0.35em; border-radius: var(--c-radius-s); background: var(--c-sunken); }
+  kbd { padding: 0.1em 0.4em; border: 1px solid var(--c-line); border-block-end-width: 2px; border-radius: var(--c-radius-s); }
+  pre { overflow: auto; padding: var(--c-space-s); border-radius: var(--c-radius); background: var(--c-sunken); }
+  hr { border: 0; border-block-start: 1px solid var(--c-line); margin-block: var(--c-space-l); }
+  mark { background: color-mix(in oklch, var(--c-warn) 35%, transparent); color: inherit; border-radius: 3px; }
+  blockquote { padding-inline-start: var(--c-space-s); border-inline-start: 3px solid var(--c-line); color: var(--c-muted); }
+
+  /* forms baseline */
+  :where(input:not([type=checkbox],[type=radio],[type=range],[type=color]), select, textarea) {
+    inline-size: 100%; min-block-size: 2.5rem; padding: 0.45em 0.75em; border: 1px solid var(--c-line); border-radius: var(--c-radius-s);
+    background: var(--c-surface); transition: border-color var(--c-dur-fast) var(--c-ease), box-shadow var(--c-dur-fast) var(--c-ease);
+    &::placeholder { color: var(--c-muted); opacity: 1; }
+    &:focus-visible { outline: none; border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-soft); }
+    &:user-invalid { border-color: var(--c-bad); }
+    &:disabled { opacity: 0.55; cursor: not-allowed; }
+  }
+  :where(input[type=checkbox], input[type=radio]) { inline-size: 1.05em; block-size: 1.05em; }
+  label { font-size: var(--c-text-sm); font-weight: 500; }
+  fieldset { border: 1px solid var(--c-line); border-radius: var(--c-radius); padding: var(--c-space-s); }
+  :where(button, [type=submit], [type=button], [type=reset]) { cursor: pointer; }
+  :where(table) { inline-size: 100%; font-size: var(--c-text-sm);
+    & :where(th, td) { padding: 0.55em 0.75em; border-block-end: 1px solid var(--c-line); text-align: start; }
+    & th { font-weight: 600; } }
+
+  /* scrollbars (WebKit; others use scrollbar-color above) */
+  ::-webkit-scrollbar { inline-size: 10px; block-size: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--c-line); border-radius: 99px; border: 2px solid var(--c-bg); }
+}

@@ -1,0 +1,44 @@
+#!/usr/bin/env node
+// Colibri UI CLI (the shadcn CLI equivalent): info | list | search | view | docs | init | add | diff | build
+//   npx colibri info --json        project context for AI assistants (like `shadcn info --json`)
+//   npx colibri search sidebar      find components/blocks
+//   npx colibri view login-01       print HTML + FreeMarker snippet
+//   npx colibri docs tool           description, when to use, accessibility notes
+//   npx colibri init [--dir ui]     copy core + theme + FreeMarker into your project, write colibri.json
+//   npx colibri add <name…>         print snippets for the named items (core is shared, copied by init) [--dry-run]
+//   npx colibri diff                show which copied files differ from this package
+//   npx colibri build               regenerate registry/colibri.json (needs python3; maintainers only)
+import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url"; import { execSync } from "node:child_process";
+const PKG = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+export const registry = () => JSON.parse(fs.readFileSync(path.join(PKG, "registry/colibri.json"), "utf8"));
+const args = process.argv.slice(2), cmd = args[0], flags = new Set(args.filter((a) => a.startsWith("--"))), pos = args.slice(1).filter((a) => !a.startsWith("--"));
+const opt = (k, d) => { const i = args.indexOf(`--${k}`); return i > 0 && args[i + 1] && !args[i + 1].startsWith("--") ? args[i + 1] : d; };
+const out = (o) => console.log(flags.has("--json") ? JSON.stringify(o, null, 2) : typeof o === "string" ? o : JSON.stringify(o, null, 2));
+const cfgPath = path.resolve(process.cwd(), "colibri.json");
+const cfg = () => (fs.existsSync(cfgPath) ? JSON.parse(fs.readFileSync(cfgPath, "utf8")) : null);
+export function score(it, q) { q = q.toLowerCase(); const hay = [it.name, it.title, it.description, it.whenToUse, it.shadcn, it.group].join(" ").toLowerCase();
+  return q.split(/\s+/).filter(Boolean).reduce((s, w) => s + (it.name === w ? 10 : 0) + (it.name.includes(w) ? 4 : 0) + (it.title.toLowerCase().includes(w) ? 3 : 0) + (hay.includes(w) ? 1 : 0), 0); }
+export const search = (q, n = 10) => registry().items.map((it) => [score(it, q), it]).filter(([s]) => s > 0).sort((a, b) => b[0] - a[0]).slice(0, n).map(([, it]) => it);
+const get = (n) => registry().items.find((i) => i.name === n) || (() => { console.error(`colibri: no item "${n}". Try: colibri search ${n}`); process.exit(1); })();
+const copyDir = (from, to, dry) => { for (const f of fs.readdirSync(from)) { const s = path.join(from, f), d = path.join(to, f); if (fs.statSync(s).isDirectory()) copyDir(s, d, dry); else { if (!dry) { fs.mkdirSync(to, { recursive: true }); fs.copyFileSync(s, d); } console.log(`${dry ? "would copy" : "copied"} ${path.relative(process.cwd(), d)}`); } } };
+const COPY = [["src/core", "core"], ["src/elements", "elements"], ["themes", "themes"], ["freemarker", "freemarker"]];
+
+switch (cmd) {
+  case "info": { const r = registry(), c = cfg();
+    out({ package: r.name, version: r.version, config: c, configFile: c ? cfgPath : null, files: r.files, rules: r.rules,
+      counts: r.items.reduce((m, i) => ((m[i.status] = (m[i.status] || 0) + 1), m), {}), components: r.items.filter((i) => i.type === "component").map((i) => i.name), blocks: r.items.filter((i) => i.type === "block").map((i) => i.name) }); break; }
+  case "list": { const r = registry(); const t = opt("type"); out(flags.has("--json") ? r.items.filter((i) => !t || i.type === t).map(({ name, title, type, status, group }) => ({ name, title, type, status, group })) : r.items.filter((i) => !t || i.type === t).map((i) => `${i.name.padEnd(22)} ${i.status.padEnd(8)} ${i.group.padEnd(16)} ${i.title}`).join("\n")); break; }
+  case "search": out(flags.has("--json") ? search(pos.join(" ")).map(({ name, title, description }) => ({ name, title, description })) : search(pos.join(" ")).map((i) => `${i.name.padEnd(22)} ${i.title} — ${i.description}`).join("\n") || "no matches"); break;
+  case "view": { const i = get(pos[0]); out(flags.has("--json") ? i : `<!-- ${i.title} (${i.name}) -->\n${i.html}\n${i.freemarker ? `\n<#-- FreeMarker -->\n${i.freemarker}` : ""}`); break; }
+  case "docs": { const i = get(pos[0]); out(flags.has("--json") ? { name: i.name, title: i.title, description: i.description, whenToUse: i.whenToUse, accessibility: i.accessibility, parts: i.parts, uses: i.uses } : `# ${i.title}  (data-ui="${i.name}", ${i.status})\n\n${i.description}\n\nWhen to use: ${i.whenToUse}\n\nParts: ${i.parts.join(", ") || "-"}\nComposes: ${i.uses.join(", ") || "-"}\n\nAccessibility & keyboard: ${i.accessibility}\n\nshadcn: ${i.shadcn} · Metronic: ${i.metronic}`); break; }
+  case "init": { const dir = opt("dir", "colibri"), dry = flags.has("--dry-run"); for (const [f, t] of COPY) copyDir(path.join(PKG, f), path.resolve(dir, t), dry);
+    const conf = { $schema: "colibri.json", dir, theme: `${dir}/themes/colibri.css`, motion: `${dir}/themes/motion.css`, freemarker: `${dir}/freemarker/ui.ftl`, import: `${dir}/core/auto.js`, version: registry().version };
+    if (!dry) fs.writeFileSync(cfgPath, JSON.stringify(conf, null, 2)); console.log(`${dry ? "would write" : "wrote"} colibri.json\nAdd to your layout:\n  <link rel="stylesheet" href="/${conf.theme}"><link rel="stylesheet" href="/${conf.motion}">\n  <script type="module" src="/${conf.import}"></script>\n  <body class="ui-root">`); break; }
+  case "add": { if (!cfg() && !flags.has("--dry-run")) console.log("note: run `colibri init` first to copy the shared core + theme.");
+    for (const n of pos) { const i = get(n); console.log(`\n=== ${i.title} (${i.name}) ===\n${i.html}${i.freemarker ? `\n\n${i.freemarker}` : ""}`); } break; }
+  case "diff": { const c = cfg(); if (!c) { console.error("no colibri.json; run colibri init"); process.exit(1); } let n = 0;
+    const walk = (from, to) => { for (const f of fs.readdirSync(from)) { const s = path.join(from, f), d = path.join(to, f); if (fs.statSync(s).isDirectory()) walk(s, d); else if (!fs.existsSync(d)) { n++; console.log(`missing  ${d}`); } else if (fs.readFileSync(s, "utf8") !== fs.readFileSync(d, "utf8")) { n++; console.log(`changed  ${d}`); } } };
+    for (const [f, t] of COPY) walk(path.join(PKG, f), path.resolve(c.dir, t)); console.log(n ? `${n} file(s) differ` : "up to date"); break; }
+  case "build": execSync("python3 tools/registry.py", { cwd: PKG, stdio: "inherit" }); break;
+  default: console.log("usage: colibri <info|list|search|view|docs|init|add|diff|build> [args] [--json] [--dry-run] [--dir path] [--type component|block|motion]");
+}

@@ -1,0 +1,43 @@
+/* A small set of opt-in primitives. Variants are data attributes, not class soup. */
+@layer colibri.components {
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5em; min-block-size: 2.5rem; padding-inline: 1em;
+    border: 1px solid transparent; border-radius: var(--c-radius-s); font-weight: 500; font-size: var(--c-text-sm); text-decoration: none; cursor: pointer;
+    background: var(--c-accent); color: var(--c-brand-fg);
+    transition: background-color var(--c-dur-fast) var(--c-ease), transform var(--c-dur-fast) var(--c-ease), box-shadow var(--c-dur-fast) var(--c-ease);
+    &:hover { background: color-mix(in oklch, var(--c-accent) 88%, black); }
+    &:active { transform: scale(0.97); }
+    &:disabled, &[aria-disabled=true] { opacity: 0.5; pointer-events: none; }
+    &[data-variant=soft] { background: var(--c-accent-soft); color: var(--c-accent); }
+    &[data-variant=outline] { background: transparent; color: var(--c-fg); border-color: var(--c-line); &:hover { background: var(--c-sunken); } }
+    &[data-variant=ghost] { background: transparent; color: var(--c-fg); &:hover { background: var(--c-sunken); } }
+    &[data-variant=danger] { background: var(--c-bad); }
+    &[data-size=s] { min-block-size: 2rem; padding-inline: 0.75em; }
+    &[data-size=l] { min-block-size: 3rem; padding-inline: 1.4em; font-size: var(--c-text-md); } }
+
+  .card { container-type: inline-size; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); box-shadow: var(--c-shadow-s);
+    transition: box-shadow var(--c-dur) var(--c-ease), border-color var(--c-dur) var(--c-ease);
+    /* :has() — a card containing a checked checkbox looks selected; one with a link inside lifts on hover */
+    &:has(:checked) { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-soft); }
+    &:has(a:hover, button:hover) { box-shadow: var(--c-shadow); } }
+
+  .badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
+    background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));
+    &[data-tone=accent] { --tone: var(--c-accent); --tone-soft: var(--c-accent-soft); }
+    &[data-tone=ok] { --tone: var(--c-ok); --tone-soft: color-mix(in oklch, var(--c-ok) 15%, transparent); }
+    &[data-tone=warn] { --tone: var(--c-warn); --tone-soft: color-mix(in oklch, var(--c-warn) 18%, transparent); }
+    &[data-tone=bad] { --tone: var(--c-bad); --tone-soft: color-mix(in oklch, var(--c-bad) 15%, transparent); } }
+
+  .field { display: grid; gap: var(--c-space-3xs);
+    & .hint { font-size: var(--c-text-xs); color: var(--c-muted); }
+    /* :has() — the field's label and hint turn red when its input is invalid after the user touched it */
+    &:has(:user-invalid) :is(label, .hint) { color: var(--c-bad); }
+    &:has(:required) label::after { content: " *"; color: var(--c-bad); } }
+
+  .callout { padding: var(--c-space-s) var(--c-space-m); border-inline-start: 4px solid var(--tone, var(--c-accent)); border-radius: var(--c-radius-s); background: color-mix(in oklch, var(--tone, var(--c-accent)) 9%, var(--c-surface));
+    &[data-tone=warn] { --tone: var(--c-warn); } &[data-tone=bad] { --tone: var(--c-bad); } &[data-tone=ok] { --tone: var(--c-ok); } }
+
+  /* motion primitive: elements fade/slide in when they appear (honours reduced motion via tokens) */
+  .enter { animation: c-enter var(--c-dur-slow) var(--c-ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+  @keyframes c-enter { from { opacity: 0; translate: 0 0.6rem; } }
+  @media (prefers-reduced-motion: reduce) { .enter { animation: none; } }
+}

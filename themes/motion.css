@@ -1,0 +1,121 @@
+/* Colibri UI motion library (@colibri/ui/themes/motion.css). OPTIONAL, opt-in, token-driven.
+   ─ Attributes (combine freely on any element, component part or not):
+       data-ui-motion="fade|slide-up|slide-down|slide-left|slide-right|scale|zoom|flip|pop|collapse|blur|none"
+                                    enter animation when the element appears (hidden removed / display:none → shown / inserted),
+                                    and the matching exit when it hides (exit needs src/core/motion.js; it animates a ghost copy)
+       data-ui-motion-exit="…"       different exit preset
+       data-ui-motion-hover="lift|grow|shrink|wiggle|glow"   data-ui-motion-focus="ring|grow"
+       data-ui-motion-loop="spin|pulse|bounce|ping|float|shimmer"
+       data-ui-motion-speed="fast|slow"     style="--ui-motion-distance:24px" (per element)
+       JS one-shots: play(el, "shake|bounce|pop|flash|heartbeat|tada")
+   ─ Tokens: --ui-motion-duration(-fast|-slow), --ui-motion-ease(-in|-out|-spring), --ui-motion-distance, --ui-motion-scale
+   ─ Off: <html data-ui-motion="off">, or the user's prefers-reduced-motion. Both turn everything off and make loops static.
+   ─ Register a preset (CSS only): write @keyframes ui-NAME-in / ui-NAME-out, then
+       [data-ui-motion=NAME]{--ui-motion-in:ui-NAME-in;--ui-motion-out:ui-NAME-out}
+     or at runtime: register("NAME", { in: [{opacity:0},{opacity:1}], out: [...] }) from core/motion.js */
+:root{
+  --ui-motion-duration:180ms; --ui-motion-duration-fast:120ms; --ui-motion-duration-slow:320ms;
+  --ui-motion-ease:cubic-bezier(.2,0,0,1); --ui-motion-ease-in:cubic-bezier(.4,0,1,1); --ui-motion-ease-out:cubic-bezier(0,0,.2,1);
+  --ui-motion-ease-spring:cubic-bezier(.34,1.56,.64,1);
+  --ui-motion-distance:8px; --ui-motion-scale:.96;
+  interpolate-size:allow-keywords}
+[data-ui-motion-speed=fast]{--ui-motion-duration:var(--ui-motion-duration-fast)}
+[data-ui-motion-speed=slow]{--ui-motion-duration:var(--ui-motion-duration-slow)}
+
+/* ── keyframes ── */
+@keyframes ui-fade-in{from{opacity:0}}                              @keyframes ui-fade-out{to{opacity:0}}
+@keyframes ui-slide-up-in{from{opacity:0;transform:translateY(var(--ui-motion-distance))}}    @keyframes ui-slide-up-out{to{opacity:0;transform:translateY(var(--ui-motion-distance))}}
+@keyframes ui-slide-down-in{from{opacity:0;transform:translateY(calc(var(--ui-motion-distance) * -1))}} @keyframes ui-slide-down-out{to{opacity:0;transform:translateY(calc(var(--ui-motion-distance) * -1))}}
+@keyframes ui-slide-left-in{from{opacity:0;transform:translateX(var(--ui-motion-distance))}}  @keyframes ui-slide-left-out{to{opacity:0;transform:translateX(var(--ui-motion-distance))}}
+@keyframes ui-slide-right-in{from{opacity:0;transform:translateX(calc(var(--ui-motion-distance) * -1))}} @keyframes ui-slide-right-out{to{opacity:0;transform:translateX(calc(var(--ui-motion-distance) * -1))}}
+@keyframes ui-scale-in{from{opacity:0;transform:scale(var(--ui-motion-scale))}}  @keyframes ui-scale-out{to{opacity:0;transform:scale(var(--ui-motion-scale))}}
+@keyframes ui-zoom-in{from{opacity:0;transform:scale(.6)}}           @keyframes ui-zoom-out{to{opacity:0;transform:scale(.6)}}
+@keyframes ui-flip-in{from{opacity:0;transform:perspective(600px) rotateX(-70deg)}} @keyframes ui-flip-out{to{opacity:0;transform:perspective(600px) rotateX(70deg)}}
+@keyframes ui-pop-in{0%{opacity:0;transform:scale(.8)}70%{opacity:1;transform:scale(1.04)}100%{transform:none}} @keyframes ui-pop-out{to{opacity:0;transform:scale(.8)}}
+@keyframes ui-blur-in{from{opacity:0;filter:blur(6px)}}              @keyframes ui-blur-out{to{opacity:0;filter:blur(6px)}}
+@keyframes ui-collapse-in{from{height:0;opacity:0;overflow:hidden}to{height:auto;overflow:hidden}}
+@keyframes ui-collapse-out{from{height:auto;overflow:hidden}to{height:0;opacity:0;overflow:hidden;padding-block:0;margin-block:0}}
+/* one-shots + loops */
+@keyframes ui-shake{10%,90%{transform:translateX(-1px)}20%,80%{transform:translateX(3px)}30%,50%,70%{transform:translateX(-6px)}40%,60%{transform:translateX(6px)}}
+@keyframes ui-bounce{0%,100%{transform:translateY(0);animation-timing-function:cubic-bezier(.8,0,1,1)}50%{transform:translateY(-25%);animation-timing-function:cubic-bezier(0,0,.2,1)}}
+@keyframes ui-flash{50%{opacity:.25}}
+@keyframes ui-heartbeat{0%,28%,70%{transform:scale(1)}14%,42%{transform:scale(1.15)}}
+@keyframes ui-tada{0%{transform:scale(1)}10%,20%{transform:scale(.92) rotate(-3deg)}30%,50%,70%,90%{transform:scale(1.08) rotate(3deg)}40%,60%,80%{transform:scale(1.08) rotate(-3deg)}100%{transform:none}}
+@keyframes ui-wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-4deg)}75%{transform:rotate(4deg)}}
+@keyframes ui-spin{to{transform:rotate(360deg)}}
+@keyframes ui-pulse{50%{opacity:.45}}
+@keyframes ui-ping{75%,100%{transform:scale(1.8);opacity:0}}
+@keyframes ui-float{50%{transform:translateY(calc(var(--ui-motion-distance) * -.75))}}
+@keyframes ui-shimmer{from{background-position:-200% 0}to{background-position:200% 0}}
+
+/* ── preset → keyframe mapping (the "registry" in CSS) ── */
+[data-ui-motion=fade]{--ui-motion-in:ui-fade-in;--ui-motion-out:ui-fade-out}
+[data-ui-motion=slide-up]{--ui-motion-in:ui-slide-up-in;--ui-motion-out:ui-slide-up-out}
+[data-ui-motion=slide-down]{--ui-motion-in:ui-slide-down-in;--ui-motion-out:ui-slide-down-out}
+[data-ui-motion=slide-left]{--ui-motion-in:ui-slide-left-in;--ui-motion-out:ui-slide-left-out}
+[data-ui-motion=slide-right]{--ui-motion-in:ui-slide-right-in;--ui-motion-out:ui-slide-right-out}
+[data-ui-motion=scale]{--ui-motion-in:ui-scale-in;--ui-motion-out:ui-scale-out}
+[data-ui-motion=zoom]{--ui-motion-in:ui-zoom-in;--ui-motion-out:ui-zoom-out}
+[data-ui-motion=flip]{--ui-motion-in:ui-flip-in;--ui-motion-out:ui-flip-out}
+[data-ui-motion=pop]{--ui-motion-in:ui-pop-in;--ui-motion-out:ui-pop-out;--ui-motion-ease:var(--ui-motion-ease-out)}
+[data-ui-motion=blur]{--ui-motion-in:ui-blur-in;--ui-motion-out:ui-blur-out}
+[data-ui-motion=collapse]{--ui-motion-in:ui-collapse-in;--ui-motion-out:ui-collapse-out;--ui-motion-duration:var(--ui-motion-duration-slow)}
+[data-ui-motion=none]{--ui-motion-in:none;--ui-motion-out:none}
+[data-ui-motion-exit=fade]{--ui-motion-out:ui-fade-out}[data-ui-motion-exit=scale]{--ui-motion-out:ui-scale-out}[data-ui-motion-exit=slide-up]{--ui-motion-out:ui-slide-up-out}
+[data-ui-motion-exit=slide-down]{--ui-motion-out:ui-slide-down-out}[data-ui-motion-exit=collapse]{--ui-motion-out:ui-collapse-out}[data-ui-motion-exit=none]{--ui-motion-out:none}
+
+/* ── component defaults (wired presets; override with data-ui-motion on the part) ── */
+:where([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar],[data-ui=select],[data-ui=combobox],[data-ui=popover],[data-ui=date-picker],[data-ui=hover-card]) > [data-ui-part=content],
+:where([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=sub-content]{--ui-motion-in:ui-scale-in;--ui-motion-out:ui-scale-out;transform-origin:top left}
+:where([data-ui=tooltip]) > [data-ui-part=content]{--ui-motion-in:ui-fade-in;--ui-motion-out:ui-fade-out;--ui-motion-duration:var(--ui-motion-duration-fast)}
+:where([data-ui=navigation-menu]) [data-ui-part=content]{--ui-motion-in:ui-slide-down-in;--ui-motion-out:ui-fade-out}
+:where([data-ui=tabs]) > [data-ui-part=panel]{--ui-motion-in:ui-fade-in;--ui-motion-out:none}
+:where([data-ui=accordion]) [data-ui-part=content],:where([data-ui=collapsible]) > [data-ui-part=content]{--ui-motion-in:ui-collapse-in;--ui-motion-out:ui-collapse-out;--ui-motion-duration:240ms}
+:where([data-ui=toaster]) [data-ui-part=toast]{--ui-motion-in:ui-slide-up-in;--ui-motion-distance:16px;--ui-motion-ease:var(--ui-motion-ease-spring);--ui-motion-duration:260ms}
+:where([data-ui=toaster]) [data-ui-part=toast][data-state=closing]{animation:ui-slide-left-out var(--ui-motion-duration-fast) var(--ui-motion-ease-in) forwards}
+:where([data-ui=dismiss]){--ui-motion-out:ui-collapse-out}
+
+/* the one generic enter rule: elements that have a preset animate whenever they become rendered */
+:is([data-ui-motion],
+    :where([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar],[data-ui=select],[data-ui=combobox],[data-ui=popover],[data-ui=date-picker],[data-ui=hover-card],[data-ui=tooltip]) > [data-ui-part=content],
+    :where([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=sub-content],
+    :where([data-ui=navigation-menu]) [data-ui-part=content],
+    :where([data-ui=tabs]) > [data-ui-part=panel],
+    :where([data-ui=accordion]) [data-ui-part=content],:where([data-ui=collapsible]) > [data-ui-part=content],
+    :where([data-ui=toaster]) [data-ui-part=toast]):not([hidden]):not([data-motion-state=exit]){
+  animation:var(--ui-motion-in,none) var(--ui-motion-duration) var(--ui-motion-ease) both}
+[data-motion-state=exit]{animation:var(--ui-motion-out,none) var(--ui-motion-duration) var(--ui-motion-ease-in) both!important;pointer-events:none!important}
+[data-motion-play]{animation:var(--ui-motion-play) var(--ui-motion-play-duration,600ms) var(--ui-motion-ease) both!important}
+
+/* dialogs / sheets: native <dialog> enter+exit with @starting-style + allow-discrete (no JS) */
+:where([data-ui=dialog],[data-ui=alert-dialog]) > dialog[data-ui-part=content]{transition:opacity var(--ui-motion-duration) var(--ui-motion-ease),transform var(--ui-motion-duration) var(--ui-motion-ease),overlay var(--ui-motion-duration) allow-discrete,display var(--ui-motion-duration) allow-discrete;opacity:0;transform:scale(var(--ui-motion-scale))}
+:where([data-ui=dialog],[data-ui=alert-dialog]) > dialog[data-ui-part=content][open]{opacity:1;transform:none}
+@starting-style{:where([data-ui=dialog],[data-ui=alert-dialog]) > dialog[data-ui-part=content][open]{opacity:0;transform:scale(var(--ui-motion-scale))}}
+:where([data-ui=sheet],[data-ui=drawer]) > dialog[data-ui-part=content]{transition:transform var(--ui-motion-duration-slow) var(--ui-motion-ease),overlay var(--ui-motion-duration-slow) allow-discrete,display var(--ui-motion-duration-slow) allow-discrete;transform:var(--ui-sheet-from,translateX(100%))}
+:where([data-ui=sheet],[data-ui=drawer])[data-side=left] > dialog{--ui-sheet-from:translateX(-100%)}:where([data-ui=sheet],[data-ui=drawer])[data-side=bottom] > dialog{--ui-sheet-from:translateY(100%)}:where([data-ui=sheet],[data-ui=drawer])[data-side=top] > dialog{--ui-sheet-from:translateY(-100%)}
+:where([data-ui=sheet],[data-ui=drawer]) > dialog[data-ui-part=content][open]{transform:none}
+@starting-style{:where([data-ui=sheet],[data-ui=drawer]) > dialog[data-ui-part=content][open]{transform:var(--ui-sheet-from,translateX(100%))}}
+:where([data-ui=dialog],[data-ui=alert-dialog],[data-ui=sheet],[data-ui=drawer]) > dialog::backdrop{transition:background-color var(--ui-motion-duration) linear,overlay var(--ui-motion-duration) allow-discrete,display var(--ui-motion-duration) allow-discrete;background-color:#0000}
+:where([data-ui=dialog],[data-ui=alert-dialog],[data-ui=sheet],[data-ui=drawer]) > dialog[open]::backdrop{background-color:#0009}
+@starting-style{:where([data-ui=dialog],[data-ui=alert-dialog],[data-ui=sheet],[data-ui=drawer]) > dialog[open]::backdrop{background-color:#0000}}
+
+/* hover / focus / loop presets */
+[data-ui-motion-hover],[data-ui-motion-focus]{transition:transform var(--ui-motion-duration) var(--ui-motion-ease),box-shadow var(--ui-motion-duration) var(--ui-motion-ease)}
+[data-ui-motion-hover=lift]:hover{transform:translateY(-3px);box-shadow:var(--ui-shadow,0 8px 24px #0002)}
+[data-ui-motion-hover=grow]:hover,[data-ui-motion-focus=grow]:focus-visible{transform:scale(1.04)}
+[data-ui-motion-hover=shrink]:active{transform:scale(.96)}
+[data-ui-motion-hover=wiggle]:hover{animation:ui-wiggle 300ms ease-in-out}
+[data-ui-motion-hover=glow]:hover{box-shadow:0 0 0 4px color-mix(in srgb,var(--ui-primary,#18181b) 25%,transparent)}
+[data-ui-motion-focus=ring]:focus-visible{box-shadow:0 0 0 4px color-mix(in srgb,var(--ui-ring,#a1a1aa) 50%,transparent);outline:none}
+[data-ui-motion-loop=spin]{animation:ui-spin 1s linear infinite}
+[data-ui-motion-loop=pulse]{animation:ui-pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+[data-ui-motion-loop=bounce]{animation:ui-bounce 1s infinite}
+[data-ui-motion-loop=ping]{animation:ui-ping 1s cubic-bezier(0,0,.2,1) infinite}
+[data-ui-motion-loop=float]{animation:ui-float 3s ease-in-out infinite}
+[data-ui-motion-loop=shimmer]{background:linear-gradient(90deg,var(--ui-muted,#f4f4f5) 25%,color-mix(in srgb,var(--ui-muted,#f4f4f5) 40%,var(--ui-background,#fff)) 50%,var(--ui-muted,#f4f4f5) 75%);background-size:200% 100%;animation:ui-shimmer 1.6s linear infinite}
+
+/* off switch + reduced motion */
+html[data-ui-motion=off] *,html[data-ui-motion=off] *::before,html[data-ui-motion=off] *::after,html[data-ui-motion=off] ::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after,::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-motion:no-preference){:where(html:not([data-ui-motion=off])) [data-ui=clothline] [data-ui-part=item]{animation:ui-cl-hang .45s cubic-bezier(.3,1.6,.5,1)}}
+@keyframes ui-cl-hang{0%{opacity:0;transform:translateY(-14px) rotate(-8deg)}60%{opacity:1;transform:translateY(2px) rotate(4deg)}}

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ka">
+<head>
+<meta charset="utf-8"><title>Colibri UI – Tabs (headless)</title>
+<!-- OPTIONAL demo styling: the component works with zero CSS. Styles key off state attributes only. -->
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; }
+  [data-ui-part="list"] { display: flex; gap: .25rem; border-bottom: 1px solid #ccc; }
+  [data-ui-part="trigger"] { border: 0; background: none; padding: .5rem 1rem; cursor: pointer; }
+  [data-ui-part="trigger"][data-state="active"] { border-bottom: 2px solid currentColor; font-weight: 600; }
+  [data-ui-part="trigger"][data-disabled] { opacity: .4; cursor: not-allowed; }
+  [data-ui-part="panel"] { padding: 1rem 0; }
+</style>
+</head>
+<body>
+<p><a href="./">← Colibri UI examples</a></p>
+<h1>Colibri UI · Tabs</h1>
+<h2>1) Plain HTML + data attributes (what FreeMarker renders)</h2>
+<div data-ui="tabs" data-default-value="news">
+  <div data-ui-part="list">
+    <button data-ui-part="trigger" data-value="news">სიახლეები</button>
+    <button data-ui-part="trigger" data-value="forum">ფორუმი</button>
+    <button data-ui-part="trigger" data-value="games" disabled>თამაშები</button>
+  </div>
+  <div data-ui-part="panel" data-value="news">News panel</div>
+  <div data-ui-part="panel" data-value="forum">Forum panel</div>
+  <div data-ui-part="panel" data-value="games">Games panel</div>
+</div>
+
+<h2>2) Same thing as an optional custom element</h2>
+<ui-tabs data-orientation="horizontal" data-activation="manual">
+  <div data-ui-part="list">
+    <button data-ui-part="trigger" data-value="a">Manual A</button>
+    <button data-ui-part="trigger" data-value="b">Manual B</button>
+  </div>
+  <div data-ui-part="panel" data-value="a">Arrow keys move focus; Enter/Space activates.</div>
+  <div data-ui-part="panel" data-value="b">Panel B</div>
+</ui-tabs>
+
+<p>Last change: <output id="log">–</output></p>
+
+<script type="module">
+  import "../src/core/auto.js";       // wires every [data-ui]
+  import "../src/elements/tabs.js";   // registers <ui-tabs>
+  document.addEventListener("ui:change", (e) =>
+    (document.getElementById("log").textContent = `${e.detail.previous} → ${e.detail.value}`));
+</script>
+</body>
+</html>
