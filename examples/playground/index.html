@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Themes Studio — Colibri Kit</title>
-<script src="../colibri-bridge.js" data-colibria="https://colibria-kit-bridge.snowy-rain-00a8.workers.dev/?view=studio"></script><script src="studio-theme.js"></script>
+<script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio"></script><script src="studio-theme.js"></script>
 <script>/* before paint: adopt a shared #link, persist it for the preview frames, and paint Studio chrome in the resolved scheme */
 (function(){var C=window.ColibriStudio,S=C.load();try{var q=new URLSearchParams(location.hash.slice(1));if(q.has("pack")){for(var k in C.DEF)if(q.has(k)){var v=q.get(k);S[k]=v==="null"?null:v;}localStorage.setItem(C.KEY,JSON.stringify(S));}}catch(e){}
 /* incoming Colibria palette: #colibri=<payload>&return=<url> */try{var B=window.ColibriBridge,inc=B.read();if(inc){var t=inc.theme;S.bridge=t;S.hue=null;S.scheme=t.scheme;if(t.kit)for(var kk in t.kit)if(kk in C.DEF&&kk!=="bridge")S[kk]=t.kit[kk];if(C.DARK_ONLY[S.pack]&&t.scheme==="light")S.pack="glacier";localStorage.setItem(C.KEY,JSON.stringify(S));sessionStorage.setItem("colibri-bridge-incoming",JSON.stringify({ret:inc.ret,name:t.name,source:t.source}));history.replaceState(null,"",location.pathname);}}catch(e){}
