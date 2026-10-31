@@ -87,3 +87,6 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
 /* responsive: the top bar wraps instead of pushing the page wider */
 .dp-slot{display:inline-flex;align-items:center;margin-inline-start:auto}
 @media (width < 700px){.dash-top{flex-wrap:wrap;row-gap:var(--c-space-2xs)}.dash-top .search{flex-basis:100%;max-inline-size:none;order:9}.dash-top label{flex-wrap:nowrap}}
+
+/* touch: >=44px targets */
+@media (pointer:coarse){.dash-shell :is(button,a[href],select,input:not([type=checkbox],[type=radio],[type=range])),.dash-main :is(button,select,input:not([type=checkbox],[type=radio],[type=range])),.dash-side a{min-block-size:44px!important;min-inline-size:44px}.dash-side a{display:flex;align-items:center}}

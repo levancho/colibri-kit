@@ -43,5 +43,6 @@ html[data-kit-theme=midnight] .btn{border-radius:2px;text-transform:uppercase;le
 html[data-kit-theme=midnight] .card{box-shadow:var(--c-shadow)}
 html[data-kit-theme=midnight] .badge{border-radius:1px;font-family:var(--c-font-mono,ui-monospace,monospace)}
 /* Midnight is dark-first: force the dark scheme so page chrome and components agree */
-html[data-kit-theme=midnight]{color-scheme:dark;--s-bg:#0b0d17;--s-fg:#e7e9f5;--s-muted:#9aa0bd;--s-line:#262a40;--s-soft:#12152a;--s-acc:#e7e9f5;--s-ring:#5b5f86}
+html[data-kit-theme=midnight]{color-scheme:dark!important;--s-bg:#0b0d17;--s-fg:#e7e9f5;--s-muted:#9aa0bd;--s-line:#262a40;--s-soft:#12152a;--s-acc:#e7e9f5;--s-ring:#5b5f86}
 html[data-kit-theme=midnight] body{background:var(--ui-background,#0b0d17);color:var(--ui-foreground,#e7e9f5)}
+html[data-kit-theme=midnight] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}

@@ -170,6 +170,12 @@ html[data-theme=dark] .sink-st[data-status=done]{background:#052e16;color:#86efa
  .sink-code,.sink-a11y{margin-inline:.5rem}.sink-pre{padding-inline-end:1rem;padding-top:2.6rem}}
 .sink-preview{min-width:0}
 html.dp-framed .sink-top{top:0}
+
+/* touch: >=44px targets for gallery chrome */
+@media (pointer:coarse){.sink-copy,.sink-info,.sink-mini,.sink-btn,.sink-icon,.sink-sel select,.sink-group-trigger,.sink-code>summary,.sink-a11y>summary,.sink-code-tabs>[data-ui-part=list]>[data-ui-part=trigger]{min-height:44px!important;min-width:44px!important}
+ .sink-copy,.sink-info{display:inline-grid;place-items:center}
+ #sink-sidebar [data-ui-part=link]{min-height:44px;display:flex;align-items:center}
+ .sink-chk{min-height:44px}.sink-chk input{min-width:24px;min-height:24px}}
 </style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>
