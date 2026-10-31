@@ -121,7 +121,7 @@
       <div class="card stack"><h3>Not a utility framework</h3><p class="muted">No twenty-class elements, no compiler and no design scattered through templates. The design lives in CSS and tokens.</p></div>
       <div class="card stack"><h3>Not a heavy framework</h3><p class="muted">No 300 KB bundle, no specificity fights, no look you have to undo. Layers mean your CSS always wins.</p></div>
       <div class="card stack"><h3>Platform-native</h3><p class="muted">Layers, <code>:has()</code>, container queries, nesting, <code>light-dark()</code>, OKLCH and native <code>&lt;dialog&gt;</code>: the browser does the heavy lifting.</p></div>
-      <div class="card stack"><h3>Themable in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Tokens cascade, so any section can carry its own theme.</p></div>
+      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Tokens cascade, so any section can carry its own colour. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
       <div class="card stack"><h3>Works with server templates</h3><p class="muted">Plain HTML, FreeMarker macros and custom elements. No SPA required, no hydration.</p></div>
       <div class="card stack"><h3>Accessible by default</h3><p class="muted">Keyboard support, ARIA wiring, focus rings and reduced-motion handling are part of every component.</p></div>
     </div>
@@ -129,11 +129,11 @@
 
   <section class="center stack" id="themes">
     <h2>Theme packs</h2>
-    <p class="muted">One attribute restyles everything — Colibri CSS and Colibri UI together. Pick one in the header, or open the kitchen sink with <code>?theme=</code>.</p>
+    <p class="muted">A <b>theme pack</b> is a complete look: corner shapes, typography, tab and accordion style, density, shadows and motion, plus colours. <b>Colour</b> (the hue slider and accent) is separate and layers on top of any pack. Pick a pack in the header, or open the kitchen sink with <code>?theme=</code>.</p>
     <div class="grid" style="--min:15rem">
-      <div class="card stack" data-kit-theme-card="glacier"><h3>Glacier</h3><p class="muted">Cool, neutral, professional. Slate + teal, tight 6px corners, quiet shadows.</p><div class="cluster"><button class="btn" data-pick-theme="glacier">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=glacier">Kitchen sink →</a></div></div>
-      <div class="card stack"><h3>Ember</h3><p class="muted">Warm and bold. Terracotta + amber on cream, rounded 16px corners, soft deep shadows.</p><div class="cluster"><button class="btn" data-pick-theme="ember">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=ember">Kitchen sink →</a></div></div>
-      <div class="card stack"><h3>Midnight</h3><p class="muted">Dark-first and electric. Ink navy, violet primary, mint focus glow — made for dashboards.</p><div class="cluster"><button class="btn" data-pick-theme="midnight">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=midnight">Kitchen sink →</a></div></div>
+      <div class="card stack" data-kit-theme-card="glacier"><h3>Glacier</h3><p class="muted">Crisp and dense. Tight 4px corners, underline tabs, skinny hairline accordions, flat cards, fast motion. Slate + teal.</p><div class="cluster"><button class="btn" data-pick-theme="glacier">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=glacier">Kitchen sink →</a></div></div>
+      <div class="card stack"><h3>Ember</h3><p class="muted">Soft and roomy. Pill buttons and pill tabs, fat card-style accordions, deep warm shadows, springy motion. Terracotta + amber.</p><div class="cluster"><button class="btn" data-pick-theme="ember">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=ember">Kitchen sink →</a></div></div>
+      <div class="card stack"><h3>Midnight</h3><p class="muted">Sharp and technical. 2px corners, boxed uppercase tab segments, bordered accordions with a glowing accent rail, monospace headings. Ink + violet.</p><div class="cluster"><button class="btn" data-pick-theme="midnight">Preview</button><a href="/kitchen-sink/examples/kitchen-sink.html?theme=midnight">Kitchen sink →</a></div></div>
     </div>
     <pre class="code"><code>&lt;link rel="stylesheet" href="themes/packs/index.css"&gt;
 &lt;html data-kit-theme="ember"&gt;</code></pre>

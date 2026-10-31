@@ -23,7 +23,7 @@ export function initScheme(btn) {
 // Colour is separate from theme: a hue override that layers on top of whichever full theme pack is active.
 export function initHue(input, out) {
   const apply = (v) => { if (v === "") { root.style.removeProperty("--c-hue"); input.value = 255; } else root.style.setProperty("--c-hue", v);
-    if (out) out.textContent = v === "" ? "theme" : v; localStorage.setItem("colibri-hue", v); };
+    if (out) out.textContent = v === "" ? "pack" : v; localStorage.setItem("colibri-hue", v); };
   apply(localStorage.getItem("colibri-hue") ?? "");
   input.addEventListener("input", () => apply(input.value));
   input.addEventListener("dblclick", () => apply(""));

@@ -27,3 +27,22 @@ html[data-kit-theme=ember][data-theme=dark]{
   --ui-primary:#fb923c; --ui-primary-foreground:#2a1206; --ui-ring:#fdba74;
   --ui-border:#3a271c; --ui-input:#4a3326; --ui-shadow:0 18px 40px -14px #000d;
 }
+
+/* ==== EMBER · shape & component chrome (a theme pack is a full look, not only colour) ==== */
+html[data-kit-theme=ember]{--ui-radius:16px;--ui-radius-sm:12px;--ui-radius-lg:22px;--ui-control-h:42px;--c-radius-s:10px;--c-radius:16px;--c-radius-l:24px;--c-dur:260ms;--c-ease:cubic-bezier(.34,1.56,.64,1);
+  --ui-shadow-sm:0 2px 6px -1px rgb(120 53 15/.18);--ui-shadow:0 24px 48px -16px rgb(120 53 15/.35);--c-shadow-s:0 4px 14px -6px rgb(120 53 15/.22);--c-shadow:0 14px 34px -12px rgb(120 53 15/.3);--c-shadow-l:0 30px 60px -20px rgb(120 53 15/.38)}
+/* tabs: filled pills */
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{border-radius:999px;padding:5px;gap:4px}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:999px;height:36px;padding:0 1.1rem;font-weight:600}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:var(--ui-primary);color:var(--ui-primary-foreground);box-shadow:var(--ui-shadow-sm)}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;background:var(--ui-muted);border-radius:var(--ui-radius-lg);padding:1.25rem}
+/* accordion: fat cards */
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion]{display:grid!important;gap:.6rem}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=item]{border:0;border-radius:var(--ui-radius);background:var(--ui-muted);padding:0 1.1rem}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]{padding:1.15rem 0!important;font-weight:600;font-size:1.02em}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=content]{padding:0 0 1.2rem}
+/* Colibri CSS chrome: soft, round, roomy */
+html[data-kit-theme=ember] .btn{border-radius:999px;min-block-size:2.8rem;padding-inline:1.35em;font-weight:600}
+html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-shadow)}
+html[data-kit-theme=ember] .badge{border-radius:999px;padding-inline:.8em}
