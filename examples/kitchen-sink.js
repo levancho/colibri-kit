@@ -1,5 +1,8 @@
 import { highlightAll } from "./code-highlight.js";
-highlightAll();
+// Highlight lazily: colouring all ~476 code blocks up front built ~118k nodes. Colour each code box as it nears the viewport.
+const hlIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { hlIO.unobserve(e.target); highlightAll(e.target); } }), { rootMargin: "900px 0px" });
+document.querySelectorAll(".sink-code-tabs").forEach((el) => hlIO.observe(el));
+highlightAll(document.querySelector(".sink-intro") || document.createElement("i"));
 // Kitchen-sink page glue (demo only, not part of the library).
 const $ = (s, r = document) => r.querySelector(s);
 const panel = $("#sink-log"), list = $("#sink-log-list"), count = $("#log-count"), openBtn = $("#log-open");

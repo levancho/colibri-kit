@@ -150,5 +150,7 @@ matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => S.sc
 renderComponents(); tones();
 const hv = new URLSearchParams(location.search).get("view") || localStorage.getItem("colibri-studio-view"); if (hv && hv !== "showcase") setView(hv);
 document.addEventListener("click", (e) => { const a = e.target.closest("a[href='#']"); if (a) e.preventDefault(); });
+const warm = () => { const els = [...document.querySelectorAll("#mx section.sec:not([data-ready])")].slice(0, 4); els.forEach(fill); };
 const ui = await import("../../src/core/auto.js"); initUI = ui.init; pending.clear(); // auto.js already wired everything in the DOM at import
 parent?.postMessage?.({ studio: "ready" }, "*");
+(window.requestIdleCallback || ((f) => setTimeout(f, 200)))(warm, { timeout: 800 });

@@ -42,7 +42,12 @@ html{scroll-padding-top:calc(var(--kb-h) + 12px)}
 .kpage-head .kbar-sub{justify-content:flex-start;border:0;padding:6px 0 0;margin-left:-10px}
 .kpage-head .kpage-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 body:has(.kbar[data-active=docs]) main>section.center,body:has(.kbar[data-active=docs]) .kbar-sub+main .center{max-inline-size:var(--k-max)!important;padding-inline:var(--k-pad)!important;box-sizing:border-box}
-body:has(.kbar[data-active=docs]) .kbar-sub{position:sticky;top:var(--kb-h);z-index:90;background:var(--kb-bg);backdrop-filter:blur(12px)}
+
 .kfoot{border-top:1px solid var(--kb-line);font:13px/1.5 var(--kb-font);color:var(--kb-muted)}
 .kfoot>div{max-width:var(--k-max);margin:0 auto;padding:22px var(--k-pad);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
 .kfoot a{color:var(--kb-muted);text-decoration:none}.kfoot a:hover{color:var(--kb-fg)}.kfoot .sp{flex:1}
+/* page sub-nav (e.g. Home sections) is a second row INSIDE the one fixed header */
+.kbar .kbar-row2{position:absolute;left:0;right:0;top:100%;height:40px;padding:0 16px;align-items:center;justify-content:center;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;background:var(--kb-bg);backdrop-filter:saturate(1.6) blur(12px);-webkit-backdrop-filter:saturate(1.6) blur(12px);border-bottom:1px solid var(--kb-line)}
+.kbar .kbar-row2 a{padding:5px 10px;white-space:nowrap}.kbar .kbar-row2 a[aria-current=true]{color:var(--kb-fg);background:var(--kb-soft)}
+.kbar[data-sub]{border-bottom-color:transparent}.kbar-spacer.has-sub{height:calc(var(--kb-h) + 40px)}
+html:has(.kbar[data-sub]){scroll-padding-top:calc(var(--kb-h) + 52px)}

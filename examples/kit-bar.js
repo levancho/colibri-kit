@@ -28,8 +28,12 @@ export function mountKitBar(h = document.querySelector("header.kbar")) {
   }
   const gh = Object.assign(document.createElement("a"), { className: "kbar-btn kbar-icon", href: "https://github.com/levancho/colibri-kit", innerHTML: GH, target: "_blank", rel: "noopener" }); gh.setAttribute("aria-label", "Colibri Kit on GitHub");
   right.append(gh); frag.append(right);
+  const sub = document.querySelector("nav.kbar-sub:not(.kpage-head *)");
+  if (sub) { sub.classList.add("kbar-row2"); frag.append(sub); h.dataset.sub = "";
+    const links = [...sub.querySelectorAll('a[href^="#"]')], io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + e.target.id))); }), { rootMargin: "-45% 0px -50% 0px" });
+    links.forEach((a) => { const t = document.getElementById(a.getAttribute("href").slice(1)); t && io.observe(t); }); }
   h.replaceChildren(frag);
-  const spc = document.createElement("div"); spc.className = "kbar-spacer"; spc.setAttribute("aria-hidden", "true"); h.after(spc);
+  const spc = document.createElement("div"); spc.className = "kbar-spacer" + (sub ? " has-sub" : ""); spc.setAttribute("aria-hidden", "true"); h.after(spc);
 }
 export function mountKitFoot() {
   if (document.querySelector(".kfoot") || document.querySelector("header.kbar")?.dataset.foot === "off") return;
