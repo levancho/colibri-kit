@@ -54,7 +54,6 @@ const pvA = $("#pvA"), pvB = $("#pvB");
 const opposite = () => (CS.resolveScheme(S) === "dark" ? "light" : "dark");
 function push(fr, force) { try { fr.contentWindow?.studioSet?.(S, force); } catch (e) {} }
 function pushAll() { push(pvA, null); if (split) push(pvB, CS.DARK_ONLY[S.pack] ? null : opposite()); }
-pvA.src = `preview.html?view=${view}`;
 pvA.addEventListener("load", () => { push(pvA, null); pvA.contentWindow.studioView?.(view); });
 pvB.addEventListener("load", () => { pushAll(); pvB.contentWindow.studioView?.(view); });
 addEventListener("message", (e) => { if (e.data?.studio === "ready") { pushAll(); for (const f of [pvA, pvB]) if (e.source === f.contentWindow) f.contentWindow.studioView?.(view); } });

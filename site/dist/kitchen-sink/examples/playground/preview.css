@@ -55,3 +55,5 @@ code.ic{font:12.5px var(--ui-font-mono);padding:1px 5px;border-radius:var(--ui-r
 .tbl [data-ui=progress],.tbl [data-ui=slider]{min-width:130px;width:130px}
 .tbl [data-ui=accordion]{min-width:260px;width:260px}.tbl [data-ui=tabs],.tbl [data-ui=tab-nav]{min-width:max-content}
 .tbl [data-ui=radio-group] [data-ui-part=item]{white-space:nowrap}
+.sec.ph{min-height:420px}.skel{height:300px;border-radius:var(--ui-radius-lg);background:linear-gradient(90deg,var(--ui-muted),color-mix(in oklab,var(--ui-muted) 55%,var(--ui-background)),var(--ui-muted));background-size:200% 100%;animation:skel 1.2s linear infinite;opacity:.6}@keyframes skel{to{background-position:-200% 0}}
+.sec{content-visibility:auto;contain-intrinsic-size:auto 520px}

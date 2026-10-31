@@ -78,13 +78,31 @@ sec("overlay", "Dialog · Tooltip · Data list", "Overlays use the popover surfa
   <dl data-ui="data-list"><dt>Status</dt><dd><span data-ui="badge" data-look="soft" data-hue="150">Authorized</span></dd><dt>ID</dt><dd><code class="ic">u_2J89JSA4GJ</code></dd></dl></div>`,
 });
 // ---------- render components ----------
+function secHTML(s) {
+  const names = Object.keys(s.tabs);
+  return `<header><h3>${s.title}</h3>${names.length > 1 ? `<div class="vt" role="tablist">${names.map((n, i) => `<button role="tab" aria-selected="${i === 0}" data-t="${i}">${n}</button>`).join("")}</div>` : ""}</header><p class="lede">${s.lede}</p>${names.map((n, i) => `<div data-tp="${i}"${i ? " hidden" : ""}>${i ? "" : s.tabs[n]}</div>`).join("")}`;
+}
+// Sections are cheap shells until they come near the viewport; then their grids are built and wired (one at a time).
+// Non-first tabs ("All colors", "All sizes") are only built when clicked.
+let initUI = null; const pending = new Set();
+function fill(el) {
+  if (el.dataset.ready) return; el.dataset.ready = "1"; el.classList.remove("ph");
+  el.innerHTML = secHTML(sections.find((x) => x.id === el.dataset.id)); tones(el);
+  if (initUI) initUI(el); else pending.add(el);
+}
 function renderComponents() {
-  const jump = `<nav class="jump" aria-label="Jump to">${sections.map((s) => `<a href="#c-${s.id}">${s.title}</a>`).join("")}</nav>`;
-  document.getElementById("mx").innerHTML = jump + sections.map((s) => {
-    const names = Object.keys(s.tabs);
-    return `<section class="sec" id="c-${s.id}"><header><h3>${s.title}</h3>${names.length > 1 ? `<div class="vt" role="tablist">${names.map((n, i) => `<button role="tab" aria-selected="${i === 0}" data-t="${i}">${n}</button>`).join("")}</div>` : ""}</header><p class="lede">${s.lede}</p>${names.map((n, i) => `<div data-tp="${i}"${i ? " hidden" : ""}>${s.tabs[n]}</div>`).join("")}</section>`;
-  }).join("");
-  document.getElementById("mx").addEventListener("click", (e) => { const b = e.target.closest(".vt [data-t]"); if (!b) return; const sc = b.closest(".sec"); sc.querySelectorAll(".vt [data-t]").forEach((x) => x.setAttribute("aria-selected", String(x === b))); sc.querySelectorAll("[data-tp]").forEach((p) => (p.hidden = p.dataset.tp !== b.dataset.t)); });
+  const jump = `<nav class="jump" aria-label="Jump to">${sections.map((s) => `<a href="#c-${s.id}" data-j="${s.id}">${s.title}</a>`).join("")}</nav>`;
+  const mx = document.getElementById("mx");
+  mx.innerHTML = jump + sections.map((s) => `<section class="sec ph" id="c-${s.id}" data-id="${s.id}"><header><h3>${s.title}</h3></header><div class="skel"></div></section>`).join("");
+  const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { io.unobserve(e.target); fill(e.target); } }), { rootMargin: "600px 0px" });
+  mx.querySelectorAll("section.sec").forEach((el) => io.observe(el));
+  mx.addEventListener("click", (e) => {
+    const j = e.target.closest("[data-j]");
+    if (j) { e.preventDefault(); const t = document.getElementById("c-" + j.dataset.j); for (const el of mx.querySelectorAll("section.sec")) { fill(el); if (el === t) break; } t.scrollIntoView(); return; }
+    const b = e.target.closest(".vt [data-t]"); if (!b) return; const sc = b.closest(".sec"), s = sections.find((x) => x.id === sc.dataset.id);
+    sc.querySelectorAll(".vt [data-t]").forEach((x) => x.setAttribute("aria-selected", String(x === b)));
+    sc.querySelectorAll("[data-tp]").forEach((p) => { const on = p.dataset.tp === b.dataset.t; if (on && !p.dataset.built && p.dataset.tp !== "0") { p.dataset.built = "1"; p.innerHTML = Object.values(s.tabs)[+p.dataset.tp]; tones(p); initUI?.(p); } p.hidden = !on; });
+  });
 }
 function renderType() {
   const sizes = [12, 14, 16, 18, 20, 24, 28, 35, 60];
@@ -118,18 +136,19 @@ function renderPalette() {
   probe.remove();
 }
 // ---------- hue/tone overrides (re-evaluated when appearance changes) ----------
-function tones() {
+function tones(scope = document) {
   const dark = root.dataset.theme === "dark";
-  document.querySelectorAll("[data-hue]").forEach((e) => { const t = CS.hueTokens(+e.dataset.hue, 0.17, dark); for (const k of ["--ui-primary", "--ui-primary-foreground", "--ui-ring"]) e.style.setProperty(k, t[k]); });
-  document.querySelectorAll("[data-tone=gray]").forEach((e) => { e.style.setProperty("--ui-primary", "color-mix(in oklab,var(--ui-foreground) 74%,var(--ui-background))"); e.style.setProperty("--ui-primary-foreground", "var(--ui-background)"); e.style.setProperty("--ui-ring", "var(--ui-muted-foreground)"); });
+  scope.querySelectorAll("[data-hue]").forEach((e) => { const t = CS.hueTokens(+e.dataset.hue, 0.17, dark); for (const k of ["--ui-primary", "--ui-primary-foreground", "--ui-ring"]) e.style.setProperty(k, t[k]); });
+  scope.querySelectorAll("[data-tone=gray]").forEach((e) => { e.style.setProperty("--ui-primary", "color-mix(in oklab,var(--ui-foreground) 74%,var(--ui-background))"); e.style.setProperty("--ui-primary-foreground", "var(--ui-background)"); e.style.setProperty("--ui-ring", "var(--ui-muted-foreground)"); });
 }
 let view = "showcase";
-function setView(v) { view = v; document.querySelectorAll("section[data-view]").forEach((s) => (s.hidden = s.dataset.view !== v)); if (v === "palette") renderPalette(); scrollTo(0, 0); }
+let typed = false;
+function setView(v) { view = v; if (v === "type" && !typed) { typed = true; renderType(); tones(document.getElementById("ty")); } document.querySelectorAll("section[data-view]").forEach((s) => (s.hidden = s.dataset.view !== v)); if (v === "palette") renderPalette(); scrollTo(0, 0); }
 window.studioView = setView;
-window.studioSet = (next, f) => { S = { ...next }; if (f) S.__force = f; else if (force) S.__force = force; CS.apply(root, S); tones(); if (view === "palette") requestAnimationFrame(renderPalette); document.querySelectorAll("[data-ui=segmented-control],[data-ui=tab-nav],[data-ui=tabs]").forEach((el) => el.dispatchEvent(new Event("resize"))); dispatchEvent(new Event("resize")); };
+window.studioSet = (next, f) => { S = { ...next }; if (f) S.__force = f; else if (force) S.__force = force; CS.apply(root, S); tones(); if (view === "palette") requestAnimationFrame(renderPalette); document.querySelectorAll("section[data-view]:not([hidden]) :is([data-ui=segmented-control],[data-ui=tab-nav],[data-ui=tabs])").forEach((el) => el.dispatchEvent(new Event("resize"))); dispatchEvent(new Event("resize")); };
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => S.scheme === "system" && window.studioSet(S));
-renderComponents(); renderType(); tones();
-const hv = new URLSearchParams(location.search).get("view"); if (hv) setView(hv);
+renderComponents(); tones();
+const hv = new URLSearchParams(location.search).get("view") || localStorage.getItem("colibri-studio-view"); if (hv && hv !== "showcase") setView(hv);
 document.addEventListener("click", (e) => { const a = e.target.closest("a[href='#']"); if (a) e.preventDefault(); });
-await import("../../src/core/auto.js");
+const ui = await import("../../src/core/auto.js"); initUI = ui.init; pending.clear(); // auto.js already wired everything in the DOM at import
 parent?.postMessage?.({ studio: "ready" }, "*");
