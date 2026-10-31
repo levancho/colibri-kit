@@ -12,9 +12,11 @@
       <span class="eyebrow">Pricing</span>
       <h2>Simple pricing that scales with you</h2>
       <p class="lede">Start free. Upgrade when your team needs every theme pack, FreeMarker macros and React wrappers.</p>
-      <div class="billing" data-billing role="group" aria-label="Billing period">
-        <button type="button" data-period="monthly" aria-pressed="true">Monthly</button>
-        <button type="button" data-period="yearly" aria-pressed="false">Yearly <small>−20%</small></button>
+      <div class="billing">
+        <div data-ui="toggle-group" data-type="single" data-default-value="monthly" aria-label="Billing period">
+          <button data-ui-part="item" data-value="monthly">Monthly</button>
+          <button data-ui-part="item" data-value="yearly">Yearly <small>−20%</small></button>
+        </div>
       </div>
     </div>
     <div class="tiers">
@@ -47,18 +49,36 @@
     <article class="tier">
       <div><h3>Enterprise</h3><p>For organisations with custom needs.</p></div>
       <div class="price"><strong>$<span data-monthly="79" data-yearly="64">79</span></strong><span data-per>/ month</span></div>
-      <a class="btn" data-variant="outline" data-size="l" href="#">Talk to sales</a>
+      <ui-dialog>
+        <button class="btn" data-variant="outline" data-size="l" data-ui-part="trigger">Talk to sales</button>
+        <dialog data-ui-part="content" class="sales">
+          <header><h2 data-ui-part="title">Talk to sales</h2><button class="btn" data-variant="ghost" data-size="s" data-ui-part="close" aria-label="Close">✕</button></header>
+          <p data-ui-part="description">Tell us about your team and we will reply within one business day.</p>
+          <form method="dialog" class="stack">
+            <div data-ui="field"><label data-ui-part="label">Work email</label><input data-ui-part="control" type="email" required placeholder="you@company.com"><p data-ui-part="error"></p></div>
+            <div data-ui="field"><label data-ui-part="label">Team size</label><input data-ui-part="control" type="number" min="1" value="25"><p data-ui-part="description">Approximate seats.</p></div>
+            <div class="row"><button class="btn" data-variant="ghost" value="cancel" formnovalidate>Cancel</button><button class="btn" data-variant="primary" value="send">Send request</button></div>
+          </form>
+        </dialog>
+      </ui-dialog>
       <ul>
         <li>Everything in Pro</li>
         <li>Custom theme pack</li>
-        <li>SSO & audit logs</li>
+        <li><span>SSO & audit logs</span> <span data-ui="tooltip" data-delay="100"><button class="info" type="button" data-ui-part="trigger" aria-label="About SSO & audit logs">i</button><span data-ui-part="content">SAML / OIDC single sign-on and an exportable audit trail</span></span></li>
         <li>Priority support</li>
         <li>99.9% SLA</li>
       </ul>
     </article>
     </div>
-    <p class="fineprint">Prices in USD. Cancel anytime. Need a hand choosing? <a href="#">Compare every feature</a>.</p>
+    <div class="faq">
+      <h3>Questions, answered</h3>
+      <div data-ui="accordion" data-type="single" data-collapsible data-default-value="q0">
+        <div data-ui-part="item" data-value="q0"><h4><button data-ui-part="trigger">Can I switch plans later?</button></h4><div data-ui-part="content"><p>Yes. Upgrade or downgrade any time; we prorate the difference to the day.</p></div></div>
+        <div data-ui-part="item" data-value="q1"><h4><button data-ui-part="trigger">Do I need a build step?</button></h4><div data-ui-part="content"><p>No. Link the CSS and one module script. FreeMarker macros and React wrappers are optional.</p></div></div>
+        <div data-ui-part="item" data-value="q2"><h4><button data-ui-part="trigger">What counts as a seat?</button></h4><div data-ui-part="content"><p>Anyone who can sign in to your workspace. Viewers on public pages are free.</p></div></div>
+      </div>
+    </div>
   </div>
 </section>
-<script type="module" src="blocks.js"></script>
+<script type="module">import "../../src/core/auto.js"; import "../../src/elements/all.js"; import "./blocks.js";</script>
 </body></html>

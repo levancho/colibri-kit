@@ -9,7 +9,7 @@
 <section class="blk blk-signup">
   <div class="inner">
     <div class="signup-form">
-      <form class="stack" action="#" method="post">
+      <form class="stack" action="#" method="post" novalidate>
         <header>
           <span class="brandmark"><i aria-hidden="true"></i>Colibri</span>
           <h2>Create your account</h2>
@@ -17,18 +17,26 @@
         </header>
         <div class="socials">
           <button class="btn" data-variant="outline" type="button"><span aria-hidden="true">G</span> Google</button>
-          <button class="btn" data-variant="outline" type="button"><span aria-hidden="true"></span> GitHub</button>
+          <button class="btn" data-variant="outline" type="button"><span aria-hidden="true">⌥</span> GitHub</button>
         </div>
         <div class="or">or with email</div>
-        <div class="field"><label for="su-name">Full name</label><input id="su-name" name="name" autocomplete="name" placeholder="Ada Lovelace" required></div>
-        <div class="field"><label for="su-email">Work email</label><input id="su-email" name="email" type="email" autocomplete="email" placeholder="ada@company.com" required></div>
-        <div class="field">
-          <label for="su-pw">Password</label>
-          <div class="pw"><input id="su-pw" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="8+ characters" required><button type="button" aria-pressed="false" aria-controls="su-pw">Show</button></div>
+        <ui-tabs class="acct" data-default-value="personal">
+          <div data-ui-part="list" aria-label="Account type"><button type="button" data-ui-part="trigger" data-value="personal">Personal</button><button type="button" data-ui-part="trigger" data-value="team">Team</button></div>
+          <div data-ui-part="panel" data-value="personal"><p class="hint-row">Just you. Invite people later.</p></div>
+          <div data-ui-part="panel" data-value="team">
+            <div data-ui="field"><label data-ui-part="label">Workspace name</label><input data-ui-part="control" name="workspace" placeholder="Northwind Design"><p data-ui-part="description">colibri.app/<b>northwind-design</b></p></div>
+          </div>
+        </ui-tabs>
+        <div data-ui="field"><label data-ui-part="label">Full name</label><input data-ui-part="control" name="name" autocomplete="name" placeholder="Ada Lovelace" required><p data-ui-part="error"></p></div>
+        <div data-ui="field"><label data-ui-part="label">Work email</label><input data-ui-part="control" name="email" type="email" autocomplete="email" placeholder="ada@company.com" required><p data-ui-part="error"></p></div>
+        <div data-ui="field">
+          <label data-ui-part="label">Password</label>
+          <div class="pw" data-ui="toggle-password"><input data-ui-part="input" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="8+ characters" required><button type="button" data-ui-part="toggle" aria-label="Show password">Show</button></div>
           <div class="meter" data-score="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-          <span class="hint">Use 8+ characters with a number and a symbol.</span>
+          <p data-ui-part="description">Use 8+ characters with a number and a symbol.</p>
         </div>
-        <label class="terms"><input type="checkbox" required> <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span></label>
+        <label class="pref"><span><b>Product updates</b><small>One email a month. No spam.</small></span><button type="button" data-ui="switch" aria-checked="true" aria-label="Product updates"></button></label>
+        <label class="terms"><input type="checkbox" data-ui="checkbox" required> <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span></label>
         <button class="btn" data-variant="primary" data-size="l" type="submit">Create account</button>
         <p class="switch-auth">Already have an account? <a href="#">Sign in</a></p>
       </form>
@@ -36,11 +44,11 @@
     <aside class="signup-art">
       <figure>
         <blockquote>“We replaced four thousand lines of utility classes with forty lines of tokens. Our designers finally own the look again.”</blockquote>
-        <figcaption><i aria-hidden="true"></i><span><b>Maya Okafor</b><br>Head of Design, Northwind</span></figcaption>
+        <figcaption><span data-ui="avatar" style="--h:90"><span data-ui-part="fallback">MO</span></span><span><b>Maya Okafor</b><br>Head of Design, Northwind</span></figcaption>
       </figure>
       <div class="stats"><div><strong>12k+</strong><span>apps shipped</span></div><div><strong>4.9/5</strong><span>avg. rating</span></div><div><strong>0 kB</strong><span>build step</span></div></div>
     </aside>
   </div>
 </section>
-<script type="module" src="blocks.js"></script>
+<script type="module">import "../../src/core/auto.js"; import "../../src/elements/all.js"; import "./blocks.js";</script>
 </body></html>

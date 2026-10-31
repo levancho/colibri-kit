@@ -74,7 +74,7 @@ def render(html):
             used.add(comp); head = [comp] + ([f'kind="{kind}"'] if comp == "UI" else [])
             if n.tag != deft: head.append(f'as="{n.tag}"')
             head += attrs_of(n, ("data-ui",)); tag, inner_owner = comp, n
-        elif part and owner is not None and owner_kind_ok(n, owner):
+        elif part and owner is not None and owner_kind_ok(n, owner) and not ("name" in a or "value" in a):  # native name/value would collide with Part's own props
             used.add("Part"); head = ["Part", f'name="{part}"'] + ([f'as="{n.tag}"'] if n.tag != "div" else [])
             if "data-value" in a: head.append(f'value={jstr(a["data-value"])}')
             head += [x for x in attrs_of(n, ("data-ui-part", "data-value")) if not (n.tag == "button" and x == 'type="button"')]

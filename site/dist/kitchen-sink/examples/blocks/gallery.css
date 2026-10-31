@@ -26,4 +26,6 @@ body { margin: 0; background: var(--c-bg); }
 .g-copy { position: sticky; inset-block-start: .6rem; margin: .6rem .6rem -2.6rem auto; display: flex; z-index: 1; inline-size: max-content; }
 @media (pointer: coarse) { :is(.g-tabs, .g-dev) button { min-block-size: 44px; min-inline-size: 44px; } }
 @media (max-width: 40rem) { .g-nav { display: none; } .g-ctl { margin: 0; } }
+.g-uses { list-style: none; padding: 0; margin: .5rem 0 0; display: flex; flex-wrap: wrap; gap: .3rem; }
+.g-uses code { font-size: .7rem; padding: .12rem .45rem; border-radius: 999px; border: 1px solid var(--c-line); background: var(--c-bg); color: var(--c-muted); }
 }

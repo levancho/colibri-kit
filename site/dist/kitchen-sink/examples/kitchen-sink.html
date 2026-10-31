@@ -2498,7 +2498,7 @@ export function Demo() {
 export function Demo() {
   return (
     &lt;UI kind=&quot;color-picker&quot; data-name=&quot;brand&quot;&gt;
-      &lt;Part name=&quot;input&quot; as=&quot;input&quot; type=&quot;color&quot; defaultValue=&quot;#2563eb&quot; aria-label=&quot;Color&quot; /&gt;
+      &lt;input type=&quot;color&quot; data-ui-part=&quot;input&quot; defaultValue=&quot;#2563eb&quot; aria-label=&quot;Color&quot; /&gt;
       &lt;Part name=&quot;text&quot; as=&quot;input&quot; aria-label=&quot;Hex&quot; /&gt;
       &lt;Part name=&quot;swatch&quot; as=&quot;button&quot; value=&quot;#e11d48&quot; aria-label=&quot;Red&quot; /&gt;
       &lt;Part name=&quot;swatch&quot; as=&quot;button&quot; value=&quot;#16a34a&quot; aria-label=&quot;Green&quot; /&gt;
@@ -2607,7 +2607,7 @@ export function Demo() {
       &lt;/UI&gt;
       &lt;UI kind=&quot;field&quot; data-invalid&gt;
         &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Username&lt;/Part&gt;
-        &lt;Part name=&quot;control&quot; as=&quot;input&quot; defaultValue=&quot;admin&quot; /&gt;
+        &lt;input data-ui-part=&quot;control&quot; defaultValue=&quot;admin&quot; /&gt;
         &lt;Part name=&quot;error&quot; as=&quot;p&quot;&gt;უკვე დაკავებულია (server error)&lt;/Part&gt;
       &lt;/UI&gt;
     &lt;/&gt;
@@ -2637,7 +2637,7 @@ export function Demo() {
       &lt;Part name=&quot;input&quot; as=&quot;input&quot; type=&quot;file&quot; accept=&quot;image/*&quot; hidden /&gt;
       &lt;Part name=&quot;change&quot; as=&quot;button&quot;&gt;შეცვლა&lt;/Part&gt;
       &lt;Part name=&quot;remove&quot; as=&quot;button&quot; data-variant=&quot;outline&quot;&gt;წაშლა&lt;/Part&gt;
-      &lt;Part name=&quot;removed&quot; as=&quot;input&quot; type=&quot;hidden&quot; name=&quot;avatar_remove&quot; /&gt;
+      &lt;input type=&quot;hidden&quot; data-ui-part=&quot;removed&quot; name=&quot;avatar_remove&quot; /&gt;
     &lt;/UI&gt;
   );
 }</code></pre></div></div></details>
@@ -2714,7 +2714,7 @@ export function Demo() {
 export function Demo() {
   return (
     &lt;UI kind=&quot;toggle-password&quot;&gt;
-      &lt;Part name=&quot;input&quot; as=&quot;input&quot; type=&quot;password&quot; defaultValue=&quot;admin&quot; aria-label=&quot;Password&quot; /&gt;
+      &lt;input type=&quot;password&quot; data-ui-part=&quot;input&quot; defaultValue=&quot;admin&quot; aria-label=&quot;Password&quot; /&gt;
       &lt;Part name=&quot;toggle&quot; as=&quot;button&quot; aria-label=&quot;Show password&quot;&gt;👁&lt;/Part&gt;
     &lt;/UI&gt;
   );

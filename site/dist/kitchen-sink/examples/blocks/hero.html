@@ -9,34 +9,60 @@
 <section class="blk blk-hero">
   <div class="inner">
     <div class="copy">
-      <a class="announce" href="#"><b>New</b> Theme packs now change shape, not just colour →</a>
+      <a class="announce" href="#"><span data-ui="badge">New</span> Theme packs now change shape, not just colour →</a>
       <h1>Ship interfaces that look <span class="grad">designed</span>, not assembled.</h1>
       <p class="lede">Colibri Kit is modern CSS and tiny behaviours for server-rendered apps. Tokens, primitives and full theme packs. No utility soup, no build step.</p>
       <div class="cta">
         <a class="btn" data-variant="primary" data-size="l" href="#">Start building</a>
-        <a class="btn" data-variant="outline" data-size="l" href="#">Browse components</a>
+        <ui-dialog class="demo-dialog">
+          <button class="btn" data-variant="outline" data-size="l" data-ui-part="trigger"><span class="play" aria-hidden="true">▶</span> Watch 2-min demo</button>
+          <dialog data-ui-part="content">
+            <header><h2 data-ui-part="title">Colibri Kit in two minutes</h2><button class="btn" data-variant="ghost" data-size="s" data-ui-part="close" aria-label="Close">✕</button></header>
+            <p data-ui-part="description">Tokens, primitives and theme packs, from an empty page to a dashboard.</p>
+            <div class="video" role="img" aria-label="Demo video placeholder"><span class="play" aria-hidden="true">▶</span></div>
+          </dialog>
+        </ui-dialog>
       </div>
       <div class="proof">
-        <span class="faces" aria-hidden="true"><i style="--h:20"></i><i style="--h:90"></i><i style="--h:160"></i><i style="--h:230"></i><i style="--h:300"></i></span>
-        <span><span class="stars" aria-label="5 out of 5">★★★★★</span> Loved by 2,400+ teams shipping with plain HTML</span>
+        <span class="faces"><span data-ui="avatar" style="--h:20"><span data-ui-part="fallback">AL</span></span><span data-ui="avatar" style="--h:90"><span data-ui-part="fallback">MO</span></span><span data-ui="avatar" style="--h:160"><span data-ui-part="fallback">JK</span></span><span data-ui="avatar" style="--h:230"><span data-ui-part="fallback">SR</span></span><span data-ui="avatar" style="--h:300"><span data-ui-part="fallback">TD</span></span></span>
+        <div data-ui="tooltip" data-side="bottom" data-delay="150">
+          <button class="rating" type="button" data-ui-part="trigger"><span class="stars" aria-hidden="true">★★★★★</span> 4.9 from 312 reviews</button>
+          <div data-ui-part="content">Average rating across G2 and Product Hunt</div>
+        </div>
       </div>
     </div>
-    <div class="mock" aria-hidden="true">
+    <div class="mock">
       <div class="win">
-        <div class="win-bar"><i></i><i></i><i></i><span>app.colibri.dev/overview</span></div>
-        <div class="win-body">
-          <div class="win-side"><b></b><b></b><b></b><b></b><b></b></div>
-          <div class="win-main">
+        <div class="win-bar" aria-hidden="true"><i></i><i></i><i></i><span>app.colibri.dev/overview</span></div>
+        <ui-tabs class="win-body" data-default-value="overview">
+          <div class="win-side" data-ui-part="list" aria-label="Demo app sections" data-orientation="vertical">
+            <button data-ui-part="trigger" data-value="overview">Overview</button>
+            <button data-ui-part="trigger" data-value="reports">Reports</button>
+            <button data-ui-part="trigger" data-value="team">Team</button>
+          </div>
+          <div class="win-main" data-ui-part="panel" data-value="overview">
             <div class="kpi"><small>Revenue</small><strong>$48.2k</strong><em>▲ 12.4%</em></div>
             <div class="kpi"><small>Active users</small><strong>9,312</strong><em>▲ 4.1%</em></div>
-            <div class="kpi"><small>Churn</small><strong>1.8%</strong><em>▼ 0.3%</em></div>
-            <div class="bars"><i style="--v:38"></i><i style="--v:52"></i><i style="--v:45"></i><i style="--v:63"></i><i style="--v:58"></i><i style="--v:74"></i><i style="--v:69"></i><i style="--v:86"></i><i style="--v:80"></i><i style="--v:95"></i></div>
+            <div class="kpi"><small>Churn</small><strong>1.8%</strong><em data-tone="down">▼ 0.3%</em></div>
+            <div class="bars" aria-hidden="true"><i style="--v:38"></i><i style="--v:52"></i><i style="--v:45"></i><i style="--v:63"></i><i style="--v:58"></i><i style="--v:74"></i><i style="--v:69"></i><i style="--v:86"></i><i style="--v:80"></i><i style="--v:95"></i></div>
           </div>
-        </div>
+          <div class="win-main" data-ui-part="panel" data-value="reports">
+            <div class="report"><span>Q3 revenue summary</span><span data-ui="badge" data-variant="success">Ready</span></div>
+            <div class="report"><span>Cohort retention</span><span data-ui="badge">Draft</span></div>
+            <div class="report"><span>Funnel by channel</span><span data-ui="badge" data-variant="success">Ready</span></div>
+            <div class="meter-row"><span>Monthly goal</span><div data-ui="progress" data-value="72" aria-label="Monthly goal"><div data-ui-part="indicator"></div></div><b>72%</b></div>
+          </div>
+          <div class="win-main" data-ui-part="panel" data-value="team">
+            <div class="member"><span data-ui="avatar" style="--h:20"><span data-ui-part="fallback">AL</span></span><span><b>Ada Lovelace</b><small>Owner</small></span></div>
+            <div class="member"><span data-ui="avatar" style="--h:90"><span data-ui-part="fallback">MO</span></span><span><b>Maya Okafor</b><small>Design</small></span></div>
+            <div class="member"><span data-ui="avatar" style="--h:160"><span data-ui-part="fallback">JK</span></span><span><b>Jon Kim</b><small>Engineering</small></span></div>
+            <div class="member"><span data-ui="avatar" style="--h:230"><span data-ui-part="fallback">SR</span></span><span><b>Sara Ruiz</b><small>Support</small></span></div>
+          </div>
+        </ui-tabs>
       </div>
     </div>
     <div class="logos"><small>Trusted by product teams at</small><span>Northwind</span><span>Acme&nbsp;Co</span><span>Globex</span><span>Initech</span><span>Umbrella</span></div>
   </div>
 </section>
-<script type="module" src="blocks.js"></script>
+<script type="module">import "../../src/core/auto.js"; import "../../src/elements/all.js"; import "./blocks.js";</script>
 </body></html>

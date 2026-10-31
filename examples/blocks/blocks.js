@@ -1,15 +1,15 @@
-// Behaviour for the marketing blocks: billing toggle + password reveal/strength. ~30 lines, no deps.
-for (const g of document.querySelectorAll("[data-billing]")) {
+// Glue only. Behaviour (toggle-group, tabs, dialog, tooltip, accordion, field, toggle-password, switch,
+// checkbox) comes from Colibri UI's headless core; this file reacts to its ui:* events.
+for (const g of document.querySelectorAll(".billing [data-ui=toggle-group]")) {
   const scope = g.closest("section") || document;
-  g.addEventListener("click", (e) => { const b = e.target.closest("button[data-period]"); if (!b) return;
-    for (const x of g.querySelectorAll("button")) x.setAttribute("aria-pressed", String(x === b));
-    for (const p of scope.querySelectorAll("[data-monthly]")) p.textContent = p.dataset[b.dataset.period];
-    for (const p of scope.querySelectorAll("[data-per]")) p.textContent = b.dataset.period === "yearly" ? "/ mo, billed yearly" : "/ month"; });
+  g.addEventListener("ui:change", (e) => { const period = e.detail?.value || "monthly";
+    for (const p of scope.querySelectorAll("[data-monthly]")) p.textContent = p.dataset[period];
+    for (const p of scope.querySelectorAll("[data-per]")) p.textContent = period === "yearly" ? "/ mo, billed yearly" : "/ month"; });
 }
-for (const w of document.querySelectorAll(".pw")) {
-  const i = w.querySelector("input"), b = w.querySelector("button"), m = w.parentElement.querySelector(".meter");
-  b?.addEventListener("click", () => { const show = i.type === "password"; i.type = show ? "text" : "password"; b.textContent = show ? "Hide" : "Show"; b.setAttribute("aria-pressed", String(show)); });
-  i.addEventListener("input", () => { const v = i.value; m && (m.dataset.score = !v ? 0 : Math.min(4, (v.length >= 8) + /[A-Z]/.test(v) + /\d/.test(v) + /[^\w]/.test(v) || 1)); });
+// Password strength meter, fed by the toggle-password input.
+for (const w of document.querySelectorAll("[data-ui=toggle-password]")) {
+  const i = w.querySelector("input"), m = w.closest("[data-ui=field]")?.querySelector(".meter");
+  i?.addEventListener("input", () => { const v = i.value; if (m) m.dataset.score = !v ? 0 : Math.max(1, Math.min(4, (v.length >= 8) + /[A-Z]/.test(v) + /\d/.test(v) + /[^\w]/.test(v))); });
 }
 // Live theme sync when the gallery (parent page) changes pack / scheme / hue.
 addEventListener("storage", (e) => { const r = document.documentElement;

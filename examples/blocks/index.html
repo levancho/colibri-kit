@@ -18,59 +18,95 @@
 <main class="g-main">
 <section class="g-intro"><h1>Marketing blocks</h1><p>Pilot set: three production-quality blocks built only from Colibri tokens and primitives. Switch the <b>theme pack</b> to change shape, type, shadows and chrome, or the <b>colour</b> for hue alone. Every block has a device preview and HTML, FreeMarker and React source.</p></section>
 <article class="g-block" id="hero">
-  <header class="g-head"><div><h2>Hero</h2><p>Marketing hero with announcement pill, gradient headline, social proof, product mock and logo cloud.</p></div>
+  <header class="g-head"><div><h2>Hero</h2><p>Marketing hero with announcement pill, gradient headline, social proof, product mock and logo cloud.</p><ul class="g-uses" aria-label="Colibri UI used"><li><code>&lt;ui-dialog&gt; (demo video modal)</code></li><li><code>&lt;ui-tabs&gt; (app preview: Overview / Reports / Team)</code></li><li><code>data-ui=&quot;tooltip&quot; (rating)</code></li><li><code>data-ui=&quot;avatar&quot; ×9</code></li><li><code>data-ui=&quot;badge&quot;</code></li><li><code>data-ui=&quot;progress&quot;</code></li></ul></div>
     <div class="g-tools"><div class="g-tabs" role="tablist" aria-label="Hero views"><button type="button" role="tab" data-tab="preview" aria-selected="true">Preview</button><button type="button" role="tab" data-tab="html" aria-selected="false">HTML</button><button type="button" role="tab" data-tab="ftl" aria-selected="false">FreeMarker</button><button type="button" role="tab" data-tab="react" aria-selected="false">React</button></div><div class="g-dev" role="group" aria-label="Preview width"><button type="button" data-w="100%" aria-pressed="true" title="Desktop" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></button><button type="button" data-w="768px" aria-pressed="false" title="Tablet" aria-label="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></button><button type="button" data-w="390px" aria-pressed="false" title="Phone" aria-label="Phone preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button></div><a class="btn" data-variant="ghost" data-size="s" href="hero.html" target="_blank" rel="noopener">Open ↗</a></div></header>
   <div class="g-panel" data-panel="preview"><div class="g-stage"><iframe src="hero.html" title="Hero block preview" loading="lazy"></iframe></div></div>
   <div class="g-panel" data-panel="html" data-lang="html" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;section class=&quot;blk blk-hero&quot;&gt;
   &lt;div class=&quot;inner&quot;&gt;
     &lt;div class=&quot;copy&quot;&gt;
-      &lt;a class=&quot;announce&quot; href=&quot;#&quot;&gt;&lt;b&gt;New&lt;/b&gt; Theme packs now change shape, not just colour →&lt;/a&gt;
+      &lt;a class=&quot;announce&quot; href=&quot;#&quot;&gt;&lt;span data-ui=&quot;badge&quot;&gt;New&lt;/span&gt; Theme packs now change shape, not just colour →&lt;/a&gt;
       &lt;h1&gt;Ship interfaces that look &lt;span class=&quot;grad&quot;&gt;designed&lt;/span&gt;, not assembled.&lt;/h1&gt;
       &lt;p class=&quot;lede&quot;&gt;Colibri Kit is modern CSS and tiny behaviours for server-rendered apps. Tokens, primitives and full theme packs. No utility soup, no build step.&lt;/p&gt;
       &lt;div class=&quot;cta&quot;&gt;
         &lt;a class=&quot;btn&quot; data-variant=&quot;primary&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Start building&lt;/a&gt;
-        &lt;a class=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Browse components&lt;/a&gt;
+        &lt;ui-dialog class=&quot;demo-dialog&quot;&gt;
+          &lt;button class=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; data-ui-part=&quot;trigger&quot;&gt;&lt;span class=&quot;play&quot; aria-hidden=&quot;true&quot;&gt;▶&lt;/span&gt; Watch 2-min demo&lt;/button&gt;
+          &lt;dialog data-ui-part=&quot;content&quot;&gt;
+            &lt;header&gt;&lt;h2 data-ui-part=&quot;title&quot;&gt;Colibri Kit in two minutes&lt;/h2&gt;&lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot; data-size=&quot;s&quot; data-ui-part=&quot;close&quot; aria-label=&quot;Close&quot;&gt;✕&lt;/button&gt;&lt;/header&gt;
+            &lt;p data-ui-part=&quot;description&quot;&gt;Tokens, primitives and theme packs, from an empty page to a dashboard.&lt;/p&gt;
+            &lt;div class=&quot;video&quot; role=&quot;img&quot; aria-label=&quot;Demo video placeholder&quot;&gt;&lt;span class=&quot;play&quot; aria-hidden=&quot;true&quot;&gt;▶&lt;/span&gt;&lt;/div&gt;
+          &lt;/dialog&gt;
+        &lt;/ui-dialog&gt;
       &lt;/div&gt;
       &lt;div class=&quot;proof&quot;&gt;
-        &lt;span class=&quot;faces&quot; aria-hidden=&quot;true&quot;&gt;&lt;i style=&quot;--h:20&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--h:90&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--h:160&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--h:230&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--h:300&quot;&gt;&lt;/i&gt;&lt;/span&gt;
-        &lt;span&gt;&lt;span class=&quot;stars&quot; aria-label=&quot;5 out of 5&quot;&gt;★★★★★&lt;/span&gt; Loved by 2,400+ teams shipping with plain HTML&lt;/span&gt;
+        &lt;span class=&quot;faces&quot;&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:20&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;AL&lt;/span&gt;&lt;/span&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:90&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;MO&lt;/span&gt;&lt;/span&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:160&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;JK&lt;/span&gt;&lt;/span&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:230&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;SR&lt;/span&gt;&lt;/span&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:300&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;TD&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+        &lt;div data-ui=&quot;tooltip&quot; data-side=&quot;bottom&quot; data-delay=&quot;150&quot;&gt;
+          &lt;button class=&quot;rating&quot; type=&quot;button&quot; data-ui-part=&quot;trigger&quot;&gt;&lt;span class=&quot;stars&quot; aria-hidden=&quot;true&quot;&gt;★★★★★&lt;/span&gt; 4.9 from 312 reviews&lt;/button&gt;
+          &lt;div data-ui-part=&quot;content&quot;&gt;Average rating across G2 and Product Hunt&lt;/div&gt;
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
-    &lt;div class=&quot;mock&quot; aria-hidden=&quot;true&quot;&gt;
+    &lt;div class=&quot;mock&quot;&gt;
       &lt;div class=&quot;win&quot;&gt;
-        &lt;div class=&quot;win-bar&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;span&gt;app.colibri.dev/overview&lt;/span&gt;&lt;/div&gt;
-        &lt;div class=&quot;win-body&quot;&gt;
-          &lt;div class=&quot;win-side&quot;&gt;&lt;b&gt;&lt;/b&gt;&lt;b&gt;&lt;/b&gt;&lt;b&gt;&lt;/b&gt;&lt;b&gt;&lt;/b&gt;&lt;b&gt;&lt;/b&gt;&lt;/div&gt;
-          &lt;div class=&quot;win-main&quot;&gt;
+        &lt;div class=&quot;win-bar&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;span&gt;app.colibri.dev/overview&lt;/span&gt;&lt;/div&gt;
+        &lt;ui-tabs class=&quot;win-body&quot; data-default-value=&quot;overview&quot;&gt;
+          &lt;div class=&quot;win-side&quot; data-ui-part=&quot;list&quot; aria-label=&quot;Demo app sections&quot; data-orientation=&quot;vertical&quot;&gt;
+            &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;overview&quot;&gt;Overview&lt;/button&gt;
+            &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;reports&quot;&gt;Reports&lt;/button&gt;
+            &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;team&quot;&gt;Team&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;overview&quot;&gt;
             &lt;div class=&quot;kpi&quot;&gt;&lt;small&gt;Revenue&lt;/small&gt;&lt;strong&gt;$48.2k&lt;/strong&gt;&lt;em&gt;▲ 12.4%&lt;/em&gt;&lt;/div&gt;
             &lt;div class=&quot;kpi&quot;&gt;&lt;small&gt;Active users&lt;/small&gt;&lt;strong&gt;9,312&lt;/strong&gt;&lt;em&gt;▲ 4.1%&lt;/em&gt;&lt;/div&gt;
-            &lt;div class=&quot;kpi&quot;&gt;&lt;small&gt;Churn&lt;/small&gt;&lt;strong&gt;1.8%&lt;/strong&gt;&lt;em&gt;▼ 0.3%&lt;/em&gt;&lt;/div&gt;
-            &lt;div class=&quot;bars&quot;&gt;&lt;i style=&quot;--v:38&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:52&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:45&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:63&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:58&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:74&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:69&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:86&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:80&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:95&quot;&gt;&lt;/i&gt;&lt;/div&gt;
+            &lt;div class=&quot;kpi&quot;&gt;&lt;small&gt;Churn&lt;/small&gt;&lt;strong&gt;1.8%&lt;/strong&gt;&lt;em data-tone=&quot;down&quot;&gt;▼ 0.3%&lt;/em&gt;&lt;/div&gt;
+            &lt;div class=&quot;bars&quot; aria-hidden=&quot;true&quot;&gt;&lt;i style=&quot;--v:38&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:52&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:45&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:63&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:58&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:74&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:69&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:86&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:80&quot;&gt;&lt;/i&gt;&lt;i style=&quot;--v:95&quot;&gt;&lt;/i&gt;&lt;/div&gt;
           &lt;/div&gt;
-        &lt;/div&gt;
+          &lt;div class=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;reports&quot;&gt;
+            &lt;div class=&quot;report&quot;&gt;&lt;span&gt;Q3 revenue summary&lt;/span&gt;&lt;span data-ui=&quot;badge&quot; data-variant=&quot;success&quot;&gt;Ready&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;report&quot;&gt;&lt;span&gt;Cohort retention&lt;/span&gt;&lt;span data-ui=&quot;badge&quot;&gt;Draft&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;report&quot;&gt;&lt;span&gt;Funnel by channel&lt;/span&gt;&lt;span data-ui=&quot;badge&quot; data-variant=&quot;success&quot;&gt;Ready&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;meter-row&quot;&gt;&lt;span&gt;Monthly goal&lt;/span&gt;&lt;div data-ui=&quot;progress&quot; data-value=&quot;72&quot; aria-label=&quot;Monthly goal&quot;&gt;&lt;div data-ui-part=&quot;indicator&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;b&gt;72%&lt;/b&gt;&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;team&quot;&gt;
+            &lt;div class=&quot;member&quot;&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:20&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;AL&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;b&gt;Ada Lovelace&lt;/b&gt;&lt;small&gt;Owner&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;member&quot;&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:90&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;MO&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;b&gt;Maya Okafor&lt;/b&gt;&lt;small&gt;Design&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;member&quot;&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:160&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;JK&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;b&gt;Jon Kim&lt;/b&gt;&lt;small&gt;Engineering&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;
+            &lt;div class=&quot;member&quot;&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:230&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;SR&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;b&gt;Sara Ruiz&lt;/b&gt;&lt;small&gt;Support&lt;/small&gt;&lt;/span&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ui-tabs&gt;
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;logos&quot;&gt;&lt;small&gt;Trusted by product teams at&lt;/small&gt;&lt;span&gt;Northwind&lt;/span&gt;&lt;span&gt;Acme&amp;nbsp;Co&lt;/span&gt;&lt;span&gt;Globex&lt;/span&gt;&lt;span&gt;Initech&lt;/span&gt;&lt;span&gt;Umbrella&lt;/span&gt;&lt;/div&gt;
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;#-- hero.ftl: copy comes from the model; markup stays the same Colibri primitives --&gt;
+&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>[#import &quot;/colibri/ui.ftl&quot; as ui]
+[#-- hero.ftl: copy from the model; behaviour from Colibri UI macros (dialog, tooltip, avatar, badge) --]
 &lt;section class=&quot;blk blk-hero&quot;&gt;
   &lt;div class=&quot;inner&quot;&gt;
     &lt;div class=&quot;copy&quot;&gt;
-      &lt;#if hero.announce??&gt;&lt;a class=&quot;announce&quot; href=&quot;${hero.announce.url}&quot;&gt;&lt;b&gt;New&lt;/b&gt; ${hero.announce.text} →&lt;/a&gt;&lt;/#if&gt;
+      &lt;a class=&quot;announce&quot; href=&quot;${hero.announce.url}&quot;&gt;[@ui.badge]New[/@ui.badge] ${hero.announce.text} →&lt;/a&gt;
       &lt;h1&gt;${hero.titleStart} &lt;span class=&quot;grad&quot;&gt;${hero.titleAccent}&lt;/span&gt;${hero.titleEnd}&lt;/h1&gt;
       &lt;p class=&quot;lede&quot;&gt;${hero.lede}&lt;/p&gt;
       &lt;div class=&quot;cta&quot;&gt;
         &lt;a class=&quot;btn&quot; data-variant=&quot;primary&quot; data-size=&quot;l&quot; href=&quot;${hero.primary.url}&quot;&gt;${hero.primary.label}&lt;/a&gt;
-        &lt;a class=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; href=&quot;${hero.secondary.url}&quot;&gt;${hero.secondary.label}&lt;/a&gt;
+        [@ui.dialog trigger=&quot;▶ Watch 2-min demo&quot; title=&quot;Colibri Kit in two minutes&quot; description=hero.demo.caption attrs={&quot;class&quot;:&quot;demo-dialog&quot;}]
+          &lt;video src=&quot;${hero.demo.src}&quot; controls preload=&quot;none&quot; poster=&quot;${hero.demo.poster}&quot;&gt;&lt;/video&gt;
+        [/@ui.dialog]
       &lt;/div&gt;
-      &lt;div class=&quot;proof&quot;&gt;&lt;span class=&quot;faces&quot; aria-hidden=&quot;true&quot;&gt;&lt;#list 1..5 as i&gt;&lt;i style=&quot;--h:${i * 70}&quot;&gt;&lt;/i&gt;&lt;/#list&gt;&lt;/span&gt;
-        &lt;span&gt;&lt;span class=&quot;stars&quot; aria-label=&quot;5 out of 5&quot;&gt;★★★★★&lt;/span&gt; ${hero.proof}&lt;/span&gt;&lt;/div&gt;
+      &lt;div class=&quot;proof&quot;&gt;
+        &lt;span class=&quot;faces&quot;&gt;[#list hero.reviewers as r][@ui.avatar src=r.photo alt=r.name fallback=r.initials/][/#list]&lt;/span&gt;
+        [@ui.tooltip text=&quot;Average rating across G2 and Product Hunt&quot; side=&quot;bottom&quot;]
+          &lt;button class=&quot;rating&quot; type=&quot;button&quot;&gt;&lt;span class=&quot;stars&quot; aria-hidden=&quot;true&quot;&gt;★★★★★&lt;/span&gt; ${hero.rating} from ${hero.reviews} reviews&lt;/button&gt;
+        [/@ui.tooltip]
+      &lt;/div&gt;
     &lt;/div&gt;
-    &lt;#include &quot;hero-mock.ftl&quot;&gt;
-    &lt;div class=&quot;logos&quot;&gt;&lt;small&gt;Trusted by product teams at&lt;/small&gt;&lt;#list hero.logos as logo&gt;&lt;span&gt;${logo}&lt;/span&gt;&lt;/#list&gt;&lt;/div&gt;
+    [#include &quot;hero-mock.ftl&quot;]  [#-- &lt;ui-tabs&gt; app preview: Overview / Reports / Team --]
+    &lt;div class=&quot;logos&quot;&gt;&lt;small&gt;Trusted by product teams at&lt;/small&gt;[#list hero.logos as logo]&lt;span&gt;${logo}&lt;/span&gt;[/#list]&lt;/div&gt;
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
+&lt;/section&gt;
+&lt;script type=&quot;module&quot;&gt;import &quot;/colibri/core/auto.js&quot;; import &quot;/colibri/elements/all.js&quot;;&lt;/script&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
 import &quot;@colibri-kit/blocks/blocks.css&quot;;
+import { Tooltip, Part, UI } from &quot;@colibri-kit/ui/react&quot;;
+import &quot;@colibri-kit/ui/elements&quot;; // registers &lt;ui-tabs&gt;, &lt;ui-dialog&gt;
 
 export function HeroBlock() {
   return (
@@ -78,7 +114,7 @@ export function HeroBlock() {
       &lt;div className=&quot;inner&quot;&gt;
         &lt;div className=&quot;copy&quot;&gt;
           &lt;a className=&quot;announce&quot; href=&quot;#&quot;&gt;
-            &lt;b&gt;New&lt;/b&gt;{&quot; &quot;}
+            &lt;UI kind=&quot;badge&quot; as=&quot;span&quot;&gt;New&lt;/UI&gt;{&quot; &quot;}
             Theme packs now change shape, not just colour →
           &lt;/a&gt;
           &lt;h1&gt;
@@ -91,39 +127,69 @@ export function HeroBlock() {
           &lt;/p&gt;
           &lt;div className=&quot;cta&quot;&gt;
             &lt;a className=&quot;btn&quot; data-variant=&quot;primary&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Start building&lt;/a&gt;
-            &lt;a className=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Browse components&lt;/a&gt;
+            &lt;ui-dialog className=&quot;demo-dialog&quot;&gt;
+              &lt;button className=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; data-ui-part=&quot;trigger&quot;&gt;
+                &lt;span className=&quot;play&quot; aria-hidden=&quot;true&quot;&gt;▶&lt;/span&gt;{&quot; &quot;}
+                Watch 2-min demo
+              &lt;/button&gt;
+              &lt;dialog data-ui-part=&quot;content&quot;&gt;
+                &lt;header&gt;
+                  &lt;h2 data-ui-part=&quot;title&quot;&gt;Colibri Kit in two minutes&lt;/h2&gt;
+                  &lt;button className=&quot;btn&quot; data-variant=&quot;ghost&quot; data-size=&quot;s&quot; data-ui-part=&quot;close&quot; aria-label=&quot;Close&quot;&gt;
+                    ✕
+                  &lt;/button&gt;
+                &lt;/header&gt;
+                &lt;p data-ui-part=&quot;description&quot;&gt;
+                  Tokens, primitives and theme packs, from an empty page to a dashboard.
+                &lt;/p&gt;
+                &lt;div className=&quot;video&quot; role=&quot;img&quot; aria-label=&quot;Demo video placeholder&quot;&gt;
+                  &lt;span className=&quot;play&quot; aria-hidden=&quot;true&quot;&gt;▶&lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/dialog&gt;
+            &lt;/ui-dialog&gt;
           &lt;/div&gt;
           &lt;div className=&quot;proof&quot;&gt;
-            &lt;span className=&quot;faces&quot; aria-hidden=&quot;true&quot;&gt;
-              &lt;i style={{ &quot;--h&quot;: &quot;20&quot; }} /&gt;
-              &lt;i style={{ &quot;--h&quot;: &quot;90&quot; }} /&gt;
-              &lt;i style={{ &quot;--h&quot;: &quot;160&quot; }} /&gt;
-              &lt;i style={{ &quot;--h&quot;: &quot;230&quot; }} /&gt;
-              &lt;i style={{ &quot;--h&quot;: &quot;300&quot; }} /&gt;
+            &lt;span className=&quot;faces&quot;&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;20&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;AL&lt;/Part&gt;
+              &lt;/UI&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;90&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;MO&lt;/Part&gt;
+              &lt;/UI&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;160&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;JK&lt;/Part&gt;
+              &lt;/UI&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;230&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;SR&lt;/Part&gt;
+              &lt;/UI&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;300&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;TD&lt;/Part&gt;
+              &lt;/UI&gt;
             &lt;/span&gt;
-            &lt;span&gt;
-              &lt;span className=&quot;stars&quot; aria-label=&quot;5 out of 5&quot;&gt;★★★★★&lt;/span&gt;{&quot; &quot;}
-              Loved by 2,400+ teams shipping with plain HTML
-            &lt;/span&gt;
+            &lt;Tooltip as=&quot;div&quot; data-side=&quot;bottom&quot; data-delay=&quot;150&quot;&gt;
+              &lt;Part name=&quot;trigger&quot; as=&quot;button&quot; className=&quot;rating&quot;&gt;
+                &lt;span className=&quot;stars&quot; aria-hidden=&quot;true&quot;&gt;★★★★★&lt;/span&gt;{&quot; &quot;}
+                4.9 from 312 reviews
+              &lt;/Part&gt;
+              &lt;Part name=&quot;content&quot;&gt;Average rating across G2 and Product Hunt&lt;/Part&gt;
+            &lt;/Tooltip&gt;
           &lt;/div&gt;
         &lt;/div&gt;
-        &lt;div className=&quot;mock&quot; aria-hidden=&quot;true&quot;&gt;
+        &lt;div className=&quot;mock&quot;&gt;
           &lt;div className=&quot;win&quot;&gt;
-            &lt;div className=&quot;win-bar&quot;&gt;
+            &lt;div className=&quot;win-bar&quot; aria-hidden=&quot;true&quot;&gt;
               &lt;i /&gt;
               &lt;i /&gt;
               &lt;i /&gt;
               &lt;span&gt;app.colibri.dev/overview&lt;/span&gt;
             &lt;/div&gt;
-            &lt;div className=&quot;win-body&quot;&gt;
-              &lt;div className=&quot;win-side&quot;&gt;
-                &lt;b /&gt;
-                &lt;b /&gt;
-                &lt;b /&gt;
-                &lt;b /&gt;
-                &lt;b /&gt;
+            &lt;ui-tabs className=&quot;win-body&quot; data-default-value=&quot;overview&quot;&gt;
+              &lt;div className=&quot;win-side&quot; data-ui-part=&quot;list&quot; aria-label=&quot;Demo app sections&quot; data-orientation=&quot;vertical&quot;&gt;
+                &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;overview&quot;&gt;Overview&lt;/button&gt;
+                &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;reports&quot;&gt;Reports&lt;/button&gt;
+                &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;team&quot;&gt;Team&lt;/button&gt;
               &lt;/div&gt;
-              &lt;div className=&quot;win-main&quot;&gt;
+              &lt;div className=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;overview&quot;&gt;
                 &lt;div className=&quot;kpi&quot;&gt;
                   &lt;small&gt;Revenue&lt;/small&gt;
                   &lt;strong&gt;$48.2k&lt;/strong&gt;
@@ -137,9 +203,9 @@ export function HeroBlock() {
                 &lt;div className=&quot;kpi&quot;&gt;
                   &lt;small&gt;Churn&lt;/small&gt;
                   &lt;strong&gt;1.8%&lt;/strong&gt;
-                  &lt;em&gt;▼ 0.3%&lt;/em&gt;
+                  &lt;em data-tone=&quot;down&quot;&gt;▼ 0.3%&lt;/em&gt;
                 &lt;/div&gt;
-                &lt;div className=&quot;bars&quot;&gt;
+                &lt;div className=&quot;bars&quot; aria-hidden=&quot;true&quot;&gt;
                   &lt;i style={{ &quot;--v&quot;: &quot;38&quot; }} /&gt;
                   &lt;i style={{ &quot;--v&quot;: &quot;52&quot; }} /&gt;
                   &lt;i style={{ &quot;--v&quot;: &quot;45&quot; }} /&gt;
@@ -152,7 +218,66 @@ export function HeroBlock() {
                   &lt;i style={{ &quot;--v&quot;: &quot;95&quot; }} /&gt;
                 &lt;/div&gt;
               &lt;/div&gt;
-            &lt;/div&gt;
+              &lt;div className=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;reports&quot;&gt;
+                &lt;div className=&quot;report&quot;&gt;
+                  &lt;span&gt;Q3 revenue summary&lt;/span&gt;
+                  &lt;UI kind=&quot;badge&quot; as=&quot;span&quot; data-variant=&quot;success&quot;&gt;Ready&lt;/UI&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;report&quot;&gt;
+                  &lt;span&gt;Cohort retention&lt;/span&gt;
+                  &lt;UI kind=&quot;badge&quot; as=&quot;span&quot;&gt;Draft&lt;/UI&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;report&quot;&gt;
+                  &lt;span&gt;Funnel by channel&lt;/span&gt;
+                  &lt;UI kind=&quot;badge&quot; as=&quot;span&quot; data-variant=&quot;success&quot;&gt;Ready&lt;/UI&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;meter-row&quot;&gt;
+                  &lt;span&gt;Monthly goal&lt;/span&gt;
+                  &lt;UI kind=&quot;progress&quot; data-value=&quot;72&quot; aria-label=&quot;Monthly goal&quot;&gt;
+                    &lt;Part name=&quot;indicator&quot; /&gt;
+                  &lt;/UI&gt;
+                  &lt;b&gt;72%&lt;/b&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+              &lt;div className=&quot;win-main&quot; data-ui-part=&quot;panel&quot; data-value=&quot;team&quot;&gt;
+                &lt;div className=&quot;member&quot;&gt;
+                  &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;20&quot; }}&gt;
+                    &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;AL&lt;/Part&gt;
+                  &lt;/UI&gt;
+                  &lt;span&gt;
+                    &lt;b&gt;Ada Lovelace&lt;/b&gt;
+                    &lt;small&gt;Owner&lt;/small&gt;
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;member&quot;&gt;
+                  &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;90&quot; }}&gt;
+                    &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;MO&lt;/Part&gt;
+                  &lt;/UI&gt;
+                  &lt;span&gt;
+                    &lt;b&gt;Maya Okafor&lt;/b&gt;
+                    &lt;small&gt;Design&lt;/small&gt;
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;member&quot;&gt;
+                  &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;160&quot; }}&gt;
+                    &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;JK&lt;/Part&gt;
+                  &lt;/UI&gt;
+                  &lt;span&gt;
+                    &lt;b&gt;Jon Kim&lt;/b&gt;
+                    &lt;small&gt;Engineering&lt;/small&gt;
+                  &lt;/span&gt;
+                &lt;/div&gt;
+                &lt;div className=&quot;member&quot;&gt;
+                  &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;230&quot; }}&gt;
+                    &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;SR&lt;/Part&gt;
+                  &lt;/UI&gt;
+                  &lt;span&gt;
+                    &lt;b&gt;Sara Ruiz&lt;/b&gt;
+                    &lt;small&gt;Support&lt;/small&gt;
+                  &lt;/span&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/ui-tabs&gt;
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div className=&quot;logos&quot;&gt;
@@ -170,7 +295,7 @@ export function HeroBlock() {
 </code></pre></div>
 </article>
 <article class="g-block" id="pricing">
-  <header class="g-head"><div><h2>Pricing</h2><p>Three tiers with a featured plan, monthly / yearly toggle and feature lists.</p></div>
+  <header class="g-head"><div><h2>Pricing</h2><p>Three tiers with a featured plan, monthly / yearly toggle and feature lists.</p><ul class="g-uses" aria-label="Colibri UI used"><li><code>data-ui=&quot;toggle-group&quot; (Monthly / Yearly)</code></li><li><code>&lt;ui-dialog&gt; + data-ui=&quot;field&quot; (Talk to sales form)</code></li><li><code>data-ui=&quot;tooltip&quot; (feature info)</code></li><li><code>data-ui=&quot;accordion&quot; (FAQ)</code></li></ul></div>
     <div class="g-tools"><div class="g-tabs" role="tablist" aria-label="Pricing views"><button type="button" role="tab" data-tab="preview" aria-selected="true">Preview</button><button type="button" role="tab" data-tab="html" aria-selected="false">HTML</button><button type="button" role="tab" data-tab="ftl" aria-selected="false">FreeMarker</button><button type="button" role="tab" data-tab="react" aria-selected="false">React</button></div><div class="g-dev" role="group" aria-label="Preview width"><button type="button" data-w="100%" aria-pressed="true" title="Desktop" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></button><button type="button" data-w="768px" aria-pressed="false" title="Tablet" aria-label="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></button><button type="button" data-w="390px" aria-pressed="false" title="Phone" aria-label="Phone preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button></div><a class="btn" data-variant="ghost" data-size="s" href="pricing.html" target="_blank" rel="noopener">Open ↗</a></div></header>
   <div class="g-panel" data-panel="preview"><div class="g-stage"><iframe src="pricing.html" title="Pricing block preview" loading="lazy"></iframe></div></div>
   <div class="g-panel" data-panel="html" data-lang="html" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;section class=&quot;blk blk-pricing&quot;&gt;
@@ -179,9 +304,11 @@ export function HeroBlock() {
       &lt;span class=&quot;eyebrow&quot;&gt;Pricing&lt;/span&gt;
       &lt;h2&gt;Simple pricing that scales with you&lt;/h2&gt;
       &lt;p class=&quot;lede&quot;&gt;Start free. Upgrade when your team needs every theme pack, FreeMarker macros and React wrappers.&lt;/p&gt;
-      &lt;div class=&quot;billing&quot; data-billing role=&quot;group&quot; aria-label=&quot;Billing period&quot;&gt;
-        &lt;button type=&quot;button&quot; data-period=&quot;monthly&quot; aria-pressed=&quot;true&quot;&gt;Monthly&lt;/button&gt;
-        &lt;button type=&quot;button&quot; data-period=&quot;yearly&quot; aria-pressed=&quot;false&quot;&gt;Yearly &lt;small&gt;−20%&lt;/small&gt;&lt;/button&gt;
+      &lt;div class=&quot;billing&quot;&gt;
+        &lt;div data-ui=&quot;toggle-group&quot; data-type=&quot;single&quot; data-default-value=&quot;monthly&quot; aria-label=&quot;Billing period&quot;&gt;
+          &lt;button data-ui-part=&quot;item&quot; data-value=&quot;monthly&quot;&gt;Monthly&lt;/button&gt;
+          &lt;button data-ui-part=&quot;item&quot; data-value=&quot;yearly&quot;&gt;Yearly &lt;small&gt;−20%&lt;/small&gt;&lt;/button&gt;
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;tiers&quot;&gt;
@@ -214,49 +341,81 @@ export function HeroBlock() {
     &lt;article class=&quot;tier&quot;&gt;
       &lt;div&gt;&lt;h3&gt;Enterprise&lt;/h3&gt;&lt;p&gt;For organisations with custom needs.&lt;/p&gt;&lt;/div&gt;
       &lt;div class=&quot;price&quot;&gt;&lt;strong&gt;$&lt;span data-monthly=&quot;79&quot; data-yearly=&quot;64&quot;&gt;79&lt;/span&gt;&lt;/strong&gt;&lt;span data-per&gt;/ month&lt;/span&gt;&lt;/div&gt;
-      &lt;a class=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Talk to sales&lt;/a&gt;
+      &lt;ui-dialog&gt;
+        &lt;button class=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; data-ui-part=&quot;trigger&quot;&gt;Talk to sales&lt;/button&gt;
+        &lt;dialog data-ui-part=&quot;content&quot; class=&quot;sales&quot;&gt;
+          &lt;header&gt;&lt;h2 data-ui-part=&quot;title&quot;&gt;Talk to sales&lt;/h2&gt;&lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot; data-size=&quot;s&quot; data-ui-part=&quot;close&quot; aria-label=&quot;Close&quot;&gt;✕&lt;/button&gt;&lt;/header&gt;
+          &lt;p data-ui-part=&quot;description&quot;&gt;Tell us about your team and we will reply within one business day.&lt;/p&gt;
+          &lt;form method=&quot;dialog&quot; class=&quot;stack&quot;&gt;
+            &lt;div data-ui=&quot;field&quot;&gt;&lt;label data-ui-part=&quot;label&quot;&gt;Work email&lt;/label&gt;&lt;input data-ui-part=&quot;control&quot; type=&quot;email&quot; required placeholder=&quot;you@company.com&quot;&gt;&lt;p data-ui-part=&quot;error&quot;&gt;&lt;/p&gt;&lt;/div&gt;
+            &lt;div data-ui=&quot;field&quot;&gt;&lt;label data-ui-part=&quot;label&quot;&gt;Team size&lt;/label&gt;&lt;input data-ui-part=&quot;control&quot; type=&quot;number&quot; min=&quot;1&quot; value=&quot;25&quot;&gt;&lt;p data-ui-part=&quot;description&quot;&gt;Approximate seats.&lt;/p&gt;&lt;/div&gt;
+            &lt;div class=&quot;row&quot;&gt;&lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot; value=&quot;cancel&quot; formnovalidate&gt;Cancel&lt;/button&gt;&lt;button class=&quot;btn&quot; data-variant=&quot;primary&quot; value=&quot;send&quot;&gt;Send request&lt;/button&gt;&lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/dialog&gt;
+      &lt;/ui-dialog&gt;
       &lt;ul&gt;
         &lt;li&gt;Everything in Pro&lt;/li&gt;
         &lt;li&gt;Custom theme pack&lt;/li&gt;
-        &lt;li&gt;SSO &amp; audit logs&lt;/li&gt;
+        &lt;li&gt;&lt;span&gt;SSO &amp; audit logs&lt;/span&gt; &lt;span data-ui=&quot;tooltip&quot; data-delay=&quot;100&quot;&gt;&lt;button class=&quot;info&quot; type=&quot;button&quot; data-ui-part=&quot;trigger&quot; aria-label=&quot;About SSO &amp; audit logs&quot;&gt;i&lt;/button&gt;&lt;span data-ui-part=&quot;content&quot;&gt;SAML / OIDC single sign-on and an exportable audit trail&lt;/span&gt;&lt;/span&gt;&lt;/li&gt;
         &lt;li&gt;Priority support&lt;/li&gt;
         &lt;li&gt;99.9% SLA&lt;/li&gt;
       &lt;/ul&gt;
     &lt;/article&gt;
     &lt;/div&gt;
-    &lt;p class=&quot;fineprint&quot;&gt;Prices in USD. Cancel anytime. Need a hand choosing? &lt;a href=&quot;#&quot;&gt;Compare every feature&lt;/a&gt;.&lt;/p&gt;
+    &lt;div class=&quot;faq&quot;&gt;
+      &lt;h3&gt;Questions, answered&lt;/h3&gt;
+      &lt;div data-ui=&quot;accordion&quot; data-type=&quot;single&quot; data-collapsible data-default-value=&quot;q0&quot;&gt;
+        &lt;div data-ui-part=&quot;item&quot; data-value=&quot;q0&quot;&gt;&lt;h4&gt;&lt;button data-ui-part=&quot;trigger&quot;&gt;Can I switch plans later?&lt;/button&gt;&lt;/h4&gt;&lt;div data-ui-part=&quot;content&quot;&gt;&lt;p&gt;Yes. Upgrade or downgrade any time; we prorate the difference to the day.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div data-ui-part=&quot;item&quot; data-value=&quot;q1&quot;&gt;&lt;h4&gt;&lt;button data-ui-part=&quot;trigger&quot;&gt;Do I need a build step?&lt;/button&gt;&lt;/h4&gt;&lt;div data-ui-part=&quot;content&quot;&gt;&lt;p&gt;No. Link the CSS and one module script. FreeMarker macros and React wrappers are optional.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+        &lt;div data-ui-part=&quot;item&quot; data-value=&quot;q2&quot;&gt;&lt;h4&gt;&lt;button data-ui-part=&quot;trigger&quot;&gt;What counts as a seat?&lt;/button&gt;&lt;/h4&gt;&lt;div data-ui-part=&quot;content&quot;&gt;&lt;p&gt;Anyone who can sign in to your workspace. Viewers on public pages are free.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;#-- pricing.ftl: plans come from the model (List&lt;Plan&gt;); one loop renders every tier --&gt;
+&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>[#import &quot;/colibri/ui.ftl&quot; as ui]
+[#-- pricing.ftl: plans + faq come from the model; toggle-group, tooltip, dialog, accordion from Colibri UI --]
 &lt;section class=&quot;blk blk-pricing&quot;&gt;
   &lt;div class=&quot;inner&quot;&gt;
     &lt;div class=&quot;head&quot;&gt;
       &lt;span class=&quot;eyebrow&quot;&gt;Pricing&lt;/span&gt;
       &lt;h2&gt;${pricing.title}&lt;/h2&gt;
       &lt;p class=&quot;lede&quot;&gt;${pricing.lede}&lt;/p&gt;
-      &lt;div class=&quot;billing&quot; data-billing role=&quot;group&quot; aria-label=&quot;Billing period&quot;&gt;
-        &lt;button type=&quot;button&quot; data-period=&quot;monthly&quot; aria-pressed=&quot;true&quot;&gt;Monthly&lt;/button&gt;
-        &lt;button type=&quot;button&quot; data-period=&quot;yearly&quot; aria-pressed=&quot;false&quot;&gt;Yearly &lt;small&gt;−${pricing.yearlyDiscount}%&lt;/small&gt;&lt;/button&gt;
-      &lt;/div&gt;
+      &lt;div class=&quot;billing&quot;&gt;[@ui.toggleGroup type=&quot;single&quot; value=&quot;monthly&quot; label=&quot;Billing period&quot; items=[
+        {&quot;value&quot;:&quot;monthly&quot;, &quot;label&quot;:&quot;Monthly&quot;}, {&quot;value&quot;:&quot;yearly&quot;, &quot;label&quot;:&quot;Yearly −${pricing.yearlyDiscount}%&quot;}
+      ]/]&lt;/div&gt;
     &lt;/div&gt;
     &lt;div class=&quot;tiers&quot;&gt;
-      &lt;#list pricing.plans as plan&gt;
-      &lt;article class=&quot;tier&quot;&lt;#if plan.featured&gt; data-featured&lt;/#if&gt;&gt;
-        &lt;#if plan.featured&gt;&lt;span class=&quot;ribbon&quot;&gt;Most popular&lt;/span&gt;&lt;/#if&gt;
+      [#list pricing.plans as plan]
+      &lt;article class=&quot;tier&quot;[#if plan.featured] data-featured[/#if]&gt;
+        [#if plan.featured]&lt;span class=&quot;ribbon&quot;&gt;Most popular&lt;/span&gt;[/#if]
         &lt;div&gt;&lt;h3&gt;${plan.name}&lt;/h3&gt;&lt;p&gt;${plan.description}&lt;/p&gt;&lt;/div&gt;
         &lt;div class=&quot;price&quot;&gt;&lt;strong&gt;$&lt;span data-monthly=&quot;${plan.monthly}&quot; data-yearly=&quot;${plan.yearly}&quot;&gt;${plan.monthly}&lt;/span&gt;&lt;/strong&gt;&lt;span data-per&gt;/ month&lt;/span&gt;&lt;/div&gt;
-        &lt;a class=&quot;btn&quot; data-variant=&quot;${plan.featured?then(&#x27;primary&#x27;,&#x27;outline&#x27;)}&quot; data-size=&quot;l&quot; href=&quot;${plan.ctaUrl}&quot;&gt;${plan.ctaLabel}&lt;/a&gt;
+        [#if plan.contactSales]
+          [@ui.dialog trigger=&quot;Talk to sales&quot; title=&quot;Talk to sales&quot; description=&quot;We reply within one business day.&quot;]
+            &lt;form method=&quot;post&quot; action=&quot;${salesUrl}&quot; class=&quot;stack&quot;&gt;
+              [@ui.field label=&quot;Work email&quot; id=&quot;sales-email&quot;][@ui.input name=&quot;email&quot; id=&quot;sales-email&quot; type=&quot;email&quot; required=true/][/@ui.field]
+              [@ui.field label=&quot;Team size&quot; id=&quot;sales-seats&quot; description=&quot;Approximate seats.&quot;][@ui.input name=&quot;seats&quot; id=&quot;sales-seats&quot; type=&quot;number&quot; value=&quot;25&quot;/][/@ui.field]
+              [@ui.button variant=&quot;primary&quot; type=&quot;submit&quot;]Send request[/@ui.button]
+            &lt;/form&gt;
+          [/@ui.dialog]
+        [#else]
+          &lt;a class=&quot;btn&quot; data-variant=&quot;${plan.featured?then(&#x27;primary&#x27;,&#x27;outline&#x27;)}&quot; data-size=&quot;l&quot; href=&quot;${plan.ctaUrl}&quot;&gt;${plan.ctaLabel}&lt;/a&gt;
+        [/#if]
         &lt;ul&gt;
-          &lt;#list plan.features as f&gt;&lt;li&lt;#if !f.included&gt; data-off&lt;/#if&gt;&gt;${f.label}&lt;/li&gt;&lt;/#list&gt;
+          [#list plan.features as f]&lt;li[#if !f.included] data-off[/#if]&gt;${f.label}[#if f.tip??] [@ui.tooltip text=f.tip]&lt;button class=&quot;info&quot; type=&quot;button&quot; aria-label=&quot;About ${f.label}&quot;&gt;i&lt;/button&gt;[/@ui.tooltip][/#if]&lt;/li&gt;[/#list]
         &lt;/ul&gt;
       &lt;/article&gt;
-      &lt;/#list&gt;
+      [/#list]
     &lt;/div&gt;
-    &lt;p class=&quot;fineprint&quot;&gt;Prices in USD. Cancel anytime. &lt;a href=&quot;${pricing.compareUrl}&quot;&gt;Compare every feature&lt;/a&gt;.&lt;/p&gt;
+    &lt;div class=&quot;faq&quot;&gt;&lt;h3&gt;Questions, answered&lt;/h3&gt;
+      [@ui.accordion default=&quot;q0&quot; items=pricing.faq/]  [#-- [{value,title,content}] --]
+    &lt;/div&gt;
   &lt;/div&gt;
 &lt;/section&gt;
-&lt;script type=&quot;module&quot; src=&quot;${base}/blocks/blocks.js&quot;&gt;&lt;/script&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
+&lt;script type=&quot;module&quot;&gt;import &quot;/colibri/core/auto.js&quot;; import &quot;/colibri/elements/all.js&quot;; import &quot;/colibri/blocks/blocks.js&quot;;&lt;/script&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
 import &quot;@colibri-kit/blocks/blocks.css&quot;;
-import &quot;@colibri-kit/blocks/blocks.js&quot;; // billing toggle / password reveal (or port to useState)
+import { Accordion, Tooltip, Part, UI } from &quot;@colibri-kit/ui/react&quot;;
+import &quot;@colibri-kit/ui/elements&quot;; // registers &lt;ui-tabs&gt;, &lt;ui-dialog&gt;
+import &quot;@colibri-kit/blocks/blocks.js&quot;; // glue: prices on toggle-group ui:change, password meter
 
 export function PricingBlock() {
   return (
@@ -268,12 +427,14 @@ export function PricingBlock() {
           &lt;p className=&quot;lede&quot;&gt;
             Start free. Upgrade when your team needs every theme pack, FreeMarker macros and React wrappers.
           &lt;/p&gt;
-          &lt;div className=&quot;billing&quot; data-billing role=&quot;group&quot; aria-label=&quot;Billing period&quot;&gt;
-            &lt;button type=&quot;button&quot; data-period=&quot;monthly&quot; aria-pressed=&quot;true&quot;&gt;Monthly&lt;/button&gt;
-            &lt;button type=&quot;button&quot; data-period=&quot;yearly&quot; aria-pressed=&quot;false&quot;&gt;
-              Yearly{&quot; &quot;}
-              &lt;small&gt;−20%&lt;/small&gt;
-            &lt;/button&gt;
+          &lt;div className=&quot;billing&quot;&gt;
+            &lt;UI kind=&quot;toggle-group&quot; data-type=&quot;single&quot; data-default-value=&quot;monthly&quot; aria-label=&quot;Billing period&quot;&gt;
+              &lt;Part name=&quot;item&quot; as=&quot;button&quot; value=&quot;monthly&quot;&gt;Monthly&lt;/Part&gt;
+              &lt;Part name=&quot;item&quot; as=&quot;button&quot; value=&quot;yearly&quot;&gt;
+                Yearly{&quot; &quot;}
+                &lt;small&gt;−20%&lt;/small&gt;
+              &lt;/Part&gt;
+            &lt;/UI&gt;
           &lt;/div&gt;
         &lt;/div&gt;
         &lt;div className=&quot;tiers&quot;&gt;
@@ -333,21 +494,80 @@ export function PricingBlock() {
               &lt;/strong&gt;
               &lt;span data-per&gt;/ month&lt;/span&gt;
             &lt;/div&gt;
-            &lt;a className=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; href=&quot;#&quot;&gt;Talk to sales&lt;/a&gt;
+            &lt;ui-dialog&gt;
+              &lt;button className=&quot;btn&quot; data-variant=&quot;outline&quot; data-size=&quot;l&quot; data-ui-part=&quot;trigger&quot;&gt;
+                Talk to sales
+              &lt;/button&gt;
+              &lt;dialog data-ui-part=&quot;content&quot; className=&quot;sales&quot;&gt;
+                &lt;header&gt;
+                  &lt;h2 data-ui-part=&quot;title&quot;&gt;Talk to sales&lt;/h2&gt;
+                  &lt;button className=&quot;btn&quot; data-variant=&quot;ghost&quot; data-size=&quot;s&quot; data-ui-part=&quot;close&quot; aria-label=&quot;Close&quot;&gt;
+                    ✕
+                  &lt;/button&gt;
+                &lt;/header&gt;
+                &lt;p data-ui-part=&quot;description&quot;&gt;Tell us about your team and we will reply within one business day.&lt;/p&gt;
+                &lt;form method=&quot;dialog&quot; className=&quot;stack&quot;&gt;
+                  &lt;UI kind=&quot;field&quot;&gt;
+                    &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Work email&lt;/Part&gt;
+                    &lt;Part name=&quot;control&quot; as=&quot;input&quot; type=&quot;email&quot; required placeholder=&quot;you@company.com&quot; /&gt;
+                    &lt;Part name=&quot;error&quot; as=&quot;p&quot; /&gt;
+                  &lt;/UI&gt;
+                  &lt;UI kind=&quot;field&quot;&gt;
+                    &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Team size&lt;/Part&gt;
+                    &lt;input data-ui-part=&quot;control&quot; type=&quot;number&quot; min=&quot;1&quot; defaultValue=&quot;25&quot; /&gt;
+                    &lt;Part name=&quot;description&quot; as=&quot;p&quot;&gt;Approximate seats.&lt;/Part&gt;
+                  &lt;/UI&gt;
+                  &lt;div className=&quot;row&quot;&gt;
+                    &lt;button className=&quot;btn&quot; data-variant=&quot;ghost&quot; value=&quot;cancel&quot; formNoValidate&gt;Cancel&lt;/button&gt;
+                    &lt;button className=&quot;btn&quot; data-variant=&quot;primary&quot; value=&quot;send&quot;&gt;Send request&lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/form&gt;
+              &lt;/dialog&gt;
+            &lt;/ui-dialog&gt;
             &lt;ul&gt;
               &lt;li&gt;Everything in Pro&lt;/li&gt;
               &lt;li&gt;Custom theme pack&lt;/li&gt;
-              &lt;li&gt;SSO &amp; audit logs&lt;/li&gt;
+              &lt;li&gt;
+                &lt;span&gt;SSO &amp; audit logs&lt;/span&gt;
+                &lt;Tooltip data-delay=&quot;100&quot;&gt;
+                  &lt;Part name=&quot;trigger&quot; as=&quot;button&quot; className=&quot;info&quot; aria-label=&quot;About SSO &amp; audit logs&quot;&gt;i&lt;/Part&gt;
+                  &lt;Part name=&quot;content&quot; as=&quot;span&quot;&gt;SAML / OIDC single sign-on and an exportable audit trail&lt;/Part&gt;
+                &lt;/Tooltip&gt;
+              &lt;/li&gt;
               &lt;li&gt;Priority support&lt;/li&gt;
               &lt;li&gt;99.9% SLA&lt;/li&gt;
             &lt;/ul&gt;
           &lt;/article&gt;
         &lt;/div&gt;
-        &lt;p className=&quot;fineprint&quot;&gt;
-          Prices in USD. Cancel anytime. Need a hand choosing?{&quot; &quot;}
-          &lt;a href=&quot;#&quot;&gt;Compare every feature&lt;/a&gt;
-          .
-        &lt;/p&gt;
+        &lt;div className=&quot;faq&quot;&gt;
+          &lt;h3&gt;Questions, answered&lt;/h3&gt;
+          &lt;Accordion data-type=&quot;single&quot; data-collapsible data-default-value=&quot;q0&quot;&gt;
+            &lt;Part name=&quot;item&quot; value=&quot;q0&quot;&gt;
+              &lt;h4&gt;
+                &lt;Part name=&quot;trigger&quot; as=&quot;button&quot;&gt;Can I switch plans later?&lt;/Part&gt;
+              &lt;/h4&gt;
+              &lt;Part name=&quot;content&quot;&gt;
+                &lt;p&gt;Yes. Upgrade or downgrade any time; we prorate the difference to the day.&lt;/p&gt;
+              &lt;/Part&gt;
+            &lt;/Part&gt;
+            &lt;Part name=&quot;item&quot; value=&quot;q1&quot;&gt;
+              &lt;h4&gt;
+                &lt;Part name=&quot;trigger&quot; as=&quot;button&quot;&gt;Do I need a build step?&lt;/Part&gt;
+              &lt;/h4&gt;
+              &lt;Part name=&quot;content&quot;&gt;
+                &lt;p&gt;No. Link the CSS and one module script. FreeMarker macros and React wrappers are optional.&lt;/p&gt;
+              &lt;/Part&gt;
+            &lt;/Part&gt;
+            &lt;Part name=&quot;item&quot; value=&quot;q2&quot;&gt;
+              &lt;h4&gt;
+                &lt;Part name=&quot;trigger&quot; as=&quot;button&quot;&gt;What counts as a seat?&lt;/Part&gt;
+              &lt;/h4&gt;
+              &lt;Part name=&quot;content&quot;&gt;
+                &lt;p&gt;Anyone who can sign in to your workspace. Viewers on public pages are free.&lt;/p&gt;
+              &lt;/Part&gt;
+            &lt;/Part&gt;
+          &lt;/Accordion&gt;
+        &lt;/div&gt;
       &lt;/div&gt;
     &lt;/section&gt;
   );
@@ -355,13 +575,13 @@ export function PricingBlock() {
 </code></pre></div>
 </article>
 <article class="g-block" id="signup">
-  <header class="g-head"><div><h2>Signup</h2><p>Split signup: social sign-in, email form with password strength, testimonial panel. Collapses to one column.</p></div>
+  <header class="g-head"><div><h2>Signup</h2><p>Split signup: social sign-in, email form with password strength, testimonial panel. Collapses to one column.</p><ul class="g-uses" aria-label="Colibri UI used"><li><code>&lt;ui-tabs&gt; (Personal / Team)</code></li><li><code>data-ui=&quot;field&quot; ×4 (ids, aria, errors)</code></li><li><code>data-ui=&quot;toggle-password&quot;</code></li><li><code>data-ui=&quot;switch&quot;</code></li><li><code>data-ui=&quot;checkbox&quot;</code></li><li><code>data-ui=&quot;avatar&quot;</code></li></ul></div>
     <div class="g-tools"><div class="g-tabs" role="tablist" aria-label="Signup views"><button type="button" role="tab" data-tab="preview" aria-selected="true">Preview</button><button type="button" role="tab" data-tab="html" aria-selected="false">HTML</button><button type="button" role="tab" data-tab="ftl" aria-selected="false">FreeMarker</button><button type="button" role="tab" data-tab="react" aria-selected="false">React</button></div><div class="g-dev" role="group" aria-label="Preview width"><button type="button" data-w="100%" aria-pressed="true" title="Desktop" aria-label="Desktop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 16v5"/></svg></button><button type="button" data-w="768px" aria-pressed="false" title="Tablet" aria-label="Tablet preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M11 18h2"/></svg></button><button type="button" data-w="390px" aria-pressed="false" title="Phone" aria-label="Phone preview"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></svg></button></div><a class="btn" data-variant="ghost" data-size="s" href="signup.html" target="_blank" rel="noopener">Open ↗</a></div></header>
   <div class="g-panel" data-panel="preview"><div class="g-stage"><iframe src="signup.html" title="Signup block preview" loading="lazy"></iframe></div></div>
   <div class="g-panel" data-panel="html" data-lang="html" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;section class=&quot;blk blk-signup&quot;&gt;
   &lt;div class=&quot;inner&quot;&gt;
     &lt;div class=&quot;signup-form&quot;&gt;
-      &lt;form class=&quot;stack&quot; action=&quot;#&quot; method=&quot;post&quot;&gt;
+      &lt;form class=&quot;stack&quot; action=&quot;#&quot; method=&quot;post&quot; novalidate&gt;
         &lt;header&gt;
           &lt;span class=&quot;brandmark&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;Colibri&lt;/span&gt;
           &lt;h2&gt;Create your account&lt;/h2&gt;
@@ -369,18 +589,26 @@ export function PricingBlock() {
         &lt;/header&gt;
         &lt;div class=&quot;socials&quot;&gt;
           &lt;button class=&quot;btn&quot; data-variant=&quot;outline&quot; type=&quot;button&quot;&gt;&lt;span aria-hidden=&quot;true&quot;&gt;G&lt;/span&gt; Google&lt;/button&gt;
-          &lt;button class=&quot;btn&quot; data-variant=&quot;outline&quot; type=&quot;button&quot;&gt;&lt;span aria-hidden=&quot;true&quot;&gt;&lt;/span&gt; GitHub&lt;/button&gt;
+          &lt;button class=&quot;btn&quot; data-variant=&quot;outline&quot; type=&quot;button&quot;&gt;&lt;span aria-hidden=&quot;true&quot;&gt;⌥&lt;/span&gt; GitHub&lt;/button&gt;
         &lt;/div&gt;
         &lt;div class=&quot;or&quot;&gt;or with email&lt;/div&gt;
-        &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;su-name&quot;&gt;Full name&lt;/label&gt;&lt;input id=&quot;su-name&quot; name=&quot;name&quot; autocomplete=&quot;name&quot; placeholder=&quot;Ada Lovelace&quot; required&gt;&lt;/div&gt;
-        &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;su-email&quot;&gt;Work email&lt;/label&gt;&lt;input id=&quot;su-email&quot; name=&quot;email&quot; type=&quot;email&quot; autocomplete=&quot;email&quot; placeholder=&quot;ada@company.com&quot; required&gt;&lt;/div&gt;
-        &lt;div class=&quot;field&quot;&gt;
-          &lt;label for=&quot;su-pw&quot;&gt;Password&lt;/label&gt;
-          &lt;div class=&quot;pw&quot;&gt;&lt;input id=&quot;su-pw&quot; name=&quot;password&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot; minlength=&quot;8&quot; placeholder=&quot;8+ characters&quot; required&gt;&lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-controls=&quot;su-pw&quot;&gt;Show&lt;/button&gt;&lt;/div&gt;
+        &lt;ui-tabs class=&quot;acct&quot; data-default-value=&quot;personal&quot;&gt;
+          &lt;div data-ui-part=&quot;list&quot; aria-label=&quot;Account type&quot;&gt;&lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;personal&quot;&gt;Personal&lt;/button&gt;&lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;team&quot;&gt;Team&lt;/button&gt;&lt;/div&gt;
+          &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;personal&quot;&gt;&lt;p class=&quot;hint-row&quot;&gt;Just you. Invite people later.&lt;/p&gt;&lt;/div&gt;
+          &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;team&quot;&gt;
+            &lt;div data-ui=&quot;field&quot;&gt;&lt;label data-ui-part=&quot;label&quot;&gt;Workspace name&lt;/label&gt;&lt;input data-ui-part=&quot;control&quot; name=&quot;workspace&quot; placeholder=&quot;Northwind Design&quot;&gt;&lt;p data-ui-part=&quot;description&quot;&gt;colibri.app/&lt;b&gt;northwind-design&lt;/b&gt;&lt;/p&gt;&lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/ui-tabs&gt;
+        &lt;div data-ui=&quot;field&quot;&gt;&lt;label data-ui-part=&quot;label&quot;&gt;Full name&lt;/label&gt;&lt;input data-ui-part=&quot;control&quot; name=&quot;name&quot; autocomplete=&quot;name&quot; placeholder=&quot;Ada Lovelace&quot; required&gt;&lt;p data-ui-part=&quot;error&quot;&gt;&lt;/p&gt;&lt;/div&gt;
+        &lt;div data-ui=&quot;field&quot;&gt;&lt;label data-ui-part=&quot;label&quot;&gt;Work email&lt;/label&gt;&lt;input data-ui-part=&quot;control&quot; name=&quot;email&quot; type=&quot;email&quot; autocomplete=&quot;email&quot; placeholder=&quot;ada@company.com&quot; required&gt;&lt;p data-ui-part=&quot;error&quot;&gt;&lt;/p&gt;&lt;/div&gt;
+        &lt;div data-ui=&quot;field&quot;&gt;
+          &lt;label data-ui-part=&quot;label&quot;&gt;Password&lt;/label&gt;
+          &lt;div class=&quot;pw&quot; data-ui=&quot;toggle-password&quot;&gt;&lt;input data-ui-part=&quot;input&quot; name=&quot;password&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot; minlength=&quot;8&quot; placeholder=&quot;8+ characters&quot; required&gt;&lt;button type=&quot;button&quot; data-ui-part=&quot;toggle&quot; aria-label=&quot;Show password&quot;&gt;Show&lt;/button&gt;&lt;/div&gt;
           &lt;div class=&quot;meter&quot; data-score=&quot;0&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
-          &lt;span class=&quot;hint&quot;&gt;Use 8+ characters with a number and a symbol.&lt;/span&gt;
+          &lt;p data-ui-part=&quot;description&quot;&gt;Use 8+ characters with a number and a symbol.&lt;/p&gt;
         &lt;/div&gt;
-        &lt;label class=&quot;terms&quot;&gt;&lt;input type=&quot;checkbox&quot; required&gt; &lt;span&gt;I agree to the &lt;a href=&quot;#&quot;&gt;Terms&lt;/a&gt; and &lt;a href=&quot;#&quot;&gt;Privacy Policy&lt;/a&gt;.&lt;/span&gt;&lt;/label&gt;
+        &lt;label class=&quot;pref&quot;&gt;&lt;span&gt;&lt;b&gt;Product updates&lt;/b&gt;&lt;small&gt;One email a month. No spam.&lt;/small&gt;&lt;/span&gt;&lt;button type=&quot;button&quot; data-ui=&quot;switch&quot; aria-checked=&quot;true&quot; aria-label=&quot;Product updates&quot;&gt;&lt;/button&gt;&lt;/label&gt;
+        &lt;label class=&quot;terms&quot;&gt;&lt;input type=&quot;checkbox&quot; data-ui=&quot;checkbox&quot; required&gt; &lt;span&gt;I agree to the &lt;a href=&quot;#&quot;&gt;Terms&lt;/a&gt; and &lt;a href=&quot;#&quot;&gt;Privacy Policy&lt;/a&gt;.&lt;/span&gt;&lt;/label&gt;
         &lt;button class=&quot;btn&quot; data-variant=&quot;primary&quot; data-size=&quot;l&quot; type=&quot;submit&quot;&gt;Create account&lt;/button&gt;
         &lt;p class=&quot;switch-auth&quot;&gt;Already have an account? &lt;a href=&quot;#&quot;&gt;Sign in&lt;/a&gt;&lt;/p&gt;
       &lt;/form&gt;
@@ -388,47 +616,55 @@ export function PricingBlock() {
     &lt;aside class=&quot;signup-art&quot;&gt;
       &lt;figure&gt;
         &lt;blockquote&gt;“We replaced four thousand lines of utility classes with forty lines of tokens. Our designers finally own the look again.”&lt;/blockquote&gt;
-        &lt;figcaption&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;&lt;span&gt;&lt;b&gt;Maya Okafor&lt;/b&gt;&lt;br&gt;Head of Design, Northwind&lt;/span&gt;&lt;/figcaption&gt;
+        &lt;figcaption&gt;&lt;span data-ui=&quot;avatar&quot; style=&quot;--h:90&quot;&gt;&lt;span data-ui-part=&quot;fallback&quot;&gt;MO&lt;/span&gt;&lt;/span&gt;&lt;span&gt;&lt;b&gt;Maya Okafor&lt;/b&gt;&lt;br&gt;Head of Design, Northwind&lt;/span&gt;&lt;/figcaption&gt;
       &lt;/figure&gt;
       &lt;div class=&quot;stats&quot;&gt;&lt;div&gt;&lt;strong&gt;12k+&lt;/strong&gt;&lt;span&gt;apps shipped&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;strong&gt;4.9/5&lt;/strong&gt;&lt;span&gt;avg. rating&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;strong&gt;0 kB&lt;/strong&gt;&lt;span&gt;build step&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;
     &lt;/aside&gt;
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>&lt;#import &quot;/colibri/ui.ftl&quot; as ui&gt;
-&lt;#-- signup.ftl: plain form POST; server re-renders with errors in the same .field markup --&gt;
+&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="ftl" data-lang="ftl" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>[#import &quot;/colibri/ui.ftl&quot; as ui]
+[#-- signup.ftl: plain POST; server re-renders with errors[] → field shows them (data-invalid) --]
 &lt;section class=&quot;blk blk-signup&quot;&gt;
   &lt;div class=&quot;inner&quot;&gt;
     &lt;div class=&quot;signup-form&quot;&gt;
       &lt;form class=&quot;stack&quot; action=&quot;${signupUrl}&quot; method=&quot;post&quot;&gt;
         &lt;input type=&quot;hidden&quot; name=&quot;${_csrf.parameterName}&quot; value=&quot;${_csrf.token}&quot;&gt;
         &lt;header&gt;&lt;span class=&quot;brandmark&quot;&gt;&lt;i aria-hidden=&quot;true&quot;&gt;&lt;/i&gt;${brand}&lt;/span&gt;&lt;h2&gt;Create your account&lt;/h2&gt;&lt;p&gt;Start your 14-day trial. No card required.&lt;/p&gt;&lt;/header&gt;
-        &lt;div class=&quot;socials&quot;&gt;&lt;#list oauthProviders as p&gt;&lt;a class=&quot;btn&quot; data-variant=&quot;outline&quot; href=&quot;${p.url}&quot;&gt;${p.label}&lt;/a&gt;&lt;/#list&gt;&lt;/div&gt;
+        &lt;div class=&quot;socials&quot;&gt;[#list oauthProviders as p]&lt;a class=&quot;btn&quot; data-variant=&quot;outline&quot; href=&quot;${p.url}&quot;&gt;${p.label}&lt;/a&gt;[/#list]&lt;/div&gt;
         &lt;div class=&quot;or&quot;&gt;or with email&lt;/div&gt;
-        &lt;#macro field id label type=&quot;text&quot; auto=&quot;&quot; ph=&quot;&quot;&gt;
-        &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;${id}&quot;&gt;${label}&lt;/label&gt;&lt;input id=&quot;${id}&quot; name=&quot;${id}&quot; type=&quot;${type}&quot; autocomplete=&quot;${auto}&quot; placeholder=&quot;${ph}&quot; value=&quot;${(form[id])!}&quot; required&gt;
-          &lt;#if errors[id]??&gt;&lt;span class=&quot;hint&quot;&gt;${errors[id]}&lt;/span&gt;&lt;/#if&gt;&lt;/div&gt;
-        &lt;/#macro&gt;
-        &lt;@field id=&quot;name&quot; label=&quot;Full name&quot; auto=&quot;name&quot; ph=&quot;Ada Lovelace&quot;/&gt;
-        &lt;@field id=&quot;email&quot; label=&quot;Work email&quot; type=&quot;email&quot; auto=&quot;email&quot; ph=&quot;ada@company.com&quot;/&gt;
-        &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;password&quot;&gt;Password&lt;/label&gt;
-          &lt;div class=&quot;pw&quot;&gt;&lt;input id=&quot;password&quot; name=&quot;password&quot; type=&quot;password&quot; autocomplete=&quot;new-password&quot; minlength=&quot;8&quot; required&gt;&lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-controls=&quot;password&quot;&gt;Show&lt;/button&gt;&lt;/div&gt;
-          &lt;div class=&quot;meter&quot; data-score=&quot;0&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;&lt;/div&gt;
-        &lt;label class=&quot;terms&quot;&gt;&lt;input type=&quot;checkbox&quot; name=&quot;terms&quot; required&gt; &lt;span&gt;I agree to the &lt;a href=&quot;${termsUrl}&quot;&gt;Terms&lt;/a&gt;.&lt;/span&gt;&lt;/label&gt;
-        &lt;button class=&quot;btn&quot; data-variant=&quot;primary&quot; data-size=&quot;l&quot; type=&quot;submit&quot;&gt;Create account&lt;/button&gt;
+        &lt;ui-tabs class=&quot;acct&quot; data-default-value=&quot;${(form.type)!&#x27;personal&#x27;}&quot;&gt;
+          &lt;div data-ui-part=&quot;list&quot; aria-label=&quot;Account type&quot;&gt;&lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;personal&quot;&gt;Personal&lt;/button&gt;&lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;team&quot;&gt;Team&lt;/button&gt;&lt;/div&gt;
+          &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;personal&quot;&gt;&lt;p class=&quot;hint-row&quot;&gt;Just you. Invite people later.&lt;/p&gt;&lt;/div&gt;
+          &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;team&quot;&gt;
+            [@ui.field label=&quot;Workspace name&quot; id=&quot;workspace&quot; error=(errors.workspace)!&quot;&quot;][@ui.input name=&quot;workspace&quot; id=&quot;workspace&quot; value=(form.workspace)!/][/@ui.field]
+          &lt;/div&gt;
+        &lt;/ui-tabs&gt;
+        [@ui.field label=&quot;Full name&quot; id=&quot;name&quot; error=(errors.name)!&quot;&quot;][@ui.input name=&quot;name&quot; id=&quot;name&quot; value=(form.name)! required=true attrs={&quot;autocomplete&quot;:&quot;name&quot;}/][/@ui.field]
+        [@ui.field label=&quot;Work email&quot; id=&quot;email&quot; error=(errors.email)!&quot;&quot;][@ui.input name=&quot;email&quot; id=&quot;email&quot; type=&quot;email&quot; value=(form.email)! required=true/][/@ui.field]
+        [@ui.field label=&quot;Password&quot; id=&quot;password&quot; description=&quot;Use 8+ characters with a number and a symbol.&quot; error=(errors.password)!&quot;&quot;]
+          &lt;div class=&quot;pw&quot; data-ui=&quot;toggle-password&quot;&gt;[@ui.input name=&quot;password&quot; id=&quot;password&quot; type=&quot;password&quot; required=true attrs={&quot;data-ui-part&quot;:&quot;input&quot;,&quot;minlength&quot;:&quot;8&quot;}/]&lt;button type=&quot;button&quot; data-ui-part=&quot;toggle&quot; aria-label=&quot;Show password&quot;&gt;Show&lt;/button&gt;&lt;/div&gt;
+          &lt;div class=&quot;meter&quot; data-score=&quot;0&quot; aria-hidden=&quot;true&quot;&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;i&gt;&lt;/i&gt;&lt;/div&gt;
+        [/@ui.field]
+        &lt;div class=&quot;pref&quot;&gt;&lt;span&gt;&lt;b&gt;Product updates&lt;/b&gt;&lt;small&gt;One email a month.&lt;/small&gt;&lt;/span&gt;[@ui.switch name=&quot;updates&quot; checked=(form.updates)!true/]&lt;/div&gt;
+        [@ui.checkbox name=&quot;terms&quot; label=&quot;I agree to the Terms and Privacy Policy.&quot; attrs={&quot;required&quot;:&quot;required&quot;}/]
+        [@ui.button variant=&quot;primary&quot; type=&quot;submit&quot; attrs={&quot;data-size&quot;:&quot;l&quot;}]Create account[/@ui.button]
         &lt;p class=&quot;switch-auth&quot;&gt;Already have an account? &lt;a href=&quot;${loginUrl}&quot;&gt;Sign in&lt;/a&gt;&lt;/p&gt;
       &lt;/form&gt;
     &lt;/div&gt;
-    &lt;#include &quot;signup-art.ftl&quot;&gt;
+    [#include &quot;signup-art.ftl&quot;]
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
+&lt;/section&gt;
+&lt;script type=&quot;module&quot;&gt;import &quot;/colibri/core/auto.js&quot;; import &quot;/colibri/elements/all.js&quot;; import &quot;/colibri/blocks/blocks.js&quot;;&lt;/script&gt;</code></pre></div><div class="g-panel" data-panel="react" data-lang="react" hidden><button class="btn g-copy" data-size="s" data-variant="ghost" type="button">Copy</button><pre><code>import &quot;@colibri-kit/css&quot;;
 import &quot;@colibri-kit/blocks/blocks.css&quot;;
-import &quot;@colibri-kit/blocks/blocks.js&quot;; // billing toggle / password reveal (or port to useState)
+import { Switch, Part, UI } from &quot;@colibri-kit/ui/react&quot;;
+import &quot;@colibri-kit/ui/elements&quot;; // registers &lt;ui-tabs&gt;, &lt;ui-dialog&gt;
+import &quot;@colibri-kit/blocks/blocks.js&quot;; // glue: prices on toggle-group ui:change, password meter
 
 export function SignupBlock() {
   return (
     &lt;section className=&quot;blk blk-signup&quot;&gt;
       &lt;div className=&quot;inner&quot;&gt;
         &lt;div className=&quot;signup-form&quot;&gt;
-          &lt;form className=&quot;stack&quot; action=&quot;#&quot; method=&quot;post&quot;&gt;
+          &lt;form className=&quot;stack&quot; action=&quot;#&quot; method=&quot;post&quot; noValidate&gt;
             &lt;header&gt;
               &lt;span className=&quot;brandmark&quot;&gt;
                 &lt;i aria-hidden=&quot;true&quot; /&gt;
@@ -443,24 +679,52 @@ export function SignupBlock() {
                 Google
               &lt;/button&gt;
               &lt;button className=&quot;btn&quot; data-variant=&quot;outline&quot; type=&quot;button&quot;&gt;
-                &lt;span aria-hidden=&quot;true&quot; /&gt;
+                &lt;span aria-hidden=&quot;true&quot;&gt;⌥&lt;/span&gt;{&quot; &quot;}
                 GitHub
               &lt;/button&gt;
             &lt;/div&gt;
             &lt;div className=&quot;or&quot;&gt;or with email&lt;/div&gt;
-            &lt;div className=&quot;field&quot;&gt;
-              &lt;label htmlFor=&quot;su-name&quot;&gt;Full name&lt;/label&gt;
-              &lt;input id=&quot;su-name&quot; name=&quot;name&quot; autoComplete=&quot;name&quot; placeholder=&quot;Ada Lovelace&quot; required /&gt;
-            &lt;/div&gt;
-            &lt;div className=&quot;field&quot;&gt;
-              &lt;label htmlFor=&quot;su-email&quot;&gt;Work email&lt;/label&gt;
-              &lt;input id=&quot;su-email&quot; name=&quot;email&quot; type=&quot;email&quot; autoComplete=&quot;email&quot; placeholder=&quot;ada@company.com&quot; required /&gt;
-            &lt;/div&gt;
-            &lt;div className=&quot;field&quot;&gt;
-              &lt;label htmlFor=&quot;su-pw&quot;&gt;Password&lt;/label&gt;
-              &lt;div className=&quot;pw&quot;&gt;
+            &lt;ui-tabs className=&quot;acct&quot; data-default-value=&quot;personal&quot;&gt;
+              &lt;div data-ui-part=&quot;list&quot; aria-label=&quot;Account type&quot;&gt;
+                &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;personal&quot;&gt;Personal&lt;/button&gt;
+                &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; data-value=&quot;team&quot;&gt;Team&lt;/button&gt;
+              &lt;/div&gt;
+              &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;personal&quot;&gt;
+                &lt;p className=&quot;hint-row&quot;&gt;Just you. Invite people later.&lt;/p&gt;
+              &lt;/div&gt;
+              &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;team&quot;&gt;
+                &lt;UI kind=&quot;field&quot;&gt;
+                  &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Workspace name&lt;/Part&gt;
+                  &lt;input data-ui-part=&quot;control&quot; name=&quot;workspace&quot; placeholder=&quot;Northwind Design&quot; /&gt;
+                  &lt;Part name=&quot;description&quot; as=&quot;p&quot;&gt;
+                    colibri.app/{&quot; &quot;}
+                    &lt;b&gt;northwind-design&lt;/b&gt;
+                  &lt;/Part&gt;
+                &lt;/UI&gt;
+              &lt;/div&gt;
+            &lt;/ui-tabs&gt;
+            &lt;UI kind=&quot;field&quot;&gt;
+              &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Full name&lt;/Part&gt;
+              &lt;input data-ui-part=&quot;control&quot; name=&quot;name&quot; autoComplete=&quot;name&quot; placeholder=&quot;Ada Lovelace&quot; required /&gt;
+              &lt;Part name=&quot;error&quot; as=&quot;p&quot; /&gt;
+            &lt;/UI&gt;
+            &lt;UI kind=&quot;field&quot;&gt;
+              &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Work email&lt;/Part&gt;
+              &lt;input
+                data-ui-part=&quot;control&quot;
+                name=&quot;email&quot;
+                type=&quot;email&quot;
+                autoComplete=&quot;email&quot;
+                placeholder=&quot;ada@company.com&quot;
+                required
+              /&gt;{&quot; &quot;}
+              &lt;Part name=&quot;error&quot; as=&quot;p&quot; /&gt;
+            &lt;/UI&gt;
+            &lt;UI kind=&quot;field&quot;&gt;
+              &lt;Part name=&quot;label&quot; as=&quot;label&quot;&gt;Password&lt;/Part&gt;
+              &lt;div className=&quot;pw&quot; data-ui=&quot;toggle-password&quot;&gt;
                 &lt;input
-                  id=&quot;su-pw&quot;
+                  data-ui-part=&quot;input&quot;
                   name=&quot;password&quot;
                   type=&quot;password&quot;
                   autoComplete=&quot;new-password&quot;
@@ -468,7 +732,7 @@ export function SignupBlock() {
                   placeholder=&quot;8+ characters&quot;
                   required
                 /&gt;{&quot; &quot;}
-                &lt;button type=&quot;button&quot; aria-pressed=&quot;false&quot; aria-controls=&quot;su-pw&quot;&gt;Show&lt;/button&gt;
+                &lt;button type=&quot;button&quot; data-ui-part=&quot;toggle&quot; aria-label=&quot;Show password&quot;&gt;Show&lt;/button&gt;
               &lt;/div&gt;
               &lt;div className=&quot;meter&quot; data-score=&quot;0&quot; aria-hidden=&quot;true&quot;&gt;
                 &lt;i /&gt;
@@ -476,10 +740,17 @@ export function SignupBlock() {
                 &lt;i /&gt;
                 &lt;i /&gt;
               &lt;/div&gt;
-              &lt;span className=&quot;hint&quot;&gt;Use 8+ characters with a number and a symbol.&lt;/span&gt;
-            &lt;/div&gt;
+              &lt;Part name=&quot;description&quot; as=&quot;p&quot;&gt;Use 8+ characters with a number and a symbol.&lt;/Part&gt;
+            &lt;/UI&gt;
+            &lt;label className=&quot;pref&quot;&gt;
+              &lt;span&gt;
+                &lt;b&gt;Product updates&lt;/b&gt;
+                &lt;small&gt;One email a month. No spam.&lt;/small&gt;
+              &lt;/span&gt;
+              &lt;Switch type=&quot;button&quot; aria-checked=&quot;true&quot; aria-label=&quot;Product updates&quot; /&gt;
+            &lt;/label&gt;
             &lt;label className=&quot;terms&quot;&gt;
-              &lt;input type=&quot;checkbox&quot; required /&gt;
+              &lt;UI kind=&quot;checkbox&quot; as=&quot;input&quot; type=&quot;checkbox&quot; required /&gt;
               &lt;span&gt;
                 I agree to the{&quot; &quot;}
                 &lt;a href=&quot;#&quot;&gt;Terms&lt;/a&gt;{&quot; &quot;}
@@ -501,7 +772,9 @@ export function SignupBlock() {
               “We replaced four thousand lines of utility classes with forty lines of tokens. Our designers finally own the look again.”
             &lt;/blockquote&gt;
             &lt;figcaption&gt;
-              &lt;i aria-hidden=&quot;true&quot; /&gt;
+              &lt;UI kind=&quot;avatar&quot; as=&quot;span&quot; style={{ &quot;--h&quot;: &quot;90&quot; }}&gt;
+                &lt;Part name=&quot;fallback&quot; as=&quot;span&quot;&gt;MO&lt;/Part&gt;
+              &lt;/UI&gt;
               &lt;span&gt;
                 &lt;b&gt;Maya Okafor&lt;/b&gt;
                 &lt;br /&gt;
