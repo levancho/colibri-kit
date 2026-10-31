@@ -989,3 +989,8 @@ html[data-ui-motion=off] [data-ui=spinner]::before,html[data-ui-motion=off] [dat
  :where(.ui-root) [data-ui=clothline] [data-ui-part=remove]{opacity:1;pointer-events:auto;width:44px;height:44px;top:0;right:-8px}
  :where(.ui-root) [data-ui=rating] :is(input,label){min-width:44px!important;min-height:44px!important}
 }
+
+/* Clothline: header controls sit ABOVE the corner resize grips (grips overlapped X and the mark and swallowed clicks) */
+:where(.ui-root) [data-ui=cell] [data-ui-part=header] :is(button,[data-ui-part=mark]){position:relative;z-index:3}
+:where(.ui-root) [data-ui=cell] [data-ui-part=resize]{z-index:2}
+:where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel]{z-index:4}

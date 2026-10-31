@@ -142,6 +142,7 @@ export function createCell(root, opts = {}) {
   const minW = () => +root.dataset.minWidth || 160, minH = () => +root.dataset.minHeight || 90;
   const drag = (el, kind, edge = "se") => on(el, "pointerdown", (e) => {
     if (e.button !== 0 || root.dataset.maximized != null || (kind === "move" && e.target.closest("button,a,input,[data-ui-part=mark]"))) return;
+    if (kind === "resize") { const hit = document.elementsFromPoint?.(e.clientX, e.clientY).find((n) => n !== el && root.contains(n) && n.closest?.("[data-ui-part=header] button,[data-ui-part=mark]")); if (hit) return; }
     if (root.dataset.static != null && kind === "move") return;
     if (kind === "move" && root.dataset.size === "tiny") return; // tiny chips open on click instead
     e.preventDefault(); el.setPointerCapture?.(e.pointerId);
