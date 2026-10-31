@@ -5,7 +5,7 @@ cd "$(dirname "$0")/.."
 (cd packages/colibri-css && node build.mjs)
 python3 tools/kitchen-sink.py >/dev/null
 rm -rf site/dist && mkdir -p site/dist/css site/dist/ui site/dist/kitchen-sink
-cp site/src/* site/dist/
+cp -R site/src/* site/dist/
 cp packages/colibri-css/dist/*.css site/dist/css/
 cp -R themes src site/dist/ui/
 # kitchen sink keeps its relative paths (../src, ../themes, ../packages)

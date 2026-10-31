@@ -6,6 +6,7 @@ from sink_catalog_more import C
 import sink_catalog_motion  # noqa: adds Motion + Theming groups
 import sink_catalog_ai, sink_catalog_blocks  # noqa: Conversation, AI Elements, blocks
 import sink_catalog_css  # noqa: Colibri CSS group
+import sink_catalog_radix  # noqa: Radix-audit additions
 from sink_info import INFO
 from sink_code import FTL, IMP
 from sink_pretty import pretty

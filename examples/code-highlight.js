@@ -71,15 +71,46 @@ export function css(s) {
   ]);
 }
 const LANG = { html: (s) => html(s), ftl: (s) => html(s, true), freemarker: (s) => html(s, true), react: js, jsx: js, js, css };
+const LABEL = { html: "HTML", ftl: "FreeMarker", freemarker: "FreeMarker", react: "React · JSX", jsx: "JSX", js: "JavaScript", css: "CSS" };
+// Pretty-print: long single-line markup is broken at block-level tags and re-indented (short lines are left as authored).
+const BLOCK = /^(?:div|section|header|footer|nav|main|aside|article|form|fieldset|ul|ol|li|dl|dt|dd|table|thead|tbody|tr|td|th|p|h[1-6]|button|label|input|select|option|textarea|details|summary|dialog|figure|img|hr|svg|ui-[\w-]+|template|#[\w]+|@[\w.]+)$/i;
+const VOID = /^(?:input|img|hr|br|meta|link|source|col|area|wbr)$/i;
+export function format(src, lang = "html") {
+  if (!/^(html|ftl|freemarker)$/.test(lang)) return src;
+  return src.split("\n").map((line) => {
+    if (line.length <= 110 || (line.match(/</g) || []).length < 3) return line;
+    const base = /^\s*/.exec(line)[0]; const st = []; let out = "", first = true, m;
+    const re = /<\/?([A-Za-z][\w:-]*)(?:[^>"']|"[^"]*"|'[^']*')*?\/?>|\[\/?([#@][\w.]+)(?:[^\]"]|"[^"]*")*\/?\]|[^<\[]+|[<\[]/g;
+    const nl = (d) => { if (!first) out = out.replace(/\s+$/, "") + "\n" + base + "  ".repeat(Math.max(0, d)); };
+    while ((m = re.exec(line.trimStart()))) {
+      const t = m[0], name = m[1] || m[2] || "", close = /^(<\/|\[\/)/.test(t), self = /\/[>\]]$/.test(t) || VOID.test(name);
+      if (name && BLOCK.test(name)) {
+        if (/^#else/.test(name)) { nl(st.length - 1); if (st.length) st[st.length - 1] = true; }
+        else if (close) { const had = st.pop(); if (had) nl(st.length); }
+        else { if (st.length) st[st.length - 1] = true; nl(st.length); if (!self && !/^#(?:assign|include|import|setting|return|break)/.test(name)) st.push(false); }
+      }
+      out += t; first = false;
+    }
+    return out;
+  }).join("\n");
+}
+export function highlight(src, lang) { const f = LANG[lang]; return f ? f(src) : esc(src); }
 export function highlightAll(root = document) {
   for (const code of root.querySelectorAll("pre code:not([data-hl])")) {
     const host = code.closest("[data-lang],[data-value]"); const lang = (host?.dataset.lang || host?.dataset.value || "").toLowerCase();
     const f = LANG[lang]; if (!f) continue;
-    code.innerHTML = f(code.textContent); code.dataset.hl = lang; code.classList.add("hl");
+    const src = format(code.textContent.replace(/\s+$/, ""), lang);
+    code.innerHTML = f(src).split("\n").map((l) => `<span class="hl-ln">${l || " "}</span>`).join("\n");
+    code.dataset.hl = lang; code.classList.add("hl"); const pre = code.parentElement; pre.classList.add("hl-pre"); pre.dataset.hlLang = LABEL[lang] || lang;
   }
 }
 // palette: light by default; dark with html[data-theme=dark] or the OS setting
-const css0 = `:root{--hl-fg:#24292f;--hl-tag:#116329;--hl-comp:#8250df;--hl-attr:#0550ae;--hl-str:#0a3069;--hl-punc:#6e7781;--hl-kw:#cf222e;--hl-num:#0550ae;--hl-ftl:#953800}html[data-theme=dark],html[data-kit-theme=midnight]{--hl-fg:#e6edf3;--hl-tag:#7ee787;--hl-comp:#d2a8ff;--hl-attr:#79c0ff;--hl-str:#a5d6ff;--hl-punc:#8b949e;--hl-kw:#ff7b72;--hl-num:#79c0ff;--hl-ftl:#ffa657}@media (prefers-color-scheme:dark){html:not([data-theme=light]){--hl-fg:#e6edf3;--hl-tag:#7ee787;--hl-comp:#d2a8ff;--hl-attr:#79c0ff;--hl-str:#a5d6ff;--hl-punc:#8b949e;--hl-kw:#ff7b72;--hl-num:#79c0ff;--hl-ftl:#ffa657}}.hl{color:var(--hl-fg)}.hl .hl-tag{color:var(--hl-tag)}.hl .hl-comp{color:var(--hl-comp);font-weight:600}.hl .hl-attr{color:var(--hl-attr)}.hl .hl-str{color:var(--hl-str)}.hl .hl-punc{color:var(--hl-punc)}.hl .hl-com{color:var(--hl-punc);font-style:italic}.hl .hl-kw{color:var(--hl-kw)}.hl .hl-fn{color:var(--hl-comp)}.hl .hl-num{color:var(--hl-num)}.hl .hl-ftl{color:var(--hl-ftl);font-weight:600}.hl .hl-ent{color:var(--hl-ftl)}`;
+const css0 = `:root{--hl-fg:#24292f;--hl-tag:#1a7f37;--hl-comp:#8250df;--hl-attr:#0550ae;--hl-str:#0a5c99;--hl-punc:#6e7781;--hl-kw:#cf222e;--hl-num:#0550ae;--hl-ftl:#953800}html[data-theme=dark],html[data-kit-theme=midnight]{--hl-fg:#e6edf3;--hl-tag:#7ee787;--hl-comp:#d2a8ff;--hl-attr:#79c0ff;--hl-str:#a5d6ff;--hl-punc:#8b949e;--hl-kw:#ff7b72;--hl-num:#79c0ff;--hl-ftl:#ffa657}@media (prefers-color-scheme:dark){html:not([data-theme=light]){--hl-fg:#e6edf3;--hl-tag:#7ee787;--hl-comp:#d2a8ff;--hl-attr:#79c0ff;--hl-str:#a5d6ff;--hl-punc:#8b949e;--hl-kw:#ff7b72;--hl-num:#79c0ff;--hl-ftl:#ffa657}}.hl{color:var(--hl-fg)}.hl .hl-tag{color:var(--hl-tag)}.hl .hl-comp{color:var(--hl-comp);font-weight:600}.hl .hl-attr{color:var(--hl-attr)}.hl .hl-str{color:var(--hl-str)}.hl .hl-punc{color:var(--hl-punc)}.hl .hl-com{color:var(--hl-punc);font-style:italic}.hl .hl-kw{color:var(--hl-kw)}.hl .hl-fn{color:var(--hl-comp)}.hl .hl-num{color:var(--hl-num)}.hl .hl-ftl{color:var(--hl-ftl);font-weight:600}.hl .hl-ent{color:var(--hl-ftl)}
+.hl-pre{position:relative;counter-reset:hl-ln;tab-size:2;line-height:1.6}
+.hl{display:block;min-width:max-content}.hl .hl-ln{counter-increment:hl-ln}
+.hl .hl-ln::before{content:counter(hl-ln);display:inline-block;width:2.6em;margin-right:1.1em;padding-right:.6em;text-align:right;color:var(--hl-punc);opacity:.45;border-right:1px solid color-mix(in srgb,var(--hl-punc) 30%,transparent);user-select:none;-webkit-user-select:none}
+.hl-pre::after{content:attr(data-hl-lang);position:sticky;float:right;top:0;right:0;margin:-.2em -.2em 0 1em;font:600 10px/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--hl-punc);opacity:.7;pointer-events:none}
+.hl .hl-kw{font-weight:600}.hl .hl-tag{font-weight:500}`;
 if (typeof document !== "undefined" && !document.getElementById("hl-css")) {
   const st = document.createElement("style"); st.id = "hl-css"; st.textContent = css0; document.head.append(st);
 }
