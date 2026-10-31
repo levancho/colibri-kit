@@ -12,5 +12,6 @@
 <a class="card stack" data-gap="s" href="crm.html" style="text-decoration:none;color:inherit"><div class="shot"><iframe src="crm.html" tabindex="-1" title="CRM preview" loading="lazy"></iframe></div><h3 style="margin:0">CRM</h3><p class="muted" style="margin:0">Pipeline KPIs, kanban stage lanes, monthly revenue bars, team activity feed, quota meters, deal-source donut.</p></a>
 </div>
 <p class="muted">Theme packs: <code>themes/packs/</code> · <code>&lt;html data-kit-theme="glacier|ember|midnight"&gt;</code> · try <a href="analytics.html?theme=midnight">?theme=midnight</a>. Source on <a href="https://github.com/levancho/colibri-kit">GitHub</a>.</p>
-</main><script type="module">import{initPackPicker,initScheme}from"./skins.js";initPackPicker(document.getElementById("pack"));initScheme(document.getElementById("scheme"));
+</main><script type="module">import{mountDevicePreview}from"../device-preview.js";{const h=document.querySelector("header, .toolbar, main");if(h){const s=document.createElement("span");s.className="dp-slot";h.prepend(s);mountDevicePreview(s)}}
+import{initPackPicker,initScheme}from"./skins.js";initPackPicker(document.getElementById("pack"));initScheme(document.getElementById("scheme"));
 document.getElementById("pack").addEventListener("change",()=>document.querySelectorAll("iframe").forEach(f=>f.contentWindow.location.reload()));</script></body></html>

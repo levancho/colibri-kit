@@ -161,6 +161,15 @@ html[data-theme=dark] .sink-st[data-status=done]{background:#052e16;color:#86efa
 .ccss-pitch p{margin:.35rem 0}.ccss-pitch ul{margin:.35rem 0;padding-inline-start:1.2rem}.ccss-pitch li{margin:.15rem 0}
 
 #sink-sidebar,#sink-sidebar nav{overscroll-behavior:contain}
+
+/* responsive: phones */
+@media (width < 700px){.sink-top{height:auto;min-height:56px;flex-wrap:wrap;row-gap:.4rem;padding:.5rem .75rem}
+ .sink-controls{margin-left:0;inline-size:100%;flex-wrap:nowrap;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding-bottom:2px}
+ .sink-controls>*{flex:none}.sink-sec-h{flex-wrap:wrap}
+ .sink-preview{margin:0 .5rem;padding:1.25rem .75rem;overflow-x:auto;justify-content:flex-start}
+ .sink-code,.sink-a11y{margin-inline:.5rem}.sink-pre{padding-inline-end:1rem;padding-top:2.6rem}}
+.sink-preview{min-width:0}
+html.dp-framed .sink-top{top:0}
 </style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>

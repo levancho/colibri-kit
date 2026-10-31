@@ -1,4 +1,6 @@
 import { highlightAll } from "./code-highlight.js";
+import { mountDevicePreview } from "./device-preview.js";
+mountDevicePreview(document.querySelector(".sink-controls"));
 highlightAll();
 // Kitchen-sink page glue (demo only, not part of the library).
 const $ = (s, r = document) => r.querySelector(s);

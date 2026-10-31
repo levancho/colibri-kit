@@ -1,3 +1,5 @@
+import { mountDevicePreview } from "../device-preview.js";
+{ const top = document.querySelector(".dash-top"); if (top) { const slot = document.createElement("span"); slot.className = "dp-slot"; top.append(slot); mountDevicePreview(slot); } }
 import { mount } from "./charts.js";
 import { initPackPicker, initScheme, initHue } from "./skins.js";
 import { highlightAll } from "../code-highlight.js";

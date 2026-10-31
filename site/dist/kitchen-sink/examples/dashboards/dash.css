@@ -83,3 +83,7 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
 }
 
 .dash-side{overscroll-behavior:contain}
+
+/* responsive: the top bar wraps instead of pushing the page wider */
+.dp-slot{display:inline-flex;align-items:center;margin-inline-start:auto}
+@media (width < 700px){.dash-top{flex-wrap:wrap;row-gap:var(--c-space-2xs)}.dash-top .search{flex-basis:100%;max-inline-size:none;order:9}.dash-top label{flex-wrap:nowrap}}

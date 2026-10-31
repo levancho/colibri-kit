@@ -974,3 +974,7 @@ html[data-ui-motion=off] [data-ui=spinner]::before,html[data-ui-motion=off] [dat
 
 /* sidebar scroll never chains into the page */
 :where(.ui-root) [data-ui=sidebar],:where(.ui-root) [data-ui=sidebar] [data-ui-part=content]{overscroll-behavior:contain}
+
+/* touch: comfortable 44px targets on coarse pointers (phones/tablets) */
+@media (pointer:coarse){:where(.ui-root) :is([data-ui=button],[data-ui=tabs] [data-ui-part=trigger],[data-ui=accordion] [data-ui-part=trigger],[role=menuitem],[role=menuitemcheckbox],[role=menuitemradio],[role=option],[data-ui=pagination] :is(a,button),[data-ui=toggle]){min-height:44px}
+ :where(.ui-root) :is(input:not([type=checkbox],[type=radio],[type=range]),select){min-height:44px}}
