@@ -3,7 +3,7 @@
 (function () {
   const DEF = { pack: "glacier", hue: null, chroma: 0.17, gray: "auto", scheme: "light", radius: "pack", scaling: "100", panel: "solid",
     font: "pack", hfont: "pack", tscale: 100, hweight: "pack", shadow: "pack", focus: "pack", motion: "pack",
-    btn: "pack", acc: "pack", tabs: "pack", card: "pack", input: "pack" };
+    btn: "pack", acc: "pack", tabs: "pack", card: "pack", input: "pack", bridge: null };
   const KEY = "colibri-studio-v2";
   const DARK_ONLY = { midnight: true };
   const HUES = [["Indigo", 268], ["Iris", 280], ["Violet", 295], ["Plum", 320], ["Pink", 350], ["Crimson", 10], ["Ruby", 20], ["Red", 27],
@@ -46,6 +46,7 @@
     if (S.focus === "thick") tok["--ui-focus-shadow"] = "0 0 0 4px color-mix(in oklab,var(--ui-ring) 60%,transparent)";
     if (S.motion === "calm") Object.assign(tok, { "--ui-motion-duration": "260ms", "--ui-motion-distance": "6px", "--c-dur": "260ms" });
     if (S.motion === "lively") Object.assign(tok, { "--ui-motion-duration": "420ms", "--ui-motion-distance": "18px", "--ui-motion-ease": "cubic-bezier(.34,1.56,.64,1)", "--c-dur": "320ms", "--c-ease": "cubic-bezier(.34,1.56,.64,1)" });
+    if (S.bridge && window.ColibriBridge) Object.assign(tok, window.ColibriBridge.tokens(S.bridge, scheme));
     return { attrs, tok, scheme };
   }
   const ATTRS = ["data-theme", "data-kit-theme", "data-ui-gray", "data-ui-scaling", "data-ui-panel", "data-ui-motion", "data-ui-btn", "data-ui-acc", "data-ui-tabs", "data-ui-card", "data-ui-input"];

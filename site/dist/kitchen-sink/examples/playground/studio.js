@@ -83,7 +83,7 @@ function render() {
   $("#tagA").textContent = split ? scheme : ""; $("#tagB").textContent = split ? (dark ? "dark (pack is dark-only)" : opposite()) : "";
   const look = ["btn", "acc", "tabs", "card", "input"].filter((k) => S[k] !== "pack").map((k) => `${k} ${S[k]}`);
   $("#sum").textContent = [p.name, S.hue == null ? "pack colour" : `${(HUES.find((h) => h[1] === +S.hue) || ["hue"])[0]} ${S.hue}°`, scheme, S.radius === "pack" ? "pack radius" : `r ${S.radius}`, `${S.scaling}%`, ...look].join(" · ");
-  pushAll(); renderMine(); renderCode();
+  pushAll(); renderMine(); renderCode(); renderBridge?.();
 }
 // ---------- export ----------
 function cssFor() {
@@ -128,6 +128,31 @@ $("#mine").onclick = (e) => { const l = e.target.closest("[data-i]"), x = e.targ
   if (l) set({ ...DEF, ...m[+l.dataset.i].s }); if (x) { m.splice(+x.dataset.x, 1); localStorage.setItem(MINE, JSON.stringify(m)); renderMine(); } };
 $("#save").onclick = () => { const p = PACKS.find((x) => x.id === (S.pack || "")); const name = prompt("Name this theme", `${p.name}${S.hue != null ? " · " + S.hue + "°" : ""}`); if (!name) return; const m = mine(); m.unshift({ name, s: { ...S } }); localStorage.setItem(MINE, JSON.stringify(m.slice(0, 24))); renderMine(); toast("Saved"); };
 $("#import").onclick = () => { const t = prompt("Paste theme JSON (from the JSON export tab)"); if (!t) return; try { const o = JSON.parse(t); const clean = Object.fromEntries(Object.entries(o).filter(([k]) => k in DEF)); set({ ...DEF, ...clean }); toast("Theme imported"); } catch { toast("That is not valid theme JSON"); } };
+// ---------- Colibria bridge (cross-site, plain navigation + postMessage; no iframes) ----------
+const B = window.ColibriBridge;
+const toHex = (doc, css) => { const i = doc.createElement("i"); i.style.cssText = "position:absolute;opacity:0;background:" + css; doc.body.append(i); const c = doc.defaultView.getComputedStyle(i).backgroundColor; i.remove(); const cv = document.createElement("canvas"); cv.width = cv.height = 1; const x = cv.getContext("2d"); x.fillStyle = c; x.fillRect(0, 0, 1, 1); const d = x.getImageData(0, 0, 1, 1).data; return "#" + [d[0], d[1], d[2]].map((v) => v.toString(16).padStart(2, "0")).join("").toUpperCase(); };
+function currentTheme() {
+  const kit = Object.fromEntries(["pack", "radius", "btn", "acc", "tabs", "card", "input", "shadow", "font", "hfont", "scaling"].map((k) => [k, String(S[k] ?? "")]));
+  if (S.bridge) return B.validate({ ...S.bridge, source: "colibri-kit", kit });
+  const d = pvA.contentDocument, v = (n) => toHex(d, `var(${n})`);
+  const r = { text: v("--ui-foreground"), surface: v("--ui-card"), accent: v("--ui-primary"), background: v("--ui-background") };
+  const soft = toHex(d, "color-mix(in oklab,var(--ui-primary) 40%,var(--ui-background))");
+  const p = PACKS.find((x) => x.id === (S.pack || ""));
+  return B.validate({ v: 1, source: "colibri-kit", name: `${p.name} ${CS.resolveScheme(S)}`, colors: [r.text, r.surface, r.accent, soft, r.background], roles: r, scheme: CS.resolveScheme(S), kit });
+}
+const studioURL = () => location.origin + location.pathname;
+$("#toColibria").onclick = () => { const t = currentTheme(); if (t) window.open(B.link(B.COLIBRIA, t, studioURL()), "colibria"); };
+$("#toDash").onclick = () => { const t = currentTheme(); if (t) window.open(B.link(location.origin + "/kitchen-sink/examples/dashboards/analytics.html", t, null), "_blank"); };
+$("#unlink").onclick = () => set({ bridge: null });
+function adopt(t, how) { const patch = { bridge: t, hue: null, scheme: t.scheme }; if (t.kit) for (const [k, v] of Object.entries(t.kit)) if (k in DEF && k !== "bridge") patch[k] = v; if (CS.DARK_ONLY[patch.pack ?? S.pack] && t.scheme === "light") patch.pack = "glacier"; set(patch); toast(how); }
+addEventListener("message", (e) => { if (e.data?.type !== "colibri-theme" || !B.okOrigin(e.origin)) return; const t = B.validate(e.data.theme); if (t) { adopt(t, "Palette received from Colibria"); window.focus(); } });
+function renderBridge() {
+  const t = S.bridge, rl = t ? Object.fromEntries(Object.entries(t.roles).map(([k, v]) => [v, k])) : {};
+  $("#bsw").innerHTML = t ? t.colors.map((c) => `<i style="background:${c}" title="${c}${rl[c] ? " · " + rl[c] : ""}"${rl[c] ? ` data-r="${rl[c] === "background" ? "bg" : rl[c]}"` : ""}></i>`).join("") : "";
+  $("#bsub").textContent = t ? `${t.source === "colibria" ? "From Colibria" : "Linked"}${t.name ? ": " + t.name : ""} · ${t.scheme}` : "Design colours on colibria.ai, test them here";
+  $("#unlink").hidden = !t; $("#toColibria").textContent = t ? "Refine in Colibria ↗" : "Open in Colibria ↗";
+}
+try { const inc = JSON.parse(sessionStorage.getItem("colibri-bridge-incoming") || "null"); if (inc) { sessionStorage.removeItem("colibri-bridge-incoming"); setTimeout(() => toast(inc.source === "colibria" ? `Palette from Colibria applied${inc.name ? ": " + inc.name : ""}` : "Linked palette applied"), 400); } } catch {}
 // ---------- keyboard ----------
 addEventListener("keydown", (e) => {
   if (e.target.closest("input:not([type=range]),select,textarea")) return;
