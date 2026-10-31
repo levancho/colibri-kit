@@ -6,6 +6,7 @@
 <meta name="description" content="Colibri Kit has two parts: Colibri CSS, a 15 KB stylesheet that makes plain HTML look good, and Colibri UI, components that add behaviour (dialogs, menus, tabs) without forcing a look on you. No build step, no utility bloat.">
 <meta property="og:title" content="Colibri Kit"><meta property="og:description" content="Colibri CSS = the look. Colibri UI = the behaviour. Plain HTML, no build step.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
+<script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,d=localStorage.getItem("colibri.kit.theme");if(d)H.dataset.theme=d;var q=new URLSearchParams(location.search).get("theme"),p=q!==null?q:localStorage.getItem("colibri.kit.pack");if(p)H.dataset.kitTheme=p}catch(_){}</script>
 <link rel="stylesheet" href="/css/colibri.css">
 <link rel="stylesheet" href="/site.css">
 <link rel="stylesheet" href="/ui/themes/packs/index.css">

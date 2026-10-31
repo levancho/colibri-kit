@@ -81,3 +81,5 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
   .menu-btn{display:inline-flex}
   .panels,.panels.even{grid-template-columns:1fr}
 }
+
+.dash-side{overscroll-behavior:contain}

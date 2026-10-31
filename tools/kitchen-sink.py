@@ -57,7 +57,7 @@ legend = "".join(f'<span class="sink-st" data-status="{s}" title="{E(ST[s][1])}"
 chrome_css = (HERE / "sink_chrome.css").read_text()
 
 page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Colibri UI · Component gallery</title><link rel="icon" href="data:,">
+<title>Colibri UI · Component gallery</title><script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{{var H=document.documentElement,m=localStorage.getItem("colibri.sink.theme")||"system",e=m==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m;H.dataset.theme=e;H.style.colorScheme=e;var t=JSON.parse(localStorage.getItem("colibri.sink.tokens")||"{{}}"),q=new URLSearchParams(location.search).get("theme");if(q!==null)t.kit=q;if(t.kit)H.dataset.kitTheme=t.kit;if(t.accent)H.dataset.uiTheme=t.accent;if(t.radius)H.style.setProperty("--ui-radius",t.radius);if(t.motion===false)H.dataset.uiMotion="off"}}catch(_){{}}</script><link rel="icon" href="data:,">
 <style id="sink-chrome">{chrome_css}</style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>

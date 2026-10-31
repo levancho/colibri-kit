@@ -971,3 +971,6 @@ html[data-ui-motion=off] [data-ui=spinner]::before,html[data-ui-motion=off] [dat
 [data-ui=button-group]:not([data-type])>:is(button,a,[data-ui-part=item])[data-state=activated]{background:color-mix(in srgb,var(--ui-primary) 16%,var(--ui-background))!important;border-color:color-mix(in srgb,var(--ui-primary) 55%,var(--ui-input))!important;color:var(--ui-foreground)!important;z-index:1;
   box-shadow:inset 0 -2px 0 var(--ui-primary)}
 [data-ui=button-group]>:is(button,a,[data-ui-part=item]):focus-visible{outline:2px solid var(--ui-ring)!important;outline-offset:2px!important;z-index:3}
+
+/* sidebar scroll never chains into the page */
+:where(.ui-root) [data-ui=sidebar],:where(.ui-root) [data-ui=sidebar] [data-ui-part=content]{overscroll-behavior:contain}

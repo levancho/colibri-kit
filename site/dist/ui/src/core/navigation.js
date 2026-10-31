@@ -79,10 +79,18 @@ export function createScrollspy(root, o = {}) {
     const targets = links.map((l) => doc.getElementById(decodeURIComponent((l.getAttribute("href") || "").slice(1)))).filter(Boolean);
     let active = null;
     const setActive = (t) => {
-      if (t === active) return; active = t;
+      if (t === active) return false; active = t;
       links.forEach((l) => { const on = t && l.getAttribute("href") === `#${t.id}`; setState(l, on ? "active" : "inactive"); on ? l.setAttribute("aria-current", "location") : l.removeAttribute("aria-current"); });
-      emit(root, "change", { id: t?.id ?? null });
+      emit(root, "change", { id: t?.id ?? null }); return true;
     };
+    // Auto-scroll the nav ONLY when the active section changes, and never while the user is scrolling the nav itself
+    // (otherwise scrolling the sidebar to the end and chaining into the page snaps it back to the active link).
+    const navBox = root.closest("[data-ui=sidebar]") || root.parentElement;
+    let userOwned = false, selfScroll = false; // once the user scrolls the nav, stop following until they click a link
+    const markUser = (e) => { if (e?.type === "pointerdown" && e.target.closest?.("a[href^='#']")) { userOwned = false; return; } userOwned = true; };
+    const navScroll = () => { if (selfScroll) { selfScroll = false; return; } markUser(); };
+    navBox?.addEventListener("wheel", markUser, { passive: true }); navBox?.addEventListener("touchstart", markUser, { passive: true });
+    navBox?.addEventListener("click", (e) => { if (e.target.closest?.("a[href^='#']")) userOwned = false; }); navBox?.addEventListener("scroll", navScroll, { passive: true });
     // Active = last section whose top has crossed the offset line (robust for tall sections, unlike "first visible").
     const view = doc.defaultView, scroller = container || view;
     const compute = () => {
@@ -92,13 +100,14 @@ export function createScrollspy(root, o = {}) {
       let cur = null;
       for (const t of targets) { if (t.offsetParent === null && t.getClientRects().length === 0) continue; if (t.getBoundingClientRect().top <= line) cur = t; }
       if (atEnd) cur = targets.filter((t) => t.getClientRects().length).at(-1) || cur;
-      setActive(cur || targets[0] || null);
-      if (cur && root.dataset.autoScroll !== "false") { const l = links.find((x) => x.getAttribute("href") === `#${cur.id}`); const box = root.closest("[data-ui=sidebar]") || root.parentElement; if (l && box && box.scrollHeight > box.clientHeight) { const lr = l.getBoundingClientRect(), br = box.getBoundingClientRect(); if (lr.top < br.top + 40 || lr.bottom > br.bottom - 40) box.scrollTop += lr.top - br.top - box.clientHeight / 2; } }
+      const changed = setActive(cur || targets[0] || null);
+      if (changed && cur && root.dataset.autoScroll !== "false" && !userOwned) { const l = links.find((x) => x.getAttribute("href") === `#${cur.id}`); const box = navBox; if (l && box && box.scrollHeight > box.clientHeight) { const lr = l.getBoundingClientRect(), br = box.getBoundingClientRect(); if (lr.top < br.top + 40 || lr.bottom > br.bottom - 40) { selfScroll = true; box.scrollTop += lr.top - br.top - box.clientHeight / 2; } } }
     };
     let raf = 0; const onScroll = () => { if (!raf) raf = view.requestAnimationFrame(() => { raf = 0; compute(); }); };
     scroller.addEventListener("scroll", onScroll, { passive: true }); view.addEventListener("resize", onScroll);
     compute();
-    const io = { disconnect() { scroller.removeEventListener("scroll", onScroll); view.removeEventListener("resize", onScroll); } };
+    const io = { disconnect() { scroller.removeEventListener("scroll", onScroll); view.removeEventListener("resize", onScroll);
+      navBox?.removeEventListener("wheel", markUser); navBox?.removeEventListener("touchstart", markUser);  navBox?.removeEventListener("scroll", navScroll); } };
     return { get active() { return active?.id ?? null; }, refresh: compute, destroy() { io.disconnect(); } };
   });
 }

@@ -1,5 +1,5 @@
 <!doctype html><html lang="ka" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Colibri UI · Component gallery</title><link rel="icon" href="data:,">
+<title>Colibri UI · Component gallery</title><script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,m=localStorage.getItem("colibri.sink.theme")||"system",e=m==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m;H.dataset.theme=e;H.style.colorScheme=e;var t=JSON.parse(localStorage.getItem("colibri.sink.tokens")||"{}"),q=new URLSearchParams(location.search).get("theme");if(q!==null)t.kit=q;if(t.kit)H.dataset.kitTheme=t.kit;if(t.accent)H.dataset.uiTheme=t.accent;if(t.radius)H.style.setProperty("--ui-radius",t.radius);if(t.motion===false)H.dataset.uiMotion="off"}catch(_){}</script><link rel="icon" href="data:,">
 <style id="sink-chrome">/* Page chrome for the gallery (always on, even with demo styling off). */
 :root{--s-bg:#fff;--s-fg:#09090b;--s-muted:#71717a;--s-line:#e4e4e7;--s-soft:#f4f4f5;--s-acc:#18181b;--s-ring:#a1a1aa;color-scheme:light}
 html[data-theme=dark]{--s-bg:#09090b;--s-fg:#fafafa;--s-muted:#a1a1aa;--s-line:#27272a;--s-soft:#18181b;--s-acc:#fafafa;--s-ring:#52525b;color-scheme:dark}
@@ -159,6 +159,8 @@ html[data-theme=dark] .sink-st[data-status=done]{background:#052e16;color:#86efa
 .ccss-pitch{flex-basis:100%;max-width:72ch;margin-inline:auto;font-size:14px;line-height:1.6;color:var(--s-fg)}
 .ccss-pitch h4{margin:0 0 .35rem;font-size:15px}
 .ccss-pitch p{margin:.35rem 0}.ccss-pitch ul{margin:.35rem 0;padding-inline-start:1.2rem}.ccss-pitch li{margin:.15rem 0}
+
+#sink-sidebar,#sink-sidebar nav{overscroll-behavior:contain}
 </style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>

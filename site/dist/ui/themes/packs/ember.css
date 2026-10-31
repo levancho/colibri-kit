@@ -1,0 +1,29 @@
+/* Colibri Kit theme pack: EMBER — warm, bold, friendly. Terracotta + amber on cream, generous radii, soft deep shadows.
+   Use: <link rel="stylesheet" href="themes/packs/ember.css"> then <html data-kit-theme="ember">. */
+html[data-kit-theme=ember]{
+  --c-hue:40; --c-chroma:.17;
+  --c-brand:oklch(58% .17 40); --c-brand-fg:#fff;
+  --c-bg:light-dark(oklch(97.5% .015 75),oklch(19% .02 45));
+  --c-surface:light-dark(oklch(99.5% .008 80),oklch(23% .025 45));
+  --c-sunken:light-dark(oklch(94% .025 75),oklch(16% .02 45));
+  --c-fg:light-dark(oklch(26% .04 40),oklch(95% .02 75));
+  --c-muted:light-dark(oklch(50% .05 45),oklch(74% .04 60));
+  --c-line:light-dark(oklch(88% .03 70),oklch(33% .03 45));
+  --c-accent:light-dark(oklch(58% .17 40),oklch(75% .15 55));
+  --c-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
+  --c-radius-s:10px; --c-radius:16px; --c-radius-l:24px;
+  --c-shadow-color:light-dark(oklch(40% .08 40 / .16),oklch(0% 0 0 / .6));
+  --c-shadow:0 2px 4px var(--c-shadow-color),0 12px 28px -10px var(--c-shadow-color);
+  --ui-background:#fdf8f1; --ui-foreground:#3b1d0e; --ui-card:#fffcf7; --ui-popover:#fffcf7;
+  --ui-muted:#f6eadb; --ui-muted-foreground:#8a5a3c; --ui-accent:#fbe3cf; --ui-accent-foreground:#3b1d0e;
+  --ui-primary:#c2410c; --ui-primary-foreground:#fff; --ui-ring:#fb923c;
+  --ui-border:#efdcc6; --ui-input:#e5c9a8; --ui-success:#4d7c0f; --ui-warning:#d97706;
+  --ui-radius:14px; --ui-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
+  --ui-shadow-sm:0 2px 6px #7c2d1222; --ui-shadow:0 18px 40px -14px #7c2d1255;
+}
+html[data-kit-theme=ember][data-theme=dark]{
+  --ui-background:#1c120c; --ui-foreground:#fbeee0; --ui-card:#24170f; --ui-popover:#24170f;
+  --ui-muted:#33221a; --ui-muted-foreground:#d6b08f; --ui-accent:#3f2416; --ui-accent-foreground:#fbeee0;
+  --ui-primary:#fb923c; --ui-primary-foreground:#2a1206; --ui-ring:#fdba74;
+  --ui-border:#3a271c; --ui-input:#4a3326; --ui-shadow:0 18px 40px -14px #000d;
+}

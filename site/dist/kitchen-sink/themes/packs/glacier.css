@@ -1,0 +1,30 @@
+/* Colibri Kit theme pack: GLACIER — cool, neutral, professional. Slate + teal, tight radii, crisp borders, quiet shadows.
+   Use: <link rel="stylesheet" href="themes/packs/glacier.css"> then <html data-kit-theme="glacier">.
+   Drives both Colibri CSS (--c-*) and Colibri UI (--ui-*). Works with data-theme="light|dark". */
+html[data-kit-theme=glacier]{
+  --c-hue:200; --c-chroma:.11;
+  --c-brand:oklch(52% .11 200); --c-brand-fg:#fff;
+  --c-bg:light-dark(oklch(98.5% .004 230),oklch(18% .015 240));
+  --c-surface:light-dark(#fff,oklch(22% .018 240));
+  --c-sunken:light-dark(oklch(95.5% .008 230),oklch(15% .014 240));
+  --c-fg:light-dark(oklch(24% .025 245),oklch(94% .01 230));
+  --c-muted:light-dark(oklch(52% .02 245),oklch(70% .02 235));
+  --c-line:light-dark(oklch(90% .01 240),oklch(31% .02 240));
+  --c-accent:light-dark(oklch(52% .11 200),oklch(74% .12 195));
+  --c-font:"Inter","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --c-radius-s:3px; --c-radius:6px; --c-radius-l:10px;
+  --c-shadow-color:light-dark(oklch(35% .03 240 / .10),oklch(0% 0 0 / .55));
+  --c-shadow:0 1px 2px var(--c-shadow-color);
+  --ui-background:#f8fafc; --ui-foreground:#0f172a; --ui-card:#fff; --ui-popover:#fff;
+  --ui-muted:#f1f5f9; --ui-muted-foreground:#64748b; --ui-accent:#e2f3f5; --ui-accent-foreground:#0f172a;
+  --ui-primary:#0e7490; --ui-primary-foreground:#fff; --ui-ring:#22d3ee;
+  --ui-border:#e2e8f0; --ui-input:#cbd5e1;
+  --ui-radius:6px; --ui-font:"Inter","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
+  --ui-shadow-sm:0 1px 2px #0f172a14; --ui-shadow:0 8px 24px -8px #0f172a33;
+}
+html[data-kit-theme=glacier][data-theme=dark]{
+  --ui-background:#0b1220; --ui-foreground:#e2e8f0; --ui-card:#0f172a; --ui-popover:#0f172a;
+  --ui-muted:#1e293b; --ui-muted-foreground:#94a3b8; --ui-accent:#16313b; --ui-accent-foreground:#e2e8f0;
+  --ui-primary:#22d3ee; --ui-primary-foreground:#042f2e; --ui-ring:#67e8f9;
+  --ui-border:#1e293b; --ui-input:#334155; --ui-shadow:0 10px 30px -10px #000c;
+}
