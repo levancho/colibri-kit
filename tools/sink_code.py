@@ -83,4 +83,4 @@ FTL.update({
 "theme-scoped": '<section class="admin-dense" style="--ui-control-h:30px; --ui-text-sm:13px; --ui-radius:4px">\n  [@ui.button]Save[/@ui.button]\n</section>',
 })
 
-FTL["clothline"] = '[@ui.clothline id="clothline" /]\n[@ui.cell title="Answers" mark="✦" line="#clothline" attrs={"style":"left:16px;top:70px"}]\n  <p>Ask anything.</p>\n[/@ui.cell]\n[@ui.cell title="Projects" mark="◈" hanging=true]…[/@ui.cell]'
+FTL["clothline"] = '[@ui.clothline id="clothline" /]\n[@ui.cell title="Answers" mark="✦" line="#clothline" attrs={"style":"left:16px;top:70px"}]\n  <p>Ask anything.</p>\n[/@ui.cell]\n[@ui.cell title="Projects" mark="◈" hanging=true attrs={"data-persist":"projects"}]…[/@ui.cell]\n[@ui.cell title="Menu" mark="≡" maximize=false attrs={"data-kind":"menu", "data-size":"tiny"}]\n  <a href="/">Home</a><a href="/articles">Articles</a>\n[/@ui.cell]'

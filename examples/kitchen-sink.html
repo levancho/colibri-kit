@@ -1882,36 +1882,43 @@ export function Demo() {
 <p class="sink-dim">Technical names: <code>data-ui="breadcrumb"</code> · shadcn “Breadcrumb” · Metronic “Breadcrumb”</p></details></section><section id="clothline" class="sink-sec" tabindex="-1" aria-labelledby="h-clothline">
 <header class="sink-sec-h"><div><h3 id="h-clothline">Clothline (minimize to a line)</h3><p class="sink-what">Floating panels you can move, resize and &quot;hang up&quot; on a line of tags instead of closing them; click a tag to bring the panel back.</p></div>
 <div class="sink-sec-meta"><span class="sink-st" data-status="done" title="Works and is tested in this page.">Ready</span><span data-ui="tooltip" data-side="bottom" data-align="end"><button class="sink-info" data-ui-part="trigger" aria-label="More about Clothline (minimize to a line)">?</button><span data-ui-part="content" class="sink-tip"><b>When to use:</b> Workspaces with several tool panels (chat, notes, previews) where users want room without losing what they opened. Invented by L3V; see it live on l3v.ai.<br><b>Status:</b> Ready, Works and is tested in this page.<br><span class="sink-dim">Code name <code>data-ui="clothline"</code> · shadcn: - (L3V original) · Metronic: -</span></span></span></div></header>
-<div class="sink-preview ui-root"><div class="cl-desk"><nav data-ui="clothline" id="cl-line" aria-label="Minimized cells" hidden></nav><section data-ui="cell" id="cl-answers" data-line="#cl-line" data-name="Answers" data-mark="✦" style="left:16px;top:70px"><header data-ui-part="header"><span data-ui-part="mark" aria-hidden="true">✦</span><span data-ui-part="title">Answers</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>Ask anything. Minimize me with − and I hang on the line above.</p></div><span data-ui-part="resize" aria-hidden="true"></span></section><section data-ui="cell" id="cl-projects" data-line="#cl-line" data-name="Projects" data-mark="◈" style="left:250px;top:96px"><header data-ui-part="header"><span data-ui-part="mark" aria-hidden="true">◈</span><span data-ui-part="title">Projects</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>Drag my header to move, the corner grip to resize, □ to maximize.</p></div><span data-ui-part="resize" aria-hidden="true"></span></section><section data-ui="cell" id="cl-menu" data-line="#cl-line" data-name="Menu" data-mark="≡" style="left:470px;top:60px"><header data-ui-part="header"><span data-ui-part="mark" aria-hidden="true">≡</span><span data-ui-part="title">Menu</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>Minimize all three, then restore from the line. × on a tag closes for good.</p></div><span data-ui-part="resize" aria-hidden="true"></span></section></div><p style="flex-basis:100%;text-align:center"><button data-ui="button" data-variant="outline" id="cl-reset">Reset desk</button></p></div>
+<div class="sink-preview ui-root"><div class="cl-desk"><nav data-ui="clothline" id="cl-line" aria-label="Minimized cells" hidden></nav><section data-ui="cell" id="cl-answers" data-line="#cl-line" data-name="Answers" data-mark="✦" data-persist="sink-cl-answers" style="left:16px;top:70px"><header data-ui-part="header"><span data-ui-part="mark">✦</span><span data-ui-part="title">Answers</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>Ask anything. Minimize me with − and I hang on the line above. Hover the ✦ for transparency and stretch.</p></div></section><section data-ui="cell" id="cl-projects" data-line="#cl-line" data-name="Projects" data-mark="◈" data-persist="sink-cl-projects" style="left:250px;top:96px"><header data-ui-part="header"><span data-ui-part="mark">◈</span><span data-ui-part="title">Projects</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>Drag my header to move, any corner to resize, □ to maximize. I remember where you left me.</p></div></section><section data-ui="cell" id="cl-menu" data-line="#cl-line" data-name="Menu" data-mark="≡" data-persist="sink-cl-menu" data-kind="menu" data-size="tiny" style="left:480px;top:60px"><header data-ui-part="header"><span data-ui-part="mark">≡</span><span data-ui-part="title">Menu</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><a href="#clothline">Home</a><a href="#clothline">Articles</a><a href="#clothline">Fonts</a></div></section><section data-ui="cell" id="cl-note" data-line="#cl-line" data-name="Note" data-mark="✎" data-persist="sink-cl-note" data-size="tiny" style="left:480px;top:150px"><header data-ui-part="header"><span data-ui-part="mark">✎</span><span data-ui-part="title">Note</span><button data-ui-part="minimize" title="Hang on clothline">−</button><button data-ui-part="maximize" aria-pressed="false">□</button><button data-ui-part="close">×</button></header><div data-ui-part="body"><p>A tiny cell: click the chip to open, click my title to fold me back.</p></div></section></div><p style="flex-basis:100%;text-align:center"><button data-ui="button" data-variant="outline" id="cl-reset">Reset desk</button></p></div>
 <details class="sink-code" open><summary>Code</summary><div data-ui="tabs" class="sink-code-tabs" data-default-value="html"><div data-ui-part="list" aria-label="Code for Clothline (minimize to a line)"><button data-ui-part="trigger" data-value="html">HTML</button><button data-ui-part="trigger" data-value="ftl">FreeMarker</button><button data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button class="sink-copy" data-ui="clipboard" data-target="#code-clothline-html" aria-label="Copy HTML code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-clothline-html">&lt;div class=&quot;cl-desk&quot;&gt;
   &lt;nav data-ui=&quot;clothline&quot; id=&quot;cl-line&quot; aria-label=&quot;Minimized cells&quot; hidden&gt;
   &lt;/nav&gt;
-  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-answers&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Answers&quot; data-mark=&quot;✦&quot; style=&quot;left:16px;top:70px&quot;&gt;
+  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-answers&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Answers&quot; data-mark=&quot;✦&quot; data-persist=&quot;sink-cl-answers&quot; style=&quot;left:16px;top:70px&quot;&gt;
     &lt;header data-ui-part=&quot;header&quot;&gt;
-      &lt;span data-ui-part=&quot;mark&quot; aria-hidden=&quot;true&quot;&gt;✦&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Answers&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
+      &lt;span data-ui-part=&quot;mark&quot;&gt;✦&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Answers&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
     &lt;/header&gt;
     &lt;div data-ui-part=&quot;body&quot;&gt;
-      &lt;p&gt;Ask anything. Minimize me with − and I hang on the line above.&lt;/p&gt;
+      &lt;p&gt;
+        Ask anything. Minimize me with − and I hang on the line above. Hover the ✦ for transparency and stretch.
+      &lt;/p&gt;
     &lt;/div&gt;
-    &lt;span data-ui-part=&quot;resize&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
   &lt;/section&gt;
-  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-projects&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Projects&quot; data-mark=&quot;◈&quot; style=&quot;left:250px;top:96px&quot;&gt;
+  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-projects&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Projects&quot; data-mark=&quot;◈&quot; data-persist=&quot;sink-cl-projects&quot; style=&quot;left:250px;top:96px&quot;&gt;
     &lt;header data-ui-part=&quot;header&quot;&gt;
-      &lt;span data-ui-part=&quot;mark&quot; aria-hidden=&quot;true&quot;&gt;◈&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Projects&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
+      &lt;span data-ui-part=&quot;mark&quot;&gt;◈&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Projects&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
     &lt;/header&gt;
     &lt;div data-ui-part=&quot;body&quot;&gt;
-      &lt;p&gt;Drag my header to move, the corner grip to resize, □ to maximize.&lt;/p&gt;
+      &lt;p&gt;Drag my header to move, any corner to resize, □ to maximize. I remember where you left me.&lt;/p&gt;
     &lt;/div&gt;
-    &lt;span data-ui-part=&quot;resize&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
   &lt;/section&gt;
-  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-menu&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Menu&quot; data-mark=&quot;≡&quot; style=&quot;left:470px;top:60px&quot;&gt;
+  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-menu&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Menu&quot; data-mark=&quot;≡&quot; data-persist=&quot;sink-cl-menu&quot; data-kind=&quot;menu&quot; data-size=&quot;tiny&quot; style=&quot;left:480px;top:60px&quot;&gt;
     &lt;header data-ui-part=&quot;header&quot;&gt;
-      &lt;span data-ui-part=&quot;mark&quot; aria-hidden=&quot;true&quot;&gt;≡&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Menu&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
+      &lt;span data-ui-part=&quot;mark&quot;&gt;≡&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Menu&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
     &lt;/header&gt;
     &lt;div data-ui-part=&quot;body&quot;&gt;
-      &lt;p&gt;Minimize all three, then restore from the line. × on a tag closes for good.&lt;/p&gt;
+      &lt;a href=&quot;#clothline&quot;&gt;Home&lt;/a&gt;&lt;a href=&quot;#clothline&quot;&gt;Articles&lt;/a&gt;&lt;a href=&quot;#clothline&quot;&gt;Fonts&lt;/a&gt;
     &lt;/div&gt;
-    &lt;span data-ui-part=&quot;resize&quot; aria-hidden=&quot;true&quot;&gt;&lt;/span&gt;
+  &lt;/section&gt;
+  &lt;section data-ui=&quot;cell&quot; id=&quot;cl-note&quot; data-line=&quot;#cl-line&quot; data-name=&quot;Note&quot; data-mark=&quot;✎&quot; data-persist=&quot;sink-cl-note&quot; data-size=&quot;tiny&quot; style=&quot;left:480px;top:150px&quot;&gt;
+    &lt;header data-ui-part=&quot;header&quot;&gt;
+      &lt;span data-ui-part=&quot;mark&quot;&gt;✎&lt;/span&gt;&lt;span data-ui-part=&quot;title&quot;&gt;Note&lt;/span&gt;&lt;button data-ui-part=&quot;minimize&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/button&gt;&lt;button data-ui-part=&quot;maximize&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/button&gt;&lt;button data-ui-part=&quot;close&quot;&gt;×&lt;/button&gt;
+    &lt;/header&gt;
+    &lt;div data-ui-part=&quot;body&quot;&gt;
+      &lt;p&gt;A tiny cell: click the chip to open, click my title to fold me back.&lt;/p&gt;
+    &lt;/div&gt;
   &lt;/section&gt;
 &lt;/div&gt;
 &lt;p style=&quot;flex-basis:100%;text-align:center&quot;&gt;
@@ -1921,7 +1928,10 @@ export function Demo() {
 [@ui.cell title=&quot;Answers&quot; mark=&quot;✦&quot; line=&quot;#clothline&quot; attrs={&quot;style&quot;:&quot;left:16px;top:70px&quot;}]
   &lt;p&gt;Ask anything.&lt;/p&gt;
 [/@ui.cell]
-[@ui.cell title=&quot;Projects&quot; mark=&quot;◈&quot; hanging=true]…[/@ui.cell]</code></pre></div><div data-ui-part="panel" data-value="react"><button class="sink-copy" data-ui="clipboard" data-target="#code-clothline-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-clothline-react">import { Part, UI } from &quot;@colibri-kit/ui/react&quot;;
+[@ui.cell title=&quot;Projects&quot; mark=&quot;◈&quot; hanging=true attrs={&quot;data-persist&quot;:&quot;projects&quot;}]…[/@ui.cell]
+[@ui.cell title=&quot;Menu&quot; mark=&quot;≡&quot; maximize=false attrs={&quot;data-kind&quot;:&quot;menu&quot;, &quot;data-size&quot;:&quot;tiny&quot;}]
+  &lt;a href=&quot;/&quot;&gt;Home&lt;/a&gt;&lt;a href=&quot;/articles&quot;&gt;Articles&lt;/a&gt;
+[/@ui.cell]</code></pre></div><div data-ui-part="panel" data-value="react"><button class="sink-copy" data-ui="clipboard" data-target="#code-clothline-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-clothline-react">import { Part, UI } from &quot;@colibri-kit/ui/react&quot;;
 
 export function Demo() {
   return (
@@ -1935,19 +1945,21 @@ export function Demo() {
           data-line=&quot;#cl-line&quot;
           data-name=&quot;Answers&quot;
           data-mark=&quot;✦&quot;
+          data-persist=&quot;sink-cl-answers&quot;
           style={{ left: &quot;16px&quot;, top: &quot;70px&quot; }}
         &gt;
           &lt;Part name=&quot;header&quot; as=&quot;header&quot;&gt;
-            &lt;Part name=&quot;mark&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot;&gt;✦&lt;/Part&gt;
+            &lt;Part name=&quot;mark&quot; as=&quot;span&quot;&gt;✦&lt;/Part&gt;
             &lt;Part name=&quot;title&quot; as=&quot;span&quot;&gt;Answers&lt;/Part&gt;
             &lt;Part name=&quot;minimize&quot; as=&quot;button&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/Part&gt;
             &lt;Part name=&quot;maximize&quot; as=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/Part&gt;
             &lt;Part name=&quot;close&quot; as=&quot;button&quot;&gt;×&lt;/Part&gt;
           &lt;/Part&gt;
           &lt;Part name=&quot;body&quot;&gt;
-            &lt;p&gt;Ask anything. Minimize me with − and I hang on the line above.&lt;/p&gt;
+            &lt;p&gt;
+              Ask anything. Minimize me with − and I hang on the line above. Hover the ✦ for transparency and stretch.
+            &lt;/p&gt;
           &lt;/Part&gt;
-          &lt;Part name=&quot;resize&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot; /&gt;
         &lt;/UI&gt;
         &lt;UI
           kind=&quot;cell&quot;
@@ -1956,19 +1968,19 @@ export function Demo() {
           data-line=&quot;#cl-line&quot;
           data-name=&quot;Projects&quot;
           data-mark=&quot;◈&quot;
+          data-persist=&quot;sink-cl-projects&quot;
           style={{ left: &quot;250px&quot;, top: &quot;96px&quot; }}
         &gt;
           &lt;Part name=&quot;header&quot; as=&quot;header&quot;&gt;
-            &lt;Part name=&quot;mark&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot;&gt;◈&lt;/Part&gt;
+            &lt;Part name=&quot;mark&quot; as=&quot;span&quot;&gt;◈&lt;/Part&gt;
             &lt;Part name=&quot;title&quot; as=&quot;span&quot;&gt;Projects&lt;/Part&gt;
             &lt;Part name=&quot;minimize&quot; as=&quot;button&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/Part&gt;
             &lt;Part name=&quot;maximize&quot; as=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/Part&gt;
             &lt;Part name=&quot;close&quot; as=&quot;button&quot;&gt;×&lt;/Part&gt;
           &lt;/Part&gt;
           &lt;Part name=&quot;body&quot;&gt;
-            &lt;p&gt;Drag my header to move, the corner grip to resize, □ to maximize.&lt;/p&gt;
+            &lt;p&gt;Drag my header to move, any corner to resize, □ to maximize. I remember where you left me.&lt;/p&gt;
           &lt;/Part&gt;
-          &lt;Part name=&quot;resize&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot; /&gt;
         &lt;/UI&gt;
         &lt;UI
           kind=&quot;cell&quot;
@@ -1977,19 +1989,44 @@ export function Demo() {
           data-line=&quot;#cl-line&quot;
           data-name=&quot;Menu&quot;
           data-mark=&quot;≡&quot;
-          style={{ left: &quot;470px&quot;, top: &quot;60px&quot; }}
+          data-persist=&quot;sink-cl-menu&quot;
+          data-kind=&quot;menu&quot;
+          data-size=&quot;tiny&quot;
+          style={{ left: &quot;480px&quot;, top: &quot;60px&quot; }}
         &gt;
           &lt;Part name=&quot;header&quot; as=&quot;header&quot;&gt;
-            &lt;Part name=&quot;mark&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot;&gt;≡&lt;/Part&gt;
+            &lt;Part name=&quot;mark&quot; as=&quot;span&quot;&gt;≡&lt;/Part&gt;
             &lt;Part name=&quot;title&quot; as=&quot;span&quot;&gt;Menu&lt;/Part&gt;
+            &lt;Part name=&quot;minimize&quot; as=&quot;button&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/Part&gt;
+            &lt;Part name=&quot;close&quot; as=&quot;button&quot;&gt;×&lt;/Part&gt;
+          &lt;/Part&gt;
+          &lt;Part name=&quot;body&quot;&gt;
+            &lt;a href=&quot;#clothline&quot;&gt;Home&lt;/a&gt;
+            &lt;a href=&quot;#clothline&quot;&gt;Articles&lt;/a&gt;
+            &lt;a href=&quot;#clothline&quot;&gt;Fonts&lt;/a&gt;
+          &lt;/Part&gt;
+        &lt;/UI&gt;
+        &lt;UI
+          kind=&quot;cell&quot;
+          as=&quot;section&quot;
+          id=&quot;cl-note&quot;
+          data-line=&quot;#cl-line&quot;
+          data-name=&quot;Note&quot;
+          data-mark=&quot;✎&quot;
+          data-persist=&quot;sink-cl-note&quot;
+          data-size=&quot;tiny&quot;
+          style={{ left: &quot;480px&quot;, top: &quot;150px&quot; }}
+        &gt;
+          &lt;Part name=&quot;header&quot; as=&quot;header&quot;&gt;
+            &lt;Part name=&quot;mark&quot; as=&quot;span&quot;&gt;✎&lt;/Part&gt;
+            &lt;Part name=&quot;title&quot; as=&quot;span&quot;&gt;Note&lt;/Part&gt;
             &lt;Part name=&quot;minimize&quot; as=&quot;button&quot; title=&quot;Hang on clothline&quot;&gt;−&lt;/Part&gt;
             &lt;Part name=&quot;maximize&quot; as=&quot;button&quot; aria-pressed=&quot;false&quot;&gt;□&lt;/Part&gt;
             &lt;Part name=&quot;close&quot; as=&quot;button&quot;&gt;×&lt;/Part&gt;
           &lt;/Part&gt;
           &lt;Part name=&quot;body&quot;&gt;
-            &lt;p&gt;Minimize all three, then restore from the line. × on a tag closes for good.&lt;/p&gt;
+            &lt;p&gt;A tiny cell: click the chip to open, click my title to fold me back.&lt;/p&gt;
           &lt;/Part&gt;
-          &lt;Part name=&quot;resize&quot; as=&quot;span&quot; aria-hidden=&quot;true&quot; /&gt;
         &lt;/UI&gt;
       &lt;/div&gt;
       &lt;p style={{ flexBasis: &quot;100%&quot;, textAlign: &quot;center&quot; }}&gt;
@@ -1998,7 +2035,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div></div></details>
-<details class="sink-a11y"><summary>Accessibility &amp; keyboard</summary><p>Cells are regions labelled by their title; minimize/maximize/close buttons get &#x27;Minimize Answers&#x27; style labels. Minimizing moves focus to the new tag on the line; restoring moves focus back into the cell. The line is a navigation landmark (&#x27;Minimized cells&#x27;); ←/→/Home/End move between tags. Alt+Arrows on a focused header moves the cell, Alt+Shift+Arrows resizes it; Esc leaves maximize.</p>
+<details class="sink-a11y"><summary>Accessibility &amp; keyboard</summary><p>Cells are regions labelled by their title; minimize/maximize/close buttons get &#x27;Minimize Answers&#x27; style labels. Minimizing moves focus to the new tag on the line; restoring moves focus back into the cell. The line is a navigation landmark (&#x27;Minimized cells&#x27;); ←/→/Home/End move between tags. The ✦ mark is a button: Enter opens Transparency and Stretch; Esc closes it. Any corner resizes. Tiny cells open on click; menu cells fold after you pick an item. data-persist remembers layout. Alt+Arrows on a focused header moves the cell, Alt+Shift+Arrows resizes it; Esc leaves maximize.</p>
 <p class="sink-dim">Technical names: <code>data-ui="clothline"</code> · shadcn “- (L3V original)” · Metronic “-”</p></details></section><section id="command" class="sink-sec" tabindex="-1" aria-labelledby="h-command">
 <header class="sink-sec-h"><div><h3 id="h-command">Command palette (search box)</h3><p class="sink-what">Type to search commands and pages. Opens with Ctrl/⌘+K.</p></div>
 <div class="sink-sec-meta"><span class="sink-st" data-status="done" title="Works and is tested in this page.">Ready</span><span data-ui="tooltip" data-side="bottom" data-align="end"><button class="sink-info" data-ui-part="trigger" aria-label="More about Command palette (search box)">?</button><span data-ui-part="content" class="sink-tip"><b>When to use:</b> Power-user navigation and admin search.<br><b>Status:</b> Ready, Works and is tested in this page.<br><span class="sink-dim">Code name <code>data-ui="command"</code> · shadcn: Command · Metronic: (search modal)</span></span></span></div></header>

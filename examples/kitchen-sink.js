@@ -110,7 +110,7 @@ $("#mo-invalid")?.addEventListener("submit", (e) => { e.preventDefault(); const 
 
 // ---- Clothline demo: reset desk ----
 const clDesk = document.querySelector(".cl-desk"); const clInit = clDesk?.innerHTML;
-document.getElementById("cl-reset")?.addEventListener("click", () => { clDesk.innerHTML = clInit; document.dispatchEvent(new Event("ui:refresh")); });
+document.getElementById("cl-reset")?.addEventListener("click", () => { Object.keys(localStorage).filter((k) => k.startsWith("colibri.cell.sink-")).forEach((k) => localStorage.removeItem(k)); clDesk.innerHTML = clInit; document.dispatchEvent(new Event("ui:refresh")); });
 
 // ---- Conversation + AI elements demos (demo-only wiring; components themselves are generic) ----
 const byId = (id) => document.getElementById(id);
