@@ -8,11 +8,13 @@ export const PACKS = [
   { id: "midnight", name: "Midnight" },
 ];
 const root = document.documentElement;
-export function setPack(id) { id ? (root.dataset.kitTheme = id) : delete root.dataset.kitTheme; localStorage.setItem("colibri-kit-theme", id); }
+export function setPack(id) { id ? (root.dataset.kitTheme = id) : delete root.dataset.kitTheme; const gen = window.ColibriBridge?.store.get()?.gen; if (!gen || id !== gen.slug) localStorage.setItem("colibri-kit-theme", id); }
 export function initPackPicker(select) {
-  select.innerHTML = PACKS.map((p) => `<option value="${p.id}">${p.name}</option>`).join("");
+  // a theme made in the Colibria Kit Theme Generator (via the bridge) shows up as its own pack
+  const gen = window.ColibriBridge?.store.get()?.gen, packs = gen ? [...PACKS, { id: gen.slug, name: gen.name + " (generated)" }] : PACKS;
+  select.innerHTML = packs.map((p) => `<option value="${p.id}">${p.name.replace(/[<>&]/g, "")}</option>`).join("");
   const q = new URLSearchParams(location.search).get("theme");
-  select.value = q ?? localStorage.getItem("colibri-kit-theme") ?? ""; if (!PACKS.some((p) => p.id === select.value)) select.value = "";
+  select.value = gen && root.dataset.kitTheme === gen.slug ? gen.slug : q ?? localStorage.getItem("colibri-kit-theme") ?? ""; if (!packs.some((p) => p.id === select.value)) select.value = "";
   setPack(select.value); select.addEventListener("change", () => setPack(select.value));
 }
 export function initScheme(btn) {
