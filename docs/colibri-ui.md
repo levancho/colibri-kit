@@ -287,7 +287,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ## Clothline (after L3V, l3v.ai)
 
-L3V's site lays everything out as floating **Cells** (movable, resizable panels). The **Clothesline** is a fixed strip under the header where Cells hang when you minimize them: each one becomes a tilted tag with a peg, its kind mark and its name. Clicking the tag restores the Cell, and × (shown on hover, always shown on touch screens) closes it. The strip hides itself when it is empty.
+L3V's site lays everything out as floating **Cells** (movable, resizable panels). The **Clothline** is a fixed strip under the header where Cells hang when you minimize them: each one becomes a tilted tag with a peg, its kind mark and its name. Clicking the tag restores the Cell, and × (shown on hover, always shown on touch screens) closes it. The strip hides itself when it is empty.
 
 Colibri adds this as two primitives:
 

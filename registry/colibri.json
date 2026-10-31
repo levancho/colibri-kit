@@ -158,18 +158,16 @@
    "title": "Button group",
    "type": "component",
    "group": "Base",
-   "status": "css",
-   "description": "Several related buttons joined into one control.",
-   "whenToUse": "Toolbars, e.g. left / center / right alignment.",
+   "status": "done",
+   "description": "Related buttons joined into one control; optionally pick one or several.",
+   "whenToUse": "Toolbars: copy/paste actions, text alignment, bold/italic toggles.",
    "shadcn": "Button Group",
    "metronic": "Button Group",
-   "accessibility": "role=group + aria-label; use toggle-group for selectable groups.",
-   "parts": [
-    "button-group"
-   ],
+   "accessibility": "role=group with aria-label. One Tab stop: Left/Right (Up/Down when vertical), Home and End move between buttons. With data-type=single|multiple the buttons are toggles with aria-pressed and the group emits ui:change {value}; data-required keeps one pressed; data-name submits the value with a form.",
+   "parts": [],
    "uses": [],
-   "html": "<div role=\"group\" aria-label=\"Align\" data-ui-part=\"button-group\">\n  <button>მარცხ.</button><button>ცენტრი</button><button>მარჯვ.</button>\n</div>",
-   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n<div role=\"group\" aria-label=\"Align\" data-ui-part=\"button-group\">\n  [@ui.button]მარცხ.[/@ui.button][@ui.button]ცენტრი[/@ui.button][@ui.button]მარჯვ.[/@ui.button]\n</div>"
+   "html": "<div class=\"bg-demo\">\n  <div>\n    <small class=\"muted\">Actions (click flashes; not a toggle)</small>\n    <div data-ui=\"button-group\" data-label=\"File actions\" id=\"bg-actions\">\n      <button>Copy</button><button>Paste</button><button>Delete</button>\n    </div>\n  </div>\n  <div>\n    <small class=\"muted\">Pick one (required)</small>\n    <div data-ui=\"button-group\" data-label=\"Text align\" data-type=\"single\" data-required data-value=\"center\" data-name=\"align\" id=\"bg-align\">\n      <button data-value=\"left\">Left</button><button data-value=\"center\">Center</button><button data-value=\"right\">Right</button>\n    </div>\n  </div>\n  <div>\n    <small class=\"muted\">Pick several</small>\n    <div data-ui=\"button-group\" data-label=\"Text style\" data-type=\"multiple\" data-value=\"bold\" id=\"bg-style\">\n      <button data-value=\"bold\" aria-label=\"Bold\"><b>B</b></button><button data-value=\"italic\" aria-label=\"Italic\"><i>I</i></button><button data-value=\"underline\" aria-label=\"Underline\"><u>U</u></button><button data-value=\"strike\" disabled aria-label=\"Strikethrough (unavailable)\"><s>S</s></button>\n    </div>\n  </div>\n  <div>\n    <small class=\"muted\">Vertical</small>\n    <div data-ui=\"button-group\" data-label=\"View\" data-type=\"single\" data-orientation=\"vertical\" data-value=\"list\" id=\"bg-view\">\n      <button data-value=\"list\">List</button><button data-value=\"grid\">Grid</button><button data-value=\"board\">Board</button>\n    </div>\n  </div>\n  <p class=\"bg-out\" id=\"bg-out\" aria-live=\"polite\">Align: center · Style: bold · View: list</p>\n</div>",
+   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[@ui.buttonGroup label=\"Text align\" type=\"single\" value=\"center\" name=\"align\" required=true]\n  <button data-value=\"left\">Left</button><button data-value=\"center\">Center</button><button data-value=\"right\">Right</button>\n[/@ui.buttonGroup]"
   },
   {
    "name": "card",
@@ -771,6 +769,24 @@
    ],
    "html": "<div dir=\"rtl\" lang=\"ar\" style=\"display:grid;gap:.75rem;justify-items:start\">\n  <div data-ui=\"dismiss\" role=\"status\">\n    <span><strong>مرحبا:</strong>هذا تنبيه من اليمين إلى اليسار.</span> <button data-ui-part=\"close\" aria-label=\"إغلاق\">×</button>\n  </div>\n  <div data-ui-part=\"input-group\">\n    <span data-ui-part=\"addon\">@</span><input aria-label=\"اسم المستخدم\" value=\"levancho\">\n  </div>\n</div>",
    "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n<div dir=\"rtl\" lang=\"ar\">\n  [@ui.alert]مرحبا[/@ui.alert]\n</div>"
+  },
+  {
+   "name": "spinner",
+   "title": "Spinner",
+   "type": "component",
+   "group": "Base",
+   "status": "done",
+   "description": "A spinning indicator that says something is loading, announced to screen readers.",
+   "whenToUse": "Inside a button while saving, or in place of content that is still loading.",
+   "shadcn": "Spinner",
+   "metronic": "Spinner",
+   "accessibility": "role=status + aria-live=polite with a visually hidden label (data-label, default 'Loading…'). Keeps turning, slower, with reduced motion or Animations off, because it reports status. api: start(), stop(), label.",
+   "parts": [],
+   "uses": [
+    "button"
+   ],
+   "html": "<div class=\"sp-demo\">\n  <div class=\"sp-cell\">\n    <span data-ui=\"spinner\" data-size=\"sm\"></span><span data-ui=\"spinner\"></span><span data-ui=\"spinner\" data-size=\"lg\"></span><span data-ui=\"spinner\" data-size=\"xl\"></span><code>ring · sm md lg xl</code>\n  </div>\n  <div class=\"sp-cell\">\n    <span data-ui=\"spinner\" data-variant=\"dots\" data-size=\"lg\"></span><code>dots</code>\n  </div>\n  <div class=\"sp-cell\">\n    <span data-ui=\"spinner\" data-variant=\"bars\" data-size=\"lg\"></span><code>bars</code>\n  </div>\n  <div class=\"sp-cell\">\n    <span data-ui=\"spinner\" data-tone=\"muted\" data-size=\"lg\"></span><code>muted tone</code>\n  </div>\n  <div class=\"sp-cell\">\n    <button data-ui=\"button\" disabled><span data-ui=\"spinner\" data-size=\"sm\" data-label=\"Saving…\"></span>Saving…</button><code>in a button</code>\n  </div>\n  <div class=\"sp-cell\">\n    <button data-ui=\"button\" data-variant=\"outline\" id=\"sp-run\">Load data</button><span data-ui=\"spinner\" id=\"sp-live\" data-label=\"Loading data…\" hidden></span><span id=\"sp-msg\" class=\"muted\"></span><code>start() / stop()</code>\n  </div>\n</div>",
+   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[@ui.spinner /]\n[@ui.spinner size=\"lg\" variant=\"dots\" label=\"Loading messages…\" /]\n[@ui.button disabled=true][@ui.spinner size=\"sm\" label=\"Saving…\" /] Saving…[/@ui.button]"
   },
   {
    "name": "breadcrumb",
@@ -1592,24 +1608,6 @@
    "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[@ui.marker icon=\"check\"]Explored 4 files[/@ui.marker]\n[@ui.marker variant=\"separator\"]Yesterday[/@ui.marker]"
   },
   {
-   "name": "spinner",
-   "title": "Loading spinner",
-   "type": "component",
-   "group": "Conversation",
-   "status": "done",
-   "description": "A small spinning ring that says something is loading.",
-   "whenToUse": "Inside buttons while saving, or in place of content that is loading.",
-   "shadcn": "Spinner",
-   "metronic": "-",
-   "accessibility": "role=status with aria-label 'Loading' unless it has its own text. Spins with CSS; static under reduced motion.",
-   "parts": [],
-   "uses": [
-    "button"
-   ],
-   "html": "<span data-ui=\"spinner\"></span> <span data-ui=\"spinner\" data-size=\"lg\"></span> <button data-ui=\"button\" disabled><span data-ui=\"spinner\" data-size=\"sm\"></span>Saving…</button>",
-   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[@ui.spinner size=\"sm\" /]"
-  },
-  {
    "name": "trace",
    "title": "Activity trace",
    "type": "component",
@@ -2129,7 +2127,7 @@
    "uses": [
     "trace"
    ],
-   "html": "<div data-ui=\"subagent\" data-status=\"completed\">\n  <button data-ui-part=\"trigger\"><svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4\" y=\"8\" width=\"16\" height=\"12\" rx=\"2\"><path d=\"M12 4v4M8 14h.01M16 14h.01\"></svg><span data-ui-part=\"label\">Researcher · l3v.ai Clothesline</span><span data-ui-part=\"status\"></span><i data-ui-part=\"chevron\" aria-hidden=\"true\"></i></button>\n  <div data-ui-part=\"content\">\n    <div data-ui=\"trace\">\n      <div data-ui-part=\"line\">\n        <svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"><path d=\"m21 21-4.3-4.3\"></svg><span data-ui-part=\"title\">Fetched l3v.ai bundle</span>\n      </div>\n      <div data-ui-part=\"line\">\n        <svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"><path d=\"M14 3v6h6\"></svg><span data-ui-part=\"title\">Read index.css (clothesline rules)</span>\n      </div>\n    </div>\n    <p>\n      <b>Result:</b>minimized cells hang as tilted tags; click restores.\n    </p>\n  </div>\n</div>",
+   "html": "<div data-ui=\"subagent\" data-status=\"completed\">\n  <button data-ui-part=\"trigger\"><svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"4\" y=\"8\" width=\"16\" height=\"12\" rx=\"2\"><path d=\"M12 4v4M8 14h.01M16 14h.01\"></svg><span data-ui-part=\"label\">Researcher · l3v.ai Clothline</span><span data-ui-part=\"status\"></span><i data-ui-part=\"chevron\" aria-hidden=\"true\"></i></button>\n  <div data-ui-part=\"content\">\n    <div data-ui=\"trace\">\n      <div data-ui-part=\"line\">\n        <svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"><path d=\"m21 21-4.3-4.3\"></svg><span data-ui-part=\"title\">Fetched l3v.ai bundle</span>\n      </div>\n      <div data-ui-part=\"line\">\n        <svg data-ui-part=\"icon\" aria-hidden=\"true\" width=\"14\" height=\"14\" viewbox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z\"><path d=\"M14 3v6h6\"></svg><span data-ui-part=\"title\">Read index.css (clothline rules)</span>\n      </div>\n    </div>\n    <p>\n      <b>Result:</b>minimized cells hang as tilted tags; click restores.\n    </p>\n  </div>\n</div>",
    "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[@ui.agent kind=\"subagent\" status=\"completed\" title=\"Researcher\"]…[/@ui.agent]"
   },
   {

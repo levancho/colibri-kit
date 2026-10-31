@@ -116,7 +116,7 @@
 [#macro panel value attrs={}]<div data-ui-part="panel" data-value="${value?html}"${a(attrs)}>[#nested]</div>[/#macro]
 [#macro datatable pageSize=10 remote=false search="Search…" attrs={}]<div data-ui="datatable" data-page-size="${pageSize?c}"[#if remote] data-remote[/#if]${a(attrs)}><input data-ui-part="search" placeholder="${search?html}" aria-label="${search?html}">[#nested]<p data-ui-part="empty" hidden>No results</p><div data-ui-part="info" aria-live="polite"></div><nav data-ui="pagination" data-total="1" data-page="1" aria-label="Table pages"></nav></div>[/#macro]
 
-[#-- Clothline (after L3V's Clothesline): floating cells you minimize onto a line of tags. --]
+[#-- Clothline (by L3V, l3v.ai): floating cells you minimize onto a line of tags. --]
 [#macro clothline id="clothline" label="Minimized cells"]<nav data-ui="clothline" id="${id}" aria-label="${label?html}" hidden></nav>[/#macro]
 [#macro cell title line="#clothline" mark="◈" id="" hanging=false maximize=true closable=true attrs={}]<section data-ui="cell"[#if id?has_content] id="${id}"[/#if] data-line="${line}" data-name="${title?html}" data-mark="${mark?html}"[#if hanging] hidden data-state="hanging"[/#if]${a(attrs)}><header data-ui-part="header"><span data-ui-part="mark" aria-hidden="true">${mark?html}</span><span data-ui-part="title">${title?html}</span><button type="button" data-ui-part="minimize" title="Hang on clothline">−</button>[#if maximize]<button type="button" data-ui-part="maximize" aria-pressed="false">□</button>[/#if][#if closable]<button type="button" data-ui-part="close">×</button>[/#if]</header><div data-ui-part="body">[#nested]</div><span data-ui-part="resize" aria-hidden="true"></span></section>[/#macro]
 

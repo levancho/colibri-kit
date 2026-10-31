@@ -443,7 +443,7 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 [data-ui=datatable] th[aria-sort=descending]::after{-webkit-mask-image:var(--i-dn);mask-image:var(--i-dn);opacity:.9}
 [data-ui=date-picker] [data-ui-part=trigger]{font-size:0!important}[data-ui=date-picker] [data-ui-part=trigger]::before{-webkit-mask-image:var(--i-cal);mask-image:var(--i-cal);opacity:.7}
 
-/* ---- Clothline (after L3V's Clothesline) ---- */
+/* ---- Clothline (by L3V, l3v.ai) ---- */
 :where(.ui-root) [data-ui=clothline]{display:flex;align-items:flex-start;gap:12px;min-height:56px;padding:14px 8px 6px;border-top:2px solid color-mix(in srgb,var(--ui-primary) 45%,var(--ui-border));background:linear-gradient(color-mix(in srgb,var(--ui-primary) 8%,transparent),transparent);overflow:auto hidden}
 :where(.ui-root) [data-ui=clothline][hidden]{display:none}
 :where(.ui-root) [data-ui=clothline] [data-ui-part=item]{position:relative;flex:none;max-width:170px;transform:rotate(-2deg);transform-origin:50% -12px;transition:transform .2s}

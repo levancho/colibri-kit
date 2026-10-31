@@ -1,4 +1,4 @@
-// Colibri UI — Clothline (after L3V's "Clothesline", l3v.ai).
+// Colibri UI — Clothline (by L3V, l3v.ai).
 // Floating "cells" (movable, resizable panels) that you minimize ("hang") onto a line of tags instead of closing.
 // Click a tag to restore the cell; × on the tag closes it for good. The line hides itself when empty.
 //   <nav data-ui="clothline" id="line" aria-label="Minimized cells" hidden></nav>
