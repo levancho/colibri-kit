@@ -53,7 +53,8 @@
     const pL = Math.min(Math.max(aL, 0.45), 0.68), pD = Math.min(Math.max(aL, 0.7), 0.82);
     light.primary = aL > 0.45 && aL < 0.72 ? acc : hex(pL, aC, aH); dark.primary = hex(pD, Math.min(aC, 0.2), aH);
     for (const [s, dk] of [[light, 0], [dark, 1]]) {
-      s.primaryFg = onColor(s.primary); s.ring = hex(dk ? 0.72 : 0.75, aC * 0.8, aH); s.accentBg = dk ? hex(0.27, Math.min(0.06, aC * 0.35), aH) : hex(0.962, Math.min(0.035, aC * 0.25), aH);
+      const [, sC, sH] = HEX.test(seed.secondary || "") ? oklch(seed.secondary) : [0, aC, aH]; // optional second hue (e.g. from the colour wheel) tints accents
+      s.primaryFg = onColor(s.primary); s.ring = hex(dk ? 0.72 : 0.75, aC * 0.8, aH); s.accentBg = dk ? hex(0.27, Math.min(0.06, sC * 0.35), sH) : hex(0.955, Math.min(0.04, sC * 0.28), sH);
       s.success = HEX.test(seed.success || "") ? seed.success.toUpperCase() : hex(dk ? 0.74 : 0.6, 0.16, 150); s.warning = HEX.test(seed.warning || "") ? seed.warning.toUpperCase() : hex(dk ? 0.8 : 0.68, 0.16, 70); s.danger = HEX.test(seed.danger || "") ? seed.danger.toUpperCase() : hex(dk ? 0.7 : 0.58, 0.2, 22);
     }
     return { light, dark };
@@ -80,12 +81,13 @@
     const d = derive(o.seed || {});
     for (const m of ["light", "dark"]) for (const r of ROLES) out[m][r] = HEX.test((c[m] || {})[r] || "") ? c[m][r].toUpperCase() : d[m][r];
     const comp = o.components || {};
-    const seed = o.seed && typeof o.seed === "object" ? Object.fromEntries(Object.entries(o.seed).filter(([k, v]) => ["accent", "bg", "fg", "neutralHue", "tint"].includes(k) && (HEX.test(String(v)) || isFinite(+v))).map(([k, v]) => [k, HEX.test(String(v)) ? String(v).toUpperCase() : +v])) : {};
+    const seed = o.seed && typeof o.seed === "object" ? Object.fromEntries(Object.entries(o.seed).filter(([k, v]) => ["accent", "secondary", "bg", "fg", "neutralHue", "tint"].includes(k) && (HEX.test(String(v)) || isFinite(+v))).map(([k, v]) => [k, HEX.test(String(v)) ? String(v).toUpperCase() : +v])) : {};
     const schemes = pick(o.schemes, ENUM.schemes, "both");
     return { v: 1, name: String(o.name || "My theme").replace(/[<>"`\\]/g, "").slice(0, 48), slug: slugify(o.slug || o.name), base: pick(o.base, Object.keys(PRESETS), "colibri"), seed,
       colors: out, radius: num(o.radius, 0, 999, 8), control: num(o.control, 30, 52, 38), font: pick(o.font, ENUM.font, "inter"), hfont: pick(o.hfont, ENUM.hfont, "same"), hweight: num(o.hweight, 400, 900, 650), scale: num(o.scale, 85, 120, 100),
       shadow: pick(o.shadow, ENUM.shadow, "soft"), border: pick(o.border, ENUM.border, "hairline"), motion: pick(o.motion, ENUM.motion, "standard"),
       components: { btn: pick(comp.btn, ENUM.btn, "solid"), card: pick(comp.card, ENUM.card, "surface"), tabs: pick(comp.tabs, ENUM.tabs, "underline"), acc: pick(comp.acc, ENUM.acc, "boxed"), input: pick(comp.input, ENUM.input, "surface") },
+      chart: Array.isArray(o.chart) ? o.chart.filter((c) => HEX.test(String(c))).slice(0, 8).map((c) => c.toUpperCase()) : [],
       schemes, scheme: schemes === "dark" ? "dark" : schemes === "light" ? "light" : pick(o.scheme, ENUM.scheme, "light") };
   }
 
@@ -107,6 +109,7 @@
       "--ui-border": line, "--ui-input": s.input, "--ui-success": s.success, "--ui-warning": s.warning, "--ui-destructive": s.danger,
       "--ui-shadow-sm": sh.s, "--ui-shadow": sh.m,
       "--acc-card": s.surface, "--acc-head": dark ? s.sunken : s.surface, "--acc-body": s.sunken, "--acc-rule": s.primary,
+      ...chartVars(spec, dark),
       "--s-bg": s.bg, "--s-fg": s.fg, "--s-muted": s.muted, "--s-line": line, "--s-soft": s.sunken, "--s-acc": s.primary, "--s-ring": s.ring,
     };
     if (!dark) Object.assign(t, {
@@ -120,6 +123,11 @@
       "--ui-text-sm": ((14 * spec.scale) / 100).toFixed(1) + "px", "--ui-text-xs": ((12 * spec.scale) / 100).toFixed(1) + "px",
     });
     return t;
+  }
+  // the scheme's full colour set (from the wheel) as chart / data-vis colours, nudged per scheme so each stays visible
+  function chartVars(spec, dark) {
+    const o = {}; (spec.chart || []).forEach((c, i) => { const [L, C, H] = oklch(c), v = hex(dark ? Math.min(Math.max(L, 0.62), 0.86) : Math.min(Math.max(L, 0.42), 0.74), C, H); o[`--ui-chart-${i + 1}`] = v; if (!dark) o[`--c-chart-${i + 1}`] = v; });
+    return o;
   }
   const block = (sel, t) => sel + "{\n" + Object.entries(t).map(([k, v]) => `  ${k}:${v};`).join("\n") + "\n}\n";
   // knobsCSS (optional): the text of Colibri Kit themes/knobs.css; the chosen looks are baked into the pack so it needs no data-ui-* attributes.
