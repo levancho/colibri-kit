@@ -1,48 +1,56 @@
-/* Colibri Kit theme pack: EMBER — warm, bold, friendly. Terracotta + amber on cream, generous radii, soft deep shadows.
-   Use: <link rel="stylesheet" href="themes/packs/ember.css"> then <html data-kit-theme="ember">. */
+/* Colibri Kit theme pack: EMBER — warm, generous, friendly. NOT brown: warm ivory in light, neutral graphite in dark,
+   vivid coral-orange accent. Shape: big 16–22px radii, pill buttons and tabs, roomy density. Accordion: separate fat
+   cards, white header on a tinted card, the body sits in an inset panel. Shadows: soft and deep. Type: rounded sans. Motion: springy. */
 html[data-kit-theme=ember]{
-  --c-hue:40; --c-chroma:.17;
-  --c-brand:oklch(58% .17 40); --c-brand-fg:#fff;
-  --c-bg:light-dark(oklch(97.5% .015 75),oklch(19% .02 45));
-  --c-surface:light-dark(oklch(99.5% .008 80),oklch(23% .025 45));
-  --c-sunken:light-dark(oklch(94% .025 75),oklch(16% .02 45));
-  --c-fg:light-dark(oklch(26% .04 40),oklch(95% .02 75));
-  --c-muted:light-dark(oklch(50% .05 45),oklch(74% .04 60));
-  --c-line:light-dark(oklch(88% .03 70),oklch(33% .03 45));
-  --c-accent:light-dark(oklch(58% .17 40),oklch(75% .15 55));
-  --c-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
-  --c-radius-s:10px; --c-radius:16px; --c-radius-l:24px;
-  --c-shadow-color:light-dark(oklch(40% .08 40 / .16),oklch(0% 0 0 / .6));
-  --c-shadow:0 2px 4px var(--c-shadow-color),0 12px 28px -10px var(--c-shadow-color);
-  --ui-background:#fdf8f1; --ui-foreground:#3b1d0e; --ui-card:#fffcf7; --ui-popover:#fffcf7;
-  --ui-muted:#f6eadb; --ui-muted-foreground:#8a5a3c; --ui-accent:#fbe3cf; --ui-accent-foreground:#3b1d0e;
-  --ui-primary:#c2410c; --ui-primary-foreground:#fff; --ui-ring:#fb923c;
-  --ui-border:#efdcc6; --ui-input:#e5c9a8; --ui-success:#4d7c0f; --ui-warning:#d97706;
-  --ui-radius:14px; --ui-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
-  --ui-shadow-sm:0 2px 6px #7c2d1222; --ui-shadow:0 18px 40px -14px #7c2d1255;
+  --c-hue:32; --c-chroma:.19;
+  --c-bg:light-dark(oklch(98.4% .008 75),oklch(16.5% .004 60));
+  --c-surface:light-dark(#fff,oklch(21% .005 60));
+  --c-sunken:light-dark(oklch(96% .014 70),oklch(13.5% .004 60));
+  --c-fg:light-dark(oklch(24% .02 40),oklch(96% .006 75));
+  --c-muted:light-dark(oklch(50% .025 50),oklch(73% .012 70));
+  --c-line:light-dark(oklch(91.5% .014 70),oklch(29% .006 60));
+  --c-accent:light-dark(oklch(62% .19 calc(var(--c-hue))),oklch(74% .16 calc(var(--c-hue) + 8)));
+  --c-brand:var(--c-accent); --c-brand-fg:#fff;
+  --c-font:"Nunito","Figtree","Quicksand",ui-rounded,ui-sans-serif,system-ui,sans-serif;
+  --c-radius-s:10px; --c-radius:16px; --c-radius-l:22px;
+  --c-shadow-color:light-dark(oklch(45% .08 40 / .14),oklch(0% 0 0 / .55));
+  --c-shadow-s:0 2px 6px -1px var(--c-shadow-color); --c-shadow:0 10px 30px -12px var(--c-shadow-color); --c-shadow-l:0 30px 60px -22px var(--c-shadow-color);
+  --c-dur:280ms; --c-ease:cubic-bezier(.34,1.56,.64,1);
+  --ui-background:#fffdfa; --ui-foreground:#2b1a12; --ui-card:#fff; --ui-popover:#fff;
+  --ui-muted:#f8f1e9; --ui-muted-foreground:#7a6355; --ui-accent:#fff0e6; --ui-accent-foreground:#2b1a12;
+  --ui-primary:#ea580c; --ui-primary-foreground:#fff; --ui-ring:#fdba74; --ui-border:#efe4d8; --ui-input:#e7d8c8;
+  --ui-success:#16a34a; --ui-warning:#d97706; --ui-destructive:#e11d48;
+  --ui-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
+  --ui-radius:16px; --ui-radius-sm:12px; --ui-radius-lg:22px; --ui-control-h:42px;
+  --ui-shadow-sm:0 2px 6px -1px #9a341214; --ui-shadow:0 20px 44px -18px #9a34122e;
+  --acc-card:#f6ede3; --acc-head:#fff; --acc-body:#f9f2ea; --acc-rule:#ea580c;
+  --s-bg:#fbf7f2; --s-fg:#2b1a12; --s-muted:#7a6355; --s-line:#efe4d8; --s-soft:#f6eee5; --s-acc:#ea580c; --s-ring:#fdba74;
 }
 html[data-kit-theme=ember][data-theme=dark]{
-  --ui-background:#1c120c; --ui-foreground:#fbeee0; --ui-card:#24170f; --ui-popover:#24170f;
-  --ui-muted:#33221a; --ui-muted-foreground:#d6b08f; --ui-accent:#3f2416; --ui-accent-foreground:#fbeee0;
-  --ui-primary:#fb923c; --ui-primary-foreground:#2a1206; --ui-ring:#fdba74;
-  --ui-border:#3a271c; --ui-input:#4a3326; --ui-shadow:0 18px 40px -14px #000d;
+  --ui-background:#141414; --ui-foreground:#f5f1ec; --ui-card:#1c1c1c; --ui-popover:#1f1f1f;
+  --ui-muted:#232323; --ui-muted-foreground:#a8a29e; --ui-accent:#2a1d16; --ui-accent-foreground:#f5f1ec;
+  --ui-primary:#fb7a3c; --ui-primary-foreground:#1a0c05; --ui-ring:#fdba74; --ui-border:#2c2c2c; --ui-input:#383838;
+  --ui-shadow-sm:0 2px 6px #0008; --ui-shadow:0 24px 50px -20px #000d;
+  --acc-card:#1c1c1c; --acc-head:#232323; --acc-body:#161616; --acc-rule:#fb7a3c;
+  --s-bg:#111111; --s-fg:#f5f1ec; --s-muted:#a8a29e; --s-line:#2a2a2a; --s-soft:#1a1a1a; --s-acc:#fb923c; --s-ring:#c2410c;
 }
-
-/* ==== EMBER · shape & component chrome (a theme pack is a full look, not only colour) ==== */
-html[data-kit-theme=ember]{--ui-radius:16px;--ui-radius-sm:12px;--ui-radius-lg:22px;--ui-control-h:42px;--c-radius-s:10px;--c-radius:16px;--c-radius-l:24px;--c-dur:260ms;--c-ease:cubic-bezier(.34,1.56,.64,1);
-  --ui-shadow-sm:0 2px 6px -1px rgb(120 53 15/.18);--ui-shadow:0 24px 48px -16px rgb(120 53 15/.35);--c-shadow-s:0 4px 14px -6px rgb(120 53 15/.22);--c-shadow:0 14px 34px -12px rgb(120 53 15/.3);--c-shadow-l:0 30px 60px -20px rgb(120 53 15/.38)}
 /* tabs: filled pills */
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{border-radius:999px;padding:5px;gap:4px}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:999px;height:36px;padding:0 1.1rem;font-weight:600}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:var(--ui-primary);color:var(--ui-primary-foreground);box-shadow:var(--ui-shadow-sm)}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;background:var(--ui-muted);border-radius:var(--ui-radius-lg);padding:1.25rem}
-/* accordion: fat cards */
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion]{display:grid!important;gap:.6rem}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=item]{border:0;border-radius:var(--ui-radius);background:var(--ui-muted);padding:0 1.1rem}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]{padding:1.15rem 0!important;font-weight:600;font-size:1.02em}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=accordion] [data-ui-part=content]{padding:0 0 1.2rem}
-/* Colibri CSS chrome: soft, round, roomy */
-html[data-kit-theme=ember] .btn{border-radius:999px;min-block-size:2.8rem;padding-inline:1.35em;font-weight:600}
-html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-shadow)}
-html[data-kit-theme=ember] .badge{border-radius:999px;padding-inline:.8em}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{border-radius:999px;padding:5px;gap:4px;background:var(--ui-muted)}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:999px;height:36px;padding:0 1.15rem;font-weight:700}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:var(--ui-primary);color:var(--ui-primary-foreground);box-shadow:0 6px 16px -6px var(--ui-primary)}
+html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;background:var(--ui-card);box-shadow:var(--ui-shadow);border-radius:var(--ui-radius-lg);padding:1.25rem 1.4rem;margin-top:.8rem}
+/* accordion: separate fat cards; header row vs inset body panel */
+html[data-kit-theme=ember] [data-ui=accordion]{display:grid!important;gap:.7rem}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=item]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);background:var(--acc-card);overflow:hidden;box-shadow:var(--ui-shadow-sm);transition:box-shadow .3s}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=item]:has([aria-expanded=true]){box-shadow:var(--ui-shadow);border-color:color-mix(in srgb,var(--ui-primary) 35%,var(--ui-border))}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]{padding:1.05rem 1.25rem!important;background:var(--acc-head)!important;font-weight:700!important;font-size:1rem!important}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{color:var(--ui-primary)!important}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]::after{color:var(--ui-primary)!important}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=content]{margin:0 .55rem .55rem;padding:.9rem 1.1rem .95rem 1.6rem;background:var(--acc-body);border-radius:calc(var(--ui-radius-lg) - 8px);position:relative;line-height:1.65}
+html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:.8rem;top:1rem;bottom:1rem;width:3px;border-radius:3px;background:var(--acc-rule);opacity:.7}
+/* Colibri CSS chrome */
+html[data-kit-theme=ember] .btn{border-radius:999px;min-block-size:2.8rem;padding-inline:1.35em;font-weight:700}
+html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-shadow);border-radius:var(--c-radius-l)}
+html[data-kit-theme=ember] .badge{border-radius:999px;padding-inline:.8em;font-weight:700}
+html[data-kit-theme=ember] :is(h1,h2,h3){letter-spacing:-.02em;font-weight:800}

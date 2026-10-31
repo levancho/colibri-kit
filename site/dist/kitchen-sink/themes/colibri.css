@@ -994,3 +994,9 @@ html[data-ui-motion=off] [data-ui=spinner]::before,html[data-ui-motion=off] [dat
 :where(.ui-root) [data-ui=cell] [data-ui-part=header] :is(button,[data-ui-part=mark]){position:relative;z-index:3}
 :where(.ui-root) [data-ui=cell] [data-ui-part=resize]{z-index:2}
 :where(.ui-root) [data-ui=cell] [data-ui-part=mark-panel]{z-index:4}
+
+/* accordion default: header row vs indented body (distinct surface + guide rule) */
+[data-ui=accordion] [data-ui-part=trigger]{padding-inline:.75rem!important}
+[data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--ui-muted)!important}
+[data-ui=accordion] [data-ui-part=content]{position:relative;padding:.75rem .75rem 1rem 1.6rem;background:var(--ui-background)}
+[data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:.95rem;top:.75rem;bottom:1rem;width:2px;border-radius:2px;background:var(--ui-border)}

@@ -1,48 +1,50 @@
-/* Colibri Kit theme pack: MIDNIGHT — dark-first, electric. Ink navy, violet primary, neon-mint highlights, glow focus.
-   Forces the dark scheme (ignores light toggle) — built for dashboards & ops screens.
-   Use: <link rel="stylesheet" href="themes/packs/midnight.css"> then <html data-kit-theme="midnight">. */
-html[data-kit-theme=midnight],html[data-kit-theme=midnight][data-theme]{
-  color-scheme:dark;
-  --c-hue:285; --c-chroma:.2;
-  --c-brand:oklch(66% .2 285); --c-brand-fg:#fff;
-  --c-bg:oklch(14% .03 280); --c-surface:oklch(18.5% .04 282); --c-sunken:oklch(11.5% .025 280);
-  --c-fg:oklch(95% .015 280); --c-muted:oklch(70% .04 280); --c-line:oklch(28% .05 282);
-  --c-accent:oklch(72% .19 290); --c-ok:oklch(84% .17 165); --c-warn:oklch(85% .15 85); --c-bad:oklch(70% .2 15);
-  --c-font:"Space Grotesk","Geist",ui-sans-serif,system-ui,sans-serif;
-  --c-radius-s:6px; --c-radius:12px; --c-radius-l:18px;
+/* Colibri Kit theme pack: MIDNIGHT — dark-first, technical, luminous. Always dark (forces color-scheme).
+   Deep ink-blue neutrals (not brown), electric violet accent with glow. Shape: 10px radii, 1px luminous borders.
+   Tabs: segmented with glow. Accordion: joined panel, raised header vs recessed body, indented with a glowing rail.
+   Type: Space Grotesk / mono headings, small-caps buttons. Motion: smooth ease-out. */
+html[data-kit-theme=midnight]{
+  color-scheme:dark!important;
+  --c-hue:275; --c-chroma:.2;
+  --c-bg:oklch(14.5% .025 275); --c-surface:oklch(19% .03 275); --c-sunken:oklch(12% .022 275);
+  --c-fg:oklch(95% .012 280); --c-muted:oklch(72% .03 280); --c-line:oklch(30% .04 278);
+  --c-accent:oklch(74% .17 calc(var(--c-hue))); --c-brand:var(--c-accent); --c-brand-fg:oklch(16% .05 275);
+  --c-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif;
+  --c-font-mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,monospace;
+  --c-radius-s:6px; --c-radius:10px; --c-radius-l:14px;
   --c-shadow-color:oklch(0% 0 0 / .6);
-  --c-shadow:0 0 0 1px oklch(72% .19 290 / .08),0 10px 30px -10px var(--c-shadow-color);
-  --ui-background:#0b0a1a; --ui-foreground:#ecebff; --ui-card:#13112a; --ui-popover:#16133a;
-  --ui-muted:#1d1a3a; --ui-muted-foreground:#a5a1d4; --ui-accent:#25205a; --ui-accent-foreground:#ecebff;
-  --ui-primary:#8b5cf6; --ui-primary-foreground:#fff; --ui-ring:#5eead4;
-  --ui-destructive:#fb7185; --ui-destructive-foreground:#1a0610; --ui-success:#5eead4; --ui-warning:#fcd34d;
-  --ui-border:#26224d; --ui-input:#332d66; --ui-radius:12px;
-  --ui-font:"Space Grotesk","Geist",ui-sans-serif,system-ui,sans-serif;
-  --ui-focus-shadow:0 0 0 3px #5eead455,0 0 18px #8b5cf655;
-  --ui-shadow-sm:0 0 0 1px #8b5cf61a; --ui-shadow:0 0 0 1px #8b5cf622,0 20px 50px -15px #000;
+  --c-shadow-s:0 0 0 1px oklch(100% 0 0 / .04),0 2px 8px var(--c-shadow-color);
+  --c-shadow:0 0 0 1px oklch(100% 0 0 / .05),0 12px 32px -12px var(--c-shadow-color);
+  --c-shadow-l:0 0 0 1px oklch(100% 0 0 / .06),0 30px 60px -24px var(--c-shadow-color),0 0 50px -20px oklch(70% .2 285 / .45);
+  --c-dur:220ms; --c-ease:cubic-bezier(.16,1,.3,1);
+  --ui-background:#0b0c1a; --ui-foreground:#eceefe; --ui-card:#121429; --ui-popover:#15183a;
+  --ui-muted:#171a33; --ui-muted-foreground:#9ca1c9; --ui-accent:#1f1d45; --ui-accent-foreground:#eceefe;
+  --ui-primary:#a78bfa; --ui-primary-foreground:#120a2e; --ui-ring:#c4b5fd; --ui-border:#262a4d; --ui-input:#30355e;
+  --ui-success:#34d399; --ui-warning:#fbbf24; --ui-destructive:#fb7185;
+  --ui-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif; --ui-font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --ui-radius:10px; --ui-radius-sm:6px; --ui-radius-lg:14px; --ui-control-h:38px;
+  --ui-shadow-sm:0 0 0 1px #ffffff08,0 2px 8px #0009; --ui-shadow:0 0 0 1px #ffffff0a,0 18px 40px -16px #000e,0 0 40px -18px #8b5cf680;
+  --acc-head:#15183a; --acc-head-open:#1c1f4a; --acc-body:#0d0f22; --acc-rule:#a78bfa;
+  --s-bg:#080914; --s-fg:#eceefe; --s-muted:#9ca1c9; --s-line:#20234a; --s-soft:#0f1128; --s-acc:#c4b5fd; --s-ring:#7c3aed;
 }
-html[data-kit-theme=midnight] body{background:var(--ui-background);color:var(--ui-foreground)}
-
-/* ==== MIDNIGHT · shape & component chrome (a theme pack is a full look, not only colour) ==== */
-html[data-kit-theme=midnight]{--ui-radius:2px;--ui-radius-sm:2px;--ui-radius-lg:4px;--ui-control-h:36px;--c-radius-s:1px;--c-radius:2px;--c-radius-l:4px;--c-dur:180ms;
-  --ui-shadow-sm:0 0 0 1px color-mix(in srgb,var(--ui-primary) 35%,transparent);--ui-shadow:0 0 0 1px color-mix(in srgb,var(--ui-primary) 40%,transparent),0 0 32px -6px color-mix(in srgb,var(--ui-primary) 55%,transparent);
-  --c-shadow-s:0 0 0 1px var(--c-line);--c-shadow:0 0 0 1px var(--c-line),0 0 24px -8px color-mix(in oklch,var(--c-accent) 60%,transparent);--c-shadow-l:0 0 0 1px var(--c-line),0 0 44px -10px color-mix(in oklch,var(--c-accent) 70%,transparent)}
-html[data-kit-theme=midnight] :is(h1,h2,h3){letter-spacing:-.01em;font-family:var(--c-font-mono,ui-monospace,monospace);text-transform:none}
-/* tabs: boxed segments with glow */
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{gap:0;padding:0;border:1px solid var(--ui-border);background:none}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:0;border-inline-end:1px solid var(--ui-border);text-transform:uppercase;letter-spacing:.08em;font-size:11px}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]:last-child{border-inline-end:0}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:color-mix(in srgb,var(--ui-primary) 18%,transparent);color:var(--ui-foreground);box-shadow:inset 0 -2px 0 var(--ui-primary),0 0 18px -4px var(--ui-primary)}
-/* accordion: bordered rows with an accent rail */
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=accordion] [data-ui-part=item]{border:1px solid var(--ui-border);border-bottom-width:0;padding:0 .9rem;position:relative}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=accordion] [data-ui-part=item]:last-child{border-bottom-width:1px}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=accordion] [data-ui-part=item]:has([aria-expanded=true])::before{content:"";position:absolute;inset-block:0;inset-inline-start:-1px;width:2px;background:var(--ui-primary);box-shadow:0 0 10px var(--ui-primary)}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]{text-transform:uppercase;letter-spacing:.06em;font-size:12px}
-/* Colibri CSS chrome: sharp, technical, glowing */
-html[data-kit-theme=midnight] .btn{border-radius:2px;text-transform:uppercase;letter-spacing:.08em;font-size:.78em;font-weight:700}
-html[data-kit-theme=midnight] .card{box-shadow:var(--c-shadow)}
-html[data-kit-theme=midnight] .badge{border-radius:1px;font-family:var(--c-font-mono,ui-monospace,monospace)}
-/* Midnight is dark-first: force the dark scheme so page chrome and components agree */
-html[data-kit-theme=midnight]{color-scheme:dark!important;--s-bg:#0b0d17;--s-fg:#e7e9f5;--s-muted:#9aa0bd;--s-line:#262a40;--s-soft:#12152a;--s-acc:#e7e9f5;--s-ring:#5b5f86}
-html[data-kit-theme=midnight] body{background:var(--ui-background,#0b0d17);color:var(--ui-foreground,#e7e9f5)}
+/* tabs: segmented with glow */
+html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{background:var(--ui-card);border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:4px;gap:4px}
+html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:var(--ui-radius-sm);height:32px;padding:0 .95rem;font:500 .78rem var(--ui-font-mono);letter-spacing:.02em;text-transform:uppercase}
+html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:linear-gradient(180deg,#2a2563,#1f1d45);color:#fff;box-shadow:inset 0 0 0 1px #a78bfa66,0 0 18px -4px #8b5cf6aa}
+html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{background:var(--ui-card);border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);padding:1.1rem 1.2rem}
+/* accordion: joined panel; raised header, recessed indented body with glowing rail */
+html[data-kit-theme=midnight] [data-ui=accordion]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);overflow:hidden;background:var(--acc-body);box-shadow:var(--ui-shadow)}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=item]{border-bottom:1px solid var(--ui-border)}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=item]:last-child{border-bottom:0}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger]{padding:.85rem 1.1rem!important;background:var(--acc-head)!important;font:600 .92rem var(--ui-font)!important;letter-spacing:.005em}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--acc-head-open)!important;color:#fff!important;box-shadow:inset 3px 0 0 var(--acc-rule),inset 0 -1px var(--ui-border)}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none;background:var(--acc-head-open)!important}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]::after{color:var(--ui-primary)!important}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=content]{background:var(--acc-body);padding:.9rem 1.1rem 1.05rem 2rem;position:relative;color:#b9bde3;line-height:1.65;font-size:.9rem}
+html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:1.15rem;top:.9rem;bottom:1.05rem;width:2px;border-radius:2px;background:linear-gradient(var(--acc-rule),transparent);box-shadow:0 0 10px var(--acc-rule)}
+/* Colibri CSS chrome */
+html[data-kit-theme=midnight] .btn{border-radius:var(--c-radius-s);text-transform:uppercase;letter-spacing:.06em;font:600 .8rem var(--c-font-mono)}
+html[data-kit-theme=midnight] .btn[data-variant=primary]{box-shadow:0 0 24px -6px var(--c-accent)}
+html[data-kit-theme=midnight] .card{background:linear-gradient(180deg,oklch(21% .035 275),oklch(18% .03 275));border:1px solid var(--c-line);box-shadow:var(--c-shadow)}
+html[data-kit-theme=midnight] .badge{font-family:var(--c-font-mono);border-radius:4px}
+html[data-kit-theme=midnight] :is(h1,h2,h3){font-family:var(--c-font-mono);letter-spacing:-.03em}
 html[data-kit-theme=midnight] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}

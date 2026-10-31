@@ -1,46 +1,58 @@
-/* Colibri Kit theme pack: GLACIER — cool, neutral, professional. Slate + teal, tight radii, crisp borders, quiet shadows.
-   Use: <link rel="stylesheet" href="themes/packs/glacier.css"> then <html data-kit-theme="glacier">.
-   Drives both Colibri CSS (--c-*) and Colibri UI (--ui-*). Works with data-theme="light|dark". */
+/* Colibri Kit theme pack: GLACIER — crisp, precise, editorial.
+   Shape: tight 6px radii, hairline borders, compact density. Tabs: underline. Accordion: one bordered sheet,
+   tinted header strip, indented body with a guide rule. Shadows: near-flat. Type: Inter / system. Motion: quick, linear-ish.
+   Colour (hue slider) is separate: it only moves the accent. */
 html[data-kit-theme=glacier]{
-  --c-hue:200; --c-chroma:.11;
-  --c-brand:oklch(52% .11 200); --c-brand-fg:#fff;
-  --c-bg:light-dark(oklch(98.5% .004 230),oklch(18% .015 240));
-  --c-surface:light-dark(#fff,oklch(22% .018 240));
-  --c-sunken:light-dark(oklch(95.5% .008 230),oklch(15% .014 240));
-  --c-fg:light-dark(oklch(24% .025 245),oklch(94% .01 230));
-  --c-muted:light-dark(oklch(52% .02 245),oklch(70% .02 235));
-  --c-line:light-dark(oklch(90% .01 240),oklch(31% .02 240));
-  --c-accent:light-dark(oklch(52% .11 200),oklch(74% .12 195));
-  --c-font:"Inter","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
-  --c-radius-s:3px; --c-radius:6px; --c-radius-l:10px;
-  --c-shadow-color:light-dark(oklch(35% .03 240 / .10),oklch(0% 0 0 / .55));
-  --c-shadow:0 1px 2px var(--c-shadow-color);
-  --ui-background:#f8fafc; --ui-foreground:#0f172a; --ui-card:#fff; --ui-popover:#fff;
-  --ui-muted:#f1f5f9; --ui-muted-foreground:#64748b; --ui-accent:#e2f3f5; --ui-accent-foreground:#0f172a;
-  --ui-primary:#0e7490; --ui-primary-foreground:#fff; --ui-ring:#22d3ee;
-  --ui-border:#e2e8f0; --ui-input:#cbd5e1;
-  --ui-radius:6px; --ui-font:"Inter","IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
-  --ui-shadow-sm:0 1px 2px #0f172a14; --ui-shadow:0 8px 24px -8px #0f172a33;
+  --c-hue:225; --c-chroma:.14;
+  --c-bg:light-dark(oklch(98.6% .004 240),oklch(16.5% .012 255));
+  --c-surface:light-dark(#fff,oklch(20% .014 255));
+  --c-sunken:light-dark(oklch(96.2% .008 240),oklch(14% .012 255));
+  --c-fg:light-dark(oklch(22% .02 255),oklch(96% .006 240));
+  --c-muted:light-dark(oklch(50% .02 250),oklch(72% .018 245));
+  --c-line:light-dark(oklch(91% .008 245),oklch(28% .016 255));
+  --c-accent:light-dark(oklch(55% .16 calc(var(--c-hue))),oklch(72% .13 calc(var(--c-hue))));
+  --c-brand:var(--c-accent); --c-brand-fg:light-dark(#fff,oklch(18% .03 250));
+  --c-font:"Inter","Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --c-radius-s:4px; --c-radius:6px; --c-radius-l:10px;
+  --c-shadow-color:light-dark(oklch(30% .03 250 / .08),oklch(0% 0 0 / .5));
+  --c-shadow-s:0 1px 2px var(--c-shadow-color); --c-shadow:0 1px 2px var(--c-shadow-color),0 4px 12px -4px var(--c-shadow-color); --c-shadow-l:0 12px 32px -12px var(--c-shadow-color);
+  --c-dur:140ms; --c-ease:cubic-bezier(.2,0,0,1);
+  /* Colibri UI tokens */
+  --ui-background:#fff; --ui-foreground:#0f172a; --ui-card:#fff; --ui-popover:#fff;
+  --ui-muted:#f1f5f9; --ui-muted-foreground:#5b6b82; --ui-accent:#eef4ff; --ui-accent-foreground:#0f172a;
+  --ui-primary:#2563eb; --ui-primary-foreground:#fff; --ui-ring:#60a5fa; --ui-border:#e3e8ef; --ui-input:#d5dce6;
+  --ui-success:#059669; --ui-warning:#d97706; --ui-destructive:#dc2626;
+  --ui-font:"Inter","Geist",ui-sans-serif,system-ui,sans-serif;
+  --ui-radius:6px; --ui-radius-sm:4px; --ui-radius-lg:10px; --ui-control-h:34px;
+  --ui-shadow-sm:0 1px 2px #0f172a14; --ui-shadow:0 8px 24px -10px #0f172a2e;
+  --acc-head:#f8fafc; --acc-head-open:#eef4ff; --acc-body:#fff; --acc-rule:#2563eb;
+  /* kitchen-sink chrome */
+  --s-bg:#f7f9fc; --s-fg:#0f172a; --s-muted:#5b6b82; --s-line:#e3e8ef; --s-soft:#eef2f7; --s-acc:#2563eb; --s-ring:#93c5fd;
 }
 html[data-kit-theme=glacier][data-theme=dark]{
-  --ui-background:#0b1220; --ui-foreground:#e2e8f0; --ui-card:#0f172a; --ui-popover:#0f172a;
-  --ui-muted:#1e293b; --ui-muted-foreground:#94a3b8; --ui-accent:#16313b; --ui-accent-foreground:#e2e8f0;
-  --ui-primary:#22d3ee; --ui-primary-foreground:#042f2e; --ui-ring:#67e8f9;
-  --ui-border:#1e293b; --ui-input:#334155; --ui-shadow:0 10px 30px -10px #000c;
+  --ui-background:#0c111b; --ui-foreground:#e8edf5; --ui-card:#111827; --ui-popover:#111827;
+  --ui-muted:#172033; --ui-muted-foreground:#94a3b8; --ui-accent:#16233b; --ui-accent-foreground:#e8edf5;
+  --ui-primary:#60a5fa; --ui-primary-foreground:#0b1220; --ui-ring:#93c5fd; --ui-border:#1f2a3d; --ui-input:#2a3650;
+  --ui-shadow-sm:0 1px 2px #0008; --ui-shadow:0 10px 30px -10px #000c;
+  --acc-head:#111827; --acc-head-open:#16233b; --acc-body:#0c111b; --acc-rule:#60a5fa;
+  --s-bg:#0a0f18; --s-fg:#e8edf5; --s-muted:#94a3b8; --s-line:#1f2a3d; --s-soft:#111827; --s-acc:#93c5fd; --s-ring:#3b82f6;
 }
-
-/* ==== GLACIER · shape & component chrome (a theme pack is a full look, not only colour) ==== */
-html[data-kit-theme=glacier]{--ui-radius:4px;--ui-radius-sm:3px;--ui-radius-lg:6px;--ui-control-h:32px;--c-radius-s:2px;--c-radius:4px;--c-radius-l:6px;--c-dur:120ms;
-  --ui-shadow-sm:none;--ui-shadow:0 4px 16px -6px rgb(15 23 42/.25);--c-shadow-s:none;--c-shadow:0 1px 0 var(--c-line);--c-shadow-l:0 6px 18px -8px rgb(15 23 42/.3);letter-spacing:-.005em}
-/* tabs: flat underline */
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{background:none;padding:0;gap:1rem;border-radius:0;border-bottom:1px solid var(--ui-border)}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{padding:0 .1rem;border-radius:0;border-bottom:2px solid transparent;margin-bottom:-1px}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:none;box-shadow:none;border-bottom-color:var(--ui-primary);color:var(--ui-primary)}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;padding:.9rem 0 0}
-/* accordion: skinny hairline rows */
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=accordion] [data-ui-part=trigger]{padding:.55rem 0!important;font-size:var(--ui-text-sm)}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=accordion] [data-ui-part=content]{padding:0 0 .6rem;font-size:var(--ui-text-sm)}
-/* Colibri CSS chrome: crisp, dense */
-html[data-kit-theme=glacier] .btn{min-block-size:2.1rem;padding-inline:.85em;font-weight:500;box-shadow:none}
-html[data-kit-theme=glacier] .card{box-shadow:none;border-color:var(--c-line)}
-html[data-kit-theme=glacier] .badge{border-radius:3px;text-transform:uppercase;letter-spacing:.05em;font-size:.68em}
+/* tabs: underline rail */
+html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{background:none;padding:0;gap:1.1rem;border-radius:0;border-bottom:1px solid var(--ui-border);display:flex}
+html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{height:38px;padding:0 .1rem;border-radius:0;border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500}
+html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:none;box-shadow:none;color:var(--ui-foreground);border-bottom-color:var(--ui-primary)}
+html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;padding:1rem .1rem;margin:0;background:none}
+/* accordion: one bordered sheet; header strip vs white indented body */
+html[data-kit-theme=glacier] [data-ui=accordion]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);overflow:hidden;background:var(--acc-body)}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=item]{border-bottom:1px solid var(--ui-border)}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=item]:last-child{border-bottom:0}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger]{padding:.7rem 1rem!important;background:var(--acc-head)!important;font-weight:600!important;font-size:.9rem!important;letter-spacing:-.005em}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--acc-head-open)!important;box-shadow:inset 0 -1px var(--ui-border)}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none;background:var(--acc-head-open)!important}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=content]{background:var(--acc-body);padding:.85rem 1rem 1rem 1.75rem;margin:0;position:relative;font-size:.875rem;line-height:1.6}
+html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:1.05rem;top:.85rem;bottom:1rem;width:2px;border-radius:2px;background:var(--acc-rule);opacity:.55}
+/* Colibri CSS chrome */
+html[data-kit-theme=glacier] .btn{border-radius:var(--c-radius);font-weight:550;letter-spacing:-.005em}
+html[data-kit-theme=glacier] .card{box-shadow:none;border:1px solid var(--c-line)}
+html[data-kit-theme=glacier] .badge{border-radius:4px;text-transform:uppercase;font-size:.68em;letter-spacing:.06em}
+html[data-kit-theme=glacier] :is(h1,h2,h3){letter-spacing:-.025em}
