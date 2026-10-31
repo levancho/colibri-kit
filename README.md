@@ -1,3 +1,5 @@
+<img src="assets/colibri-mark.svg" alt="Colibri Kit" width="56" height="56">
+
 # Colibri Kit
 
 Modern, platform-first building blocks for the web. No build step, no class soup.

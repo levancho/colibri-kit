@@ -6,7 +6,7 @@ html[data-theme=dark],html[data-chrome=dark]{--kb-fg:#e8ecf2;--kb-muted:#8f99a8;
 .kbar{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;gap:6px;height:var(--kb-h);padding:0 max(14px,calc((100vw - 1440px)/2));padding-inline:clamp(12px,2vw,24px);border-bottom:1px solid var(--kb-line);background:var(--kb-bg);backdrop-filter:saturate(1.6) blur(12px);-webkit-backdrop-filter:saturate(1.6) blur(12px);color:var(--kb-fg);font:500 13.5px/1 var(--kb-font);letter-spacing:0;box-sizing:border-box}
 .kbar *{box-sizing:border-box}
 .kbar-brand{display:inline-flex;align-items:center;gap:9px;margin-right:10px;color:inherit;text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap}
-.kbar-brand i{width:22px;height:22px;border-radius:7px;background:conic-gradient(from 210deg,#3b5bdb,#22b8cf,#40c057,#f59f00,#e64980,#3b5bdb);box-shadow:inset 0 0 0 1px #0002}
+.kbar-brand i{width:26px;height:26px;border-radius:7px;background:url(/colibri-mark.svg) center/contain no-repeat;flex:none}
 .kbar-nav{display:flex;align-items:center;gap:2px;min-width:0;overflow-x:auto;scrollbar-width:none}
 .kbar-nav a{position:relative;padding:8px 11px;border-radius:8px;color:var(--kb-muted);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s}
 .kbar-nav a:hover{color:var(--kb-fg);background:var(--kb-soft)}
