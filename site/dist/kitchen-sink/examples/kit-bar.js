@@ -31,4 +31,10 @@ export function mountKitBar(h = document.querySelector("header.kbar")) {
   h.replaceChildren(frag);
   const spc = document.createElement("div"); spc.className = "kbar-spacer"; spc.setAttribute("aria-hidden", "true"); h.after(spc);
 }
-mountKitBar();
+export function mountKitFoot() {
+  if (document.querySelector(".kfoot") || document.querySelector("header.kbar")?.dataset.foot === "off") return;
+  const f = document.createElement("footer"); f.className = "kfoot";
+  f.innerHTML = `<div><b style="color:var(--kb-fg)">Colibri Kit</b><span>Modern CSS + tiny behaviours for server-rendered apps · MIT</span><span class="sp"></span>${NAV.map(([, l, h]) => `<a href="${h}">${l}</a>`).join("")}<a href="https://github.com/levancho/colibri-kit">GitHub</a></div>`;
+  (document.querySelector("footer:not(.kfoot)") || document.body.lastElementChild)?.after?.(f) ?? document.body.append(f);
+}
+mountKitBar(); if (document.readyState === "loading") addEventListener("DOMContentLoaded", mountKitFoot); else mountKitFoot();

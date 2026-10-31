@@ -79,9 +79,9 @@ page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset
 <input class="sink-filter" id="sink-filter" type="search" placeholder="Find a component…" aria-label="Filter components">
 <div class="sink-nav-tools"><button type="button" id="nav-expand" class="sink-mini" title="Expand all groups">Expand all</button><button type="button" id="nav-collapse" class="sink-mini" title="Collapse all groups">Collapse all</button></div><nav data-ui="scrollspy" data-offset="90">{"".join(nav)}</nav></aside>
 <main id="main" class="sink-main">
-<div class="sink-intro"><h1>Component gallery</h1>
+<div class="sink-intro kpage-head"><span class="kpage-eyebrow">Components</span><h1>Component gallery</h1>
 <p>Every Colibri UI component on one page. Each one has a plain description, a live demo you can click and use with the keyboard, and accessibility notes. Hover <span class="sink-info sink-info-inline" aria-hidden="true">?</span> for when to use it and its technical names.</p>
-<p class="sink-legend">{legend}</p>
+<p class="sink-legend kpage-meta">{legend}</p>
 <p class="sink-dim">Untick <b>Demo styling</b> to see the components with no CSS at all: the library itself ships no styles. Turn on <b>⚡ Events</b> to watch what each component reports.</p></div>
 {"".join(body)}
 <p class="sink-dim sink-end"><a data-ui="scrollto" href="#top">↑ Back to top</a></p></main></div>

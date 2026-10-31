@@ -32,3 +32,17 @@ html[data-theme=dark],html[data-chrome=dark]{--kb-fg:#e8ecf2;--kb-muted:#8f99a8;
 @media (max-width:760px){.kbar{gap:4px}.kbar-brand b{display:none}.kbar-nav a{padding:8px 8px}.kbar-nav a[aria-current=page]::after{left:8px;right:8px}.kbar-hide-sm{display:none!important}}
 .kbar:not([data-mounted])>*{visibility:hidden}
 html{scroll-padding-top:calc(var(--kb-h) + 12px)}
+/* ---- Shared page layout under the bar: same container, header rhythm, card shape and footer on every Kit page ---- */
+:root{--k-max:1280px;--k-pad:clamp(16px,3vw,32px);--k-gap:32px;--k-radius:14px}
+.kpage{box-sizing:border-box;width:100%;max-width:var(--k-max)!important;margin-inline:auto!important;padding:36px var(--k-pad) 72px!important;display:grid;gap:var(--k-gap)!important}
+.kpage-head{display:grid;gap:10px;padding-bottom:22px;border-bottom:1px solid var(--kb-line);font-family:var(--kb-font)}
+.kpage-head .kpage-eyebrow{justify-self:start;font:600 11.5px/1 var(--kb-font);letter-spacing:.09em;text-transform:uppercase;color:var(--kb-acc)}
+.kpage-head h1{margin:0!important;font:700 clamp(28px,1.4rem + 1.4vw,40px)/1.1 var(--kb-font)!important;letter-spacing:-.025em!important;color:var(--kb-fg)}
+.kpage-head p{margin:0!important;max-width:68ch;font:400 16px/1.6 var(--kb-font);color:var(--kb-muted)}
+.kpage-head .kbar-sub{justify-content:flex-start;border:0;padding:6px 0 0;margin-left:-10px}
+.kpage-head .kpage-meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+body:has(.kbar[data-active=docs]) main>section.center,body:has(.kbar[data-active=docs]) .kbar-sub+main .center{max-inline-size:var(--k-max)!important;padding-inline:var(--k-pad)!important;box-sizing:border-box}
+body:has(.kbar[data-active=docs]) .kbar-sub{position:sticky;top:var(--kb-h);z-index:90;background:var(--kb-bg);backdrop-filter:blur(12px)}
+.kfoot{border-top:1px solid var(--kb-line);font:13px/1.5 var(--kb-font);color:var(--kb-muted)}
+.kfoot>div{max-width:var(--k-max);margin:0 auto;padding:22px var(--k-pad);display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.kfoot a{color:var(--kb-muted);text-decoration:none}.kfoot a:hover{color:var(--kb-fg)}.kfoot .sp{flex:1}
