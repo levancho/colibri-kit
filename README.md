@@ -20,7 +20,7 @@ More Kit packages to come.
 
 Re-brand: `:root { --c-hue: 160; }` · Force dark: `<html data-theme="dark">`
 
-Optional: add `colibri-classes.css` for React-style `className` styling (`c-stack c-gap-m c-p-l`). React: `import { Dialog, Tabs, Part } from "@colibri-kit/ui/react"`. Every snippet is shown in HTML, FreeMarker and React at https://colibri.l3v.ai/#start.
+No utility classes: in React you use the same primitives and attributes (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React: `import { Dialog, Tabs, Part } from "@colibri-kit/ui/react"`. Every snippet is shown in HTML, FreeMarker and React at https://colibri.l3v.ai/#start.
 
 ## Explore
 

@@ -1,2 +1,2 @@
 /* Colibri CSS — layer order. Anything you write unlayered beats all of these, no !important needed. */
-@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.classes, colibri.utilities;
+@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities;

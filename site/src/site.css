@@ -58,3 +58,36 @@ dialog[data-ui-part=content]::backdrop { background: oklch(0% 0 0 / .45); backdr
 dialog[data-ui-part=content] { border: 1px solid var(--c-line); color: var(--c-fg); }
 #start h3, #styling h3 { font-size: var(--c-text-lg); }
 .path pre.code { margin-block-start: auto; }
+
+/* ---- landing polish ---- */
+body { background:
+  radial-gradient(60rem 30rem at 85% -10%, color-mix(in oklch, var(--c-accent) 16%, transparent), transparent 70%),
+  radial-gradient(40rem 24rem at 0% 10%, color-mix(in oklch, var(--c-accent) 8%, transparent), transparent 70%), var(--c-bg); }
+.hero { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: var(--c-space-xl); align-items: center; }
+@media (width < 60rem) { .hero { grid-template-columns: 1fr; } }
+.hero h1 { font-size: clamp(2.4rem, 1.6rem + 3.6vw, 4.4rem); line-height: 1.02; letter-spacing: -.035em; text-wrap: balance; }
+.pill { justify-self: start; display: inline-flex; align-items: center; gap: .5em; padding: .3em .85em; border: 1px solid var(--c-line); border-radius: var(--c-radius-full);
+  background: var(--c-surface); color: var(--c-fg); font-size: var(--c-text-sm); text-decoration: none; transition: border-color var(--c-dur) var(--c-ease); }
+.pill:hover { border-color: var(--c-accent); }
+.pill-dot { inline-size: .5em; block-size: .5em; border-radius: 50%; background: var(--c-ok); box-shadow: 0 0 0 3px color-mix(in oklch, var(--c-ok) 25%, transparent); }
+.gh-btn { display: inline-flex; align-items: center; gap: .45em; padding: .4em .8em; border-radius: var(--c-radius); font-weight: 600; font-size: var(--c-text-sm); text-decoration: none;
+  background: var(--c-fg); color: var(--c-bg); border: 1px solid var(--c-fg); transition: translate var(--c-dur) var(--c-ease), box-shadow var(--c-dur) var(--c-ease); }
+.gh-btn:hover { translate: 0 -1px; box-shadow: var(--c-shadow); }
+.gh-btn-l { min-block-size: 3rem; padding-inline: 1.15em; font-size: var(--c-text-md); }
+.specimen { position: relative; padding: var(--c-space-l); border-radius: calc(var(--c-radius-l) * 1.6);
+  background: repeating-linear-gradient(0deg, transparent 0 23px, color-mix(in oklch, var(--c-line) 55%, transparent) 23px 24px),
+              repeating-linear-gradient(90deg, transparent 0 23px, color-mix(in oklch, var(--c-line) 55%, transparent) 23px 24px);
+  mask-image: none; }
+.spec-card { position: relative; z-index: 1; box-shadow: var(--c-shadow-l); rotate: -1.2deg; transition: rotate var(--c-dur-slow) var(--c-ease); }
+.specimen:hover .spec-card { rotate: 0deg; }
+.spec-card input[type=range] { accent-color: var(--c-accent); inline-size: 100%; }
+.spec-card output { font-variant-numeric: tabular-nums; color: var(--c-accent); font-weight: 700; margin-inline-start: .4em; }
+.spec-chip { position: absolute; z-index: 2; padding: .25em .6em; border: 1px solid var(--c-line); border-radius: var(--c-radius-full); background: var(--c-surface);
+  box-shadow: var(--c-shadow-s); font-size: var(--c-text-xs); white-space: nowrap; }
+.spec-chip code { background: none; padding: 0; }
+.spec-chip.c1 { inset-block-start: .2rem; inset-inline-start: 1.2rem; } .spec-chip.c2 { inset-block-end: .2rem; inset-inline-start: 22%; } .spec-chip.c3 { inset-block-start: 38%; inset-inline-end: -.6rem; }
+@media (prefers-reduced-motion: reduce) { .spec-card { rotate: 0deg; } }
+.pill { align-self: flex-start; }
+:is(header.site, footer) a.gh-btn, a.gh-btn:visited { color: var(--c-bg); text-decoration: none; }
+header.site a.gh-btn { padding-block: .3em; }
+@container (inline-size < 40rem) { header.site a.gh-btn span { display: none; } }

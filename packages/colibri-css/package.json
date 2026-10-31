@@ -9,8 +9,7 @@
     ".": "./dist/colibri.css",
     "./min": "./dist/colibri.min.css",
     "./bridge": "./dist/colibri-ui-bridge.css",
-    "./src/*": "./src/*",
-    "./classes": "./dist/colibri-classes.css"
+    "./src/*": "./src/*"
   },
   "files": [
     "dist",

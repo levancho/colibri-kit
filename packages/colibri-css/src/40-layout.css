@@ -34,4 +34,19 @@
     & :is(ul, ol) { padding-inline-start: 1.4em; }
     & li + li { margin-block-start: 0.3em; }
     & img { border-radius: var(--c-radius); } }
+  /* Token knobs as attributes (same idea as data-variant; no utility classes):
+     <div class="stack" data-gap="l">  ·  <div class="grid" data-min="12rem"> uses style="--min:12rem" */
+  :where(.stack, .cluster, .grid, .split, .switcher, .reel) {
+    &[data-gap="3xs"] { --gap: var(--c-space-3xs); }
+    &[data-gap="2xs"] { --gap: var(--c-space-2xs); }
+    &[data-gap="xs"] { --gap: var(--c-space-xs); }
+    &[data-gap="s"] { --gap: var(--c-space-s); }
+    &[data-gap="m"] { --gap: var(--c-space-m); }
+    &[data-gap="l"] { --gap: var(--c-space-l); }
+    &[data-gap="xl"] { --gap: var(--c-space-xl); }
+    &[data-gap="2xl"] { --gap: var(--c-space-2xl); }
+    &[data-gap="0"] { --gap: 0; } }
+  :where(.cluster)[data-justify="between"] { --justify: space-between; }
+  :where(.cluster)[data-justify="end"] { --justify: flex-end; }
+  :where(.cluster)[data-justify="center"] { --justify: center; }
 }

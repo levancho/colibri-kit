@@ -9,6 +9,7 @@ import sink_catalog_css  # noqa: Colibri CSS group
 from sink_info import INFO
 from sink_code import FTL, IMP
 from sink_pretty import pretty
+from sink_react import render as react_src
 E = html.escape
 GROUPS = [("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
 ST = {"done": ("Ready", "Works and is tested in this page."), "partial": ("Partly ready", "Works, but some features are still missing."),
@@ -20,7 +21,10 @@ def code(c):
     tabs = []
     if c.get("snips"): tabs += c["snips"]
     elif c["demo"]: tabs.append(("html", "HTML", pretty(c["demo"])))
+    html_src = next((src for k, _, src in tabs if k == "html"), None)
     if c["id"] in FTL: tabs.append(("ftl", "FreeMarker", IMP + FTL[c["id"]]))
+    elif html_src: tabs.append(("ftl", "FreeMarker", "[#-- No macro needed: FreeMarker outputs this markup as-is. --]\n" + html_src))
+    if html_src: tabs.append(("react", "React", react_src(html_src)))
     if not tabs: return ""
     cid = c["id"]
     trig = "".join(f'<button data-ui-part="trigger" data-value="{k}">{lab}</button>' for k, lab, _ in tabs)

@@ -1,12 +1,12 @@
 // Colibri UI for React: thin wrappers over the same headless engine used by plain HTML and FreeMarker.
 // No JSX, no build step, React is a peer dependency. Styling is yours: Colibri CSS primitives,
-// the opt-in Colibri CSS class helpers (className="c-stack c-gap-m"), CSS modules, anything.
+// Colibri CSS primitives (className="stack card", data-gap="m", data-variant="ghost"), CSS modules, anything.
 //
 //   import { UI, Part, Dialog, Tabs, useColibri, cx } from "@colibri-kit/ui/react";
 //
 //   <Dialog className="c-inline">
 //     <Part name="trigger" as="button" className="btn">Invite</Part>
-//     <Part name="content" as="dialog" className="card c-stack c-gap-s">…</Part>
+//     <Part name="content" as="dialog" className="card stack">…</Part>
 //   </Dialog>
 import { createElement, forwardRef, useCallback, useEffect, useRef } from "react";
 import { registry } from "../core/registry.js";

@@ -7,7 +7,6 @@
 <meta property="og:title" content="Colibri Kit"><meta property="og:description" content="Colibri CSS = the look. Colibri UI = the behaviour. Plain HTML, no build step.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐦</text></svg>">
 <link rel="stylesheet" href="/css/colibri.css">
-<link rel="stylesheet" href="/css/colibri-classes.css">
 <link rel="stylesheet" href="/site.css">
 </head>
 <body>
@@ -16,17 +15,33 @@
   <a class="brand" href="/"><span aria-hidden="true">🐦</span> Colibri Kit</a>
   <nav class="cluster" aria-label="Main" style="--gap:var(--c-space-s)">
     <a href="#what">What is it</a><a href="#css">CSS</a><a href="#ui">UI</a><a href="#start">Get started</a><a href="#styling">Styling</a><a href="#why">Why</a><a href="/kitchen-sink/examples/kitchen-sink.html">Kitchen sink</a>
+    <a class="gh-btn" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>GitHub</span></a>
     <button class="btn" data-variant="ghost" data-size="s" id="theme" aria-label="Toggle dark mode">◐</button>
   </nav>
 </div></header>
 
 <main id="main">
-  <section class="hero center stack">
-    <span class="badge" data-tone="accent">Colibri Kit · Colibri CSS + Colibri UI</span>
-    <h1>The look and the behaviour.<br><span class="grad">Two small pieces. No class soup.</span></h1>
-    <p class="lede">Colibri Kit is a toolkit for building web pages with plain HTML. It has two parts: <b>Colibri CSS</b> makes things <b>look</b> good; <b>Colibri UI</b> makes things <b>work</b> (open, close, select, type). Use either one alone, or both together.</p>
-    <div class="cluster"><a class="btn" data-size="l" href="#start">Get started</a><a class="btn" data-variant="outline" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Open the kitchen sink</a></div>
-    <div class="stats cluster" style="--gap:var(--c-space-l)"><div><b>15 KB</b><span>Colibri CSS</span></div><div><b>130+</b><span>UI components &amp; blocks</span></div><div><b>0</b><span>build steps</span></div><div><b>1</b><span>token system</span></div></div>
+  <section class="hero center" aria-labelledby="hero-h">
+    <div class="hero-copy stack">
+      <a class="pill" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><span class="pill-dot" aria-hidden="true"></span>Open source · MIT <span aria-hidden="true">→</span></a>
+      <h1 id="hero-h">Plain HTML,<br><span class="grad">beautifully finished.</span></h1>
+      <p class="lede"><b>Colibri CSS</b> gives your pages the look. <b>Colibri UI</b> makes things work: dialogs, menus, tabs, all keyboard- and screen-reader-ready. No utility classes, no compiler, no framework lock-in. The same markup works in HTML, FreeMarker and React.</p>
+      <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
+        <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
+        <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse 145 components →</a></div>
+      <div class="stats cluster" data-gap="l"><div><b>15 KB</b><span>Colibri CSS</span></div><div><b>145</b><span>components &amp; blocks</span></div><div><b>0</b><span>build steps</span></div><div><b>1</b><span>token to re-brand</span></div></div>
+    </div>
+    <div class="specimen" aria-label="Live example: re-brand with one token">
+      <div class="spec-card card stack" data-gap="s">
+        <div class="cluster" data-justify="between"><b>Invite your team</b><span class="badge" data-tone="ok">Live</span></div>
+        <p class="muted">This card is plain HTML plus Colibri CSS. Drag the hue: one token, <code>--c-hue</code>, re-colours the whole page.</p>
+        <label class="field"><span>Brand hue <output id="hue-out">250</output></span><input id="hue" type="range" min="0" max="360" value="250" aria-label="Brand hue"></label>
+        <div class="cluster" data-gap="xs"><button class="btn" type="button">Send invite</button><button class="btn" type="button" data-variant="outline">Copy link</button><button class="btn" type="button" data-variant="ghost">Later</button></div>
+      </div>
+      <div class="spec-chip c1" aria-hidden="true"><code>class="card stack"</code></div>
+      <div class="spec-chip c2" aria-hidden="true"><code>data-variant="outline"</code></div>
+      <div class="spec-chip c3" aria-hidden="true"><code>--c-hue: <span id="hue-chip">250</span></code></div>
+    </div>
   </section>
 
 
@@ -66,7 +81,7 @@
     <div class="split" style="--side:22rem;--gap:var(--c-space-l)">
       <div class="stack"><p>Write the HTML you'd write anyway. Add <code>data-ui</code> where you need behaviour. Set a few tokens where you want your brand. That's the whole workflow.</p>
         <p class="muted">The bridge stylesheet maps Colibri UI's <code>--ui-*</code> tokens to Colibri CSS's <code>--c-*</code> tokens, so components, layout and content share one palette, one radius scale and one dark mode.</p></div>
-      <pre class="code"><code><span class="c">&lt;!-- a styled, accessible dialog, no framework --&gt;</span>
+      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-what"><div data-ui-part="list" aria-label="Example: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code><span class="c">&lt;!-- a styled, accessible dialog, no framework --&gt;</span>
 &lt;div <b>data-ui="dialog"</b>&gt;
   &lt;button class="btn" <b>data-ui-part="trigger"</b>&gt;Invite&lt;/button&gt;
   &lt;dialog <b>data-ui-part="content"</b> class="card stack"&gt;
@@ -76,7 +91,24 @@
     &lt;div class="cluster"&gt;&lt;button class="btn"&gt;Send&lt;/button&gt;
       &lt;button class="btn" data-variant="ghost" <b>data-ui-part="close"</b>&gt;Cancel&lt;/button&gt;&lt;/div&gt;
   &lt;/dialog&gt;
-&lt;/div&gt;</code></pre>
+&lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#import "/ui/ui.ftl" as ui]
+[@ui.dialog trigger="Invite" title="Invite a teammate"]
+  &lt;div class="field"&gt;&lt;label for="e"&gt;Email&lt;/label&gt;
+    &lt;input id="e" type="email" required&gt;&lt;/div&gt;
+  &lt;div class="cluster"&gt;[@ui.close]Send[/@ui.close]
+    [@ui.close variant="ghost"]Cancel[/@ui.close]&lt;/div&gt;
+[/@ui.dialog]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>import { Dialog, Part } from "@colibri-kit/ui/react";
+
+&lt;Dialog&gt;
+  &lt;Part name="trigger" as="button" className="btn"&gt;Invite&lt;/Part&gt;
+  &lt;Part name="content" as="dialog" className="card stack"&gt;
+    &lt;Part name="title" as="h2"&gt;Invite a teammate&lt;/Part&gt;
+    &lt;div className="field"&gt;&lt;label htmlFor="e"&gt;Email&lt;/label&gt;
+      &lt;input id="e" type="email" required /&gt;&lt;/div&gt;
+    &lt;div className="cluster"&gt;&lt;button className="btn"&gt;Send&lt;/button&gt;
+      &lt;Part name="close" as="button" className="btn" data-variant="ghost"&gt;Cancel&lt;/Part&gt;&lt;/div&gt;
+  &lt;/Part&gt;
+&lt;/Dialog&gt;</code></pre></div></div>
     </div>
   </section>
 
@@ -111,7 +143,6 @@
     <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri.css&quot;&gt;
 &lt;!-- optional: class helpers --&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri-classes.css&quot;&gt;
 &lt;!-- 2. the behaviour: every data-ui element wires itself --&gt;
 &lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
 [#import &quot;/colibri/ui.ftl&quot; as ui]
@@ -156,12 +187,12 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
   &lt;/div&gt;
 [/@ui.dialog]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>&lt;Dialog onClose={(e) =&gt; console.log(&quot;closed&quot;, e.detail)}&gt;
   &lt;Part name=&quot;trigger&quot; as=&quot;button&quot; className=&quot;btn&quot;&gt;Invite&lt;/Part&gt;
-  &lt;Part name=&quot;content&quot; as=&quot;dialog&quot; className=&quot;c-card c-stack c-gap-s&quot;&gt;
-    &lt;Part name=&quot;title&quot; as=&quot;h2&quot; className=&quot;c-text-lg&quot;&gt;Invite a teammate&lt;/Part&gt;
-    &lt;label className=&quot;c-stack c-gap-3xs&quot;&gt;Email &lt;input type=&quot;email&quot; required /&gt;&lt;/label&gt;
-    &lt;div className=&quot;c-cluster c-justify-end&quot;&gt;
+  &lt;Part name=&quot;content&quot; as=&quot;dialog&quot; className=&quot;card stack&quot;&gt;
+    &lt;Part name=&quot;title&quot; as=&quot;h2&quot;&gt;Invite a teammate&lt;/Part&gt;
+    &lt;label className=&quot;field&quot;&gt;Email &lt;input type=&quot;email&quot; required /&gt;&lt;/label&gt;
+    &lt;div className=&quot;cluster&quot; data-justify=&quot;end&quot;&gt;
       &lt;Part name=&quot;close&quot; as=&quot;button&quot; className=&quot;btn&quot;&gt;Send&lt;/Part&gt;
-      &lt;Part name=&quot;close&quot; as=&quot;button&quot; className=&quot;btn is-ghost&quot;&gt;Cancel&lt;/Part&gt;
+      &lt;Part name=&quot;close&quot; as=&quot;button&quot; className=&quot;btn&quot; data-variant=&quot;ghost&quot;&gt;Cancel&lt;/Part&gt;
     &lt;/div&gt;
   &lt;/Part&gt;
 &lt;/Dialog&gt;</code></pre></div></div>
@@ -190,7 +221,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
 [/@ui.tabs]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>const [tab, setTab] = useState(&quot;look&quot;);
 
 &lt;Tabs defaultValue=&quot;look&quot; onChange={(e) =&gt; setTab(e.detail.value)}&gt;
-  &lt;Part name=&quot;list&quot; aria-label=&quot;Kit parts&quot; className=&quot;c-cluster&quot;&gt;
+  &lt;Part name=&quot;list&quot; aria-label=&quot;Kit parts&quot;&gt;
     &lt;Part name=&quot;trigger&quot; as=&quot;button&quot; value=&quot;look&quot;&gt;Look&lt;/Part&gt;
     &lt;Part name=&quot;trigger&quot; as=&quot;button&quot; value=&quot;behaviour&quot;&gt;Behaviour&lt;/Part&gt;
   &lt;/Part&gt;
@@ -201,37 +232,55 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
   </section>
 
   <section class="center stack" id="styling">
-    <div class="stack" style="--gap:var(--c-space-2xs)"><h2>Two ways to style. Same tokens.</h2>
-    <p class="muted" style="max-inline-size:62ch">Colibri CSS gives you two equally first-class ways to write styles. Both read the same design tokens, so a page can mix them freely and a re-brand still changes everything.</p></div>
+    <div class="stack" data-gap="2xs"><h2>One way to style: your CSS, our tokens.</h2>
+    <p class="muted" style="max-inline-size:62ch">Colibri CSS is <b>not</b> a Tailwind alternative. We want you off long chains of utility classes, not on a new set of them. You write normal HTML (or JSX) with a few meaningful class names, set variants with attributes, and keep the design in CSS. HTML, FreeMarker and React all use the exact same markup.</p></div>
     <div class="grid" style="--min:20rem">
-      <article class="card stack path"><span class="badge" data-tone="accent">Path A · default</span><h3>Regular CSS + primitives</h3>
-        <p class="muted">Write semantic HTML, use a handful of layout primitives (<code>.stack</code>, <code>.grid</code>, <code>.cluster</code>…) and your own CSS with <code>var(--c-*)</code> tokens. Best for server templates, content sites and teams that like stylesheets.</p>
-        <pre class="code"><code>/* Path A: regular CSS + primitives (the default) */
-&lt;section class=&quot;stack&quot;&gt;              &lt;!-- spacing from tokens --&gt;
+      <article class="card stack path"><span class="badge" data-tone="accent">1 · Primitives</span><h3>A few layout words</h3>
+        <p class="muted"><code>.stack</code>, <code>.cluster</code>, <code>.grid</code>, <code>.split</code>, <code>.center</code>… plus components like <code>.card</code>, <code>.btn</code>, <code>.badge</code>. About a dozen names you can learn in five minutes.</p></article>
+      <article class="card stack path"><span class="badge" data-tone="accent">2 · Attributes</span><h3>Variants and spacing as attributes</h3>
+        <p class="muted"><code>data-variant="ghost"</code>, <code>data-tone="ok"</code>, <code>data-gap="l"</code>. Every value is a design token, so there are no magic numbers and a re-brand still changes everything.</p></article>
+      <article class="card stack path"><span class="badge" data-tone="accent">3 · Your CSS</span><h3>Anything else goes in CSS</h3>
+        <p class="muted">Write a normal rule with <code>var(--c-*)</code> tokens. Colibri sits in cascade layers, so your CSS always wins without <code>!important</code>.</p></article>
+    </div>
+    <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-style"><div data-ui-part="list" aria-label="Styling: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
   &lt;h2&gt;Team&lt;/h2&gt;
   &lt;div class=&quot;grid&quot; style=&quot;--min: 14rem&quot;&gt;
-    &lt;article class=&quot;card&quot;&gt;…&lt;/article&gt;
+    &lt;article class=&quot;card team-card&quot;&gt;…&lt;/article&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;cluster&quot; data-justify=&quot;end&quot;&gt;
+    &lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot;&gt;Cancel&lt;/button&gt;
+    &lt;button class=&quot;btn&quot;&gt;Invite&lt;/button&gt;
   &lt;/div&gt;
 &lt;/section&gt;
 
-.team-card { padding: var(--c-space-m); color: var(--c-muted); }</code></pre></article>
-      <article class="card stack path"><span class="badge" data-tone="ok">Path B · opt-in</span><h3>Class helpers for React &amp; markup</h3>
-        <p class="muted">Add <code>colibri-classes.css</code> and style with readable classes in <code>className</code>: <code>c-stack c-gap-m c-text-lg c-muted c-card</code>. About 135 classes, every value a token: no arbitrary values, no build step, no config.</p>
-        <pre class="code"><code>/* Path B: class helpers (opt-in colibri-classes.css) */
-&lt;section className=&quot;c-stack c-gap-m&quot;&gt;
-  &lt;h2 className=&quot;c-text-xl c-bold&quot;&gt;Team&lt;/h2&gt;
-  &lt;div className=&quot;c-grid&quot; style={{ &quot;--min&quot;: &quot;14rem&quot; }}&gt;
-    &lt;article className=&quot;c-card c-lift&quot;&gt;…&lt;/article&gt;
+/* your CSS: one meaningful rule, not ten classes */
+.team-card { border-inline-start: 3px solid var(--c-accent); }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
+  &lt;h2&gt;Team&lt;/h2&gt;
+  &lt;div class=&quot;grid&quot; style=&quot;--min: 14rem&quot;&gt;
+    [#list team as p]&lt;article class=&quot;card team-card&quot;&gt;${p.name}&lt;/article&gt;[/#list]
   &lt;/div&gt;
-&lt;/section&gt;</code></pre></article>
-    </div>
-    <div class="callout">Rule of thumb: start with Path A. Reach for Path B where styling lives next to components (React, Vue, JSX). Variants work both ways: <code>data-variant="outline"</code> or <code>className="btn is-outline"</code>.</div>
+  &lt;div class=&quot;cluster&quot; data-justify=&quot;end&quot;&gt;
+    [@ui.button variant=&quot;ghost&quot;]Cancel[/@ui.button]
+    [@ui.button]Invite[/@ui.button]
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// same primitives, same attributes: just className instead of class
+&lt;section className=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
+  &lt;h2&gt;Team&lt;/h2&gt;
+  &lt;div className=&quot;grid&quot; style={{ &quot;--min&quot;: &quot;14rem&quot; }}&gt;
+    {team.map((p) =&gt; &lt;article key={p.id} className=&quot;card team-card&quot;&gt;{p.name}&lt;/article&gt;)}
+  &lt;/div&gt;
+  &lt;div className=&quot;cluster&quot; data-justify=&quot;end&quot;&gt;
+    &lt;button className=&quot;btn&quot; data-variant=&quot;ghost&quot;&gt;Cancel&lt;/button&gt;
+    &lt;button className=&quot;btn&quot;&gt;Invite&lt;/button&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div></div>
+    <div class="callout"><b>Why not utility classes?</b> With <code>class="flex flex-col gap-4 p-6 rounded-xl shadow"</code> the design ends up scattered through every template, and you need a compiler to keep it small. Colibri keeps markup readable (<code>class="card stack"</code>), keeps the design in one stylesheet, and needs no build step. One small helper file, <code>.muted</code>, <code>.truncate</code> and <code>.visually-hidden</code>, is the only "utility" set, and it stays tiny on purpose.</div>
   </section>
 </main>
 
 <footer class="center cluster" style="--justify:space-between">
   <span>🐦 <b>Colibri Kit</b>: Colibri CSS · Colibri UI</span>
-  <span class="muted">Built by <a href="https://l3v.ai">l3v.ai</a></span>
+  <span class="cluster" data-gap="s"><a class="gh-btn" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>levancho/colibri-kit</span></a><span class="muted">Built by <a href="https://l3v.ai">l3v.ai</a></span></span>
 </footer>
 <script>
   const t = document.getElementById("theme"), k = "colibri.kit.theme", s = localStorage.getItem(k);
@@ -248,6 +297,11 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
   const saved = localStorage.getItem(K); if (saved) { syncing = true; pick(saved); syncing = false; }
   document.addEventListener("click", async (e) => { const b = e.target.closest("[data-copy]"); if (!b) return;
     await navigator.clipboard.writeText(b.nextElementSibling.textContent); b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1400); });
+</script>
+<script>
+(() => { const r = document.getElementById("hue"); if (!r) return;
+  const set = (v) => { document.documentElement.style.setProperty("--c-hue", v); document.getElementById("hue-out").textContent = v; document.getElementById("hue-chip").textContent = v; };
+  r.addEventListener("input", () => set(r.value)); })();
 </script>
 </body>
 </html>
