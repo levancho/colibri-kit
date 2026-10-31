@@ -45,3 +45,13 @@ code.ic{font:12.5px var(--ui-font-mono);padding:1px 5px;border-radius:var(--ui-r
 .ctr code.ic{white-space:nowrap;font-size:11px}.ctr td:nth-child(3){font-size:11.5px}
 .person{min-width:0}.person>span:last-child{min-width:0}.person small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.tbl [data-ui=card]{min-width:0;width:100%;box-sizing:border-box}
 :is(.tbl,.person,.list) [data-ui=avatar],:is(.tbl,.person,.list) [data-ui=avatar] [data-ui-part=fallback]{background:color-mix(in oklab,var(--ui-primary) 18%,var(--ui-background));color:color-mix(in oklab,var(--ui-primary) 75%,var(--ui-foreground));font-weight:600}
+/* grid fix: columns never shrink below content; overflow scrolls instead of overlapping */
+.tbl{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;box-sizing:border-box}
+.tbl>.c{flex-wrap:nowrap;min-width:max-content}.tbl>.h{white-space:nowrap}
+.tbl>.rh{position:sticky;left:0;z-index:1;background:var(--ui-background);padding-right:6px;align-self:stretch;display:flex;align-items:center}
+.tbl [data-ui=button],.tbl [data-ui=badge]{flex:none;white-space:nowrap}
+.tbl [data-ui=callout]{min-width:230px;width:230px}.tbl [data-ui=card]{min-width:240px;width:240px}
+.tbl input,.tbl select{min-width:150px;width:150px}.tbl textarea{min-width:220px;width:220px}
+.tbl [data-ui=progress],.tbl [data-ui=slider]{min-width:130px;width:130px}
+.tbl [data-ui=accordion]{min-width:260px;width:260px}.tbl [data-ui=tabs],.tbl [data-ui=tab-nav]{min-width:max-content}
+.tbl [data-ui=radio-group] [data-ui-part=item]{white-space:nowrap}

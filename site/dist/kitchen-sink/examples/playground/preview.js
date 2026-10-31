@@ -8,7 +8,7 @@ const col = (k) => (k === "accent" ? "" : k === "gray" ? ' data-tone="gray"' : `
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 // ---------- matrix helpers ----------
 function table(cols, rows, cell, first = 110) {
-  let h = `<div class="tbl" style="grid-template-columns:${first}px repeat(${cols.length},minmax(0,1fr))"><span></span>${cols.map((c) => `<span class="h">${c.label ?? c}</span>`).join("")}`;
+  let h = `<div class="tbl" style="grid-template-columns:${first}px repeat(${cols.length},minmax(max-content,1fr))"><span></span>${cols.map((c) => `<span class="h">${c.label ?? c}</span>`).join("")}`;
   for (const r of rows) { h += `<span class="rh">${r.label ?? r}</span>`; for (const c of cols) h += `<div class="c">${cell(r.v ?? r, c.v ?? c)}</div>`; }
   return h + "</div>";
 }
@@ -62,7 +62,7 @@ sec("tabs", "Tabs · Tab nav", "Underline, pill or segmented. The pack decides t
 });
 const acc = (look) => { const n = ++tabn; return `<div data-ui="accordion" data-look="${look}" data-type="single" data-default-value="x${n}"><div data-ui-part="item" data-value="x${n}"><h3><button data-ui-part="trigger">Is it accessible?</button></h3><div data-ui-part="content">Yes. WAI-ARIA accordion pattern, keyboard and screen-reader ready.</div></div><div data-ui-part="item" data-value="y${n}"><h3><button data-ui-part="trigger">Is it themeable?</button></h3><div data-ui-part="content">Every value is a token.</div></div></div>`; };
 sec("accordion", "Accordion", "Fat (spacious cards), boxed (one sheet), skinny (dense rows), or whatever the pack defines.", {
-  "Looks": `<div class="tbl" style="grid-template-columns:repeat(3,minmax(0,1fr))">${["fat", "boxed", "skinny"].map((l) => `<span class="h">${cap(l)}</span>`).join("")}${["fat", "boxed", "skinny"].map((l) => `<div class="c">${acc(l)}</div>`).join("")}</div>`,
+  "Looks": `<div class="tbl" style="grid-template-columns:repeat(3,minmax(max-content,1fr))">${["fat", "boxed", "skinny"].map((l) => `<span class="h">${cap(l)}</span>`).join("")}${["fat", "boxed", "skinny"].map((l) => `<div class="c">${acc(l)}</div>`).join("")}</div>`,
 });
 const person = (i) => `<div class="person"><span data-ui="avatar"${col(["accent", 27, 150, 80][i % 4])}><span data-ui-part="fallback">${["EA", "TG", "AW", "JK"][i % 4]}</span></span><span><b>${["Emily Adams", "Teodros Girmay", "Aisha Wright", "Jasper Kim"][i % 4]}</b><small>emily.adams@example.com</small></span></div>`;
 const CARD = ["surface", "outline", "elevated", "ghost", "glass"];
