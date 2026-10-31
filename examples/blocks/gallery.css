@@ -1,0 +1,29 @@
+@layer blocks {
+body { margin: 0; background: var(--c-bg); }
+.g-top { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: var(--c-space-s) var(--c-space-l); align-items: center; padding: .7rem var(--c-space-l);
+  border-bottom: 1px solid var(--c-line); background: color-mix(in oklch, var(--c-bg) 82%, transparent); backdrop-filter: blur(12px); }
+.g-brand { display: inline-flex; gap: .5rem; align-items: center; font-weight: 700; color: var(--c-fg); text-decoration: none; } .g-brand span { color: var(--c-muted); font-weight: 500; }
+.g-brand i { inline-size: 1.3rem; block-size: 1.3rem; border-radius: var(--c-radius-s); background: conic-gradient(from 200deg, var(--c-accent), color-mix(in oklch, var(--c-accent), white 45%), var(--c-accent)); }
+.g-nav { display: flex; gap: var(--c-space-m); } .g-nav a { color: var(--c-muted); text-decoration: none; font-size: var(--c-text-sm); } .g-nav a:hover { color: var(--c-fg); }
+.g-ctl { margin-inline-start: auto; display: flex; flex-wrap: wrap; gap: var(--c-space-s); align-items: center; font-size: var(--c-text-sm); color: var(--c-muted); }
+.g-ctl label { white-space: nowrap; display: inline-flex; gap: .4rem; align-items: center; } .g-ctl input[type=range] { inline-size: 6rem; } .g-ctl output { min-inline-size: 2.2rem; font-variant-numeric: tabular-nums; }
+.g-main { max-inline-size: 84rem; margin-inline: auto; padding: var(--c-space-l); display: grid; gap: var(--c-space-xl); }
+.g-intro h1 { margin: 0 0 .4rem; font-size: clamp(1.8rem, 1.2rem + 2vw, 2.6rem); letter-spacing: -.02em; } .g-intro p { margin: 0; color: var(--c-muted); max-inline-size: 48rem; }
+.g-block { border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); overflow: hidden; }
+.g-head { display: flex; flex-wrap: wrap; gap: var(--c-space-s); justify-content: space-between; align-items: center; padding: var(--c-space-m) var(--c-space-l); border-bottom: 1px solid var(--c-line); }
+.g-head h2 { margin: 0; font-size: var(--c-text-lg); } .g-head p { margin: .15rem 0 0; color: var(--c-muted); font-size: var(--c-text-sm); max-inline-size: 40rem; }
+.g-tools { display: flex; flex-wrap: wrap; gap: var(--c-space-s); align-items: center; }
+.g-tabs, .g-dev { display: inline-flex; padding: .2rem; gap: .15rem; border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-bg); }
+.g-tabs button, .g-dev button { all: unset; cursor: pointer; padding: .3rem .7rem; border-radius: calc(var(--c-radius) - 2px); font-size: var(--c-text-sm); font-weight: 600; color: var(--c-muted); display: inline-grid; place-items: center; }
+.g-dev button { padding: .3rem .5rem; } .g-dev svg { inline-size: 1.05rem; block-size: 1.05rem; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+.g-tabs [aria-selected=true], .g-dev [aria-pressed=true] { background: var(--c-surface); color: var(--c-fg); box-shadow: var(--c-shadow-s); }
+:is(.g-tabs, .g-dev) button:focus-visible { outline: 2px solid var(--c-accent); }
+.g-stage { background: repeating-conic-gradient(var(--c-sunken, var(--c-bg)) 0 25%, var(--c-bg) 0 50%) 0 0 / 16px 16px; padding: 0; display: grid; justify-items: center; overflow-x: auto; }
+.g-stage iframe { display: block; inline-size: 100%; max-inline-size: 100%; block-size: 40rem; border: 0; background: var(--c-bg); transition: inline-size .3s var(--c-ease-out, ease); }
+.g-stage[data-w]:not([data-w="100%"]) { padding-block: var(--c-space-l); } .g-stage[data-w]:not([data-w="100%"]) iframe { border: 1px solid var(--c-line); border-radius: var(--c-radius-l); box-shadow: var(--c-shadow-l); }
+.g-panel[data-lang] { position: relative; max-block-size: 36rem; overflow: auto; }
+.g-panel pre { margin: 0; padding: var(--c-space-l); font-size: .8rem; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.g-copy { position: sticky; inset-block-start: .6rem; margin: .6rem .6rem -2.6rem auto; display: flex; z-index: 1; inline-size: max-content; }
+@media (pointer: coarse) { :is(.g-tabs, .g-dev) button { min-block-size: 44px; min-inline-size: 44px; } }
+@media (max-width: 40rem) { .g-nav { display: none; } .g-ctl { margin: 0; } }
+}

@@ -1,0 +1,42 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hero block — Colibri Kit</title>
+<script>try{const r=document.documentElement,q=new URLSearchParams(location.search),p=q.get("theme")??localStorage.getItem("colibri-kit-theme");if(p)r.dataset.kitTheme=p;const s=q.get("scheme")??localStorage.getItem("colibri-scheme")??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");r.dataset.theme=s;r.style.colorScheme=s;const h=localStorage.getItem("colibri-hue");if(h)r.style.setProperty("--c-hue",h)}catch{}</script>
+<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<link rel="stylesheet" href="../../themes/packs/index.css">
+<link rel="stylesheet" href="blocks.css">
+</head>
+<body style="margin:0">
+<section class="blk blk-hero">
+  <div class="inner">
+    <div class="copy">
+      <a class="announce" href="#"><b>New</b> Theme packs now change shape, not just colour →</a>
+      <h1>Ship interfaces that look <span class="grad">designed</span>, not assembled.</h1>
+      <p class="lede">Colibri Kit is modern CSS and tiny behaviours for server-rendered apps. Tokens, primitives and full theme packs. No utility soup, no build step.</p>
+      <div class="cta">
+        <a class="btn" data-variant="primary" data-size="l" href="#">Start building</a>
+        <a class="btn" data-variant="outline" data-size="l" href="#">Browse components</a>
+      </div>
+      <div class="proof">
+        <span class="faces" aria-hidden="true"><i style="--h:20"></i><i style="--h:90"></i><i style="--h:160"></i><i style="--h:230"></i><i style="--h:300"></i></span>
+        <span><span class="stars" aria-label="5 out of 5">★★★★★</span> Loved by 2,400+ teams shipping with plain HTML</span>
+      </div>
+    </div>
+    <div class="mock" aria-hidden="true">
+      <div class="win">
+        <div class="win-bar"><i></i><i></i><i></i><span>app.colibri.dev/overview</span></div>
+        <div class="win-body">
+          <div class="win-side"><b></b><b></b><b></b><b></b><b></b></div>
+          <div class="win-main">
+            <div class="kpi"><small>Revenue</small><strong>$48.2k</strong><em>▲ 12.4%</em></div>
+            <div class="kpi"><small>Active users</small><strong>9,312</strong><em>▲ 4.1%</em></div>
+            <div class="kpi"><small>Churn</small><strong>1.8%</strong><em>▼ 0.3%</em></div>
+            <div class="bars"><i style="--v:38"></i><i style="--v:52"></i><i style="--v:45"></i><i style="--v:63"></i><i style="--v:58"></i><i style="--v:74"></i><i style="--v:69"></i><i style="--v:86"></i><i style="--v:80"></i><i style="--v:95"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="logos"><small>Trusted by product teams at</small><span>Northwind</span><span>Acme&nbsp;Co</span><span>Globex</span><span>Initech</span><span>Umbrella</span></div>
+  </div>
+</section>
+<script type="module" src="blocks.js"></script>
+</body></html>

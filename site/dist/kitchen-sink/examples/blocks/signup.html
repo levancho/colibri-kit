@@ -1,0 +1,46 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Signup block — Colibri Kit</title>
+<script>try{const r=document.documentElement,q=new URLSearchParams(location.search),p=q.get("theme")??localStorage.getItem("colibri-kit-theme");if(p)r.dataset.kitTheme=p;const s=q.get("scheme")??localStorage.getItem("colibri-scheme")??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");r.dataset.theme=s;r.style.colorScheme=s;const h=localStorage.getItem("colibri-hue");if(h)r.style.setProperty("--c-hue",h)}catch{}</script>
+<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<link rel="stylesheet" href="../../themes/packs/index.css">
+<link rel="stylesheet" href="blocks.css">
+</head>
+<body style="margin:0">
+<section class="blk blk-signup">
+  <div class="inner">
+    <div class="signup-form">
+      <form class="stack" action="#" method="post">
+        <header>
+          <span class="brandmark"><i aria-hidden="true"></i>Colibri</span>
+          <h2>Create your account</h2>
+          <p>Start your 14-day trial. No card required.</p>
+        </header>
+        <div class="socials">
+          <button class="btn" data-variant="outline" type="button"><span aria-hidden="true">G</span> Google</button>
+          <button class="btn" data-variant="outline" type="button"><span aria-hidden="true"></span> GitHub</button>
+        </div>
+        <div class="or">or with email</div>
+        <div class="field"><label for="su-name">Full name</label><input id="su-name" name="name" autocomplete="name" placeholder="Ada Lovelace" required></div>
+        <div class="field"><label for="su-email">Work email</label><input id="su-email" name="email" type="email" autocomplete="email" placeholder="ada@company.com" required></div>
+        <div class="field">
+          <label for="su-pw">Password</label>
+          <div class="pw"><input id="su-pw" name="password" type="password" autocomplete="new-password" minlength="8" placeholder="8+ characters" required><button type="button" aria-pressed="false" aria-controls="su-pw">Show</button></div>
+          <div class="meter" data-score="0" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+          <span class="hint">Use 8+ characters with a number and a symbol.</span>
+        </div>
+        <label class="terms"><input type="checkbox" required> <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span></label>
+        <button class="btn" data-variant="primary" data-size="l" type="submit">Create account</button>
+        <p class="switch-auth">Already have an account? <a href="#">Sign in</a></p>
+      </form>
+    </div>
+    <aside class="signup-art">
+      <figure>
+        <blockquote>“We replaced four thousand lines of utility classes with forty lines of tokens. Our designers finally own the look again.”</blockquote>
+        <figcaption><i aria-hidden="true"></i><span><b>Maya Okafor</b><br>Head of Design, Northwind</span></figcaption>
+      </figure>
+      <div class="stats"><div><strong>12k+</strong><span>apps shipped</span></div><div><strong>4.9/5</strong><span>avg. rating</span></div><div><strong>0 kB</strong><span>build step</span></div></div>
+    </aside>
+  </div>
+</section>
+<script type="module" src="blocks.js"></script>
+</body></html>

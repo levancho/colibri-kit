@@ -1,0 +1,64 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pricing block — Colibri Kit</title>
+<script>try{const r=document.documentElement,q=new URLSearchParams(location.search),p=q.get("theme")??localStorage.getItem("colibri-kit-theme");if(p)r.dataset.kitTheme=p;const s=q.get("scheme")??localStorage.getItem("colibri-scheme")??(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");r.dataset.theme=s;r.style.colorScheme=s;const h=localStorage.getItem("colibri-hue");if(h)r.style.setProperty("--c-hue",h)}catch{}</script>
+<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<link rel="stylesheet" href="../../themes/packs/index.css">
+<link rel="stylesheet" href="blocks.css">
+</head>
+<body style="margin:0">
+<section class="blk blk-pricing">
+  <div class="inner">
+    <div class="head">
+      <span class="eyebrow">Pricing</span>
+      <h2>Simple pricing that scales with you</h2>
+      <p class="lede">Start free. Upgrade when your team needs every theme pack, FreeMarker macros and React wrappers.</p>
+      <div class="billing" data-billing role="group" aria-label="Billing period">
+        <button type="button" data-period="monthly" aria-pressed="true">Monthly</button>
+        <button type="button" data-period="yearly" aria-pressed="false">Yearly <small>−20%</small></button>
+      </div>
+    </div>
+    <div class="tiers">
+    <article class="tier">
+      <div><h3>Starter</h3><p>For side projects and prototypes.</p></div>
+      <div class="price"><strong>$<span data-monthly="0" data-yearly="0">0</span></strong><span data-per>/ month</span></div>
+      <a class="btn" data-variant="outline" data-size="l" href="#">Get started</a>
+      <ul>
+        <li>All core components</li>
+        <li>Light & dark</li>
+        <li>1 theme pack</li>
+        <li>Community support</li>
+        <li data-off>FreeMarker macros</li>
+        <li data-off>Priority support</li>
+      </ul>
+    </article>
+    <article class="tier" data-featured>
+      <span class="ribbon">Most popular</span>
+      <div><h3>Pro</h3><p>For teams shipping production apps.</p></div>
+      <div class="price"><strong>$<span data-monthly="24" data-yearly="19">24</span></strong><span data-per>/ month</span></div>
+      <a class="btn" data-variant="primary" data-size="l" href="#">Start 14-day trial</a>
+      <ul>
+        <li>Everything in Starter</li>
+        <li>All theme packs</li>
+        <li>FreeMarker macros</li>
+        <li>React wrappers</li>
+        <li>Dashboard templates</li>
+      </ul>
+    </article>
+    <article class="tier">
+      <div><h3>Enterprise</h3><p>For organisations with custom needs.</p></div>
+      <div class="price"><strong>$<span data-monthly="79" data-yearly="64">79</span></strong><span data-per>/ month</span></div>
+      <a class="btn" data-variant="outline" data-size="l" href="#">Talk to sales</a>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Custom theme pack</li>
+        <li>SSO & audit logs</li>
+        <li>Priority support</li>
+        <li>99.9% SLA</li>
+      </ul>
+    </article>
+    </div>
+    <p class="fineprint">Prices in USD. Cancel anytime. Need a hand choosing? <a href="#">Compare every feature</a>.</p>
+  </div>
+</section>
+<script type="module" src="blocks.js"></script>
+</body></html>
