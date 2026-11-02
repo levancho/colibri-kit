@@ -8,8 +8,10 @@
 //     <Part name="trigger" as="button" className="btn">Invite</Part>
 //     <Part name="content" as="dialog" className="card stack">…</Part>
 //   </Dialog>
-import { createElement, forwardRef, useCallback, useEffect, useRef } from "react";
+import { createElement, forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { registry } from "../core/registry.js";
+import { controllers } from "../core/util.js";
+const reactRoots = new WeakSet();
 
 /** Join class names; falsy values are skipped. cx("btn", busy && "is-busy") */
 export const cx = (...a) => a.flat(Infinity).filter(Boolean).join(" ");
@@ -18,26 +20,51 @@ const setRef = (r, v) => { if (typeof r === "function") r(v); else if (r) r.curr
 
 /** Hook: wire a Colibri component onto a DOM element. Returns a callback ref and a ref holding the component API.
  *  `on` maps Colibri events (without the "ui:" prefix) to handlers, e.g. { change: (e) => … }. */
-export function useColibri(kind, { on = {}, options } = {}) {
-  const api = useRef(null), el = useRef(null), handlers = useRef(on);
+export function useColibri(kind, { on = {}, options, apiRef } = {}) {
+  const api = useRef(null), handlers = useRef(on), attached = useRef(null), owned = useRef(new Map());
+  const [node, setNode] = useState(null);
   handlers.current = on;
-  const ref = useCallback((node) => {
-    if (el.current && el.current !== node) { api.current?.destroy?.(); api.current = null; }
-    el.current = node;
-    if (node && !api.current) {
-      const f = registry[kind];
-      if (!f) { console.error(`[colibri-ui/react] unknown component "${kind}"`); return; }
-      // inner components first (same rule as auto-init)
-      [...node.querySelectorAll("[data-ui]")].reverse().forEach((c) => registry[c.dataset.ui]?.(c));
-      api.current = f(node, options) ?? null;
+  const ref = useCallback(next => {
+    if (attached.current) reactRoots.delete(attached.current);
+    attached.current = next;
+    if (next) reactRoots.add(next);
+    setNode(next);
+  }, []);
+  const syncChildren = useCallback(() => {
+    if (!node) return;
+    for (const [child, childApi] of owned.current) if (!node.contains(child)) { childApi.destroy?.(); owned.current.delete(child); }
+    for (const child of [...node.querySelectorAll("[data-ui]")].reverse()) {
+      let parent = child, reactOwned = false;
+      while (parent && parent !== node) { if (reactRoots.has(parent)) { reactOwned = true; break; } parent = parent.parentElement; }
+      if (reactOwned || controllers(child).length || child.closest('template,[data-motion-ghost]')) continue;
+      if (child.dataset.ui === "calendar" && child.closest('[data-ui="date-picker"]')) continue;
+      const childApi = registry[child.dataset.ui]?.(child);
+      if (childApi) owned.current.set(child, childApi);
     }
-  }, [kind]);
+  }, [node]);
   useEffect(() => {
-    const node = el.current; if (!node) return;
-    const subs = Object.keys(handlers.current).map((n) => { const h = (e) => handlers.current[n]?.(e); node.addEventListener("ui:" + n, h); return [n, h]; });
-    return () => subs.forEach(([n, h]) => node.removeEventListener("ui:" + n, h));
-  }, [Object.keys(on).join()]);
-  useEffect(() => () => { api.current?.destroy?.(); api.current = null; }, []);
+    if (!node) return;
+    const factory = registry[kind];
+    if (!factory) { console.error(`[colibri-ui/react] unknown component "${kind}"`); return; }
+    syncChildren();
+    api.current = factory(node, options) ?? null;
+    setRef(apiRef, api.current);
+    return () => {
+      for (const childApi of owned.current.values()) childApi.destroy?.();
+      owned.current.clear(); api.current?.destroy?.(); api.current = null; setRef(apiRef, null);
+    };
+  }, [node, kind, options, apiRef, syncChildren]);
+  // Dynamic React children update the existing controller rather than rebuilding it.
+  useEffect(() => { syncChildren(); api.current?.refresh?.(); });
+  const eventNames = JSON.stringify(Object.keys(on).sort());
+  useEffect(() => {
+    if (!node) return;
+    const subs = JSON.parse(eventNames).map(name => {
+      const handler = event => handlers.current[name]?.(event);
+      node.addEventListener("ui:" + name, handler); return [name, handler];
+    });
+    return () => subs.forEach(([name, handler]) => node.removeEventListener("ui:" + name, handler));
+  }, [node, eventNames]);
   return [ref, api];
 }
 
@@ -46,14 +73,14 @@ export function useColibri(kind, { on = {}, options } = {}) {
 const DATA_PROPS = ["type", "side", "align", "orientation", "value", "defaultValue", "label", "name", "variant", "size", "tone", "required", "offset", "max", "min", "step"];
 export const UI = forwardRef(function UI({ kind, as = "div", children, apiRef, onChange, onOpen, onClose, on = {}, ...rest }, fwd) {
   const events = { ...on }; if (onChange) events.change = onChange; if (onOpen) events.open = onOpen; if (onClose) events.close = onClose;
-  const [ref, api] = useColibri(kind, { on: events });
-  if (apiRef) apiRef.current = api.current;
+  const [ref] = useColibri(kind, { on: events, apiRef });
+  const combinedRef = useCallback(node => { ref(node); setRef(fwd, node); }, [ref, fwd]);
   const props = { "data-ui": kind };
   for (const [k, v] of Object.entries(rest)) {
     if (DATA_PROPS.includes(k)) { if (v === true) props["data-" + kebab(k)] = ""; else if (v != null && v !== false) props["data-" + kebab(k)] = Array.isArray(v) ? v.join(",") : String(v); }
     else props[k] = v;
   }
-  props.ref = (n) => { ref(n); setRef(fwd, n); if (apiRef) apiRef.current = api.current; };
+  props.ref = combinedRef;
   return createElement(as, props, children);
 });
 const kebab = (s) => s.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase());

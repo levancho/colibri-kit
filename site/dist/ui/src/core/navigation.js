@@ -15,12 +15,26 @@ export function createPagination(root, o = {}) {
       const out = [1], s = Math.max(2, page - sib), e = Math.min(total - 1, page + sib);
       if (s > 2) out.push("…"); for (let i = s; i <= e; i++) out.push(i); if (e < total - 1) out.push("…"); if (total > 1) out.push(total); return out;
     };
-    const el = (p, text, extra = "") => href && typeof p === "number"
-      ? `<a data-ui-part="${extra || "item"}" href="${href.replace("{page}", p)}" data-page="${p}"${p === page && !extra ? ' aria-current="page" data-state="active"' : ""}>${text}</a>`
-      : `<button type="button" data-ui-part="${extra || "item"}" data-page="${p}"${p === page && !extra ? ' aria-current="page" data-state="active"' : ""}>${text}</button>`;
+    const el = (p, text, extra = "") => {
+      const item = doc.createElement(href ? "a" : "button");
+      item.dataset.uiPart = extra || "item"; item.dataset.page = p; item.textContent = text;
+      if (href) {
+        const target = href.replace("{page}", p);
+        try { if (["http:", "https:"].includes(new URL(target, doc.baseURI).protocol)) item.setAttribute("href", target); } catch {}
+      } else item.type = "button";
+      if (p === page && !extra) { item.setAttribute("aria-current", "page"); item.dataset.state = "active"; }
+      return item;
+    };
     const render = () => {
-      const items = range().map((p) => (p === "…" ? `<li><span data-ui-part="ellipsis" aria-hidden="true">…</span></li>` : `<li>${el(p, p)}</li>`)).join("");
-      root.innerHTML = `<ul data-ui-part="list"><li>${el(Math.max(1, page - 1), L.prev, "prev")}</li>${items}<li>${el(Math.min(total, page + 1), L.next, "next")}</li></ul>`;
+      const list = doc.createElement("ul"); list.dataset.uiPart = "list";
+      const append = item => { const li = doc.createElement("li"); li.append(item); list.append(li); };
+      append(el(Math.max(1, page - 1), L.prev, "prev"));
+      for (const p of range()) {
+        if (p !== "…") append(el(p, p));
+        else { const gap = doc.createElement("span"); gap.dataset.uiPart = "ellipsis"; gap.setAttribute("aria-hidden", "true"); gap.textContent = "…"; append(gap); }
+      }
+      append(el(Math.min(total, page + 1), L.next, "next"));
+      root.replaceChildren(list);
       const pv = part(root, "prev") || root.querySelector('[data-ui-part="prev"]'), nx = root.querySelector('[data-ui-part="next"]');
       [[pv, page <= 1], [nx, page >= total]].forEach(([x, d]) => { if (!x || !d) return; x.setAttribute("aria-disabled", "true"); x.dataset.disabled = ""; if (x.tagName === "BUTTON") x.disabled = true; else x.removeAttribute("href"); });
       root.dataset.page = page;

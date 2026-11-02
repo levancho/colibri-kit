@@ -1,15 +1,12 @@
 {
-  "themes/colibri.css": 92,
-  "themes/knobs.css": 25,
+  "themes/colibri.css": 18,
   "themes/motion.css": 10,
-  "themes/packs/midnight.css": 1,
+  "packages/colibri-css/src/60-utilities.css": 1,
   "packages/colibri-css/src/10-reset.css": 2,
   "packages/colibri-css/src/50-components.css": 1,
-  "packages/colibri-css/src/60-utilities.css": 1,
-  "examples/dashboards/dash.css": 1,
   "examples/kit-bar.css": 12,
   "examples/playground/preview.css": 2,
+  "examples/dashboards/dash.css": 1,
   "site/src/site.css": 1,
-  "tools/sink_chrome.css": 6,
-  "tools/sink_demo.css": 53
+  "tools/sink_chrome.css": 6
 }

@@ -5,9 +5,9 @@ import { createTabs } from "../core/tabs.js";
 export class UiTabs extends HTMLElement {
   connectedCallback() {
     this.dataset.ui = "tabs";
-    queueMicrotask(() => { this.api = createTabs(this); });
+    queueMicrotask(() => { if (this.isConnected) this.api = createTabs(this); });
   }
-  disconnectedCallback() { this.api?.destroy(); this.api = null; }
+  disconnectedCallback() { queueMicrotask(() => { if (!this.isConnected) { this.api?.destroy(); this.api = null; } }); }
   get value() { return this.api?.value; }
   set value(v) { this.api?.select(v); }
 }

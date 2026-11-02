@@ -37,7 +37,7 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 - Motion: `data-ui-motion="fade|slide-up|scale|…"` on anything that appears/disappears; respects reduced motion.
 
 - Prefer semantic component classes and reusable template/React compositions over repeated class strings or inline presentation styles. Keep spacing, typography and color decisions in shared tokens; keep data-driven custom properties in markup only where needed.
-- The optional UI theme is not fully layered and still contains legacy important rules. Prefer token customization; do not claim every application rule automatically wins. Tab, accordion, tab-navigation and callout looks use component tokens; edit their owning rules rather than adding competing descendant overrides.
+- The optional UI theme, packs and looks use ordered cascade layers. Unlayered application CSS overrides normal visual declarations; preserve hidden-state, touch-target and reduced-motion safeguards. Tab, accordion, tab-navigation and callout looks use component tokens; edit their owning rules rather than adding competing descendant overrides.
 - Headless does not mean no CSS is allowed or that accessibility is certified. Preserve labels, focus visibility, native semantics and ownership of nested parts.
 
 ## 5. Server side (Spring + FreeMarker)
@@ -46,4 +46,4 @@ Keep Spring binding: macros only emit markup; `name=` attributes are yours.
 
 ## 6. Before you finish
 Every interactive thing must be reachable by keyboard and labelled. Check `colibri docs <name>` for the expected
-keys. For Colibri repository changes, build before browser tests: `npm test`, `npm run build`, `npm run check:architecture`, `npm run test:e2e`. Do not edit generated distribution files directly. Outside this repository, run the host project’s applicable checks instead. Do not infer permission to publish, deploy or migrate the host stack from using this skill.
+keys. For Colibri repository changes, build before browser tests: `npm test`, `npm run build`, `npm run check:architecture`, `npm run test:e2e`, `npm run test:cross-browser` (install Playwright browsers first). Do not edit generated distribution files directly. Outside this repository, run the host project’s applicable checks instead. Do not infer permission to publish, deploy or migrate the host stack from using this skill.

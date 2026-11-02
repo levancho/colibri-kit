@@ -18,7 +18,15 @@ The four general helpers are `visually-hidden`, `muted`, `flow` and `truncate`. 
 
 Inspect which rule supplies the value before adding an override. Prefer a component token; otherwise change the owning structural rule and verify its states, nested use, themes and responsive layout.
 
-The CSS core uses cascade layers. The optional UI theme and some appearance controls still have unlayered and important declarations. Do not promise zero specificity conflicts or remove important accessibility safeguards indiscriminately. In the source repository, `tools/css-important-budget.json` records existing debt; `npm run check:architecture` flags increases rather than declaring that debt solved. Lower the budget after removing a legacy rule. An increase requires explaining the actual need and testing its effect, not automatically updating the snapshot to make CI pass.
+The CSS core, UI theme, packs, token bridge, appearance presets and motion styles share an explicit cascade-layer order. Normal unlayered application CSS overrides their normal declarations. Appearance presets contain no important declarations or repeated component selectors to inflate specificity. Hidden states, touch targets and reduced-motion safeguards retain deliberate exceptions.
+
+In the source repository, `npm run check:architecture` checks the layer contract, important-declaration budgets, inline presentation in authored pages, helper vocabulary, runtime imports and skill references. Fix the source of a failure; do not raise a budget merely to make CI pass.
+
+## Match initialization with teardown
+
+Plain HTML/HTMX: `auto.js` initializes components and disposes removed subtrees; DOM moves preserve live controllers. Call `init(insertedRoot)` after manual insertion, or dispatch `ui:refresh`. For a framework that manages its own lifecycle, use the component factory and call `api.destroy()` on cleanup. `dispose(root)` from `core/util.js` tears down tracked controllers in a subtree.
+
+React: use the React wrappers/hook, without global auto-init. Ordinary rerenders preserve the controller, event handlers read current props, and unmount destroys owned controllers. If passing hook `options`, keep the object stable unless reinitialization is intended. Give dynamic parts stable React keys and use `apiRef` for the controller API. Custom elements initialize when connected and dispose when disconnected; moves within the document preserve their API.
 
 ## Make demos honest and functional
 
@@ -33,11 +41,12 @@ When working in a full Colibri checkout:
 1. Edit authored CSS/JS/templates. `themes/knobs.css`, the gallery, registry and `site/dist` are generated; edit their sources/generators and rebuild.
 2. Run `npm test`, then `npm run build` and `npm run check:architecture`.
 3. Run relevant browser regressions. For shared theme/controller changes, run `npm run test:e2e` (installed Chromium/Chrome required; set `CHROME` if necessary).
-4. Inspect the relevant UI at narrow and wide widths and under the supported theme/scheme combinations. Midnight is intentionally dark-only.
-5. Run `git diff --check`; confirm regenerated assets match their sources. Distinguish tested behavior from untested browsers, screen readers, integration lifecycles and arbitrary user palettes.
+4. Install browser engines with `npx playwright install chromium firefox webkit`, then run `npm run test:cross-browser` for shared CSS or accessibility changes. This checks homepage/dashboard WCAG rules, responsive layouts, dialogs, keyboard tabs, cascade overrides and reduced motion.
+5. Inspect the relevant UI at narrow and wide widths and under the supported theme/scheme combinations. Midnight is intentionally dark-only.
+6. Run `git diff --check`; confirm regenerated assets match their sources. Distinguish tested behavior from untested browsers, screen readers, integration lifecycles and arbitrary user palettes.
 
 When this skill is installed without the repository, these commands are references to the Colibri checkout, not scripts bundled in the skill. Use the host project’s applicable checks and report missing validation plainly.
 
 ## Accurate explanations
 
-Explain the implementation: semantic component classes, shared tokens, separate behavior, optional themes, and locally served CSS/JS. Do not claim no CSS, universal framework compatibility, guaranteed accessibility, or guaranteed long-term maintenance. Tailwind also supports design tokens and component extraction; choosing Colibri is an authoring and dependency decision, not proof that other projects cannot be maintained. Competitor business events are not evidence of Colibri’s code quality.
+Explain the implementation: semantic component classes, shared tokens, separate behavior, optional themes, and locally served CSS/JS. Do not claim no CSS, universal framework compatibility, guaranteed accessibility, or guaranteed long-term maintenance.

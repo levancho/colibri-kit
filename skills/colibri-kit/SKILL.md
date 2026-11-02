@@ -26,7 +26,7 @@ Locate the project’s existing Colibri checkout or vendor folder first. For a n
 <body class="ui-root">
 ```
 
-Load order matters: the bridge goes after `themes/colibri.css` so `--ui-*` follows `--c-*`.
+The bridge maps `--c-*` to `--ui-*` in its own cascade layer. Include it when both packages should share a palette.
 Optional custom elements for every component: `import "./src/elements/all.js"` gives `<ui-tabs>`, `<ui-dialog>`, … (light DOM, same core).
 
 If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs info --json`, `colibri search "<need>"`, `colibri view <name>` (exact HTML + FreeMarker), `colibri docs <name>` (keys/ARIA). An MCP server ships as `bin/colibri-mcp.mjs`.
@@ -36,7 +36,7 @@ If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs i
 1. **Semantic HTML first.** `<button>`, `<dialog>`, `<table>`, `<label>`, `<nav>`; base styles already look finished.
 2. **Layout = primitives**, tuned with custom properties, not extra classes: `<div class="grid" style="--min: 18rem">`, `<div class="stack" data-gap="l">`.
 3. **Variants = attributes**: `data-variant="ghost|outline|soft|danger"`, `data-size="s|l"`, `data-tone="ok|warn|bad|accent"`, `data-gap="3xs…2xl"`.
-4. **Design = tokens**: change `--c-hue` to rebrand; override tokens on `:root` or any subtree. Ordinary unlayered CSS overrides normal declarations in the CSS core’s layers. The optional UI theme and packs still contain unlayered rules and legacy important declarations; do not promise that any user rule always wins. For local palette overrides, add `data-colibri-theme` to the container so derived tokens are recomputed.
+4. **Design = tokens**: change `--c-hue` to rebrand; override tokens on `:root` or any subtree. CSS core, UI theme, packs, bridge and looks use ordered cascade layers. Ordinary unlayered application rules override their normal declarations without specificity escalation. Preserve deliberate hidden-state, touch-target and reduced-motion safeguards. For local palette overrides, add `data-colibri-theme` to the container so derived tokens are recomputed.
 
 Keep repeated product UI in named components or template partials. Do not replace utility strings with repeated inline presentation styles. Inline custom properties are appropriate for data such as chart values; stable layout and presentation belong in CSS. Keep helpers limited to `.visually-hidden`, `.muted`, `.flow` and `.truncate`; do not generate a second utility framework. Preserve an existing project’s chosen stack unless a migration is requested.
 

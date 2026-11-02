@@ -1,7 +1,9 @@
 /*! Colibri CSS — modern, layered, token-first. MIT */
 /* ---- 70-colibri-ui-bridge.css ---- */
-/* Bridge: Colibri UI components read --ui-* tokens. Load Colibri CSS AFTER themes/colibri.css to drive them from --c-* tokens.
-   Change --c-hue and the components follow. Unlayered on purpose so it wins over the theme's :root values. */
+@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;
+/* Map CSS design tokens to UI tokens. App CSS can override either namespace. */
+@layer colibri.bridge {
+:root values. */
 :root, [data-theme], [data-colibri-theme] {
   --ui-background: var(--c-bg); --ui-foreground: var(--c-fg);
   --ui-card: var(--c-surface); --ui-popover: var(--c-surface);
@@ -13,4 +15,5 @@
   --ui-radius: var(--c-radius); --ui-radius-sm: var(--c-radius-s); --ui-radius-lg: var(--c-radius-l);
   --ui-shadow-sm: var(--c-shadow-s); --ui-shadow: var(--c-shadow);
   --ui-font: var(--c-font); --ui-font-mono: var(--c-font-mono);
+}
 }

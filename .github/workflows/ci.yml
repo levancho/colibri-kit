@@ -21,6 +21,8 @@ jobs:
       - run: npm run test:e2e
         env:
           CHROME: /usr/bin/google-chrome
+      - run: npx playwright install --with-deps chromium firefox webkit
+      - run: npm run test:cross-browser
       - run: git diff --exit-code -- packages/colibri-css/dist site/dist examples/kitchen-sink.html registry/colibri.json themes/knobs.css README.md
       - uses: actions/upload-artifact@v4
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'

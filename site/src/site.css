@@ -28,7 +28,7 @@ footer { padding-block: var(--c-space-l); border-block-start: 1px solid var(--c-
 /* "Two pieces" explainer */
 .kit-diagram { display: grid; gap: var(--c-space-s); padding: var(--c-space-m); border: 1px dashed var(--c-line); border-radius: var(--c-radius-l); background: var(--c-sunken); }
 .kd-kit { justify-self: center; padding: var(--c-space-2xs) var(--c-space-m); border-radius: var(--c-radius-full); background: var(--c-accent); color: var(--c-brand-fg); font-weight: 700;
-  & small { font-weight: 400; opacity: .8; margin-inline-start: .4em; } }
+  & small { font-weight: 400; margin-inline-start: .4em; } }
 .kd-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--c-space-s); align-items: stretch; }
 @container (inline-size < 40rem) { .kd-row { grid-template-columns: 1fr; } .kd-plus { justify-self: center; } }
 .kd-box { display: grid; gap: var(--c-space-3xs); align-content: start; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface);
@@ -106,3 +106,9 @@ html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--
 .maintenance-grid { --min: 20rem; align-items: start; }
 .maintenance-grid > article { min-inline-size: 0; }
 .maintenance-grid .code { font-size: var(--c-text-xs); }
+
+.kit-mark { vertical-align: -4px; border-radius: var(--c-radius-s); }
+.section-intro { max-inline-size: 62ch; }
+.invite-dialog { --gap: var(--c-space-s); inline-size: min(26rem,92vw); }
+.invite-title { font-size: var(--c-text-lg); }
+.not-found { text-align: center; align-items: center; }

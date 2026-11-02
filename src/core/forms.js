@@ -210,7 +210,8 @@ export function createRating(root, o = {}) {
     let value = Number(root.dataset.value ?? 0), hover = 0;
     if (!parts(root, "item").length) for (let i = 1; i <= max; i++) {
       const l = doc.createElement("label"); l.dataset.uiPart = "item"; l.dataset.value = i;
-      l.innerHTML = `<input type="radio" name="${name}" value="${i}" aria-label="${i} / ${max}"${ro ? " disabled" : ""}><span data-ui-part="icon" aria-hidden="true">★</span>`;
+      l.innerHTML = `<input type="radio" value="${i}" aria-label="${i} / ${max}"${ro ? " disabled" : ""}><span data-ui-part="icon" aria-hidden="true">★</span>`;
+      l.querySelector("input").name = name;
       root.append(l);
     }
     root.setAttribute("role", "radiogroup"); if (ro) root.setAttribute("aria-readonly", "true");

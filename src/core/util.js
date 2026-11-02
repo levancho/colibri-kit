@@ -13,13 +13,36 @@ export const emit = (el, name, detail, cancelable = false) =>
 export const setState = (el, s) => el && (el.dataset.state = s);
 export const btn = (el) => { if (el && el.tagName === "BUTTON" && !el.hasAttribute("type")) el.type = "button"; return el; };
 export const isDisabled = (el) => el.disabled || el.dataset.disabled != null || el.getAttribute("aria-disabled") === "true";
+// Track controller ownership without retaining detached DOM trees.
+const instances = new WeakMap();
+export const controllers = (root) => [...(instances.get(root) || [])];
+export function trackController(root, api) {
+  if (!api || controllers(root).includes(api)) return api;
+  const owned = instances.get(root) || new Set(); owned.add(api); instances.set(root, owned);
+  const destroy = api.destroy; let destroyed = false;
+  api.destroy = () => {
+    if (destroyed) return; destroyed = true;
+    try {
+      const Event = root.ownerDocument?.defaultView?.CustomEvent;
+      if (Event) root.dispatchEvent(new Event("ui:destroy", { bubbles: false }));
+      destroy?.call(api);
+    } finally { owned.delete(api); if (!owned.size) instances.delete(root); }
+  };
+  return api;
+}
+/** Dispose a removed subtree, innermost first. Safe to call more than once. */
+export function dispose(root) {
+  const nodes = [...(root.querySelectorAll?.("[data-ui]") || [])].reverse();
+  nodes.push(root);
+  for (const node of nodes) for (const api of controllers(node)) api.destroy?.();
+}
 /** register on root once; returns cached api */
 export function once(root, key, factory) {
   if (root[key]) return root[key];
-  const api = factory();
-  root[key] = api;
-  const d = api.destroy; api.destroy = () => { d?.(); delete root[key]; };
-  return api;
+  const api = factory(); root[key] = api;
+  const destroy = api.destroy;
+  api.destroy = () => { try { destroy?.call(api); } finally { if (root[key] === api) delete root[key]; } };
+  return trackController(root, api);
 }
 /** listeners bag with single teardown */
 export function bag() {
