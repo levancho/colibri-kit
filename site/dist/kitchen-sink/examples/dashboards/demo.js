@@ -1,15 +1,13 @@
+import {readDomainState} from './domain-state.js';
+import {CRM_SEED} from './crm-data.js';
+import {ANALYTICS_SEED,SOURCES} from './analytics-data.js';
 import {avatar,person,companyMark,icon} from './visuals.js';
 // Demo application state is deliberately local. No backend or account is implied.
-const KEY = 'colibri-dashboard-v1';
+const DOMAIN=document.body.dataset.domain||document.body.dataset.demo||'analytics';
+const KEY=DOMAIN==='crm'?'colibri-crm-v2':'colibri-analytics-v2';
 const stages = ['Lead', 'Qualified', 'Proposal', 'Won'];
 const money = n => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
-const seeds = [
-  ['Tbilisi Bank', 12000, 'Nino K.', 'Lead'], ['Despani', 4500, 'Levan D.', 'Lead'],
-  ['Kutaisi Labs', 2000, 'Ana M.', 'Lead'], ['Batumi Ports', 28000, 'Giorgi B.', 'Qualified'],
-  ['Rustavi Steel', 9000, 'Dato T.', 'Qualified'], ['GeoCell', 40000, 'Salome L.', 'Proposal'],
-  ['Mtskheta Wines', 6000, 'Nino K.', 'Proposal'], ['Svaneti Tours', 15000, 'Levan D.', 'Won'],
-].map(([name, value, owner, stage], id) => ({ id: String(id), name, value, owner, stage, nextStep:['Schedule discovery call','Review product requirements','Introduce account team','Prepare technical evaluation','Confirm purchasing process','Review proposal with buyer','Follow up on pricing','Hand off to customer success'][id] }));
-const fresh = () => ({ deals: structuredClone(seeds), reports: [], read: [], activity: [] });
+const fresh=()=>structuredClone(DOMAIN==='crm'?CRM_SEED:ANALYTICS_SEED);
 const validDeal = d => d && typeof d.id === 'string' && typeof d.name === 'string' && d.name.trim().length > 0 && d.name.length <= 100 && typeof d.owner === 'string' && d.owner.trim().length > 0 && d.owner.length <= 100 && Number.isFinite(d.value) && d.value >= 0 && d.value <= 1e9 && stages.includes(d.stage) && (d.nextStep===undefined || (typeof d.nextStep==='string' && d.nextStep.length<=100));
 function node(tag, text, attrs = {}) {
   const el = document.createElement(tag); if (text !== undefined) el.textContent = text;
@@ -38,7 +36,7 @@ export function initDashboard() {
   if (!document.querySelector('.dash')) return;
   let state = fresh(), storageWarning = '';
   try {
-    const saved = JSON.parse(localStorage.getItem(KEY));
+    const saved = readDomainState(KEY,fresh());
     if (saved && Array.isArray(saved.deals) && saved.deals.every(validDeal) && new Set(saved.deals.map(d => d.id)).size === saved.deals.length && Array.isArray(saved.reports) && saved.reports.every(r => typeof r.name === 'string' && typeof r.csv === 'string') && Array.isArray(saved.read) && saved.read.every(i => Number.isInteger(i) && i >= 0 && i < 3) && Array.isArray(saved.activity) && saved.activity.every(a => typeof a === 'string')) state = saved;
   } catch { storageWarning = 'Browser storage is unavailable. Changes last until you leave this page.'; }
   const setWorkspaceName=name=>{document.body.dataset.workspaceName=name;const label=document.querySelector('.suite-context [data-workspace-name]');if(label)label.textContent=name;};
@@ -103,7 +101,7 @@ export function initDashboard() {
         input.name = key;if(key==='nextStep')input.required=false;
         if (type === 'select') input.append(...stages.map(s => node('option', s, { value: s })));
         if (type === 'number') { input.min = '0'; input.max = '1000000000'; input.step = '0.01'; }
-        input.value = deal?.[key] ?? (key === 'stage' ? 'Lead' : ''); fields[key] = input; label.append(input); form.append(label);
+        input.value = deal?.[key] ?? (key === 'stage' ? 'Lead' : key==='owner'?(state.salesSettings?.owner||''):''); fields[key] = input; label.append(input); form.append(label);
       }
       const submit = node('button', 'Save deal', { type: 'submit', class: 'btn' }); form.append(submit);
       form.addEventListener('submit', e => {
@@ -143,6 +141,7 @@ export function initDashboard() {
   if (workspace === 'settings') search.closest('.search').hidden = true;
   function csv() {
     const quote = value => '"' + String(value).replace(/"/g, '""') + '"';
+    if (!table && DOMAIN==='analytics') return [['Source','Sessions','Conversions'],...SOURCES.map(s=>[s.name,s.sessions,s.conversions])].map(r=>r.map(quote).join(',')).join('\r\n');
     if (!table) return [['Company','Value (USD)','Owner','Stage'],...state.deals.map(d=>[d.name,d.value,d.owner,d.stage])].map(r=>r.map(quote).join(',')).join('\r\n');
     return [['Customer', 'Plan', 'MRR', 'Status'], ...rows.filter(r => !r.hidden).map(r => [...r.cells].map(c => { const copy = c.cloneNode(true); copy.querySelector('.av')?.remove(); return copy.textContent.trim(); }))].map(r => r.map(quote).join(',')).join('\r\n');
   }
@@ -150,7 +149,7 @@ export function initDashboard() {
     surface('reports', 'Saved reports', box => {
       if (workspace === 'reports') {
         const summary=node('section',undefined,{class:'card panel'});
-        summary.append(node('h2','Pipeline snapshot'),node('p',`${state.deals.length} deals · ${money(state.deals.reduce((sum,d)=>sum+d.value,0))} total value`),node('p','Create a report to freeze the current pipeline data. For a filtered customer report, use New report on the overview.'),node('a','Open analytics →',{href:'analytics.html'}));box.append(summary);
+        summary.append(node('h2','Traffic report snapshots'),node('p','Save a traffic-source snapshot here, or create a filtered audience report from the overview.'),node('a','Open Analytics overview →',{href:'analytics.html'}));box.append(summary);
       }
       if (!state.reports.length) box.append(node('p', 'No saved reports. Create one using New report.'));
       const matches=state.reports.map((report,index)=>({report,index})).filter(({report})=>workspace!=='reports'||report.name.toLowerCase().includes(search.value.toLowerCase()));
@@ -167,7 +166,7 @@ export function initDashboard() {
   document.querySelector('[data-action="export"]')?.addEventListener('click', () => { download(pipeline ? 'colibri-deals.json' : 'customers.csv', pipeline ? JSON.stringify(state.deals, null, 2) : csv(), pipeline ? 'application/json' : 'text/csv'); say('Export downloaded.'); });
   document.querySelector('[data-action="report"]')?.addEventListener('click', () => open('New customer report', box => {
     const form = node('form', undefined, { class: 'demo-form' }), label = node('label', 'Report name'), input = node('input', undefined, { required: '', maxlength: '100', name: 'reportName' });
-    label.append(input); form.append(node('p', table ? 'Saves a snapshot of the currently filtered customers.' : 'Saves a snapshot of all current pipeline deals.'), label, node('button', 'Save report', { class: 'btn', type: 'submit' }));
+    label.append(input); form.append(node('p', table ? 'Saves a snapshot of the currently filtered customers.' : 'Saves a snapshot of traffic sources, sessions and conversions.'), label, node('button', 'Save report', { class: 'btn', type: 'submit' }));
     form.addEventListener('submit', e => { e.preventDefault(); if (!input.value.trim()) return; state.reports.push({ name: input.value.trim(), csv: csv(), created: new Date().toISOString() }); say('Report saved.'); save(); if(workspace==='reports')dialog.close(); reports(); }); box.append(form);
   }));
   document.querySelector('[data-action="import"]')?.addEventListener('click', () => open('Import deals', box => {
@@ -234,6 +233,7 @@ export function initDashboard() {
   }
   if(workspace)({inbox,reports,settings})[workspace]?.();
   applyProfile();
+  setWorkspaceName(DOMAIN==='crm'?(state.salesSettings?.team||'Sales workspace'):(state.property?.name||'Analytics property'));
   // Modal navigation on small screens: hidden links cannot receive keyboard focus.
   const shell = document.querySelector('.dash'), side = document.querySelector('.dash-side'), toggle = document.querySelector('.menu-btn'), media = matchMedia('(max-width: 900px)');
   const backdrop = button('Close navigation', () => setMenu(false)); backdrop.className = 'nav-backdrop'; backdrop.tabIndex = -1; shell.append(backdrop);
@@ -254,6 +254,7 @@ export function initDashboard() {
     update(); chart.addEventListener('chartchange', update);
   }
   renderDeals(); updateBadge();
+  if(pipeline){const selected=state.deals.find(d=>d.id===new URLSearchParams(location.search).get('deal'));if(selected)editDeal(selected);}
 }
 
 for(const el of document.querySelectorAll('.av')){const name=({NK:'Nino Kapanadze',GB:'Giorgi Beridze',AM:'Ana Meladze',DT:'Dato Tsiklauri',SL:'Salome Lomidze',LD:'Levan D.'})[el.textContent.trim()];if(name)el.outerHTML=avatar(name).replace('class="portrait','class="av portrait');}

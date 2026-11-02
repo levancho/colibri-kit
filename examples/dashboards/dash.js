@@ -1,5 +1,5 @@
-import { mountDevicePreview } from "../device-preview.js";
-{ const top = document.querySelector(".dash-top"); if (top) { const slot = document.createElement("span"); slot.className = "dp-slot"; top.append(slot); mountDevicePreview(slot); } }
+import { mountDevicePreview } from "../device-preview.js?v=individual-2";
+{ const top = document.querySelector(".dash-top"); if (top) { const slot = document.createElement("span"); slot.className = "dp-slot"; top.append(slot); mountDevicePreview(slot, {storageKey: `colibri.devicePreview:${location.pathname}`}); } }
 import { mount } from "./charts.js";
 import { initPackPicker, initScheme, initHue } from "./skins.js";
 import { highlightAll } from "../code-highlight.js";
@@ -7,7 +7,7 @@ mount();
 initPackPicker(document.getElementById("pack"));
 initScheme(document.getElementById("scheme"));
 initHue(document.getElementById("hue"), document.getElementById("hue-out"));
-import { initDashboard } from "./demo.js?v=rebuild-2";
+import { initDashboard } from "./demo.js?v=separate-2";
 initDashboard();
 // Range changes select the same underlying sample series, never invent new data.
 for (const seg of document.querySelectorAll(".seg[data-target]")) {

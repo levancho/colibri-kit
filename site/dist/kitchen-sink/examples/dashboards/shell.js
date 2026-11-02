@@ -1,19 +1,26 @@
+import {mountDevicePreview} from '../device-preview.js?v=individual-2';
 import {icon} from './visuals.js';
 
 // Every demo shares this navigation; application content remains independent.
 const demos=[['analytics','Analytics','activity'],['crm','CRM','target'],['workspace','Team workspace','teams'],['account','Account center','profile'],['commerce','Commerce','orders'],['support','Support desk','open']];
-const current=document.body.dataset.demo||document.body.dataset.app||(new URLSearchParams(location.search).get('app')==='crm'?'crm':'analytics');
+const current=document.body.dataset.domain||document.body.dataset.demo||document.body.dataset.app||(new URLSearchParams(location.search).get('app')==='crm'?'crm':'analytics');
 const side=document.querySelector('.dash-side,.app-nav');
 if(side){
   const top=document.querySelector('.dash-top,.app-top');
   side.classList.add('suite-sidebar');
   const brand=document.createElement('a');brand.href='index.html';brand.className='suite-brand';brand.innerHTML=`<span>${icon('spark')}</span><strong>Colibri<small>Application demos</small></strong>`;
-  const nav=document.createElement('nav');nav.className='suite-nav';nav.setAttribute('aria-label','Application demos');nav.innerHTML='<p class="suite-label">Applications</p>'+demos.map(([id,label,symbol])=>`<a href="${id}.html" ${current===id?'aria-current="page"':''}>${icon(symbol)}<span>${label}</span>${current===id?'<span class="suite-active-dot" aria-hidden="true"></span>':''}</a>`).join('');
+  const nav=document.createElement('div');nav.className='suite-current';nav.textContent=demos.find(d=>d[0]===current)?.[1]||'Workspace';
   side.querySelector('.dash-brand,.app-logo')?.remove();side.querySelector(':scope > small')?.remove();
   const context=side.querySelector('.dash-nav,#app-nav');
-  if(context){context.classList.add('suite-context');context.setAttribute('aria-label','Current application');for(const a of context.querySelectorAll('a')){if(['analytics.html','crm.html','index.html','../kitchen-sink.html','https://github.com/levancho/colibri-kit'].includes(a.getAttribute('href')))a.remove();}for(const a of context.querySelectorAll('a')){if(['customers.html','inbox.html','reports.html','settings.html'].includes(a.getAttribute('href'))&&current==='crm')a.href=a.getAttribute('href')+'?app=crm';}for(const h of context.querySelectorAll('h6'))h.remove();const label=document.createElement('p');label.className='suite-label';label.dataset.workspaceName='';label.textContent=document.body.dataset.workspaceName||'Workspace';context.prepend(label);}
+  const domainLinks={analytics:[['analytics.html','Overview','overview'],['analytics-traffic.html','Traffic sources','globe'],['analytics-audience.html','Audience','members'],['analytics-events.html','Events & goals','target'],['analytics-reports.html','Saved reports','activity'],['analytics-settings.html','Property settings','security']],crm:[['crm.html','Pipeline','target'],['crm-contacts.html','Contacts','members'],['crm-companies.html','Companies','teams'],['crm-activity.html','Tasks & activity','agenda'],['crm-reports.html','Sales reports','growth'],['crm-settings.html','Sales settings','security']]};
+  if(context){
+    context.classList.add('suite-context');context.setAttribute('aria-label','Current application');
+    if(domainLinks[current]){const file=location.pathname.split('/').pop();context.innerHTML=domainLinks[current].map(([href,label,symbol])=>`<a href="${href}" ${href===file?'aria-current="page"':''}>${icon(symbol)}${label}</a>`).join('');}
+    const label=document.createElement('p');label.className='suite-label';label.dataset.workspaceName='';label.textContent=document.body.dataset.workspaceName||'Workspace';context.prepend(label);
+  }
   side.prepend(brand,nav);const close=side.querySelector('.nav-close');if(close)side.prepend(close);
   const footer=side.querySelector('footer');if(footer)footer.innerHTML=`<a href="index.html">${icon('arrow')} All dashboards</a><a href="../kitchen-sink.html">${icon('code')} Component library</a><small>Colibri Kit · Local demo data</small>`;
+  if(!top.querySelector('.dp-slot')){const slot=document.createElement('span');slot.className='dp-slot';top.append(slot);mountDevicePreview(slot,{storageKey:`colibri.devicePreview:${location.pathname}`});}
   // Newer apps use the same mobile drawer behavior as Analytics and CRM.
   if(document.body.dataset.app){
     side.id='dashboard-navigation';const toggle=document.createElement('button');toggle.type='button';toggle.className='btn suite-menu';toggle.setAttribute('data-variant','outline');toggle.setAttribute('aria-label','Menu');toggle.setAttribute('aria-controls',side.id);toggle.setAttribute('aria-expanded','false');toggle.innerHTML=icon('overview');top.prepend(toggle);

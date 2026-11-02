@@ -41,14 +41,12 @@ try {
  for(const name of ['analytics','crm']){await page.setViewport({width:1440,height:1000});await go(name+'.html');await page.screenshot({path:`/tmp/colibri-${name}-distinct.png`});}
  await go('index.html');assert.equal(await page.$$eval('.dashboard-preview',e=>e.length),6);
  for(const name of ['analytics','crm','workspace','account','commerce','support']){
-  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`a.dashboard-preview[href="${name}.html"]`)]);
+  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`.dashboard-preview .gallery-open[href="${name}.html"]`)]);
   assert.equal(new URL(page.url()).pathname.split('/').pop(),name+'.html',name+': gallery destination');
   assert.equal(await page.$eval('body',e=>e.dataset.demo||e.dataset.app),name,name+': page identity');
   assert.ok(await page.$eval('.dash-side,.app-nav',e=>{const r=e.getBoundingClientRect();return r.x===0&&r.width<300&&r.height>=900;}),name+': consistent desktop left navigation');
   await Promise.all([page.waitForNavigation(),page.click('header .dashboard-back')]);assert.ok(page.url().endsWith('/index.html'),name+': return to gallery');
  }
 
- await go('crm.html');
- for(const section of ['settings','reports','inbox']){await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`[data-workspace=${section}]`)]);assert.equal(new URL(page.url()).searchParams.get('app'),'crm');assert.equal(await page.$eval('.suite-nav [aria-current=page]',e=>e.getAttribute('href')),'crm.html','CRM context remains selected on shared workspace pages');}
  assert.deepEqual(errors,[]);console.log('ok four distinct apps: persistence, team/member forms, agenda, profile/security/billing, fulfillment/inventory, ticket assignments/replies/status, light/dark mobile layouts, axe and six gallery entries');
 }finally{await browser.close();await server.close();}
