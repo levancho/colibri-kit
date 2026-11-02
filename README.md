@@ -32,6 +32,16 @@ No utility classes: in React you use the same primitives and attributes (`classN
 - `docs/colibri-ui.md` — Colibri UI architecture
 - `test/` — unit (JSDOM) and browser tests
 
+## Agent skill
+
+`skills/colibri-kit/` is a standalone [Agent Skill](https://agentskills.io) (`SKILL.md` + `reference/`) that teaches coding agents to build UIs with Colibri Kit: tokens, layout primitives, headless `data-ui` components, theme packs, React and FreeMarker.
+
+- **Claude Code**: copy the folder to `~/.claude/skills/colibri-kit/` (all projects) or `.claude/skills/colibri-kit/` (one project).
+  `cp -r skills/colibri-kit ~/.claude/skills/`
+- **Cursor**: copy it to `.cursor/skills/colibri-kit/` in your project (or `~/.cursor/skills/`), or reference `skills/colibri-kit/SKILL.md` from a rule in `.cursor/rules/`.
+- **GitHub Copilot**: copy it to `.github/skills/colibri-kit/` (Copilot agent skills), or paste `SKILL.md` into `.github/copilot-instructions.md`.
+- Other agents that read `SKILL.md` (Codex, Gemini CLI, OpenCode, …): drop the folder into their skills directory.
+
 ## License
 
 MIT © Levan Dvalishvili
