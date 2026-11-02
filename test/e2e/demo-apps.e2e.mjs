@@ -18,12 +18,13 @@ try {
  await go('account.html?view=billing');await page.click('[data-action=change-plan]');await page.select('dialog select','Starter');await save();assert.match(await page.$eval('#app-content',e=>e.textContent),/\$19/);
  await go('commerce.html?view=orders&id=1048');await page.click('[data-action=order-status]');await page.select('dialog select','Delivered');await save();await page.reload();assert.match(await page.$eval('#app-content',e=>e.textContent),/Delivered/);
  await go('commerce.html?view=inventory');await page.click('[data-action=stock][data-id=mug]');await fill('stock','50');await save();assert.match(await page.$eval('#app-content',e=>e.textContent),/50 in stock/);
- await go('support.html');await page.click('[data-action=assign]');await page.select('dialog select','Maya Chen');await save();assert.match(await page.$eval('.support-thread',e=>e.textContent),/Assigned to Maya Chen/);
+ await go('support.html');await page.click('[data-action=assign]');await page.select('dialog select','Maya Chen');await save();assert.equal(await page.$eval('.support-assignee .person strong',e=>e.textContent),'Maya Chen');
  await page.type('[name=reply]','We can help check the member limit.');await page.click('[type=submit]');await page.reload();assert.match(await page.$eval('.support-thread',e=>e.textContent),/We can help/);
  await page.click('[data-action=ticket-status]');await page.select('dialog select','Resolved');await save();await go('support.html?view=resolved');assert.match(await page.$eval('.support-queue',e=>e.textContent),/Cannot invite/);
  const axe=fs.readFileSync('node_modules/axe-core/axe.min.js','utf8');
  for(const width of [390,1440])for(const scheme of ['light','dark'])for(const name of ['workspace','account','commerce','support']){
   await page.setViewport({width,height:1000});await go(name+'.html');await page.evaluate(s=>document.documentElement.dataset.theme=s,scheme);await page.evaluate(async()=>{await Promise.all(document.getAnimations().map(a=>a.finished.catch(()=>{})));});
+  if(width===390){assert.equal(await page.$eval('.suite-sidebar',e=>e.inert),true);await page.click('.suite-menu');assert.equal(await page.$eval('.suite-sidebar',e=>e.inert),false);await page.keyboard.down('Shift');await page.keyboard.press('Tab');await page.keyboard.up('Shift');assert.equal(await page.evaluate(()=>document.activeElement.closest('.suite-sidebar')!==null),true);await page.keyboard.press('Escape');assert.equal(await page.$eval('.suite-sidebar',e=>e.inert),true);}
   assert.equal(await page.$$eval('a.btn',els=>els.every(el=>getComputedStyle(el).color!==getComputedStyle(el).backgroundColor)),true,'button links need visible text');
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${name} ${width}: overflow`);
   await page.addScriptTag({content:axe});const violations=await page.evaluate(async()=>(await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));assert.deepEqual(violations,[],`${name} ${scheme} ${width}: accessibility`);
@@ -39,5 +40,15 @@ try {
  }
  for(const name of ['analytics','crm']){await page.setViewport({width:1440,height:1000});await go(name+'.html');await page.screenshot({path:`/tmp/colibri-${name}-distinct.png`});}
  await go('index.html');assert.equal(await page.$$eval('.dashboard-preview',e=>e.length),6);
+ for(const name of ['analytics','crm','workspace','account','commerce','support']){
+  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`a.dashboard-preview[href="${name}.html"]`)]);
+  assert.equal(new URL(page.url()).pathname.split('/').pop(),name+'.html',name+': gallery destination');
+  assert.equal(await page.$eval('body',e=>e.dataset.demo||e.dataset.app),name,name+': page identity');
+  assert.ok(await page.$eval('.dash-side,.app-nav',e=>{const r=e.getBoundingClientRect();return r.x===0&&r.width<300&&r.height>=900;}),name+': consistent desktop left navigation');
+  await Promise.all([page.waitForNavigation(),page.click('header .dashboard-back')]);assert.ok(page.url().endsWith('/index.html'),name+': return to gallery');
+ }
+
+ await go('crm.html');
+ for(const section of ['settings','reports','inbox']){await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`[data-workspace=${section}]`)]);assert.equal(new URL(page.url()).searchParams.get('app'),'crm');assert.equal(await page.$eval('.suite-nav [aria-current=page]',e=>e.getAttribute('href')),'crm.html','CRM context remains selected on shared workspace pages');}
  assert.deepEqual(errors,[]);console.log('ok four distinct apps: persistence, team/member forms, agenda, profile/security/billing, fulfillment/inventory, ticket assignments/replies/status, light/dark mobile layouts, axe and six gallery entries');
 }finally{await browser.close();await server.close();}

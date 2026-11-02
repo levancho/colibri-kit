@@ -151,16 +151,32 @@ body[data-demo=crm] .deal { padding:1.1rem; border-radius:var(--c-radius); box-s
 body[data-demo=crm] .dash-head h1 { font-size:clamp(1.7rem,3vw,2.7rem); letter-spacing:-.05em; }
 body[data-demo=crm] .kpis { gap:0; border:1px solid var(--c-line); border-radius:var(--c-radius); overflow:hidden; }
 body[data-demo=crm] .kpi { border:0; box-shadow:none; border-radius:0; border-inline-end:1px solid var(--c-line); }
-@media(min-width:901px){
- body[data-demo=crm] .dash { display:block; }
- body[data-demo=crm] .dash-side { position:static; block-size:auto; flex-direction:row; align-items:center; padding:.8rem 2rem; background:var(--c-fg); color:var(--c-bg); }
- body[data-demo=crm] .dash-side .dash-brand { white-space:nowrap; }
- body[data-demo=crm] .dash-nav { flex-direction:row; flex-wrap:wrap; margin-inline-start:auto; }
- body[data-demo=crm] .dash-nav h6,body[data-demo=crm] .dash-side footer { display:none; }
- body[data-demo=crm] .dash-nav a { color:inherit; font-size:.8rem; }
- body[data-demo=crm] .dash-nav a[aria-current] { background:var(--c-bg); color:var(--c-fg); }
- body[data-demo=crm] .dash-top { padding-inline:2rem; }
- body[data-demo=crm] .dash-body { inline-size:100%; max-inline-size:1600px; margin:auto; padding:2rem; }
- body[data-demo=crm] .pipeline { grid-template-columns:repeat(4,minmax(0,1fr)); }
-}
+
 .deal-company{display:flex;align-items:center;gap:.6rem}.deal-owner{display:block;border-block-start:1px solid var(--c-line);padding-block-start:.65rem;margin-block-start:.5rem}.deal .portrait{inline-size:24px;block-size:24px}.deal .person strong{font-size:.75rem}.av.portrait{padding:0}
+/* CRM: compact operating summary, followed by a readable opportunity board. */
+body[data-demo=crm] .dash-body{gap:1.25rem}
+body[data-demo=crm] .dash-head p{margin:.35rem 0}
+body[data-demo=crm] .demo-note{margin:0;font-size:.72rem}
+body[data-demo=crm] .kpis{gap:1rem;border:0;overflow:visible}
+body[data-demo=crm] .kpi{border:1px solid var(--c-line);border-radius:.75rem;padding:1rem 1.25rem;background:var(--c-surface)}
+body[data-demo=crm] .kpi b{font-size:1.8rem}
+body[data-demo=crm] .pipeline{align-items:start;gap:1rem}
+body[data-demo=crm] .lane{padding:.65rem;background:color-mix(in oklch,var(--c-surface) 70%,var(--c-sunken));gap:.65rem}
+body[data-demo=crm] .lane h4{border:0;padding:0;align-items:center}
+body[data-demo=crm] .lane h4::before{content:'';inline-size:8px;block-size:8px;border-radius:50%;background:var(--c-accent);margin-inline-end:.5rem}
+body[data-demo=crm] .lane h4 .badge{margin-inline-start:auto}
+body[data-demo=crm] .lane[data-stage=Qualified] h4::before{background:var(--chart-2)}
+body[data-demo=crm] .lane[data-stage=Proposal] h4::before{background:var(--chart-3)}
+body[data-demo=crm] .lane[data-stage=Won] h4::before{background:var(--c-ok)}
+.lane-total{font-size:.8rem;color:var(--c-muted);margin:0 0 .25rem}
+body[data-demo=crm] .deal{padding:.85rem;min-block-size:0;gap:.55rem;border-radius:.65rem;box-shadow:none}
+body[data-demo=crm] .deal-company{font-size:.85rem;font-weight:600}
+body[data-demo=crm] .deal b{font-size:1.2rem}
+.deal-next{font-size:.75rem;line-height:1.4;color:var(--c-muted);min-block-size:2.1em}
+body[data-demo=crm] .deal-owner{margin:0;padding-block-start:.6rem}
+body[data-demo=crm] .dash-top{position:static}
+
+@media(max-width:760px){body[data-demo=crm] .kpis{grid-template-columns:repeat(2,minmax(0,1fr));gap:.6rem}body[data-demo=crm] .kpi{padding:.8rem}body[data-demo=crm] .kpi b{font-size:1.4rem}body[data-demo=crm] .pipeline{grid-template-columns:repeat(4,minmax(16rem,1fr))}}
+
+.dashboard-back{display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap;font-size:.8rem;font-weight:600;text-decoration:none;color:var(--c-accent)}
+body[data-demo=crm] .pipeline{grid-template-columns:repeat(4,minmax(14rem,1fr))}

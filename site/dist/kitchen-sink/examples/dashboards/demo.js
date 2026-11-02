@@ -1,4 +1,4 @@
-import {avatar,person,companyMark} from './visuals.js';
+import {avatar,person,companyMark,icon} from './visuals.js';
 // Demo application state is deliberately local. No backend or account is implied.
 const KEY = 'colibri-dashboard-v1';
 const stages = ['Lead', 'Qualified', 'Proposal', 'Won'];
@@ -8,9 +8,9 @@ const seeds = [
   ['Kutaisi Labs', 2000, 'Ana M.', 'Lead'], ['Batumi Ports', 28000, 'Giorgi B.', 'Qualified'],
   ['Rustavi Steel', 9000, 'Dato T.', 'Qualified'], ['GeoCell', 40000, 'Salome L.', 'Proposal'],
   ['Mtskheta Wines', 6000, 'Nino K.', 'Proposal'], ['Svaneti Tours', 15000, 'Levan D.', 'Won'],
-].map(([name, value, owner, stage], id) => ({ id: String(id), name, value, owner, stage }));
+].map(([name, value, owner, stage], id) => ({ id: String(id), name, value, owner, stage, nextStep:['Schedule discovery call','Review product requirements','Introduce account team','Prepare technical evaluation','Confirm purchasing process','Review proposal with buyer','Follow up on pricing','Hand off to customer success'][id] }));
 const fresh = () => ({ deals: structuredClone(seeds), reports: [], read: [], activity: [] });
-const validDeal = d => d && typeof d.id === 'string' && typeof d.name === 'string' && d.name.trim().length > 0 && d.name.length <= 100 && typeof d.owner === 'string' && d.owner.trim().length > 0 && d.owner.length <= 100 && Number.isFinite(d.value) && d.value >= 0 && d.value <= 1e9 && stages.includes(d.stage);
+const validDeal = d => d && typeof d.id === 'string' && typeof d.name === 'string' && d.name.trim().length > 0 && d.name.length <= 100 && typeof d.owner === 'string' && d.owner.trim().length > 0 && d.owner.length <= 100 && Number.isFinite(d.value) && d.value >= 0 && d.value <= 1e9 && stages.includes(d.stage) && (d.nextStep===undefined || (typeof d.nextStep==='string' && d.nextStep.length<=100));
 function node(tag, text, attrs = {}) {
   const el = document.createElement(tag); if (text !== undefined) el.textContent = text;
   for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, value);
@@ -41,6 +41,7 @@ export function initDashboard() {
     const saved = JSON.parse(localStorage.getItem(KEY));
     if (saved && Array.isArray(saved.deals) && saved.deals.every(validDeal) && new Set(saved.deals.map(d => d.id)).size === saved.deals.length && Array.isArray(saved.reports) && saved.reports.every(r => typeof r.name === 'string' && typeof r.csv === 'string') && Array.isArray(saved.read) && saved.read.every(i => Number.isInteger(i) && i >= 0 && i < 3) && Array.isArray(saved.activity) && saved.activity.every(a => typeof a === 'string')) state = saved;
   } catch { storageWarning = 'Browser storage is unavailable. Changes last until you leave this page.'; }
+  const setWorkspaceName=name=>{document.body.dataset.workspaceName=name;const label=document.querySelector('.suite-context [data-workspace-name]');if(label)label.textContent=name;};
   const status = document.getElementById('demo-status');
   const say = text => { status.textContent = text; };
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); return true; } catch { storageWarning = 'Changes could not be saved; keep this page open or export a backup.'; } if (storageWarning) say(storageWarning); return false; };
@@ -75,11 +76,11 @@ export function initDashboard() {
     for (const stage of stages) {
       const all = state.deals.filter(d => d.stage === stage), visible = all.filter(d => `${d.name} ${d.owner}`.toLowerCase().includes(query));
       const lane = node('section', undefined, { class: 'lane', 'aria-label': stage });
-      const heading = node('h4', stage); heading.append(node('span', `${visible.length}`, { class: 'badge' })); lane.append(heading);
+      const heading = node('h4', stage); heading.append(node('span', `${visible.length}`, { class: 'badge' })); lane.dataset.stage=stage;lane.append(heading,node('p',money(visible.reduce((sum,d)=>sum+d.value,0)),{class:'lane-total'}));
       for (const deal of visible) {
         const card = button('', () => editDeal(deal)); card.className = 'deal'; card.dataset.dealId = deal.id;
         card.setAttribute('aria-label', `Edit ${deal.name}`);
-        const title=node('span','',{class:'deal-company'});title.innerHTML=companyMark(deal.name);title.append(node('span',deal.name));const owner=node('span','',{class:'deal-owner'});owner.innerHTML=person(deal.owner);card.append(title,node('b',money(deal.value)),owner); lane.append(card);
+        const title=node('span','',{class:'deal-company'});title.innerHTML=companyMark(deal.name);title.append(node('span',deal.name));const owner=node('span','',{class:'deal-owner'});owner.innerHTML=person(deal.owner);const next=node('span',deal.nextStep||'Add a next action',{class:'deal-next'});card.append(title,node('b',money(deal.value)),next,owner); lane.append(card);
       }
       if (!visible.length) lane.append(node('p', query ? 'No matching deals' : 'No deals yet', { class: 'muted' }));
       pipeline.append(lane);
@@ -96,17 +97,17 @@ export function initDashboard() {
     open(deal ? 'Edit deal' : 'New deal', box => {
       const form = node('form', undefined, { class: 'demo-form' });
       const fields = {};
-      for (const [key, title, type] of [['name', 'Company', 'text'], ['value', 'Value (USD)', 'number'], ['owner', 'Owner', 'text'], ['stage', 'Stage', 'select']]) {
+      for (const [key, title, type] of [['name', 'Company', 'text'], ['value', 'Value (USD)', 'number'], ['owner', 'Owner', 'text'], ['stage', 'Stage', 'select'], ['nextStep', 'Next action', 'text']]) {
         const label = node('label', title);
         const input = type === 'select' ? node('select') : node('input', undefined, { type, required: '', maxlength: '100' });
-        input.name = key;
+        input.name = key;if(key==='nextStep')input.required=false;
         if (type === 'select') input.append(...stages.map(s => node('option', s, { value: s })));
         if (type === 'number') { input.min = '0'; input.max = '1000000000'; input.step = '0.01'; }
         input.value = deal?.[key] ?? (key === 'stage' ? 'Lead' : ''); fields[key] = input; label.append(input); form.append(label);
       }
       const submit = node('button', 'Save deal', { type: 'submit', class: 'btn' }); form.append(submit);
       form.addEventListener('submit', e => {
-        e.preventDefault(); const value = { id: deal?.id ?? crypto.randomUUID(), name: fields.name.value.trim(), owner: fields.owner.value.trim(), value: Number(fields.value.value), stage: fields.stage.value };
+        e.preventDefault(); const value = { id: deal?.id ?? crypto.randomUUID(), name: fields.name.value.trim(), owner: fields.owner.value.trim(), value: Number(fields.value.value), stage: fields.stage.value, nextStep: fields.nextStep.value.trim() };
         if (!validDeal(value)) { fields.name.setCustomValidity('Enter a company and owner, and a valid nonnegative value.'); fields.name.reportValidity(); return; }
         if (deal) state.deals = state.deals.map(d => d.id === deal.id ? value : d); else state.deals.push(value);
         log(`${deal ? 'Updated' : 'Added'} ${value.name} · ${value.stage} · ${money(value.value)}`); say('Deal saved.'); save(); renderDeals(); dialog.close();
@@ -224,11 +225,11 @@ export function initDashboard() {
       const notificationLabel=node('label','Show unread message count'),notifications=node('input',undefined,{type:'checkbox',name:'notifications'});notifications.checked=state.settings?.notifications!==false;notificationLabel.prepend(notifications);form.append(notificationLabel,node('button','Save settings',{class:'btn',type:'submit'}));
       form.addEventListener('submit',e=>{e.preventDefault();if(Object.values(fields).some(f=>!f.value.trim())){say('Complete every profile field.');return;}state.settings=Object.fromEntries(Object.entries(fields).map(([key,input])=>[key,input.value.trim()]));state.settings.notifications=notifications.checked;const persisted=save();updateBadge();if(persisted)say('Workspace settings saved locally.');applyProfile();});box.append(form);
       const appearance=node('section',undefined,{class:'card panel'});appearance.append(node('h2','Appearance'),node('p','Use the theme pack, hue and light/dark controls in the top bar. Build a custom theme in Studio.'),node('a','Open Theme Studio →',{href:'../playground/'}));box.append(appearance);
-      const reset=node('section',undefined,{class:'card panel'});reset.append(node('h2','Demo data'),node('p','Reset local deals, saved reports, message drafts and workspace settings.'),button('Reset demo data',()=>open('Reset demo data?',detail=>{detail.append(node('p','Your local edits and saved reports will be removed.'),button('Cancel',()=>dialog.close()),button('Reset now',()=>{state=fresh();save();updateBadge();dialog.close();settings();document.querySelector('.dash-brand').lastChild.textContent='Colibri Kit';say('Demo data reset.');}));})));box.append(reset);
+      const reset=node('section',undefined,{class:'card panel'});reset.append(node('h2','Demo data'),node('p','Reset local deals, saved reports, message drafts and workspace settings.'),button('Reset demo data',()=>open('Reset demo data?',detail=>{detail.append(node('p','Your local edits and saved reports will be removed.'),button('Cancel',()=>dialog.close()),button('Reset now',()=>{state=fresh();save();updateBadge();dialog.close();settings();setWorkspaceName('Workspace');say('Demo data reset.');}));})));box.append(reset);
     });
   }
   function applyProfile(){
-    if(typeof state.settings?.workspace==='string')document.querySelector('.dash-brand').lastChild.textContent=state.settings.workspace;
+    if(typeof state.settings?.workspace==='string')setWorkspaceName(state.settings.workspace);
     if(typeof state.settings?.name==='string')document.querySelector('.dash-top > .av').textContent=state.settings.name.trim().split(/\s+/).slice(0,2).map(part=>part[0]).join('').toUpperCase();
   }
   if(workspace)({inbox,reports,settings})[workspace]?.();
@@ -256,3 +257,5 @@ export function initDashboard() {
 }
 
 for(const el of document.querySelectorAll('.av')){const name=({NK:'Nino Kapanadze',GB:'Giorgi Beridze',AM:'Ana Meladze',DT:'Dato Tsiklauri',SL:'Salome Lomidze',LD:'Levan D.'})[el.textContent.trim()];if(name)el.outerHTML=avatar(name).replace('class="portrait','class="av portrait');}
+
+if(document.body.dataset.demo==='crm'){for(const a of document.querySelectorAll('.dash-nav a')){const target=a.getAttribute('href');const name=({'analytics.html':'overview','crm.html':'target','customers.html':'members','inbox.html':'open','reports.html':'activity','settings.html':'security','index.html':'overview','../kitchen-sink.html':'code'})[target]||'arrow';const glyph=a.querySelector('span');if(glyph)glyph.outerHTML=icon(name);}}

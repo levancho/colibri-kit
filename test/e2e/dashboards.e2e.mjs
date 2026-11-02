@@ -18,12 +18,14 @@ try {
   await page.type('[name="name"]', '<img src=x onerror=alert(1)>');
   await page.type('[name="owner"]', 'Test Owner');
   await page.type('[name="value"]', '500');
+  await page.type('[name="nextStep"]','Send the revised proposal');
   await page.select('[name="stage"]', 'Won');
   await page.click('.demo-form [type="submit"]');
   assert.equal(await page.$$eval('.deal', els => els.length), 9);
   assert.equal(await page.$('.deal img[src="x"], .deal [onerror]'), null, 'user text is not interpreted as HTML');
   await page.reload({ waitUntil: 'networkidle0' });
   assert.equal(await page.$$eval('.deal', els => els.length), 9, 'new deal persists');
+  assert.match(await page.$eval('.pipeline',e=>e.textContent),/Send the revised proposal/,'next action persists');
   await page.type('.search input', 'Test Owner');
   assert.equal(await page.$$eval('.deal', els => els.length), 1);
   await page.click('.deal');
