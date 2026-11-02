@@ -21,7 +21,7 @@ AV = '<span data-ui="avatar" data-ui-part="avatar"><span data-ui-part="fallback"
 add(G, "bubble", "Bubble", "done", "-", "Bubble",
  "Reactions are toggle buttons (aria-pressed) whose count updates; long bubbles get a Show more / Show less button with aria-expanded/aria-controls. ui:react {value,on}.",
  '<div data-ui-part="bubble-group" data-align="start">'
- '<div data-ui="bubble" data-variant="muted"><div data-ui-part="content">გამარჯობა! I checked the registry output.</div></div>'
+ '<div data-ui="bubble" data-variant="muted"><div data-ui-part="content">Hello! I checked the registry output.</div></div>'
  '<div data-ui="bubble" data-variant="muted"><div data-ui-part="content">And removed the stale route.</div><div data-ui-part="reactions"><button data-ui-part="reaction" data-value="like" aria-label="Thumbs up">👍 <span data-ui-part="count">2</span></button><button data-ui-part="reaction" data-value="heart" aria-label="Heart">❤️ <span data-ui-part="count">0</span></button></div></div></div>'
  '<div data-ui-part="bubble-group" data-align="end"><div data-ui="bubble" data-variant="primary"><div data-ui-part="content">Great, ship it.</div></div></div>'
  '<div data-ui="bubble" data-variant="outline" data-collapsible><div data-ui-part="content">'
@@ -83,7 +83,7 @@ info("questionnaire", "Step-by-step questions", "Asks one question at a time (si
 
 add(G, "native-select", "Native select", "css", "Select (native)", "Native Select",
  "A real <select>: the browser handles keyboard, mobile pickers and forms. Only styling is added (chevron via CSS mask).",
- '<select data-ui="native-select" aria-label="City"><option>თბილისი</option><option>ბათუმი</option><option>ქუთაისი</option></select> <select data-ui="native-select" disabled aria-label="Disabled"><option>Disabled</option></select>')
+ '<select data-ui="native-select" aria-label="City"><option>Tbilisi</option><option>Batumi</option><option>Kutaisi</option></select> <select data-ui="native-select" disabled aria-label="Disabled"><option>Disabled</option></select>')
 info("native-select", "Native dropdown", "The browser's own select box, styled to match the theme.", "Simple choices in forms, especially on mobile; use Select when you need search, groups or custom rendering.",
  '<select data-ui="native-select" name="city">…</select>')
 

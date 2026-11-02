@@ -77,14 +77,14 @@ document.addEventListener("ui:change", modeLabel); modeLabel();
 
 // ---- demo wiring ----
 const on = (id, f) => document.getElementById(id)?.addEventListener("click", f);
-on("t-default", () => toast({ title: "შენახულია", description: "სტატია განახლდა." }));
-on("t-success", () => toast({ title: "წარმატება", description: "Profile saved.", variant: "success" }));
-on("t-error", () => toast({ title: "შეცდომა", description: "სერვერი მიუწვდომელია", variant: "error", duration: 6000 }));
-on("t-action", () => toast({ title: "სტატია წაიშალა", action: { label: "დაბრუნება", onClick: () => toast({ title: "აღდგენილია", variant: "success" }) } }));
-on("t-promise", () => toast.promise(new Promise((r) => setTimeout(r, 2000)), { loading: "იტვირთება…", success: "დასრულდა", error: "ვერ მოხერხდა" }));
+on("t-default", () => toast({ title: "Saved", description: "Article updated." }));
+on("t-success", () => toast({ title: "Success", description: "Profile saved.", variant: "success" }));
+on("t-error", () => toast({ title: "Error", description: "Server unavailable", variant: "error", duration: 6000 }));
+on("t-action", () => toast({ title: "Article deleted", action: { label: "Undo", onClick: () => toast({ title: "Restored", variant: "success" }) } }));
+on("t-promise", () => toast.promise(new Promise((r) => setTimeout(r, 2000)), { loading: "Loading…", success: "Done", error: "Something went wrong" }));
 on("loading-btn", (e) => { const b = e.currentTarget, api = b.__uiButton || b.colibri; if (api && "loading" in api) { api.loading = true; setTimeout(() => (api.loading = false), 2000); } else { b.disabled = true; b.setAttribute("aria-busy", "true"); b.dataset.state = "loading"; setTimeout(() => { b.disabled = false; b.removeAttribute("aria-busy"); delete b.dataset.state; }, 2000); } });
 let m = 9;
-on("msg-add", () => { const v = $("[data-ui=message-scroller] [data-ui-part=viewport]"); v.insertAdjacentHTML("beforeend", `<div data-ui-part="message" data-from="${m % 2 ? "me" : "them"}"><span data-ui-part="bubble">შეტყობინება ${m++}</span></div>`); });
+on("msg-add", () => { const v = $("[data-ui=message-scroller] [data-ui-part=viewport]"); v.insertAdjacentHTML("beforeend", `<div data-ui-part="message" data-from="${m % 2 ? "me" : "them"}"><span data-ui-part="bubble">Message ${m++}</span></div>`); });
 window.__sinkReady = true;
 
 // ---- theming + motion controls (tokens only; no JS inside components) ----

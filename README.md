@@ -115,7 +115,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 | Resizable (`resizable`) | ✅ done | - | Resizable |
 | Scroll Area / Scrollable (`scroll-area`) | ✅ done | Scrollable | Scroll Area |
 | Separator (`separator`) | ✅ done | Separator | Separator |
-| Skeleton / Spinner (`skeleton`) | 🔷 structure (markup/CSS only) | Skeleton | Skeleton, Spinner |
+| Skeleton (`skeleton`) | 🔷 structure (markup/CSS only) | Skeleton | Skeleton |
 | Spinner (`spinner`) | ✅ done | Spinner | Spinner |
 | Table (`table`) | 🔷 structure (markup/CSS only) | Table | Table |
 | Theme Switch (`theme-switch`) | ✅ done | Theme Switch | (dark mode) |

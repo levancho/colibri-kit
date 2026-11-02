@@ -30,7 +30,7 @@ INFO = {
 "resizable": ("Resizable panels", "Panels with a draggable divider between them.", "Editor + preview, sidebar + content."),
 "scroll-area": ("Scrolling box", "A fixed-height box whose content scrolls, with fade hints at the edges.", "Long tag lists, chat, logs."),
 "separator": ("Divider line", "A horizontal or vertical line between content.", "Separating sections or menu groups."),
-"skeleton": ("Loading placeholders", "Grey shapes and a spinner shown while content loads.", "Any slow-loading area."),
+"skeleton": ("Loading placeholders", "Skeleton shapes preview the layout while content loads.", "Any slow-loading area."),
 "table": ("Plain table", "A simple styled table with caption and headers.", "Static tabular data. Use Data table for sorting/search."),
 "theme-switch": ("Light / dark switch", "Cycles between light, dark and following the system setting, and remembers the choice.", "Site header or user settings."),
 "toast": ("Toast notifications", "Small messages that pop up in the corner and disappear by themselves.", "\"Saved\", \"Deleted (Undo)\", background task results."),

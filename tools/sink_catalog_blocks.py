@@ -14,7 +14,7 @@ def team(sid):
     return (f'<div data-ui="dropdown-menu" data-ui-part="team"><button data-ui-part="trigger" class="sb-team"><span class="sb-logo">{I("logo",16)}</span><span class="sb-text"><b>Despani</b><small>Enterprise</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
             f'<div data-ui-part="content"><div data-ui-part="label">Teams</div><button data-ui-part="item">Despani</button><button data-ui-part="item">L3V</button><hr data-ui-part="separator"><button data-ui-part="item">Add team</button></div></div>')
 def user():
-    return ('<div data-ui="dropdown-menu" data-ui-part="user"><button data-ui-part="trigger" class="sb-team"><span data-ui="avatar" data-ui-part="avatar"><span data-ui-part="fallback">ლდ</span></span><span class="sb-text"><b>levan</b><small>levan@despani.ge</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
+    return ('<div data-ui="dropdown-menu" data-ui-part="user"><button data-ui-part="trigger" class="sb-team"><span data-ui="avatar" data-ui-part="avatar"><span data-ui-part="fallback">LD</span></span><span class="sb-text"><b>levan</b><small>levan@despani.ge</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
             '<div data-ui-part="content"><button data-ui-part="item">Account</button><button data-ui-part="item">Billing</button><hr data-ui-part="separator"><button data-ui-part="item">Log out</button></div></div>')
 def mb(label, icon=None, cur=False, extra=""):
     return f'<a data-ui-part="menu-button" href="#"{" aria-current=page" if cur else ""} {extra}>{I(icon) if icon else ""}<span class="sb-text">{label}</span></a>'

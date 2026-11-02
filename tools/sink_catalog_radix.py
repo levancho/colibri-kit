@@ -24,7 +24,7 @@ add("Navigation", "tab-nav", "Tab nav (link tabs)", "done", "-", "Tab Nav (Radix
  '''<nav data-ui="tab-nav" aria-label="Settings"><a data-ui-part="link" href="#tab-nav" aria-current="page">Account</a><a data-ui-part="link" href="#tab-nav">Billing</a><a data-ui-part="link" href="#tab-nav">Team</a><a data-ui-part="link" href="#tab-nav">Security</a></nav>''')
 add("Base", "data-list", "Data list", "css", "-", "Data List (Radix Themes)",
  "A semantic dl of label/value pairs; data-orientation=vertical stacks them. No JavaScript.",
- '''<dl data-ui="data-list"><dt>Status</dt><dd><span data-ui="badge">Active</span></dd><dt>Name</dt><dd>ნინო ბერიძე</dd><dt>Email</dt><dd>nino@example.ge</dd><dt>Company</dt><dd>Despani</dd></dl>''')
+ '''<dl data-ui="data-list"><dt>Status</dt><dd><span data-ui="badge">Active</span></dd><dt>Name</dt><dd>Nino Beridze</dd><dt>Email</dt><dd>nino@example.ge</dd><dt>Company</dt><dd>Despani</dd></dl>''')
 add("Base", "callout", "Callout", "css", "-", "Callout (Radix Themes)",
  "Inline notice that is part of the content (not dismissible, not live). data-tone=info|warning|danger|success|neutral, data-variant=soft|surface|outline.",
  f'''<div data-ui="callout" role="note"><span data-ui-part="icon">{INFOI}</span><p>Theme packs change shape, type and motion, not just colour.</p></div>

@@ -110,7 +110,7 @@ await t("Select: opens listbox, picks option, updates hidden input", async () =>
   eq(await q('#select input[name=lang]', (e) => e.value), "en", "value"); yes(/English/.test(await q('#select [data-name=lang] [data-ui-part=value]', (e) => e.textContent)), "label shown");
 });
 await t("Combobox: type filters, Enter selects", async () => {
-  await go("combobox"); await p.click('#combobox [data-name=city] [data-ui-part=input]'); await p.keyboard.type("ბათ"); await wait(80);
+  await go("combobox"); await p.click('#combobox [data-name=city] [data-ui-part=input]'); await p.keyboard.type("Bat"); await wait(80);
   const vis = await p.$$eval('#combobox [data-name=city] [data-ui-part=option]', (o) => o.filter((x) => !x.hidden).map((x) => x.dataset.value)); eq(vis.join(), "batumi", "filtered");
   await shot("combobox-filter", "#combobox"); await p.keyboard.press("ArrowDown"); await p.keyboard.press("Enter"); await wait(50);
   eq(await q('#combobox input[name=city]', (e) => e.value), "batumi", "selected");
