@@ -10,7 +10,7 @@ try {
     const browser = await engines[name].launch({ headless:true });
     try {
       const page = await browser.newPage(); const errors=[];page.on('pageerror',e=>errors.push(e.message));
-      for (const scheme of ['light','dark']) for (const width of [390,1280]) for (const path of ['/getting-started.html', '/java-templates.html', '/', '/kitchen-sink/examples/dashboards/analytics.html', '/kitchen-sink/examples/dashboards/crm.html']) {
+      for (const scheme of ['light','dark']) for (const width of [390,1280]) for (const path of ['/getting-started.html', '/java-templates.html', '/', '/kitchen-sink/examples/dashboards/analytics.html', '/kitchen-sink/examples/dashboards/crm.html', '/kitchen-sink/examples/dashboards/customers.html', '/kitchen-sink/examples/dashboards/inbox.html', '/kitchen-sink/examples/dashboards/reports.html', '/kitchen-sink/examples/dashboards/settings.html']) {
         await page.emulateMedia({colorScheme:scheme}); await page.setViewportSize({width,height:900}); await page.goto(server.origin+path); await page.waitForLoadState('networkidle');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `${name} ${path} ${width}: overflow`);
         await page.addScriptTag({content:axe});
@@ -20,7 +20,7 @@ try {
           await page.locator('.live [data-ui="dialog"] [data-ui-part="trigger"]').click();
           assert.equal(await page.locator('.live dialog').evaluate(e=>e.open),true);await page.keyboard.press('Escape');
           assert.equal(await page.locator('.live dialog').evaluate(e=>e.open),false);
-        } else if (path.includes('/dashboards/')) {
+        } else if (path.endsWith('/crm.html') || path.endsWith('/analytics.html')) {
           await page.locator(path.includes('crm')?'[data-action=deal]':'[data-action=report]').click();
           assert.equal(await page.locator('.demo-dialog').evaluate(e=>e.open),true);await page.keyboard.press('Escape');
           if(width<900){await page.locator('.menu-btn').click();await page.keyboard.press('Escape');assert.equal(await page.locator('.dash-side').evaluate(e=>e.inert),true);}

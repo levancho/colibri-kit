@@ -69,13 +69,22 @@ try {
   assert.match(await page.$eval('dialog', e => e.textContent), /Trial customers/);
   await page.keyboard.press('Escape');
   await page.reload({ waitUntil: 'networkidle0' });
-  await page.click('[data-workspace=reports]');
-  assert.match(await page.$eval('dialog', e => e.textContent), /Trial customers/);
-  await page.keyboard.press('Escape');
-  await page.click('[data-workspace=inbox]');
+  await Promise.all([page.waitForNavigation(),page.click('[data-workspace=reports]')]);
+  assert.match(await page.$eval('#workspace-content', e => e.textContent), /Trial customers/);
+  assert.equal(await page.$eval('[data-workspace=reports]',e=>e.getAttribute('aria-current')),'page');
+  await Promise.all([page.waitForNavigation(),page.click('[data-workspace=inbox]')]);
   await page.locator('::-p-text(Mark read)').click();
   assert.equal(await page.$eval('[data-workspace=inbox] .badge', e => e.textContent), '2');
-  await page.keyboard.press('Escape');
+  await page.type('[name=reply]','Thanks, we will review the onboarding timeline.');
+  await page.click('.demo-form [type=submit]');await page.reload();
+  assert.match(await page.$eval('[name=reply]',e=>e.value),/onboarding/);
+  await Promise.all([page.waitForNavigation(),page.click('.message-link[href="inbox.html?message=1"]')]);
+  assert.match(await page.$eval('.message-detail h2',e=>e.textContent),/Trial accounts/);
+  await page.goto(base+'analytics.html');
+  await Promise.all([page.waitForNavigation(),page.locator('a.btn[href="customers.html"]').click()]);
+  assert.equal(await page.$eval('h1',el=>el.textContent),'Customers');
+  await page.type('.search input','Ana Meladze');assert.equal(await page.$$eval('tbody tr:not([hidden])',els=>els.length),1);
+  await page.goto(base+'analytics.html');
   await page.click('details.source summary');
   await page.focus('.code-tabs [role=tab]'); await page.keyboard.press('End');
   assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Thymeleaf');
@@ -85,15 +94,25 @@ try {
   assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)', e => e.textContent), '$29');
   await page.click('th:nth-child(3) button');
   assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)', e => e.textContent), '$1,140');
-  await page.click('[data-workspace=settings]');
+  await Promise.all([page.waitForNavigation(),page.click('[data-workspace=settings]')]);
+  await page.$eval('[name=workspace]',el=>el.value='Acme workspace');
+  await page.select('[name=timezone]','Asia/Tbilisi');
+  await page.click('.demo-form [type=submit]');await page.reload();
+  assert.equal(await page.$eval('[name=workspace]',el=>el.value),'Acme workspace');
+  assert.equal(await page.$eval('[name=timezone]',el=>el.value),'Asia/Tbilisi');
   await page.locator('::-p-text(Reset demo data)').click();
   await page.locator('::-p-text(Reset now)').click();
-  await page.click('[data-workspace=reports]');
-  assert.match(await page.$eval('dialog', e => e.textContent), /No saved reports/);
-  await page.keyboard.press('Escape');
+  await Promise.all([page.waitForNavigation(),page.click('[data-workspace=reports]')]);
+  assert.match(await page.$eval('#workspace-content', e => e.textContent), /No saved reports/);
+  await page.click('[data-action=report]');await page.type('[name=reportName]','Weekly pipeline');await page.click('.demo-form [type=submit]');
+  assert.equal(await page.$eval('dialog',el=>el.open),false);
+  await page.locator('::-p-text(Preview report)').click();
+  assert.match(await page.$eval('.report-preview',el=>el.textContent),/Tbilisi Bank/);await page.keyboard.press('Escape');
+  await page.locator('::-p-text(Delete report)').click();await page.locator('::-p-text(Confirm delete)').click();
+  assert.match(await page.$eval('#workspace-content', e => e.textContent), /No saved reports/);
   console.log('ok analytics filters, numeric sorting, filtered CSV, saved reports, reset, inbox, consistent ranges and keyboard tabs');
   for (const width of [320, 768, 1440]) {
-    for (const name of ['analytics', 'crm']) {
+    for (const name of ['analytics', 'crm', 'customers', 'inbox', 'reports', 'settings']) {
       await page.setViewport({ width, height: 900 });
       await page.goto(base + name + '.html', { waitUntil: 'networkidle0' });
       assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: no page overflow at ${width}px; ${JSON.stringify(await page.evaluate(() => [...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > innerWidth + 1).slice(0,12).map(el => ({tag:el.tagName, class:el.className, right:el.getBoundingClientRect().right}))))}`);
@@ -111,5 +130,5 @@ try {
   await page.click('[data-action=deal]');
   assert.equal(await page.$eval('dialog', e => e.open), true);
   assert.deepEqual(errors, []);
-  console.log('ok both dashboards at 320/768/1440px, mobile menu, blocked storage, no uncaught errors');
+  console.log('ok six dashboard pages at 320/768/1440px, mobile menu, blocked storage, no uncaught errors');
 } finally { await browser?.close(); await server.close(); }

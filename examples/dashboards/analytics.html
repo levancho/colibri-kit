@@ -2,12 +2,12 @@
 <title>Analytics — Colibri Kit dashboard</title>
 <link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
 <link rel="stylesheet" href="../../themes/packs/index.css">
-<link rel="stylesheet" href="dash.css">
+<link rel="stylesheet" href="dash.css?v=workspace-3">
 <script>try{const p=new URLSearchParams(location.search).get("theme")??localStorage.getItem("colibri-kit-theme");if(p)document.documentElement.dataset.kitTheme=p;const s=localStorage.getItem("colibri-scheme");if(s)document.documentElement.dataset.theme=s}catch{}</script>
 <script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto data-studio="/kitchen-sink/examples/playground/"></script>
 </head><body><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
 <div class="dash-brand"><i></i>Colibri Kit</div>
-<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html" aria-current=page><span>◫</span>Overview</a><a href="crm.html"><span>☺</span>Sales pipeline</a><h6>Workspace</h6><a href="#inbox" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="#reports" data-workspace="reports"><span>▤</span>Reports</a><a href="#settings" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
+<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html" aria-current=page><span>◫</span>Overview</a><a href="crm.html"><span>☺</span>Sales pipeline</a><h6>Workspace</h6><a href="customers.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
 <footer>Plain HTML + Colibri CSS. No Tailwind, no chart library.</footer></aside>
 <div class="dash-main"><header class="dash-top"><button class="btn menu-btn" data-variant="ghost" data-size="s" aria-label="Menu" aria-controls="dashboard-navigation" aria-expanded="false">☰</button>
 <div class="search"><input type="search" placeholder="Search…" aria-label="Search"></div>
@@ -26,7 +26,7 @@
 <ul class="legend col"><li style="--dot:var(--chart-1)">Organic 44%</li><li style="--dot:var(--chart-2)">Direct 26%</li><li style="--dot:var(--chart-3)">Social 18%</li><li style="--dot:var(--chart-4)">Referral 12%</li></ul></div></section>
 </div>
 <div class="panels">
-<section class="card panel"><header><div><h3>Recent customers</h3><p>New and changed subscriptions</p></div><a href="crm.html" class="btn" data-variant="ghost" data-size="s">View all →</a></header>
+<section class="card panel"><header><div><h3>Recent customers</h3><p>New and changed subscriptions</p></div><a href="customers.html" class="btn" data-variant="ghost" data-size="s">View all →</a></header>
 <div class="table-scroll"><table class="data"><thead><tr><th>Customer</th><th>Plan</th><th>MRR</th><th>Status</th></tr></thead><tbody><tr><td><span class="who"><span class="av" style="--av:var(--chart-1)">NK</span>Nino Kapanadze</span></td><td>Pro</td><td>$290</td><td><span class="badge" data-tone="ok">Active</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-2)">GB</span>Giorgi Beridze</span></td><td>Team</td><td>$1,140</td><td><span class="badge" data-tone="ok">Active</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-3)">AM</span>Ana Meladze</span></td><td>Starter</td><td>$29</td><td><span class="badge" data-tone="warn">Trial</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-4)">DT</span>Dato Tsiklauri</span></td><td>Pro</td><td>$290</td><td><span class="badge" data-tone="bad">Past due</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-1)">SL</span>Salome Lomidze</span></td><td>Team</td><td>$860</td><td><span class="badge" data-tone="ok">Active</span></td></tr></tbody></table></div></section>
 <section class="card panel"><header><div><h3>Weekly sessions</h3><p>Mon → Sun</p></div></header>
 <div class="chart-box"><div data-chart="bars" data-values="[320,410,380,470,520,290,240]" aria-label="Weekly sessions"></div></div>
@@ -154,4 +154,4 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
       &lt;td colspan=&quot;3&quot;&gt;No customers yet&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js"></script></body></html>
+&lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js?v=workspace-3"></script></body></html>

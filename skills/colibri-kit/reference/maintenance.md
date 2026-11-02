@@ -30,7 +30,7 @@ React: use the React wrappers/hook, without global auto-init. Ordinary rerenders
 
 ## Make demos honest and functional
 
-`examples/dashboards/analytics.html` and `crm.html` share browser-only state under `colibri-dashboard-v1`. They demonstrate customer filters/sorting/CSV reports, deal CRUD/JSON import/export, inbox read state and reset. They do not provide authentication, a database, real messaging or shared persistence.
+`examples/dashboards/analytics.html` and `crm.html` share browser-only state under `colibri-dashboard-v1`. The sidebar opens dedicated customers, inbox, reports and settings pages. These demonstrate customer filters/sorting/CSV reports, deal CRUD/JSON import/export, deep-linked conversations with local drafts/read state, report previews/deletion, workspace preferences and reset. Keep navigation as real page links with active state; reserve dialogs for focused actions. They do not provide authentication, a database, real messaging or shared persistence.
 
 Keep summary values consistent with their underlying dataset. Clearly distinguish historical sample charts from edited current data. For real applications, connect actions to the host’s actual data and authorization model; do not present localStorage as a production backend. Preserve visible errors, empty states, keyboard access and import validation.
 
