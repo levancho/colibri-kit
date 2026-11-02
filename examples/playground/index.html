@@ -5,7 +5,7 @@
 (function(){var C=window.ColibriStudio,S=C.load();try{var q=new URLSearchParams(location.hash.slice(1));if(q.has("pack")){for(var k in C.DEF)if(q.has(k)){var v=q.get(k);S[k]=v==="null"?null:v;}localStorage.setItem(C.KEY,JSON.stringify(S));}}catch(e){}
 /* incoming Colibria palette: #colibri=<payload>&return=<url> */try{var B=window.ColibriBridge,inc=B.read();if(inc){var t=inc.theme;S.bridge=t;S.hue=null;S.scheme=t.scheme;S.gen=t.gen||null;if(t.gen){var GR={radius:"pack",font:"pack",hfont:"pack",hweight:"pack",shadow:"pack",motion:"pack",focus:"pack",tscale:100,scaling:"100"},GK=window.ColibriThemeGen.studio(t.gen);for(var g1 in GR)S[g1]=GR[g1];for(var g2 in GK)S[g2]=GK[g2];}else if(t.kit)for(var kk in t.kit)if(kk in C.DEF&&kk!=="bridge")S[kk]=t.kit[kk];if(C.DARK_ONLY[S.pack]&&t.scheme==="light")S.pack="glacier";localStorage.setItem(C.KEY,JSON.stringify(S));sessionStorage.setItem("colibri-bridge-incoming",JSON.stringify({ret:inc.ret,name:t.name,source:t.source}));history.replaceState(null,"",location.pathname);}}catch(e){}
 var sc=C.resolveScheme(S),r=document.documentElement;r.dataset.chrome=sc;r.style.colorScheme=sc;})();</script>
-<link rel="stylesheet" href="../kit-bar.css"><link rel="stylesheet" href="studio.css">
+<link rel="stylesheet" href="../kit-bar.css"><link rel="stylesheet" href="studio.css?v=theme-action-2">
 </head>
 <body>
 <header data-foot="off" class="kbar" data-active="studio">
@@ -83,5 +83,5 @@ var sc=C.resolveScheme(S),r=document.documentElement;r.dataset.chrome=sc;r.style
   <div class="cbody"><div id="out" data-lang="css"><pre><code></code></pre></div></div></div>
 </section></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script type="module" src="../kit-bar.js"></script><script type="module" src="studio.js"></script>
+<script type="module" src="../kit-bar.js"></script><script type="module" src="studio.js?v=theme-action-2"></script>
 </body></html>
