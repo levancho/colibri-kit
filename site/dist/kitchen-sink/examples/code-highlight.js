@@ -70,13 +70,13 @@ export function css(s) {
     ["punc", y(/[{}();,]/)],
   ]);
 }
-const LANG = { html: (s) => html(s), ftl: (s) => html(s, true), freemarker: (s) => html(s, true), react: js, jsx: js, js, css };
-const LABEL = { html: "HTML", ftl: "FreeMarker", freemarker: "FreeMarker", react: "React · JSX", jsx: "JSX", js: "JavaScript", css: "CSS" };
+const LANG = { thymeleaf: (s) => html(s), html: (s) => html(s), ftl: (s) => html(s, true), freemarker: (s) => html(s, true), react: js, jsx: js, js, css };
+const LABEL = { thymeleaf: "Thymeleaf", html: "HTML", ftl: "FreeMarker", freemarker: "FreeMarker", react: "React · JSX", jsx: "JSX", js: "JavaScript", css: "CSS" };
 // Pretty-print: long single-line markup is broken at block-level tags and re-indented (short lines are left as authored).
 const BLOCK = /^(?:div|section|header|footer|nav|main|aside|article|form|fieldset|ul|ol|li|dl|dt|dd|table|thead|tbody|tr|td|th|p|h[1-6]|button|label|input|select|option|textarea|details|summary|dialog|figure|img|hr|svg|ui-[\w-]+|template|#[\w]+|@[\w.]+)$/i;
 const VOID = /^(?:input|img|hr|br|meta|link|source|col|area|wbr)$/i;
 export function format(src, lang = "html") {
-  if (!/^(html|ftl|freemarker)$/.test(lang)) return src;
+  if (!/^(html|ftl|freemarker|thymeleaf)$/.test(lang)) return src;
   return src.split("\n").map((line) => {
     if (line.length <= 110 || (line.match(/</g) || []).length < 3) return line;
     const base = /^\s*/.exec(line)[0]; const st = []; let out = "", first = true, m;

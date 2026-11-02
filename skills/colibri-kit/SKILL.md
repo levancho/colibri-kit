@@ -31,6 +31,8 @@ Optional custom elements for every component: `import "./src/elements/all.js"` g
 
 If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs info --json`, `colibri search "<need>"`, `colibri view <name>` (exact HTML + FreeMarker), `colibri docs <name>` (keys/ARIA). An MCP server ships as `bin/colibri-mcp.mjs`.
 
+Thymeleaf: the gallery and homepage include a fourth source tab. Copy its native `th:fragment` example into `templates/fragments/colibri.html` and include it with `th:replace`. These fragments reuse the same HTML, CSS and controllers; there is no custom Colibri dialect. Keep application model binding and Spring form validation in the host template.
+
 ## 2. Styling model
 
 1. **Semantic HTML first.** `<button>`, `<dialog>`, `<table>`, `<label>`, `<nav>`; base styles already look finished.

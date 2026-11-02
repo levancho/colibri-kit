@@ -78,7 +78,7 @@ try {
   await page.keyboard.press('Escape');
   await page.click('details.source summary');
   await page.focus('.code-tabs [role=tab]'); await page.keyboard.press('End');
-  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'React');
+  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Thymeleaf');
   assert.equal(await page.$eval('.code-tabs', el => el.querySelectorAll('[role=tab][tabindex="0"]').length), 1);
   await page.select('[aria-label="Customer status"]', 'All');
   await page.click('th:nth-child(3) button');
