@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Colibri Kit: the look (Colibri CSS) + the behaviour (Colibri UI)</title>
-<meta name="description" content="Colibri Kit has two parts: Colibri CSS, a small stylesheet that makes plain HTML look good, and Colibri UI, components that add behaviour (dialogs, menus, tabs) without forcing a look on you. No build step, no utility bloat.">
-<meta property="og:title" content="Colibri Kit"><meta property="og:description" content="Colibri CSS = the look. Colibri UI = the behaviour. Plain HTML, no build step.">
+<title>Colibri Kit — UI components, themes and layouts for the open web</title>
+<meta name="description" content="An open-source UI kit combining interactive components, themes and layouts. Build with semantic HTML and modern CSS, with no Tailwind or required frontend framework.">
+<meta property="og:title" content="Colibri Kit"><meta property="og:description" content="UI components, themes and layouts built on semantic HTML and modern CSS. Your design, your stack, no Tailwind required.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
 <script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,d=localStorage.getItem("colibri.kit.theme");if(d)H.dataset.theme=d;var q=new URLSearchParams(location.search).get("theme"),p=q!==null?q:localStorage.getItem("colibri.kit.pack");if(p)H.dataset.kitTheme=p}catch(_){}</script>
 <link rel="stylesheet" href="/css/colibri.css">
@@ -26,7 +26,7 @@
     <div class="hero-copy stack">
       <a class="pill" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><span class="pill-dot" aria-hidden="true"></span>Open source · MIT <span aria-hidden="true">→</span></a>
       <h1 id="hero-h">Plain HTML,<br><span class="grad">beautifully finished.</span></h1>
-      <p class="lede"><b>Colibri CSS</b> gives your pages the look. <b>Colibri UI</b> makes things work: dialogs, menus, tabs, with keyboard controls and ARIA wiring. No utility classes, no compiler, no framework lock-in. The same markup works in HTML, FreeMarker and React.</p>
+      <p class="lede"><b>Colibri is an open-source UI kit for building interfaces that look and work as one.</b> Bring together interactive components, coordinated themes and reusable layouts—from a single dialog to a dashboard. Built on semantic HTML and modern CSS, with keyboard controls and ARIA support. Use plain HTML, FreeMarker or React. Keep your stack, own your design, and leave Tailwind out of it.</p>
       <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
         <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
         <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
@@ -47,7 +47,8 @@
 
 
   <section class="center stack explain" id="what" aria-labelledby="what-h">
-    <h2 id="what-h">Two pieces, one kit</h2>
+    <h2 id="what-h">One kit, from layout to interaction</h2>
+    <p class="muted">Start with components, page blocks and dashboard examples that share a design language. Underneath, two independent layers let you use the whole kit or bring just the styling or behaviour into an existing project.</p>
     <div class="kit-diagram" role="img" aria-label="Colibri Kit contains Colibri CSS, which is the look, and Colibri UI, which is the behaviour">
       <div class="kd-kit"><img src="/colibri-mark.svg" alt="" width="20" height="20" style="vertical-align:-4px;border-radius:5px"> Colibri Kit <small>the family</small></div>
       <div class="kd-row">
@@ -114,12 +115,18 @@
   </section>
 
   <section class="center stack" id="why">
-    <h2>Why Colibri Kit</h2>
+    <h2>Why choose Colibri Kit?</h2>
+    <p class="muted">Colibri is a better fit when you want a shared UI across server-rendered pages and frontend components, without adopting Tailwind. Your markup describes the interface; CSS tokens shape its design; small JavaScript controllers add interaction.</p>
+    <div class="callout">
+      <h3>Coming from shadcn/ui?</h3>
+      <p>Both projects give you open source you can customise. The difference is the foundation: <a href="https://ui.shadcn.com/docs/installation/manual">shadcn/ui’s documented setup uses Tailwind CSS</a>. Colibri uses semantic CSS and framework-independent behaviour, with plain HTML examples, FreeMarker macros and React bindings. That makes it a practical choice for teams maintaining more than one rendering stack—or simply choosing to work directly with web standards.</p>
+      <p>If your application already uses React and Tailwind, shadcn/ui may fit your workflow more naturally. Choose Colibri when avoiding that dependency and sharing styling and behaviour across stacks matter more.</p>
+    </div>
     <div class="grid" style="--min:16rem">
-      <div class="card stack"><h3>Not a utility framework</h3><p class="muted">No twenty-class elements, no compiler and no design scattered through templates. The design lives in CSS and tokens.</p></div>
-      <div class="card stack"><h3>Not a heavy framework</h3><p class="muted">No 300 KB bundle, no specificity fights, no look you have to undo. Layers mean your CSS always wins.</p></div>
+      <div class="card stack"><h3>Readable markup, reusable design</h3><p class="muted">Describe components with semantic classes and attributes. Keep colours, spacing and variants in CSS and tokens, so a design change does not mean editing utility strings across your templates.</p></div>
+      <div class="card stack"><h3>Start without a build pipeline</h3><p class="muted">Link the stylesheet and import the behaviour modules in a plain HTML page. No Tailwind compiler or frontend framework is required. Add Colibri to your existing application without rebuilding it around a new stack.</p></div>
       <div class="card stack"><h3>Platform-native</h3><p class="muted">Layers, <code>:has()</code>, container queries, nesting, <code>light-dark()</code>, OKLCH and native <code>&lt;dialog&gt;</code>: the browser does the heavy lifting.</p></div>
-      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Add <code>data-colibri-theme</code> to a section to derive its palette from a local hue. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
+      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> changes the base palette. Add <code>data-colibri-theme</code> to a section to derive its palette from a local hue. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
       <div class="card stack"><h3>Works with server templates</h3><p class="muted">Plain HTML, FreeMarker macros and custom elements. No SPA required, no hydration.</p></div>
       <div class="card stack"><h3>Accessibility foundations</h3><p class="muted">Behavior controllers provide keyboard controls and ARIA wiring; CSS supplies focus rings and reduced-motion tokens. Test your content, contrast and integrations before release.</p></div>
     </div>
