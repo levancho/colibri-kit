@@ -1,0 +1,5 @@
+<div xmlns:th="http://www.thymeleaf.org" th:fragment="field(field, label, type)" data-ui="field" th:attr="data-invalid=${#fields.hasErrors(field) ? 'true' : null}">
+  <label data-ui-part="label" th:for="${field}" th:text="${label}">Email</label>
+  <input data-ui-part="control" th:id="${field}" th:type="${type}" th:field="*{__${field}__}" th:attr="aria-invalid=${#fields.hasErrors(field)}">
+  <p data-ui-part="error" th:if="${#fields.hasErrors(field)}" th:errors="*{__${field}__}">Invalid value</p>
+</div>

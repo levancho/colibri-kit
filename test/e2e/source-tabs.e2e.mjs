@@ -19,7 +19,7 @@ try {
   await page.$eval('#dialog [role=tabpanel][data-value=thymeleaf] .sink-copy',el=>el.scrollIntoView({block:'center'}));
   await page.waitForSelector('#dialog [role=tabpanel][data-value=thymeleaf] .sink-copy',{visible:true});
   await page.click('#dialog [role=tabpanel][data-value=thymeleaf] .sink-copy');
-  assert.match(await page.evaluate(()=>window.copiedSource),/th:fragment="dialog"/);
+  assert.match(await page.evaluate(()=>window.copiedSource),/th:replace="~\{colibri\/thymeleaf\/dialog :: dialog/);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),'four tabs do not cause page overflow');
  }
  console.log('ok Thymeleaf source tabs: gallery coverage, keyboard, copy, homepage sync/persistence, mobile width');

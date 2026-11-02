@@ -1,0 +1,1 @@
+<article xmlns:th="http://www.thymeleaf.org" th:fragment="card(title, description, content)" data-ui-part="card"><header><h3 data-ui-part="title" th:text="${title}">Title</h3><p th:if="${description != null}" data-ui-part="description" th:text="${description}">Description</p></header><div data-ui-part="content" th:insert="${content}"></div></article>

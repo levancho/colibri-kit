@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML" auto_esc=true]
 [#-- Colibri UI (@colibri-kit/ui) Dialog for FreeMarker. Markup contract only; no classes, no styling.
      Usage:
        [#import "ui/ui-dialog.ftl" as ui]

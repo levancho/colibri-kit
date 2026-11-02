@@ -1,0 +1,1 @@
+<section xmlns:th="http://www.thymeleaf.org" th:fragment="chart_panel(title, values)" class="card panel chart-box"><header><h3 th:text="${title}">Traffic</h3></header><div data-chart="bars" th:attr="data-values=${values},aria-label=${title}"></div></section>

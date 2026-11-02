@@ -59,20 +59,17 @@ export function Kpi({ label, value, trend, delta, up = true }) {
     &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;${up?then(&#x27;up&#x27;,&#x27;down&#x27;)}&quot;&gt;${up?then(&#x27;▲&#x27;,&#x27;▼&#x27;)} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
   &lt;/article&gt;
 &lt;/#macro&gt;
-&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Save in templates/fragments/colibri.html. --&gt;
-&lt;th:block xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;analytics_1&quot;&gt;
-  &lt;article class=&quot;card kpi&quot;&gt;
-    &lt;small&gt;Revenue&lt;/small&gt;
-    &lt;b&gt;$48,290&lt;/b&gt;
-    &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[12,18,14,22,19,27,31]&quot; aria-label=&quot;Revenue trend&quot;&gt;&lt;/span&gt;
-    &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;up&quot;&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
-  &lt;/article&gt;
-&lt;/th:block&gt;
+&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/kpi :: kpi(&#x27;Revenue&#x27;, ${revenue}, ${delta}, ${up})}&quot;&gt;&lt;/div&gt;
 
-&lt;!-- Include from a Thymeleaf template:
-&lt;th:block th:replace=&quot;~{fragments/colibri :: analytics_1}&quot;&gt;&lt;/th:block&gt;
-Load Colibri CSS and core/auto.js in your page layout.
---&gt;</code></pre></div></div></details><details class="source"><summary>Chart panel — HTML · React · FreeMarker · Thymeleaf</summary>
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;article xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;kpi(label, value, delta, up)&quot; class=&quot;card kpi&quot;&gt;
+  &lt;small th:text=&quot;${label}&quot;&gt;Revenue&lt;/small&gt;&lt;b th:text=&quot;${value}&quot;&gt;$0&lt;/b&gt;
+  &lt;p class=&quot;delta&quot;&gt;
+    &lt;span th:class=&quot;${up ? &#x27;up&#x27; : &#x27;down&#x27;}&quot; th:text=&quot;${delta}&quot;&gt;0%&lt;/span&gt;vs last month
+  &lt;/p&gt;
+&lt;/article&gt;</code></pre></div></div></details><details class="source"><summary>Chart panel — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="Chart panel source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
 <div role="tabpanel" data-lang="html"><pre><code>&lt;section class=&quot;card panel chart-box&quot;&gt;
   &lt;header&gt;&lt;h3&gt;Traffic&lt;/h3&gt;&lt;p&gt;Visitors vs signups&lt;/p&gt;&lt;/header&gt;
@@ -95,19 +92,18 @@ export function AreaChart({ series, title, sub }) {
     &lt;div data-chart=&quot;${kind}&quot; data-values=&#x27;${values}&#x27; aria-label=&quot;${title}&quot;&gt;&lt;/div&gt;
   &lt;/section&gt;
 &lt;/#macro&gt;
-&lt;@chart kind=&quot;area&quot; title=&quot;Traffic&quot; sub=&quot;Visitors vs signups&quot; values=&quot;[[420,480,450,520],[260,300,280,340]]&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Save in templates/fragments/colibri.html. --&gt;
-&lt;th:block xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;analytics_2&quot;&gt;
-  &lt;section class=&quot;card panel chart-box&quot;&gt;
-    &lt;header&gt;&lt;h3&gt;Traffic&lt;/h3&gt;&lt;p&gt;Visitors vs signups&lt;/p&gt;&lt;/header&gt;
-    &lt;div data-chart=&quot;area&quot; data-values=&quot;[[420,480,450,520],[260,300,280,340]]&quot; aria-label=&quot;Traffic&quot;&gt;&lt;/div&gt;
-  &lt;/section&gt;
-  &lt;script type=&quot;module&quot;&gt;import { mount } from &quot;./charts.js&quot;; mount();&lt;/script&gt;
-&lt;/th:block&gt;
+&lt;@chart kind=&quot;area&quot; title=&quot;Traffic&quot; sub=&quot;Visitors vs signups&quot; values=&quot;[[420,480,450,520],[260,300,280,340]]&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/chart-panel :: chart_panel(&#x27;Weekly sessions&#x27;, ${chartValuesJson})}&quot;&gt;&lt;/div&gt;
 
-&lt;!-- Include from a Thymeleaf template:
-&lt;th:block th:replace=&quot;~{fragments/colibri :: analytics_2}&quot;&gt;&lt;/th:block&gt;
-Load Colibri CSS and core/auto.js in your page layout.
---&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · React · FreeMarker · Thymeleaf</summary>
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;section xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;chart_panel(title, values)&quot; class=&quot;card panel chart-box&quot;&gt;
+  &lt;header&gt;
+    &lt;h3 th:text=&quot;${title}&quot;&gt;Traffic&lt;/h3&gt;
+  &lt;/header&gt;
+  &lt;div data-chart=&quot;bars&quot; th:attr=&quot;data-values=${values},aria-label=${title}&quot;&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="Data table source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
 <div role="tabpanel" data-lang="html"><pre><code>&lt;table class=&quot;data&quot;&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
@@ -135,18 +131,27 @@ Load Colibri CSS and core/auto.js in your page layout.
         &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;${c.active?then(&#x27;ok&#x27;,&#x27;warn&#x27;)}&quot;&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/#list&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Save in templates/fragments/colibri.html. --&gt;
-&lt;th:block xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;analytics_3&quot;&gt;
-  &lt;table class=&quot;data&quot;&gt;
-    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
-          &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;ok&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-&lt;/th:block&gt;
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/customer-table :: customer_table(${customers})}&quot;&gt;&lt;/div&gt;
 
-&lt;!-- Include from a Thymeleaf template:
-&lt;th:block th:replace=&quot;~{fragments/colibri :: analytics_3}&quot;&gt;&lt;/th:block&gt;
-Load Colibri CSS and core/auto.js in your page layout.
---&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js"></script></body></html>
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;table xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;customer_table(customers)&quot; class=&quot;data&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Customer&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Plan&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;MRR&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr th:each=&quot;customer : ${customers}&quot;&gt;
+      &lt;td th:text=&quot;${customer.name}&quot;&gt;Name&lt;/td&gt;
+      &lt;td th:text=&quot;${customer.plan}&quot;&gt;Plan&lt;/td&gt;
+      &lt;td th:text=&quot;${customer.mrr}&quot;&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr th:if=&quot;${#lists.isEmpty(customers)}&quot;&gt;
+      &lt;td colspan=&quot;3&quot;&gt;No customers yet&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js"></script></body></html>

@@ -39,7 +39,7 @@ Keep summary values consistent with their underlying dataset. Clearly distinguis
 When working in a full Colibri checkout:
 
 1. Edit authored CSS/JS/templates. `themes/knobs.css`, the gallery, registry and `site/dist` are generated; edit their sources/generators and rebuild.
-2. Run `npm test`, then `npm run build` and `npm run check:architecture`.
+2. Run `npm test` and `npm run test:java` (JDK 17+ and Maven), then `npm run build` and `npm run check:architecture`.
 3. Run relevant browser regressions. For shared theme/controller changes, run `npm run test:e2e` (installed Chromium/Chrome required; set `CHROME` if necessary).
 4. Install browser engines with `npx playwright install chromium firefox webkit`, then run `npm run test:cross-browser` for shared CSS or accessibility changes. This checks homepage/dashboard WCAG rules, responsive layouts, dialogs, keyboard tabs, cascade overrides and reduced motion.
 5. Inspect the relevant UI at narrow and wide widths and under the supported theme/scheme combinations. Midnight is intentionally dark-only.

@@ -1,0 +1,1 @@
+<span xmlns:th="http://www.thymeleaf.org" th:fragment="avatar(src, alt, fallback)" data-ui="avatar"><img data-ui-part="image" th:if="${src != null}" th:src="${src}" th:alt="${alt}"><span data-ui-part="fallback" th:text="${fallback}">AB</span></span>

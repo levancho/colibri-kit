@@ -31,7 +31,7 @@ Optional custom elements for every component: `import "./src/elements/all.js"` g
 
 If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs info --json`, `colibri search "<need>"`, `colibri view <name>` (exact HTML + FreeMarker), `colibri docs <name>` (keys/ARIA). An MCP server ships as `bin/colibri-mcp.mjs`.
 
-Thymeleaf: the gallery and homepage include a fourth source tab. Copy its native `th:fragment` example into `templates/fragments/colibri.html` and include it with `th:replace`. These fragments reuse the same HTML, CSS and controllers; there is no custom Colibri dialect. Keep application model binding and Spring form validation in the host template.
+Java templates require a server-side engine. Colibri supplies macros/fragments, not FreeMarker or Thymeleaf engine classes. Use the host's `spring-boot-starter-freemarker` / `spring-boot-starter-thymeleaf`, or explicit plain-Java engine dependencies. The supplemental `java/colibri-templates` Maven module packages resources under `templates/colibri/`; it is built/installed locally, not published to Maven Central. FreeMarker hosts should declare HTML output format; macros preserve auto-escaping. Use captured markup/nested bodies for trusted structure, never raw user HTML. Thymeleaf provides native parameterized fragments in `thymeleaf/` and a Spring field fragment for binding/validation. Other gallery examples use plain HTML directly; do not describe them as additional typed integrations.
 
 ## 2. Styling model
 

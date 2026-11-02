@@ -1,0 +1,105 @@
+# Java template integration
+
+Colibri supplies UI markup, not a template engine. FreeMarker and Thymeleaf execute in your Java server; Colibri CSS and JavaScript execute in the browser. A script tag or the npm package cannot install either Java engine.
+
+## What ships
+
+- `freemarker/`: Colibri macros, including `ui.ftl` and standalone dialog/tabs imports.
+- `thymeleaf/`: native, parameterized fragments for common controls, collections, overlays and dashboard blocks; `spring-field.html` binds to a Spring form object and its validation errors.
+- `java/colibri-templates/`: a Maven resource JAR that packages both under `templates/colibri/`. It does not embed or shade third-party engines, and does not select an engine for your application.
+
+The Thymeleaf tab shows a real fragment when one is supplied. Other examples show native HTML directly and are explicitly labeled as such. This is not a custom Thymeleaf dialect or a claim that every gallery composition has a typed Java helper.
+
+## Install the template resources
+
+The artifact is not published to Maven Central. Build and install it from this checkout:
+
+```sh
+mvn -f java/colibri-templates/pom.xml clean install
+```
+
+Then add this dependency to your application:
+
+```xml
+<dependency>
+  <groupId>ai.l3v.colibri</groupId>
+  <artifactId>colibri-templates</artifactId>
+  <version>0.1.0-SNAPSHOT</version>
+</dependency>
+```
+
+If distributing the JAR within a team, publish it to your private Maven repository or install the supplied JAR with:
+
+```sh
+mvn install:install-file -Dfile=colibri-templates-0.1.0-SNAPSHOT.jar -DgroupId=ai.l3v.colibri -DartifactId=colibri-templates -Dversion=0.1.0-SNAPSHOT -Dpackaging=jar
+``` Alternatively, copy `freemarker/` and/or `thymeleaf/` into `src/main/resources/templates/colibri/`. The template package includes no Java classes; extra processors are unnecessary for native fragments.
+
+## Add the actual engine
+
+For an existing Spring Boot application, use its dependency-management version and choose the starter you need:
+
+```xml
+<!-- FreeMarker application -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-freemarker</artifactId>
+</dependency>
+<!-- OR: Thymeleaf application -->
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-thymeleaf</artifactId>
+</dependency>
+```
+
+Maven downloads the engine and its dependencies through the starter. Colibri does not bundle them inside its JAR. Outside Spring Boot, declare `org.freemarker:freemarker:2.3.35` or `org.thymeleaf:thymeleaf:3.1.5.RELEASE` and configure a classpath template resolver rooted at `templates/`. The Spring form fragment additionally requires the matching Thymeleaf/Spring integration; the tests use `thymeleaf-spring6` with Spring MVC 6.2.11. Do not substitute these test versions for your application's managed Spring stack.
+
+## FreeMarker
+
+Save the host view as `.ftlh` with Spring Boot's default suffix, or configure the suffix if your project uses `.ftl`. The header selects the square-bracket syntax used by the macros:
+
+```ftl
+[#ftl output_format="HTML"]
+[#import "/colibri/freemarker/ui.ftl" as ui]
+[@ui.avatar fallback=initials/]
+[@ui.button disabled=saving]${buttonLabel}[/@ui.button]
+```
+
+The controller supplies `initials`, `saving` and `buttonLabel`. HTML auto-escaping stays enabled. String values are text, including strings that happen to contain HTML. For developer-authored component content, use nested macro bodies or captured markup:
+
+```ftl
+[#assign details]<p>${description}</p>[/#assign]
+[@ui.accordion items=[{"value":"details", "title":"Details", "content":details}]/]
+```
+
+Do not disable escaping or mark user-provided strings as trusted HTML. Attribute names, element names and component names are template-author configuration, not request values.
+
+## Thymeleaf
+
+The controller supplies model values; the native root element defines the fragment. For a button:
+
+```html
+<button th:replace="~{colibri/thymeleaf/button :: button(${buttonLabel}, 'outline', ${saving})}"></button>
+```
+
+Collections such as tabs take `items` containing `value`, `label`, `text` and `disabled`. Values are rendered with `th:text`; rows use `th:each`; optional content uses `th:if`. The `card`, `dialog` and `collapsible` fragments accept a developer-authored fragment slot for structured content. Dynamic URLs must come from your application's trusted routing/URL policy.
+
+For Spring MVC forms:
+
+```html
+<form th:object="${profile}" th:action="@{/profile}" method="post">
+  <div th:replace="~{colibri/thymeleaf/spring-field :: field('email', 'Email', 'email')}"></div>
+  <button type="submit">Save</button>
+</form>
+```
+
+The controller supplies a form bean named `profile`. On submission, keep its `BindingResult` immediately after the form argument, validate server-side and return the same view for errors. The fragment uses `th:field` and `th:errors`; it preserves rejected values, labels and invalid-state attributes. Field paths are developer-authored constants. Authentication, authorization, CSRF protection and persistence remain part of the host application's normal Spring configuration.
+
+## Browser assets
+
+Serve `src/` and `themes/` from your application's static resources as `/ui/src/` and `/ui/themes/`. Link `themes/colibri.css`, add `class="ui-root"` to the app root and load `/ui/src/core/auto.js` as a module. If using Colibri CSS tokens too, serve `packages/colibri-css/dist/` as `/css/` and include its CSS and bridge. The template JAR does not bundle these browser assets.
+
+## Checks
+
+`npm run test:java` executes actual template rendering and Spring MVC binding tests, then builds the resource JAR. Tests check changing model values, escaping, list/empty states, fragment slots, FreeMarker classpath imports with HTML auto-escaping, and valid/invalid form submissions. Browser tests separately check the resulting Colibri interactions. Parse success alone is not the integration contract.
+
+References: [FreeMarker configuration](https://freemarker.apache.org/docs/pgui_quickstart_createconfiguration.html), [Thymeleaf Spring integration](https://www.thymeleaf.org/doc/tutorials/3.1/thymeleafspring.html).

@@ -46,7 +46,7 @@ open http://localhost:8395/examples/        # index → Tabs, Dialog
 Maintainer checks: Node 22.12+ and Python 3. Run `npm ci --ignore-scripts`, `npm test`, `npm run build`, then `npm run test:e2e`. Chrome must be installed; set `CHROME` to override its executable path. Browser tests start and stop their own local servers.
 
 ## FreeMarker usage
-Copy/point the loader at `freemarker/`, then:
+Install the FreeMarker engine in the host application first; the `.ftl` files are macros, not the engine. See [Java template setup](java-templates.md) for Maven/Spring Boot dependencies and the supplemental resource JAR. Copy/point the loader at `freemarker/`, then:
 ```ftl
 [#import "ui/ui-tabs.ftl" as ui]
 [@ui.tabs id="settings" default="general" tabs=[{"value":"general","label":"General"},{"value":"seo","label":"SEO"}]]
