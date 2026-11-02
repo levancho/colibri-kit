@@ -1,7 +1,7 @@
 """FreeMarker usage per component (macros from freemarker/ui.ftl). The HTML tab shows each demo's own markup."""
-IMP = '[#import "/ui/ui.ftl" as ui]\n'
+IMP = '[#ftl output_format="HTML"]\n[#import "/ui/ui.ftl" as ui]\n'
 FTL = {
-"accordion": '[@ui.accordion default="a" items=[\n  {"value":"a", "title":"What is Despani?", "content":"<p>Portal.</p>"},\n  {"value":"b", "title":"Colibri UI?", "content":"<p>Headless UI.</p>"}\n]/]',
+"accordion": '[@ui.accordion default="a" items=[\n  {"value":"a", "title":"What is Despani?", "content":"Portal."},\n  {"value":"b", "title":"Colibri UI?", "content":"Headless UI."}\n]/]',
 "alert": '[@ui.alert role="status"]<strong>Information:</strong> Changes saved.[/@ui.alert]\n[@ui.alert role="alert" variant="destructive"]Something went wrong.[/@ui.alert]',
 "alert-dialog": '[@ui.dialog kind="alert-dialog" trigger="Delete article…" title="Are you sure?"\n           description="This action cannot be undone."]\n  [@ui.close returnValue="cancel" autofocus=true]Cancel[/@ui.close]\n  [@ui.close returnValue="ok" variant="destructive"]Delete[/@ui.close]\n[/@ui.dialog]',
 "aspect-ratio": '[@ui.c ui="aspect-ratio" attrs={"style":"aspect-ratio:16/9"}]<img src="${cover}" alt="">[/@ui.c]',
@@ -49,7 +49,7 @@ FTL = {
 "scrollspy": '[@ui.scrollspy offset=80]\n  [@ui.spyLink href="#intro"]Intro[/@ui.spyLink]\n  [@ui.spyLink href="#usage"]Usage[/@ui.spyLink]\n[/@ui.scrollspy]',
 "scrollto": '<a data-ui="scrollto" href="#top" data-offset="64">↑ Back to top</a>',
 "sidebar": '[@ui.sidebar id="app-sidebar" key="app.sidebar" label="Main navigation"]\n  …links…\n[/@ui.sidebar]\n[@ui.sidebarToggle target="app-sidebar"]☰[/@ui.sidebarToggle]',
-"stepper": '[@ui.stepper linear=true back="Back" next="Next" finish="Finish" steps=[\n  {"label":"Account", "content":"<label>Email <input type=\'email\' name=\'email\' required></label>"},\n  {"label":"Profile", "content":"<label>Name <input name=\'name\'></label>"},\n  {"label":"Finish", "content":"Ready!"}\n]/]',
+"stepper": '[#assign account]<label>Email <input type="email" name="email" required></label>[/#assign]\n[#assign profile]<label>Name <input name="name"></label>[/#assign]\n[@ui.stepper linear=true steps=[{"label":"Account", "content":account}, {"label":"Profile", "content":profile}, {"label":"Finish", "content":"Ready!"}]/]',
 "sticky": '<header data-ui="sticky" style="position:sticky;top:0">…</header>',
 "tabs": '[@ui.tabs default="news" tabs=[{"value":"news","label":"News"}, {"value":"sport","label":"Sports"}]]\n  [@ui.panel value="news"]News panel[/@ui.panel]\n  [@ui.panel value="sport"]Sports panel[/@ui.panel]\n[/@ui.tabs]',
 "command": '[@ui.dialog trigger="Command palette" title="Command"]\n  [@ui.command hotkey="k" groups=[\n    {"label":"Pages", "options":[{"value":"home","label":"Home","keywords":"main"}, {"value":"articles","label":"Articles"}]}\n  ]/]\n[/@ui.dialog]',

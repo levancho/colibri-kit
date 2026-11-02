@@ -11,6 +11,7 @@ from sink_info import INFO
 from sink_code import FTL, IMP
 from sink_pretty import pretty
 from sink_react import render as react_src
+from sink_thymeleaf import render as thymeleaf_src
 E = html.escape
 GROUPS = [("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
 ST = {"done": ("Ready", "Works and is tested in this page."), "partial": ("Partly ready", "Works, but some features are still missing."),
@@ -26,6 +27,9 @@ def code(c):
     if c["id"] in FTL: tabs.append(("ftl", "FreeMarker", IMP + FTL[c["id"]]))
     elif html_src: tabs.append(("ftl", "FreeMarker", "[#-- No macro needed: FreeMarker outputs this markup as-is. --]\n" + html_src))
     if html_src: tabs.append(("react", "React", react_src(html_src)))
+    if html_src: tabs.append(("thymeleaf", "Thymeleaf", thymeleaf_src(html_src, c["id"])))
+    order = {"html": 0, "react": 1, "ftl": 2, "thymeleaf": 3}
+    tabs.sort(key=lambda tab: order.get(tab[0], 4))
     if not tabs: return ""
     cid = c["id"]
     trig = "".join(f'<button data-ui-part="trigger" data-value="{k}">{lab}</button>' for k, lab, _ in tabs)

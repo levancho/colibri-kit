@@ -1,0 +1,1 @@
+<nav xmlns:th="http://www.thymeleaf.org" th:fragment="breadcrumb(items)" aria-label="Breadcrumb" data-ui-part="breadcrumb"><ol><li th:each="item, status : ${items}"><a th:unless="${status.last}" th:href="${item.href}" th:text="${item.label}">Page</a><span th:if="${status.last}" aria-current="page" th:text="${item.label}">Current</span></li></ol></nav>

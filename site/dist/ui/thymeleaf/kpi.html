@@ -1,0 +1,1 @@
+<article xmlns:th="http://www.thymeleaf.org" th:fragment="kpi(label, value, delta, up)" class="card kpi"><small th:text="${label}">Revenue</small><b th:text="${value}">$0</b><p class="delta"><span th:class="${up ? 'up' : 'down'}" th:text="${delta}">0%</span> vs last month</p></article>

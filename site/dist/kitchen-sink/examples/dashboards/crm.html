@@ -29,22 +29,14 @@
 <ul class="legend col"><li style="--dot:var(--chart-1)">Inbound 38%</li><li style="--dot:var(--chart-2)">Referral 30%</li><li style="--dot:var(--chart-3)">Outbound 20%</li><li style="--dot:var(--chart-4)">Events 12%</li></ul></div></section>
 </div>
 <h2 class="source-heading">Build it yourself</h2>
-<details class="source"><summary>KPI card — HTML · FreeMarker · React</summary>
-<div class="code-tabs"><div role="tablist" aria-label="KPI card source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">React</button></div>
+<details class="source"><summary>KPI card — HTML · React · FreeMarker · Thymeleaf</summary>
+<div class="code-tabs"><div role="tablist" aria-label="KPI card source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
 <div role="tabpanel" data-lang="html"><pre><code>&lt;article class=&quot;card kpi&quot;&gt;
   &lt;small&gt;Revenue&lt;/small&gt;
   &lt;b&gt;$48,290&lt;/b&gt;
   &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[12,18,14,22,19,27,31]&quot; aria-label=&quot;Revenue trend&quot;&gt;&lt;/span&gt;
   &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;up&quot;&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
-&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
-  &lt;article class=&quot;card kpi&quot;&gt;
-    &lt;small&gt;${label}&lt;/small&gt;
-    &lt;b&gt;${value}&lt;/b&gt;
-    &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[${trend?join(&quot;,&quot;)}]&quot; aria-label=&quot;${label} trend&quot;&gt;&lt;/span&gt;
-    &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;${up?then(&#x27;up&#x27;,&#x27;down&#x27;)}&quot;&gt;${up?then(&#x27;▲&#x27;,&#x27;▼&#x27;)} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
-  &lt;/article&gt;
-&lt;/#macro&gt;
-&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>import { Sparkline } from &quot;./charts-react&quot;;
+&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>import { Sparkline } from &quot;./charts-react&quot;;
 export function Kpi({ label, value, trend, delta, up = true }) {
   return (
     &lt;article className=&quot;card kpi&quot;&gt;
@@ -55,22 +47,31 @@ export function Kpi({ label, value, trend, delta, up = true }) {
     &lt;/article&gt;
   );
 }
-&lt;Kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend={[12,18,14,22,19,27,31]} delta=&quot;12.4%&quot; /&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · FreeMarker · React</summary>
-<div class="code-tabs"><div role="tablist" aria-label="Data table source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">React</button></div>
+&lt;Kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend={[12,18,14,22,19,27,31]} delta=&quot;12.4%&quot; /&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
+  &lt;article class=&quot;card kpi&quot;&gt;
+    &lt;small&gt;${label}&lt;/small&gt;
+    &lt;b&gt;${value}&lt;/b&gt;
+    &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[${trend?join(&quot;,&quot;)}]&quot; aria-label=&quot;${label} trend&quot;&gt;&lt;/span&gt;
+    &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;${up?then(&#x27;up&#x27;,&#x27;down&#x27;)}&quot;&gt;${up?then(&#x27;▲&#x27;,&#x27;▼&#x27;)} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
+  &lt;/article&gt;
+&lt;/#macro&gt;
+&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/kpi :: kpi(&#x27;Revenue&#x27;, ${revenue}, ${delta}, ${up})}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;article xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;kpi(label, value, delta, up)&quot; class=&quot;card kpi&quot;&gt;
+  &lt;small th:text=&quot;${label}&quot;&gt;Revenue&lt;/small&gt;&lt;b th:text=&quot;${value}&quot;&gt;$0&lt;/b&gt;
+  &lt;p class=&quot;delta&quot;&gt;
+    &lt;span th:class=&quot;${up ? &#x27;up&#x27; : &#x27;down&#x27;}&quot; th:text=&quot;${delta}&quot;&gt;0%&lt;/span&gt;vs last month
+  &lt;/p&gt;
+&lt;/article&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · React · FreeMarker · Thymeleaf</summary>
+<div class="code-tabs"><div role="tablist" aria-label="Data table source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
 <div role="tabpanel" data-lang="html"><pre><code>&lt;table class=&quot;data&quot;&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;
     &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
         &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;ok&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;table class=&quot;data&quot;&gt;
-  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
-  &lt;tbody&gt;
-  &lt;#list customers as c&gt;
-    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
-        &lt;td&gt;${c.plan}&lt;/td&gt;&lt;td&gt;${c.mrr?string.currency}&lt;/td&gt;
-        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;${c.active?then(&#x27;ok&#x27;,&#x27;warn&#x27;)}&quot;&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
-  &lt;/#list&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>export function CustomerTable({ rows }) {
   return (
@@ -83,4 +84,36 @@ export function Kpi({ label, value, trend, delta, up = true }) {
       ))}&lt;/tbody&gt;
     &lt;/table&gt;
   );
-}</code></pre></div></div></details></main></div></div><script type="module" src="dash.js"></script></body></html>
+}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;table class=&quot;data&quot;&gt;
+  &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+  &lt;tbody&gt;
+  &lt;#list customers as c&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
+        &lt;td&gt;${c.plan}&lt;/td&gt;&lt;td&gt;${c.mrr?string.currency}&lt;/td&gt;
+        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;${c.active?then(&#x27;ok&#x27;,&#x27;warn&#x27;)}&quot;&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+  &lt;/#list&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/customer-table :: customer_table(${customers})}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;table xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;customer_table(customers)&quot; class=&quot;data&quot;&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th scope=&quot;col&quot;&gt;Customer&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;Plan&lt;/th&gt;
+      &lt;th scope=&quot;col&quot;&gt;MRR&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr th:each=&quot;customer : ${customers}&quot;&gt;
+      &lt;td th:text=&quot;${customer.name}&quot;&gt;Name&lt;/td&gt;
+      &lt;td th:text=&quot;${customer.plan}&quot;&gt;Plan&lt;/td&gt;
+      &lt;td th:text=&quot;${customer.mrr}&quot;&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr th:if=&quot;${#lists.isEmpty(customers)}&quot;&gt;
+      &lt;td colspan=&quot;3&quot;&gt;No customers yet&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js"></script></body></html>

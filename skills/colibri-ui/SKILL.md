@@ -40,10 +40,13 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 - The optional UI theme, packs and looks use ordered cascade layers. Unlayered application CSS overrides normal visual declarations; preserve hidden-state, touch-target and reduced-motion safeguards. Tab, accordion, tab-navigation and callout looks use component tokens; edit their owning rules rather than adding competing descendant overrides.
 - Headless does not mean no CSS is allowed or that accessibility is certified. Preserve labels, focus visibility, native semantics and ownership of nested parts.
 
-## 5. Server side (Spring + FreeMarker)
+## 5. Server side (Java templates)
+FreeMarker and Thymeleaf are server dependencies, not browser scripts. Require the host engine or its Spring Boot starter. Colibri ships `.ftl` macros and native Thymeleaf fragments; `java/colibri-templates` builds a resource JAR, not an embedded engine. FreeMarker HTML auto-escaping stays enabled; use nested bodies/captured markup for structured content. Thymeleaf Spring fields use `th:field`/`th:errors` against the host form object. See `docs/java-templates.md` in a full checkout for dependencies and setup.
+
+### Spring + FreeMarker
 `[#import "/ui/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments.
 Keep Spring binding: macros only emit markup; `name=` attributes are yours.
 
 ## 6. Before you finish
 Every interactive thing must be reachable by keyboard and labelled. Check `colibri docs <name>` for the expected
-keys. For Colibri repository changes, build before browser tests: `npm test`, `npm run build`, `npm run check:architecture`, `npm run test:e2e`, `npm run test:cross-browser` (install Playwright browsers first). Do not edit generated distribution files directly. Outside this repository, run the host project’s applicable checks instead. Do not infer permission to publish, deploy or migrate the host stack from using this skill.
+keys. For Colibri repository changes, build before browser tests: `npm test`, `npm run test:java` (JDK 17+ and Maven), `npm run build`, `npm run check:architecture`, `npm run test:e2e`, `npm run test:cross-browser` (install Playwright browsers first). Do not edit generated distribution files directly. Outside this repository, run the host project’s applicable checks instead. Do not infer permission to publish, deploy or migrate the host stack from using this skill.

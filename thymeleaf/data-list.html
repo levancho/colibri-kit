@@ -1,0 +1,1 @@
+<dl xmlns:th="http://www.thymeleaf.org" th:fragment="data_list(items)" data-ui="data-list"><th:block th:each="item : ${items}"><dt th:text="${item.label}">Label</dt><dd th:text="${item.value}">Value</dd></th:block></dl>

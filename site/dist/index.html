@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Colibri — A simple, powerful UI library. Without the CSS soup.</title>
-<meta name="description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.">
-<meta property="og:title" content="Colibri — A simple, powerful UI library. Without the CSS soup."><meta property="og:description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.">
+<meta name="description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, React, FreeMarker and Thymeleaf. No Tailwind nightmare.">
+<meta property="og:title" content="Colibri — A simple, powerful UI library. Without the CSS soup."><meta property="og:description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, React, FreeMarker and Thymeleaf. No Tailwind nightmare.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
 <script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,d=localStorage.getItem("colibri.kit.theme");if(d)H.dataset.theme=d;var q=new URLSearchParams(location.search).get("theme"),p=q!==null?q:localStorage.getItem("colibri.kit.pack");if(p)H.dataset.kitTheme=p}catch(_){}</script>
 <link rel="stylesheet" href="/css/colibri.css">
@@ -26,7 +26,7 @@
     <div class="hero-copy stack">
       <a class="pill" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><span class="pill-dot" aria-hidden="true"></span>Open source · MIT <span aria-hidden="true">→</span></a>
       <h1 id="hero-h">A simple, powerful UI library.<br><span class="grad">Without the CSS soup.</span></h1>
-      <p class="lede">Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.</p>
+      <p class="lede">Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, React, FreeMarker and Thymeleaf. No Tailwind nightmare.</p>
       <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
         <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
         <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
@@ -83,7 +83,7 @@
     <div class="split" style="--side:22rem;--gap:var(--c-space-l)">
       <div class="stack"><p>Write the HTML you'd write anyway. Add <code>data-ui</code> where you need behaviour. Set a few tokens where you want your brand. That's the whole workflow.</p>
         <p class="muted">The bridge stylesheet maps Colibri UI's <code>--ui-*</code> tokens to Colibri CSS's <code>--c-*</code> tokens, so components, layout and content share one palette, one radius scale and one dark mode.</p></div>
-      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-what"><div data-ui-part="list" aria-label="Example: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code><span class="c">&lt;!-- a styled, accessible dialog, no framework --&gt;</span>
+      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-what"><div data-ui-part="list" aria-label="Example: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code><span class="c">&lt;!-- a styled, accessible dialog, no framework --&gt;</span>
 &lt;div <b>data-ui="dialog"</b>&gt;
   &lt;button class="btn" <b>data-ui-part="trigger"</b>&gt;Invite&lt;/button&gt;
   &lt;dialog <b>data-ui-part="content"</b> class="card stack"&gt;
@@ -92,6 +92,21 @@
       &lt;input id="e" type="email" required&gt;&lt;/div&gt;
     &lt;div class="cluster"&gt;&lt;button class="btn"&gt;Send&lt;/button&gt;
       &lt;button class="btn" data-variant="ghost" <b>data-ui-part="close"</b>&gt;Cancel&lt;/button&gt;&lt;/div&gt;
+  &lt;/dialog&gt;
+&lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;section th:fragment=&quot;dialogBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/dialog :: dialog(&#x27;edit-profile&#x27;, &#x27;Edit profile&#x27;, ${title}, ${description}, ~{::dialogBody})}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;div xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;dialog(id, trigger, title, description, content)&quot; data-ui=&quot;dialog&quot; th:id=&quot;${id}&quot;&gt;
+  &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; th:text=&quot;${trigger}&quot;&gt;Open&lt;/button&gt;
+  &lt;dialog data-ui-part=&quot;content&quot;&gt;
+    &lt;h2 data-ui-part=&quot;title&quot; th:text=&quot;${title}&quot;&gt;Title&lt;/h2&gt;
+    &lt;p data-ui-part=&quot;description&quot; th:if=&quot;${description != null}&quot; th:text=&quot;${description}&quot;&gt;Description&lt;/p&gt;
+    &lt;div th:insert=&quot;${content}&quot;&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;button&quot; data-ui-part=&quot;close&quot;&gt;Close&lt;/button&gt;
   &lt;/dialog&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#import "/ui/ui.ftl" as ui]
 [@ui.dialog trigger="Invite" title="Invite a teammate"]
@@ -206,15 +221,25 @@ createTabs(document.querySelector("#settings"));</code></pre>
 
   <section class="center stack" id="start">
     <div class="stack" style="--gap:var(--c-space-2xs)"><h2>Use it your way</h2>
-    <p class="muted section-intro">Same components, three ways to write them. Pick a tab once; every example on the page follows.</p></div>
+    <p class="muted section-intro">Same components, four ways to write them. Pick a tab once; every example on the page follows.</p></div>
+    <p class="section-intro"><strong>A natural fit for Java applications.</strong> Native FreeMarker macros render Colibri components directly from your server-side templates, with the same styling, keyboard controls and interactions as the HTML examples.</p>
+    <p class="section-intro">Java templates run on the server. Add <code>spring-boot-starter-freemarker</code> or <code>spring-boot-starter-thymeleaf</code> to your application, then install Colibri’s macros or fragments. <a href="/java-templates.html">Java dependencies, template JAR and setup →</a></p>
     <h3>1. Add it to your project</h3>
-    <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
+    <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri.css&quot;&gt;
 &lt;!-- 2. component styling + shared tokens --&gt;
 &lt;link rel="stylesheet" href="https://colibri.l3v.ai/ui/themes/colibri.css"&gt;
 &lt;link rel="stylesheet" href="https://colibri.l3v.ai/css/colibri-ui-bridge.css"&gt;
 &lt;!-- 3. behaviour: every data-ui element wires itself --&gt;
-&lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
+&lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Maven: choose the engine for your application. --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+  &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;!-- Add the locally built Colibri template JAR; see Java setup below. --&gt;
+&lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/css/colibri.css}&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/ui/themes/colibri.css}&quot;&gt;
+&lt;script type=&quot;module&quot; th:src=&quot;@{/ui/src/core/auto.js}&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
 [#import &quot;/colibri/ui.ftl&quot; as ui]
 &lt;link rel=&quot;stylesheet&quot; href=&quot;${base}/css/colibri.css&quot;&gt;
 &lt;script type=&quot;module&quot; src=&quot;${base}/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;
@@ -240,7 +265,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
           </dialog>
         </div>
       </div>
-      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-dialog"><div data-ui-part="list" aria-label="Dialog: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;div data-ui=&quot;dialog&quot;&gt;
+      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-dialog"><div data-ui-part="list" aria-label="Dialog: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;div data-ui=&quot;dialog&quot;&gt;
   &lt;button class=&quot;btn&quot; data-ui-part=&quot;trigger&quot;&gt;Invite&lt;/button&gt;
   &lt;dialog data-ui-part=&quot;content&quot; class=&quot;card stack&quot;&gt;
     &lt;h2 data-ui-part=&quot;title&quot;&gt;Invite a teammate&lt;/h2&gt;
@@ -250,6 +275,21 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
       &lt;button class=&quot;btn&quot; data-ui-part=&quot;close&quot;&gt;Done&lt;/button&gt;
       &lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot; data-ui-part=&quot;close&quot;&gt;Cancel&lt;/button&gt;
     &lt;/div&gt;
+  &lt;/dialog&gt;
+&lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;section th:fragment=&quot;dialogBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/dialog :: dialog(&#x27;edit-profile&#x27;, &#x27;Edit profile&#x27;, ${title}, ${description}, ~{::dialogBody})}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;div xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;dialog(id, trigger, title, description, content)&quot; data-ui=&quot;dialog&quot; th:id=&quot;${id}&quot;&gt;
+  &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; th:text=&quot;${trigger}&quot;&gt;Open&lt;/button&gt;
+  &lt;dialog data-ui-part=&quot;content&quot;&gt;
+    &lt;h2 data-ui-part=&quot;title&quot; th:text=&quot;${title}&quot;&gt;Title&lt;/h2&gt;
+    &lt;p data-ui-part=&quot;description&quot; th:if=&quot;${description != null}&quot; th:text=&quot;${description}&quot;&gt;Description&lt;/p&gt;
+    &lt;div th:insert=&quot;${content}&quot;&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;button&quot; data-ui-part=&quot;close&quot;&gt;Close&lt;/button&gt;
   &lt;/dialog&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[@ui.dialog trigger=&quot;Invite&quot; title=&quot;Invite a teammate&quot;]
   &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;em&quot;&gt;Email&lt;/label&gt;
@@ -279,13 +319,25 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
           <div data-ui-part="panel" data-value="behaviour"><b>Colibri UI</b>: keyboard, focus, open and close.</div>
         </div>
       </div>
-      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-tabs"><div data-ui-part="list" aria-label="Tabs: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;div data-ui=&quot;tabs&quot; data-default-value=&quot;look&quot;&gt;
+      <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-tabs"><div data-ui-part="list" aria-label="Tabs: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;div data-ui=&quot;tabs&quot; data-default-value=&quot;look&quot;&gt;
   &lt;div data-ui-part=&quot;list&quot; aria-label=&quot;Kit parts&quot;&gt;
     &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;look&quot;&gt;Look&lt;/button&gt;
     &lt;button data-ui-part=&quot;trigger&quot; data-value=&quot;behaviour&quot;&gt;Behaviour&lt;/button&gt;
   &lt;/div&gt;
   &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;look&quot;&gt;Colibri CSS&lt;/div&gt;
   &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;behaviour&quot;&gt;Colibri UI&lt;/div&gt;
+&lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/tabs :: tabs(&#x27;sections&#x27;, &#x27;Sections&#x27;, ${items}, &#x27;first&#x27;)}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;div xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;tabs(id, label, items, selected)&quot; data-ui=&quot;tabs&quot; th:id=&quot;${id}&quot; th:attr=&quot;data-default-value=${selected}&quot;&gt;
+  &lt;div data-ui-part=&quot;list&quot; th:attr=&quot;aria-label=${label}&quot;&gt;
+    &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot; th:each=&quot;item : ${items}&quot; th:attr=&quot;data-value=${item.value}&quot; th:disabled=&quot;${item.disabled}&quot; th:text=&quot;${item.label}&quot;&gt;Tab&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;section data-ui-part=&quot;panel&quot; th:each=&quot;item : ${items}&quot; th:attr=&quot;data-value=${item.value}&quot; th:text=&quot;${item.text}&quot;&gt;
+    Panel
+  &lt;/section&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[@ui.tabs default=&quot;look&quot; tabs=[
     {&quot;value&quot;:&quot;look&quot;, &quot;label&quot;:&quot;Look&quot;},
     {&quot;value&quot;:&quot;behaviour&quot;, &quot;label&quot;:&quot;Behaviour&quot;}]]
@@ -315,7 +367,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
       <article class="card stack path"><span class="badge" data-tone="accent">3 · Your CSS</span><h3>Anything else goes in CSS</h3>
         <p class="muted">Write a normal rule with <code>var(--c-*)</code> tokens. Colibri sits in cascade layers, so normal application rules override its visual styles without <code>!important</code>.</p></article>
     </div>
-    <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-style"><div data-ui-part="list" aria-label="Styling: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
+    <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-style"><div data-ui-part="list" aria-label="Styling: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
   &lt;h2&gt;Team&lt;/h2&gt;
   &lt;div class=&quot;grid&quot; style=&quot;--min: 14rem&quot;&gt;
     &lt;article class=&quot;card team-card&quot;&gt;…&lt;/article&gt;
@@ -327,7 +379,20 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
 &lt;/section&gt;
 
 /* your CSS: one meaningful rule, not ten classes */
-.team-card { border-inline-start: 3px solid var(--c-accent); }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
+.team-card { border-inline-start: 3px solid var(--c-accent); }</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
+Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+&lt;section th:fragment=&quot;cardBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
+&lt;div th:replace=&quot;~{colibri/thymeleaf/card :: card(${title}, ${description}, ~{::cardBody})}&quot;&gt;&lt;/div&gt;
+
+&lt;!-- Library fragment (already supplied; shown for reference): --&gt;
+&lt;article xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;card(title, description, content)&quot; data-ui-part=&quot;card&quot;&gt;
+  &lt;header&gt;
+    &lt;h3 data-ui-part=&quot;title&quot; th:text=&quot;${title}&quot;&gt;Title&lt;/h3&gt;
+    &lt;p th:if=&quot;${description != null}&quot; data-ui-part=&quot;description&quot; th:text=&quot;${description}&quot;&gt;Description&lt;/p&gt;
+  &lt;/header&gt;
+  &lt;div data-ui-part=&quot;content&quot; th:insert=&quot;${content}&quot;&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>&lt;section class=&quot;stack&quot; data-gap=&quot;m&quot;&gt;
   &lt;h2&gt;Team&lt;/h2&gt;
   &lt;div class=&quot;grid&quot; style=&quot;--min: 14rem&quot;&gt;
     [#list team as p]&lt;article class=&quot;card team-card&quot;&gt;${p.name}&lt;/article&gt;[/#list]

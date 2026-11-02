@@ -11,6 +11,8 @@ Modern, platform-first building blocks for the web. No build step, no class soup
 
 More Kit packages to come.
 
+Java setup: [FreeMarker / Thymeleaf dependencies and supplemental template JAR](docs/java-templates.md).
+
 ## Getting started
 
 The package names below match the source manifests; npm registry releases are not published yet. Install from a checkout for bundler/React projects:
@@ -61,6 +63,7 @@ Node 22.12+, Python 3 and an installed Chrome are needed for maintainer checks. 
 ```sh
 npm ci --ignore-scripts
 npm test
+npm run test:java # JDK 17+ and Maven; builds server-rendered browser fixtures
 npm run build
 npm run check:architecture
 npm run test:e2e

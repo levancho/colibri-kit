@@ -1,4 +1,4 @@
-[#ftl]
+[#ftl output_format="HTML" auto_esc=true]
 [#-- Colibri UI (@colibri-kit/ui) Tabs for FreeMarker. Emits the data-* contract only; no classes, no styling.
      Usage:
        [#import "ui/ui-tabs.ftl" as ui]

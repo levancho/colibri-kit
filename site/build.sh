@@ -3,6 +3,7 @@
 set -e
 cd "$(dirname "$0")/.."
 (cd packages/colibri-css && node build.mjs)
+python3 tools/ftl-fixture.py
 python3 tools/gen_knobs.py >/dev/null
 python3 tools/kitchen-sink.py >/dev/null
 python3 tools/registry.py >/dev/null
@@ -10,7 +11,7 @@ python3 tools/readme-catalog.py >/dev/null
 rm -rf site/dist && mkdir -p site/dist/css site/dist/ui site/dist/kitchen-sink
 cp -R site/src/* site/dist/
 cp packages/colibri-css/dist/*.css site/dist/css/
-cp -R themes src site/dist/ui/
+cp -R themes src freemarker thymeleaf site/dist/ui/
 # kitchen sink keeps its relative paths (../src, ../themes, ../packages)
 mkdir -p site/dist/kitchen-sink/packages/colibri-css
 cp -R examples themes src site/dist/kitchen-sink/

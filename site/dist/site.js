@@ -20,7 +20,7 @@ toggle.addEventListener("click", () => {
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change", label);
 
 const groups = [...document.querySelectorAll('[data-sync="lang"]')];
-const languages = new Set(["html", "ftl", "react"]);
+const languages = new Set(["html", "react", "ftl", "thymeleaf"]);
 const pick = (value) => {
   if (!languages.has(value)) return;
   groups.forEach((g) => g.__uiTabs?.select(value));

@@ -1,0 +1,5 @@
+<!doctype html><html xmlns:th="http://www.thymeleaf.org"><body>
+<form th:object="${profile}" th:action="@{/profile}" method="post">
+ <div th:replace="~{colibri/thymeleaf/spring-field :: field('email', 'Email address', 'email')}"></div>
+ <button type="submit">Save</button>
+</form></body></html>
