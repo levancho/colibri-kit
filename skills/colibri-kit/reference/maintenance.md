@@ -50,3 +50,5 @@ When this skill is installed without the repository, these commands are referenc
 ## Accurate explanations
 
 Explain the implementation: semantic component classes, shared tokens, separate behavior, optional themes, and locally served CSS/JS. Do not claim no CSS, universal framework compatibility, guaranteed accessibility, or guaranteed long-term maintenance.
+
+The six-demo gallery additionally includes `workspace.html`, `account.html`, `commerce.html` and `support.html`, each with its own layout and local state. Use their query-string routes for real navigation; use dialogs for editing. Preserve their distinct information architecture when adding screens. Their workflows are implemented in `examples/dashboards/apps.js`, with semantic CSS in `apps.css`; the browser regression is `test/e2e/demo-apps.e2e.mjs`. Security, billing, invitations and replies are explicitly simulated, never real account operations.

@@ -140,3 +140,26 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
 .demo-form label:has(input[type=checkbox]) { display:flex; align-items:center; gap:.5rem; }
 .dash-brand { overflow-wrap:anywhere; }
 .dash-brand i { flex:none; }
+
+/* Analytics is a chart-led insight desk; CRM is a wide, board-first sales workspace. */
+body[data-demo=analytics] .dash-body > .kpis { background:var(--c-accent-soft); padding:var(--c-space-s); border-radius:var(--c-radius-l); }
+body[data-demo=analytics] .dash-brand { color:var(--c-accent); }
+body[data-demo=crm] .pipeline { gap:1rem; }
+body[data-demo=crm] .lane { background:var(--c-sunken); border-radius:var(--c-radius); padding:1rem; }
+body[data-demo=crm] .lane h4 { padding-block-end:.75rem; border-block-end:3px solid var(--c-accent); }
+body[data-demo=crm] .deal { padding:1.1rem; border-radius:var(--c-radius); box-shadow:var(--c-shadow-s); min-block-size:110px; }
+body[data-demo=crm] .dash-head h1 { font-size:clamp(1.7rem,3vw,2.7rem); letter-spacing:-.05em; }
+body[data-demo=crm] .kpis { gap:0; border:1px solid var(--c-line); border-radius:var(--c-radius); overflow:hidden; }
+body[data-demo=crm] .kpi { border:0; box-shadow:none; border-radius:0; border-inline-end:1px solid var(--c-line); }
+@media(min-width:901px){
+ body[data-demo=crm] .dash { display:block; }
+ body[data-demo=crm] .dash-side { position:static; block-size:auto; flex-direction:row; align-items:center; padding:.8rem 2rem; background:var(--c-fg); color:var(--c-bg); }
+ body[data-demo=crm] .dash-side .dash-brand { white-space:nowrap; }
+ body[data-demo=crm] .dash-nav { flex-direction:row; flex-wrap:wrap; margin-inline-start:auto; }
+ body[data-demo=crm] .dash-nav h6,body[data-demo=crm] .dash-side footer { display:none; }
+ body[data-demo=crm] .dash-nav a { color:inherit; font-size:.8rem; }
+ body[data-demo=crm] .dash-nav a[aria-current] { background:var(--c-bg); color:var(--c-fg); }
+ body[data-demo=crm] .dash-top { padding-inline:2rem; }
+ body[data-demo=crm] .dash-body { inline-size:100%; max-inline-size:1600px; margin:auto; padding:2rem; }
+ body[data-demo=crm] .pipeline { grid-template-columns:repeat(4,minmax(0,1fr)); }
+}

@@ -1,6 +1,17 @@
 # Interactive dashboard demos
 
-Open `/kitchen-sink/examples/dashboards/analytics.html` or `crm.html` in the built site.
+Open `/kitchen-sink/examples/dashboards/` for the six-demo gallery:
+
+| Demo | Layout | Working flows |
+| --- | --- | --- |
+| Analytics | Sidebar, charts and metrics | Customer filters, reports, CSV exports |
+| CRM | Horizontal navigation, full-width sales board | Deal CRUD, pipeline stages, imports/exports |
+| Team workspace | Light sidebar, welcome mosaic and team directory | Team creation, progress, members, roles, meeting checklist |
+| Account center | Horizontal navigation, feature cards and account summary | Profile, simulated session revocation, plans, invoice CSV, member roles |
+| Commerce | Dark store navigation, sales hero, orders and inventory | Order details/status, stock adjustments, filtered CSV exports |
+| Support desk | Compact navigation, queue and conversation pane | Ticket creation, assignment, statuses, local replies, knowledge articles |
+
+Team workspace takes layout inspiration from Metronic Demo 1; Account center from Demo 9. All markup, styles and demo workflows are implemented locally with Colibri; no Tailwind or third-party template assets are bundled.
 These are browser-only examples using sample data, plain JavaScript, native forms/dialogs,
 and semantic CSS classes with Colibri tokens. There is no account, server, real messaging,
 or shared customer database.
@@ -34,3 +45,5 @@ Validation: `npm run build && npm run test:e2e`. Dashboard checks cover CRUD, pe
 HTML-like input, valid/invalid imports, filters, numeric sorting, CSV contents, reports,
 reset, inbox, chart ranges, keyboard source tabs, blocked storage, and layouts at
 320/768/1440 pixels in Chromium. Cross-browser checks cover these pages in Chromium, Firefox and WebKit; manual screen-reader testing remains separate.
+
+The four additional demos use `apps.css` for named layout components and `apps.js` for their independent browser-only workflows. Each stores data under `colibri-demo-<name>-v1`; query-string routes are refreshable and linkable. No real invitations, security settings, payments or support messages are changed. `test/e2e/demo-apps.e2e.mjs` checks these workflows, persistence, layouts, button-label visibility and accessibility.

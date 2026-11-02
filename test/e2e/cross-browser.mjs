@@ -10,7 +10,7 @@ try {
     const browser = await engines[name].launch({ headless:true });
     try {
       const page = await browser.newPage(); const errors=[];page.on('pageerror',e=>errors.push(e.message));
-      for (const scheme of ['light','dark']) for (const width of [390,1280]) for (const path of ['/getting-started.html', '/java-templates.html', '/', '/kitchen-sink/examples/dashboards/analytics.html', '/kitchen-sink/examples/dashboards/crm.html', '/kitchen-sink/examples/dashboards/customers.html', '/kitchen-sink/examples/dashboards/inbox.html', '/kitchen-sink/examples/dashboards/reports.html', '/kitchen-sink/examples/dashboards/settings.html']) {
+      for (const scheme of ['light','dark']) for (const width of [390,1280]) for (const path of ['/getting-started.html', '/java-templates.html', '/', '/kitchen-sink/examples/dashboards/analytics.html', '/kitchen-sink/examples/dashboards/crm.html', '/kitchen-sink/examples/dashboards/customers.html', '/kitchen-sink/examples/dashboards/inbox.html', '/kitchen-sink/examples/dashboards/reports.html', '/kitchen-sink/examples/dashboards/settings.html', '/kitchen-sink/examples/dashboards/workspace.html', '/kitchen-sink/examples/dashboards/account.html', '/kitchen-sink/examples/dashboards/commerce.html', '/kitchen-sink/examples/dashboards/support.html']) {
         await page.emulateMedia({colorScheme:scheme}); await page.setViewportSize({width,height:900}); await page.goto(server.origin+path); await page.waitForLoadState('networkidle');
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `${name} ${path} ${width}: overflow`);
         await page.addScriptTag({content:axe});
