@@ -1,4 +1,4 @@
-import { owner } from "./util.js";
+import { owner, trackController } from "./util.js";
 // @colibri-kit/ui core: Dialog controller. Headless; built on the native <dialog> element.
 //
 //   <div data-ui="dialog" [data-modal="true|false"] [data-default-open] [data-dismissible="true|false"]
@@ -121,9 +121,11 @@ export function createDialog(root, options = {}) {
       root.removeEventListener("click", onClick);
       content.removeEventListener("cancel", onCancel);
       content.removeEventListener("close", onNativeClose);
+      if (content.open) { if (typeof content.close === "function") content.close(); else content.removeAttribute("open"); }
+      opener = null; render(false);
       delete root.__uiDialog;
     },
   };
-  root.__uiDialog = api;
+  root.__uiDialog = trackController(root, api);
   return api;
 }

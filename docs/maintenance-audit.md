@@ -1,57 +1,30 @@
 # Colibri maintenance audit — 2026-11-02
 
-## Result
+This review fixes implementation problems behind the kit's maintenance claims. The homepage explains component boundaries, shared tokens, reusable layouts, predictable overrides and locally served runtime files with examples.
 
-Colibri's semantic markup and shared tokens reduce repeated presentation in templates. They do not make maintainability automatic. The CSS core has a small helper vocabulary and named cascade layers; the optional UI theme still contains substantial override debt. Do not claim the whole project is free of specificity problems, certified accessible, or guaranteed maintainable.
+## Changes and evidence
 
-This pass combines a repository-wide source inventory with focused controller/style review and browser regressions. It is not a line-by-line security audit or exhaustive runtime verification of every component.
-
-## Requirements and evidence
-
-| Requirement | Evidence / action | Remaining limit |
+| Existing issue | Fix | Regression coverage |
 | --- | --- | --- |
-| Readable markup | Authored homepage/dashboard markup has at most three classes per element; blocks/studio at most two. | These counts exclude generated gallery markup and JavaScript-generated strings; short class lists alone are not architecture. |
-| Component boundaries | Shared controllers, React bindings and FreeMarker macros; tab-navigation events now ignore nested components. Structural CSS for navigation/callouts uses owned parts. | Other descendant selectors still need review; React lifecycle integration is not comprehensively tested. |
-| Shared design tokens | CSS color/spacing/type scales and CSS/UI bridge; local palettes use `data-colibri-theme`. | Optional UI themes retain some literal values. Arbitrary custom palettes need contrast testing. |
-| Limited utilities | Four CSS helpers: visually-hidden, muted, flow, truncate. Reusable layout primitives are separately named. | A consumer can still create utility soup; the library cannot prevent that. |
-| Separation of presentation | Removed all inline presentation declarations from the analytics and CRM HTML; data-driven custom properties remain. | Dashboard index previews, homepage, blocks and studio still contain some inline presentation. |
-| Predictable overrides | CSS core uses named layers. Link-navigation and callout looks now set tokens rather than competing declarations. | Optional UI theme is not fully layered. Core visibility/touch safeguards deliberately use important declarations. |
-| Theme semantics | Callout appearances preserve warning/danger/success colors; component look overrides global nav look. | Midnight deliberately forces dark mode. A light-mode test with this pack does not prove a light palette exists. |
-| Runtime independence | No external imports found in `src/core`; direct module usage and vendored styles do not require a service or compiler. | React is an optional dependency; auto-init/React load the full registry. Maintainer builds require Node/Python. |
-| Sustainability | MIT source can be copied, pinned and self-hosted. | No guaranteed funding, maintainer capacity, future browser support or release continuity. |
+| UI theme and presets fought application CSS with specificity and important declarations | Shared ordered layers for CSS core, UI theme, packs, bridge, looks and motion. UI important declarations reduced from 92 to 18; appearance presets from 103 before the audit to zero. Removed duplicated component selectors and the unused demo stylesheet. | Layer-contract checks; normal application overrides across four packs; navigation/callout appearance matrix. |
+| Repeated inline presentation in authored pages | Named CSS rules own presentation in the homepage, dashboard index, dashboard screens, blocks and studio preview. Variable custom properties remain in markup. | Static checks reject inline presentation in these authored HTML folders and track class-list growth. |
+| Removed components retained listeners/observers; React rerenders recreated behavior | Central idempotent teardown, automatic disposal on DOM removal/HTMX cleanup, move-aware custom elements, stable React refs and current handlers. | Strict Mode, rerender state, dynamic parts, root replacement, nested cleanup, DOM moves, reconnect and carousel observer tests. |
+| Duplicate spinner rules and animations restarting after motion was disabled | One spinner renderer; reduced-motion stops ring/dot/bar animation. Global motion-off stops infinite loops. | Browser reduced-motion checks and shared-style regression suite. |
+| Low-contrast labels and inaccessible demo controls | Darker default light-mode accent/status tokens, readable avatar text, named mobile Customize button and focusable scrollable code blocks. | Axe WCAG A/AA rules on homepage, analytics and CRM at 390/1280px in light/dark mode, plus modal/menu and overflow checks. |
+| Generated markup interpolated labels, names and IDs | Pagination uses DOM construction and HTTP(S) link validation; rating names and calendar IDs use DOM properties. | Literal-text/attribute payload tests and executable-protocol rejection. |
+| Published skill described the old cascade and lifecycle | Both skill entrypoints and bundled references now describe the implementation, composition rules, teardown and test commands. | Skill validation, reference/catalog checks and archive/source comparison. |
 
-## Concrete fixes
+## Architectural checks
 
-- Appearance controls: important declarations reduced from **103 to 25**. Tab-navigation and callout looks now configure tokens on the owner.
-- Link navigation uses the active link's own CSS indicator rather than JavaScript-measured geometry; no forced layout measurements or inline indicator positions. Nested navigation cannot clear the parent's active link.
-- Callout tone is preserved when selecting soft/surface/outline looks. Nested icons are not styled as the parent's icon.
-- Both editable dashboard screens now keep repeated presentation in semantic CSS rules.
-- Homepage explains six maintenance mechanisms with code and clearly scopes the cascade guarantee.
-- Both repository skill entrypoints updated. The standalone kit skill includes maintenance guidance, accurate scope/installation/React/dark-mode guidance, and corrected examples and references.
+`npm run check:architecture` inspects authored sources once, excluding generated distribution copies. It checks the shared layer order, no important declarations in appearance presets, no duplicated component selectors in presets, per-file important budgets, no Tailwind dependency, local core imports, the four-helper vocabulary, authored HTML presentation and bundled skill references/catalog coverage.
 
-## Inventory and checks
+The UI theme's 18 remaining important declarations protect hidden states, visually hidden positioning, drag transitions and minimum touch targets. Motion retains its reduced-motion/off safeguards. These are deliberate behavior constraints, not ordinary visual customization rules.
 
-`npm run check:architecture` scans authored CSS once, excluding generated distribution copies. After this change: optional UI theme 92 important declarations; appearance controls 25; motion 10; Midnight 1; demo/gallery CSS has additional exceptions. The checked-in budget records the existing debt and flags increases; it does not approve or fix those exceptions.
+## Validation
 
-The check also inspects dependency declarations, direct core import specifiers, the helper vocabulary and authored HTML class lists. It rejects inline presentation in the two dashboard screens and non-token navigation/callout appearance rules. It is a static review tripwire, not a CSS parser, architectural proof or runtime enforcement.
+- 68 unit tests pass, including React Strict Mode and generated-markup regressions.
+- Existing browser suites cover 30 gallery flows, 19 blocks, 88 initialized FreeMarker examples, responsive foundations, navigation/appearance matrices and dashboard workflows.
+- Chromium and WebKit pass the new homepage/dashboard checks at two widths and two color schemes, keyboard tabs, application CSS overrides and reduced motion.
+- CI runs Chromium, Firefox and WebKit. The local Firefox binary could not launch under the macOS sandbox; its result must come from CI rather than being inferred from another engine.
 
-Validation completed locally for this change:
-
-- 61 unit tests, including nested tab-navigation ownership and absence of visual geometry writes.
-- Existing browser suites for component flows, blocks, FreeMarker output, responsive foundations, themes/navigation and interactive dashboards.
-- New matrix: link-navigation/callout, four packs, light/dark requests, 320/1100px, all looks, semantic tones, nested ownership and application token overrides.
-- Both skills validated with the skill-creator validator; relative references resolved; package dry run includes the skill folders. Standalone archive checked against the source files byte-for-byte.
-
-Safari/Firefox, assistive technology, arbitrary consumer themes, React Strict Mode/rerender teardown and all dynamic-content lifecycle combinations remain unverified by this pass.
-
-## Competitor claims: what is supported
-
-Tailwind's own documentation recommends reusable components/template partials and supports design tokens and custom CSS. Utility classes participate in CSS cascade and specificity; they do not bypass them. Long strings and weak component boundaries are maintainability risks, not proof that every Tailwind project lacks architecture.
-
-Sources: https://tailwindcss.com/docs/styling-with-utility-classes and https://tailwindcss.com/docs/theme
-
-Adam Wathan reported engineering layoffs, lower documentation traffic and revenue pressure in January 2026. In September 2026, Tailwind announced joining Shopify while retaining MIT licensing and continued maintenance. Those events support discussing business-model pressure; they do not establish abandonment or Colibri's superiority.
-
-Sources: https://github.com/tailwindlabs/tailwindcss.com/pull/2388#issuecomment-3717222957 and https://tailwindcss.com/blog/tailwind-is-joining-shopify
-
-The website explains Colibri's implementation rather than turning those business events into a product guarantee.
+Automated accessibility rules do not replace screen-reader testing. The matrix covers the named pages and behaviors, not every possible consumer palette or component composition.

@@ -45,7 +45,7 @@ The bridge maps them to `--c-*` (e.g. `--ui-primary: var(--c-accent)`, `--ui-bor
 
 `.btn .card .badge .field .callout .enter` with `data-variant="ghost|outline|soft|danger"`, `data-size="s|l"`, `data-tone="ok|warn|bad|accent"`. Utilities (only four): `.visually-hidden .muted .flow .truncate`.
 
-CSS core layer order: `@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities`. Normal unlayered application declarations outrank normal declarations in these layers. Visibility/touch safeguards may be important; optional UI themes and packs are not covered by this blanket override rule.
+Shared layer order: `@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion`. Normal unlayered application declarations outrank normal declarations in these layers. Visibility, touch-target and reduced-motion safeguards deliberately retain important declarations.
 
 For scoped palette changes, put `data-colibri-theme` on the container along with its `--c-hue` override. The bridge also binds at this boundary. Do not assume redefining a hue alone recomputes already-inherited derived colors.
 

@@ -1,3 +1,4 @@
+import { trackController } from "./util.js";
 // @colibri-kit/ui core: Tabs controller. Headless: no styles, no framework, no custom elements.
 // Works on any markup that follows the data-* contract below (FreeMarker, plain HTML, React refs).
 //
@@ -152,6 +153,6 @@ export function createTabs(root, options = {}) {
       delete root.__uiTabs;
     },
   };
-  root.__uiTabs = api;
+  root.__uiTabs = trackController(root, api);
   return api;
 }

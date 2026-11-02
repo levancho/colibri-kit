@@ -51,12 +51,17 @@ for folder in ('site/src', 'examples/dashboards', 'examples/blocks', 'examples/p
     for path in sorted((ROOT / folder).rglob('*.html')): scan.feed(path.read_text())
     markup[folder] = {'max_classes': scan.max_classes, 'inline_presentation': scan.inline_presentation}
     require(scan.max_classes <= 5, f'{folder}: class list grew beyond the review threshold of five')
-# Authored dashboard screens use semantic classes; inline custom properties represent data.
-for name in ('analytics.html', 'crm.html'):
-    scan = Markup(); scan.feed((ROOT / 'examples/dashboards' / name).read_text())
-    require(scan.inline_presentation == 0, f'{name}: presentation styles returned to markup')
+    require(scan.inline_presentation == 0, f'{folder}: presentation styles returned to markup')
+
+# Every optional theme declares the same order, including standalone loading.
+layer_order = 'colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion'
+for name, layer in [('themes/colibri.css', 'ui'), ('themes/knobs.css', 'looks'), ('themes/motion.css', 'motion'), ('packages/colibri-css/src/70-colibri-ui-bridge.css', 'bridge'), *[(f'themes/packs/{pack}.css', 'packs') for pack in ('glacier', 'ember', 'midnight')]]:
+    content = (ROOT / name).read_text()
+    require('@layer ' + layer_order + ';' in content and re.search(r'@layer\s+colibri\.' + layer + r'\s*\{', content), f'{name}: missing cascade layer contract')
 
 knobs = clean((ROOT / 'themes/knobs.css').read_text())
+require('!important' not in knobs, 'Appearance controls must use normal cascade declarations')
+require(not re.search(r'(\[data-ui=[^]]+\])\1', knobs), 'Appearance controls must not duplicate selectors to raise specificity')
 for selector, body in re.findall(r'([^{}]+)\{([^{}]*)\}', knobs):
     if '[data-ui=tab-nav]' in selector or '[data-ui=callout]' in selector:
         require('!important' not in body and all(d.strip().startswith('--') for d in body.split(';') if d.strip()), f'Appearance rule must only set tokens: {selector}')

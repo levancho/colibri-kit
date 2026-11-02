@@ -1,6 +1,6 @@
 // Colibri UI: optional custom elements for EVERY primitive: <ui-tabs>, <ui-select>, <ui-dropdown-menu>, …
 // Light DOM, no Shadow DOM, no styles. Same core as data-ui="…". Import once: import "@colibri-kit/ui/elements/all".
-import { registry } from "../core/auto.js";
+import { registry } from "../core/registry.js";
 
 for (const [name, factory] of Object.entries(registry)) {
   const tag = `ui-${name}`;

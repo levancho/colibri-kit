@@ -1,7 +1,7 @@
 # Generates themes/knobs.css: per-component "looks" for Colibri UI, driven globally by <html data-ui-btn|acc|tabs|card|input="…">
-# or per element via data-look="…". Selectors double the component attribute so they outrank theme-pack rules.
+# or per element via data-look="…". The looks layer follows the theme and packs; selector duplication is unnecessary.
 def S(knob, comp, val, tail=""):
-    c2 = comp + comp
+    c2 = comp
     return f"[{knob}={val}] {c2}:not([data-look]){tail},{c2}[data-look={val}]{tail}"
 out = ["/* Colibri UI component looks (@colibri-kit/ui/themes/knobs.css). OPTIONAL, load after colibri.css and packs.\n"
        "   Global: <html data-ui-btn=\"solid|soft|surface|outline|classic|ghost\" data-ui-acc=\"boxed|fat|skinny\" data-ui-tabs=\"underline|pill|segmented\"\n"
@@ -21,20 +21,20 @@ looks = {
 for v, body in looks.items():
     R(S("data-ui-btn", B, v), body)
     R(S("data-ui-btn", B, v, ":hover:not(:disabled)"), "filter:brightness(.96) saturate(1.08)" if v in ("solid", "classic") else f"background:color-mix(in oklab,var(--ui-primary) {22 if v=='soft' else 12}%,var(--ui-background))")
-R(f"html[data-theme=dark] {B}{B}:hover:not(:disabled)", "filter:brightness(1.1)")
+R(f"html[data-theme=dark] {B}:hover:not(:disabled)", "filter:brightness(1.1)")
 for sz, (h, px, fs) in {"xs": (24, ".5rem", "11px"), "sm": (30, ".75rem", "12.5px"), "md": (36, "1rem", "14px"), "lg": (42, "1.2rem", "15px"), "xl": (50, "1.5rem", "16.5px")}.items():
-    R(f"{B}{B}[data-size={sz}]", f"height:calc({h}px * var(--ui-scale,1));padding:0 {px};font-size:{fs};gap:.4em")
-R(f"{B}{B}:disabled,{B}{B}[aria-disabled=true]", "opacity:.45;cursor:not-allowed;filter:saturate(.4)")
+    R(f"{B}[data-size={sz}]", f"height:calc({h}px * var(--ui-scale,1));padding:0 {px};font-size:{fs};gap:.4em")
+R(f"{B}:disabled,{B}[aria-disabled=true]", "opacity:.45;cursor:not-allowed;filter:saturate(.4)")
 # badges
 BD = "[data-ui=badge]"
 for v, body in {"solid": "background:var(--ui-primary);color:var(--ui-primary-foreground);border:1px solid transparent",
                 "soft": f"background:color-mix(in oklab,var(--ui-primary) 16%,var(--ui-background));color:{soft_fg};border:1px solid transparent",
                 "surface": f"background:color-mix(in oklab,var(--ui-primary) 7%,var(--ui-background));color:{soft_fg};border:1px solid color-mix(in oklab,var(--ui-primary) 35%,var(--ui-background))",
                 "outline": f"background:transparent;color:{soft_fg};border:1px solid color-mix(in oklab,var(--ui-primary) 60%,var(--ui-background))"}.items():
-    R(f"{BD}{BD}[data-look={v}]", body)
+    R(f"{BD}[data-look={v}]", body)
 for sz, (fs, pad) in {"sm": ("10.5px", "1px 6px"), "md": ("12px", "2px 8px"), "lg": ("13.5px", "4px 11px")}.items():
-    R(f"{BD}{BD}[data-size={sz}]", f"font-size:{fs};padding:{pad}")
-R(f"{BD}{BD}[data-look]", "display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:max(4px,var(--ui-radius-sm));font:500 12px/1.4 var(--ui-font);white-space:nowrap")
+    R(f"{BD}[data-size={sz}]", f"font-size:{fs};padding:{pad}")
+R(f"{BD}[data-look]", "display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:max(4px,var(--ui-radius-sm));font:500 12px/1.4 var(--ui-font);white-space:nowrap")
 # Callout appearance preserves semantic tone and changes component tokens only.
 CO = "[data-ui=callout]"
 for v, tokens in {
@@ -71,19 +71,19 @@ for value, tokens in {
     R(f"[data-ui-tabs={value}] {TN}:not([data-look]),{TN}[data-look={value}]", tokens)
 # cards
 CD = ":is([data-ui=card],.card)"
-for v, body in {"outline": "background:var(--ui-background)!important;border:1px solid var(--ui-border)!important;box-shadow:none!important",
-                "elevated": "background:var(--ui-card)!important;border:1px solid transparent!important;box-shadow:var(--ui-shadow)!important",
-                "ghost": "background:transparent!important;border:1px solid transparent!important;box-shadow:none!important",
-                "glass": "background:color-mix(in oklab,var(--ui-card) 55%,transparent)!important;border:1px solid color-mix(in oklab,var(--ui-foreground) 11%,transparent)!important;box-shadow:var(--ui-shadow-sm),inset 0 1px 0 color-mix(in oklab,#fff 14%,transparent)!important;backdrop-filter:blur(16px) saturate(1.5)",
-                "surface": "background:var(--ui-card)!important;border:1px solid var(--ui-border)!important;box-shadow:var(--ui-shadow-sm)!important"}.items():
-    R(f"[data-ui-card={v}] {CD}{CD}:not([data-look]),{CD}{CD}[data-look={v}]", body)
+for v, body in {"outline": "background:var(--ui-background);border:1px solid var(--ui-border);box-shadow:none",
+                "elevated": "background:var(--ui-card);border:1px solid transparent;box-shadow:var(--ui-shadow)",
+                "ghost": "background:transparent;border:1px solid transparent;box-shadow:none",
+                "glass": "background:color-mix(in oklab,var(--ui-card) 55%,transparent);border:1px solid color-mix(in oklab,var(--ui-foreground) 11%,transparent);box-shadow:var(--ui-shadow-sm),inset 0 1px 0 color-mix(in oklab,#fff 14%,transparent);backdrop-filter:blur(16px) saturate(1.5)",
+                "surface": "background:var(--ui-card);border:1px solid var(--ui-border);box-shadow:var(--ui-shadow-sm)"}.items():
+    R(f"[data-ui-card={v}] {CD}:not([data-look]),{CD}[data-look={v}]", body)
 # inputs
 IN = ":is(input:not([type=checkbox],[type=radio],[type=range],[type=color],[type=file]),select,textarea)"
-R(f"[data-ui-input=soft] {IN}{IN}:not([data-look]),{IN}{IN}[data-look=soft]", "background:color-mix(in oklab,var(--ui-primary) 5%,var(--ui-muted))!important;border-color:transparent!important")
-R(f"[data-ui-input=underline] {IN}{IN}:not([data-look]),{IN}{IN}[data-look=underline]", "border-width:0 0 1.5px!important;border-radius:0!important;background:transparent!important;padding-inline:2px!important;box-shadow:none")
-R(f"[data-ui-input=underline] {IN}{IN}:not([data-look]):focus-visible,{IN}{IN}[data-look=underline]:focus-visible", "border-color:var(--ui-primary)!important;box-shadow:0 1.5px 0 var(--ui-primary)!important")
-R(f"[data-ui-input=surface] {IN}{IN}:not([data-look]),{IN}{IN}[data-look=surface]", "background:var(--ui-background)!important;border:1px solid var(--ui-input)!important")
+R(f"[data-ui-input=soft] {IN}:not([data-look]),{IN}[data-look=soft]", "background:color-mix(in oklab,var(--ui-primary) 5%,var(--ui-muted));border-color:transparent")
+R(f"[data-ui-input=underline] {IN}:not([data-look]),{IN}[data-look=underline]", "border-width:0 0 1.5px;border-radius:0;background:transparent;padding-inline:2px;box-shadow:none")
+R(f"[data-ui-input=underline] {IN}:not([data-look]):focus-visible,{IN}[data-look=underline]:focus-visible", "border-color:var(--ui-primary);box-shadow:0 1.5px 0 var(--ui-primary)")
+R(f"[data-ui-input=surface] {IN}:not([data-look]),{IN}[data-look=surface]", "background:var(--ui-background);border:1px solid var(--ui-input)")
 # heading knobs (Studio typography dials)
 R(":where(.ui-root) :where(h1,h2,h3,h4)", "font-family:var(--st-hfont,inherit);font-weight:var(--st-hweight,revert)")
-import os; open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "themes", "knobs.css"), "w").write("\n".join(out) + "\n")
+import os; open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "themes", "knobs.css"), "w").write('@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;\n@layer colibri.looks {\n' + "\n".join(out) + "\n}\n")
 print(len(out), "rules")

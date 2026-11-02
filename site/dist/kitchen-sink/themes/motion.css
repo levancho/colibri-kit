@@ -1,3 +1,5 @@
+@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;
+@layer colibri.motion {
 /* Colibri UI motion library (@colibri-kit/ui/themes/motion.css). OPTIONAL, opt-in, token-driven.
    ─ Attributes (combine freely on any element, component part or not):
        data-ui-motion="fade|slide-up|slide-down|slide-left|slide-right|scale|zoom|flip|pop|collapse|blur|none"
@@ -117,3 +119,4 @@
 /* off switch + reduced motion */
 html[data-ui-motion=off] *,html[data-ui-motion=off] *::before,html[data-ui-motion=off] *::after,html[data-ui-motion=off] ::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after,::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+}

@@ -29,8 +29,9 @@ export function createCalendar(root, o = {}) {
     const isDis = (d) => (min && d < min) || (max && d > max) || disabledDays.includes(d.getDay()) || o.isDisabled?.(d);
     const same = (a, c) => a && c && iso(a) === iso(c);
     root.setAttribute("role", "application"); root.setAttribute("aria-roledescription", "calendar");
-    root.innerHTML = `<div data-ui-part="header"><button type="button" data-ui-part="prev" aria-label="Previous month">‹</button><div data-ui-part="title" aria-live="polite" id="${id}-title"></div><button type="button" data-ui-part="next" aria-label="Next month">›</button></div><div data-ui-part="months"></div>`;
+    root.innerHTML = `<div data-ui-part="header"><button type="button" data-ui-part="prev" aria-label="Previous month">‹</button><div data-ui-part="title" aria-live="polite"></div><button type="button" data-ui-part="next" aria-label="Next month">›</button></div><div data-ui-part="months"></div>`;
     const title = part(root, "title"), monthsEl = part(root, "months");
+    title.id = `${id}-title`;
     function render(focusDay) {
       title.textContent = Array.from({ length: months }, (_, i) => fmtTitle.format(addM(view, i))).join(" – ");
       monthsEl.innerHTML = "";

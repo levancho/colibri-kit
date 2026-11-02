@@ -1,3 +1,5 @@
+@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;
+@layer colibri.packs {
 /* Colibri Kit theme pack: EMBER — warm, generous, friendly. NOT brown: warm ivory in light, neutral graphite in dark,
    vivid coral-orange accent. Shape: big 16–22px radii, pill buttons and tabs, roomy density. Accordion: separate fat
    cards, white header on a tinted card, the body sits in an inset panel. Shadows: soft and deep. Type: rounded sans. Motion: springy. */
@@ -40,3 +42,4 @@ html[data-kit-theme=ember] .btn{border-radius:999px;min-block-size:2.8rem;paddin
 html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-shadow);border-radius:var(--c-radius-l)}
 html[data-kit-theme=ember] .badge{border-radius:999px;padding-inline:.8em;font-weight:700}
 html[data-kit-theme=ember] :is(h1,h2,h3){letter-spacing:-.02em;font-weight:800}
+}

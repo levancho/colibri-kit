@@ -1,9 +1,11 @@
+@layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;
+@layer colibri.packs {
 /* Colibri Kit theme pack: MIDNIGHT — dark-first, technical, luminous. Always dark (forces color-scheme).
    Deep ink-blue neutrals (not brown), electric violet accent with glow. Shape: 10px radii, 1px luminous borders.
    Tabs: segmented with glow. Accordion: joined panel, raised header vs recessed body, indented with a glowing rail.
    Type: Space Grotesk / mono headings, small-caps buttons. Motion: smooth ease-out. */
 html[data-kit-theme=midnight]{
-  color-scheme:dark!important;
+  color-scheme:dark;
   --c-hue:275; --c-chroma:.2;
   --c-bg:oklch(14.5% .025 275); --c-surface:oklch(19% .03 275); --c-sunken:oklch(12% .022 275);
   --c-fg:oklch(95% .012 280); --c-muted:oklch(72% .03 280); --c-line:oklch(30% .04 278);
@@ -35,3 +37,4 @@ html[data-kit-theme=midnight] .card{background:linear-gradient(180deg,oklch(21% 
 html[data-kit-theme=midnight] .badge{font-family:var(--c-font-mono);border-radius:4px}
 html[data-kit-theme=midnight] :is(h1,h2,h3){font-family:var(--c-font-mono);letter-spacing:-.03em}
 html[data-kit-theme=midnight] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}
+}

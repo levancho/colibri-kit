@@ -87,7 +87,7 @@ See **Component catalog** below (generated). Regenerate with `python3 tools/kitc
 ## Gallery, testing and FreeMarker
 
 - **Gallery:** `npm run serve` → http://localhost:8395/examples/kitchen-sink.html. Each component has a plain-English title, a one-line description, a live demo, a **?** tooltip (when to use it, plus its `data-ui` / shadcn / Metronic names) and an **Accessibility & keyboard** section. The header has **Demo styling** (off = raw headless markup), a light/dark/system switch and **⚡ Events**: an event log, hidden by default, that docks to the bottom or right or floats, and can be dragged, collapsed and closed.
-- The gallery's demo theme (`tools/sink_demo.css`) is *not* part of the library. It only targets `[data-ui]`, `[data-ui-part]` and state attributes, which is how an app would style Colibri UI.
+- The gallery uses the optional library theme (`themes/colibri.css`). It only targets `[data-ui]`, `[data-ui-part]` and state attributes, which is how an app would style Colibri UI.
 - **Edit the gallery:** demos in `tools/sink_catalog_*.py`, plain-English copy in `tools/sink_info.py`, then `npm run sink`.
 - **Unit tests (jsdom):** `npm test`. **Browser tests (real Chrome):** `npm run build && npm run test:e2e` (self-contained servers; `CHROME=` to override the Chrome path).
 - **FreeMarker:** `freemarker/ui.ftl` has macros for every ready component, plus the generic `[@ui.c ui="…"]` / `[@ui.p part="…"]`. Arguments must be named. `test/ftl/demo.ftl` uses every macro; `test/ftl/Render.java` renders it, and `test/e2e/ftl-output.e2e.mjs` checks that the output initialises.

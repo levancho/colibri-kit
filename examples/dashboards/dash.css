@@ -56,7 +56,7 @@ table.data td{padding:.6rem .5rem;border-block-end:1px solid var(--c-line);font-
 table.data tr:last-child td{border:0}
 table.data tbody tr:hover{background:var(--c-accent-soft)}
 .who{display:flex;align-items:center;gap:.6rem}
-.av{inline-size:2rem;block-size:2rem;border-radius:50%;display:grid;place-items:center;font-size:var(--c-text-xs);font-weight:700;color:var(--c-brand-fg);background:var(--av,var(--chart-1));flex:none}
+.av{inline-size:2rem;block-size:2rem;border-radius:50%;display:grid;place-items:center;font-size:var(--c-text-xs);font-weight:700;color:var(--c-fg);background:color-mix(in oklch,var(--av,var(--chart-1)) 25%,var(--c-surface));flex:none}
 .feed{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:var(--c-space-xs)}
 .feed li{display:flex;gap:.6rem;font-size:var(--c-text-sm)}
 .feed time{color:var(--c-muted);font-size:var(--c-text-xs);display:block}
@@ -121,3 +121,6 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
 .table-scroll{overflow:auto}
 .quota-list{padding:0;margin:0;list-style:none}
 .source-heading{font-size:var(--c-text-lg);margin-block:var(--c-space-s) 0}
+
+.dashboard-preview { text-decoration:none; color:inherit; }
+.dashboard-preview :is(h3,p) { margin:0; }

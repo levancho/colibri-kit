@@ -21,9 +21,9 @@ export function mountKitBar(h = document.querySelector("header.kbar")) {
   tools.forEach((t) => right.append(t));
   if (custom) {
     const id = "kbar-custom"; const b = Object.assign(document.createElement("button"), { type: "button", className: "kbar-btn", innerHTML: '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><span class="kbar-hide-sm">Customize</span>' });
-    b.setAttribute("aria-haspopup", "dialog"); b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", id);
+    b.setAttribute("aria-label", "Customize this page"); b.setAttribute("aria-haspopup", "dialog"); b.setAttribute("aria-expanded", "false"); b.setAttribute("aria-controls", id);
     const pop = document.createElement("div"); pop.id = id; pop.className = "kbar-pop"; pop.setAttribute("popover", ""); pop.setAttribute("role", "dialog"); pop.setAttribute("aria-label", "Customize this page");
-    pop.innerHTML = `<h4>${custom.dataset.title || "Customize"}</h4>`; custom.removeAttribute("hidden"); pop.append(custom);
+    const heading = document.createElement("h4"); heading.textContent = custom.dataset.title || "Customize"; pop.append(heading); custom.removeAttribute("hidden"); pop.append(custom);
     const place = () => { const r = b.getBoundingClientRect(); pop.style.top = r.bottom + 8 + "px"; pop.style.left = Math.max(8, Math.min(innerWidth - pop.offsetWidth - 8, r.right - pop.offsetWidth)) + "px"; };
     b.onclick = () => { pop.togglePopover?.(); };
     pop.addEventListener("toggle", (e) => { b.setAttribute("aria-expanded", String(e.newState === "open")); if (e.newState === "open") place(); });
