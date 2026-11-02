@@ -4,21 +4,6 @@
     color-scheme: light dark;
     /* brand — change --c-hue / --c-chroma and the whole palette follows */
     --c-hue: 255; --c-chroma: 0.16;
-    --c-brand: oklch(55% var(--c-chroma) var(--c-hue));
-    --c-brand-fg: oklch(99% 0.01 var(--c-hue));
-
-    /* semantic colours; light-dark() picks per colour scheme */
-    --c-bg:        light-dark(oklch(99.5% 0.003 var(--c-hue)), oklch(17% 0.01 var(--c-hue)));
-    --c-surface:   light-dark(oklch(100% 0 0),                 oklch(21% 0.012 var(--c-hue)));
-    --c-sunken:    light-dark(oklch(96.5% 0.006 var(--c-hue)), oklch(14% 0.01 var(--c-hue)));
-    --c-fg:        light-dark(oklch(22% 0.02 var(--c-hue)),    oklch(95% 0.01 var(--c-hue)));
-    --c-muted:     light-dark(oklch(50% 0.02 var(--c-hue)),    oklch(72% 0.015 var(--c-hue)));
-    --c-line:      light-dark(oklch(91% 0.008 var(--c-hue)),   oklch(30% 0.012 var(--c-hue)));
-    --c-accent:    light-dark(var(--c-brand), oklch(72% var(--c-chroma) var(--c-hue)));
-    --c-accent-soft: color-mix(in oklch, var(--c-accent) 14%, transparent);
-    --c-ok:   light-dark(oklch(55% 0.15 150), oklch(75% 0.15 150));
-    --c-warn: light-dark(oklch(65% 0.16 75),  oklch(82% 0.15 80));
-    --c-bad:  light-dark(oklch(56% 0.2 25),   oklch(72% 0.18 25));
 
     /* type — fluid between 360px and 1280px viewports */
     --c-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -57,6 +42,26 @@
 
     /* layout */
     --c-measure: 68ch; --c-content: 72rem; --c-ring: 2px solid var(--c-accent);
+  }
+  /* Recompute derived colours at explicit theme boundaries. Inherited custom
+     properties are already resolved; changing only a child hue cannot rebind them. */
+  :root, :where([data-colibri-theme], [data-theme]) {
+    --c-brand: oklch(55% var(--c-chroma) var(--c-hue));
+    --c-brand-fg: light-dark(oklch(99% 0.01 var(--c-hue)), oklch(18% 0.02 var(--c-hue)));
+
+    /* semantic colours; light-dark() picks per colour scheme */
+    --c-bg:        light-dark(oklch(99.5% 0.003 var(--c-hue)), oklch(17% 0.01 var(--c-hue)));
+    --c-surface:   light-dark(oklch(100% 0 0),                 oklch(21% 0.012 var(--c-hue)));
+    --c-sunken:    light-dark(oklch(96.5% 0.006 var(--c-hue)), oklch(14% 0.01 var(--c-hue)));
+    --c-fg:        light-dark(oklch(22% 0.02 var(--c-hue)),    oklch(95% 0.01 var(--c-hue)));
+    --c-muted:     light-dark(oklch(50% 0.02 var(--c-hue)),    oklch(72% 0.015 var(--c-hue)));
+    --c-line:      light-dark(oklch(91% 0.008 var(--c-hue)),   oklch(30% 0.012 var(--c-hue)));
+    --c-accent:    light-dark(var(--c-brand), oklch(72% var(--c-chroma) var(--c-hue)));
+    --c-accent-soft: color-mix(in oklch, var(--c-accent) 14%, transparent);
+    --c-ok:   light-dark(oklch(55% 0.15 150), oklch(75% 0.15 150));
+    --c-warn: light-dark(oklch(65% 0.16 75),  oklch(82% 0.15 80));
+    --c-bad:  light-dark(oklch(56% 0.2 25),   oklch(72% 0.18 25));
+
   }
   /* explicit theme switch beats the OS setting */
   [data-theme="light"] { color-scheme: light; }

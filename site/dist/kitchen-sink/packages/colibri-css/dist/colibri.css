@@ -7,7 +7,7 @@
 @layer colibri.reset {
   *, *::before, *::after { box-sizing: border-box; }
   * { margin: 0; }
-  html { -webkit-text-size-adjust: none; text-size-adjust: none; interpolate-size: allow-keywords; hanging-punctuation: first last; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; interpolate-size: allow-keywords; hanging-punctuation: first last; }
   body { min-block-size: 100svh; line-height: var(--c-leading, 1.6); -webkit-font-smoothing: antialiased; }
   img, picture, video, canvas, svg { display: block; max-inline-size: 100%; block-size: auto; }
   input, button, textarea, select { font: inherit; color: inherit; letter-spacing: inherit; }
@@ -18,6 +18,9 @@
   [hidden]:not([hidden="until-found"]) { display: none !important; }
   table { border-collapse: collapse; }
   dialog, [popover] { color: inherit; }
+  /* Preserve native dialog invariants when layout primitives set display. */
+  dialog { margin: auto; }
+  dialog:not([open]) { display: none !important; }
 }
 
 /* ---- 20-tokens.css ---- */
@@ -27,21 +30,6 @@
     color-scheme: light dark;
     /* brand — change --c-hue / --c-chroma and the whole palette follows */
     --c-hue: 255; --c-chroma: 0.16;
-    --c-brand: oklch(55% var(--c-chroma) var(--c-hue));
-    --c-brand-fg: oklch(99% 0.01 var(--c-hue));
-
-    /* semantic colours; light-dark() picks per colour scheme */
-    --c-bg:        light-dark(oklch(99.5% 0.003 var(--c-hue)), oklch(17% 0.01 var(--c-hue)));
-    --c-surface:   light-dark(oklch(100% 0 0),                 oklch(21% 0.012 var(--c-hue)));
-    --c-sunken:    light-dark(oklch(96.5% 0.006 var(--c-hue)), oklch(14% 0.01 var(--c-hue)));
-    --c-fg:        light-dark(oklch(22% 0.02 var(--c-hue)),    oklch(95% 0.01 var(--c-hue)));
-    --c-muted:     light-dark(oklch(50% 0.02 var(--c-hue)),    oklch(72% 0.015 var(--c-hue)));
-    --c-line:      light-dark(oklch(91% 0.008 var(--c-hue)),   oklch(30% 0.012 var(--c-hue)));
-    --c-accent:    light-dark(var(--c-brand), oklch(72% var(--c-chroma) var(--c-hue)));
-    --c-accent-soft: color-mix(in oklch, var(--c-accent) 14%, transparent);
-    --c-ok:   light-dark(oklch(55% 0.15 150), oklch(75% 0.15 150));
-    --c-warn: light-dark(oklch(65% 0.16 75),  oklch(82% 0.15 80));
-    --c-bad:  light-dark(oklch(56% 0.2 25),   oklch(72% 0.18 25));
 
     /* type — fluid between 360px and 1280px viewports */
     --c-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -80,6 +68,26 @@
 
     /* layout */
     --c-measure: 68ch; --c-content: 72rem; --c-ring: 2px solid var(--c-accent);
+  }
+  /* Recompute derived colours at explicit theme boundaries. Inherited custom
+     properties are already resolved; changing only a child hue cannot rebind them. */
+  :root, :where([data-colibri-theme], [data-theme]) {
+    --c-brand: oklch(55% var(--c-chroma) var(--c-hue));
+    --c-brand-fg: light-dark(oklch(99% 0.01 var(--c-hue)), oklch(18% 0.02 var(--c-hue)));
+
+    /* semantic colours; light-dark() picks per colour scheme */
+    --c-bg:        light-dark(oklch(99.5% 0.003 var(--c-hue)), oklch(17% 0.01 var(--c-hue)));
+    --c-surface:   light-dark(oklch(100% 0 0),                 oklch(21% 0.012 var(--c-hue)));
+    --c-sunken:    light-dark(oklch(96.5% 0.006 var(--c-hue)), oklch(14% 0.01 var(--c-hue)));
+    --c-fg:        light-dark(oklch(22% 0.02 var(--c-hue)),    oklch(95% 0.01 var(--c-hue)));
+    --c-muted:     light-dark(oklch(50% 0.02 var(--c-hue)),    oklch(72% 0.015 var(--c-hue)));
+    --c-line:      light-dark(oklch(91% 0.008 var(--c-hue)),   oklch(30% 0.012 var(--c-hue)));
+    --c-accent:    light-dark(var(--c-brand), oklch(72% var(--c-chroma) var(--c-hue)));
+    --c-accent-soft: color-mix(in oklch, var(--c-accent) 14%, transparent);
+    --c-ok:   light-dark(oklch(55% 0.15 150), oklch(75% 0.15 150));
+    --c-warn: light-dark(oklch(65% 0.16 75),  oklch(82% 0.15 80));
+    --c-bad:  light-dark(oklch(56% 0.2 25),   oklch(72% 0.18 25));
+
   }
   /* explicit theme switch beats the OS setting */
   [data-theme="light"] { color-scheme: light; }
@@ -128,6 +136,10 @@
   :where(table) { inline-size: 100%; font-size: var(--c-text-sm);
     & :where(th, td) { padding: 0.55em 0.75em; border-block-end: 1px solid var(--c-line); text-align: start; }
     & th { font-weight: 600; } }
+
+  @media (forced-colors: active) {
+    :where(input, select, textarea):focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
+  }
 
   /* scrollbars (WebKit; others use scrollbar-color above) */
   ::-webkit-scrollbar { inline-size: 10px; block-size: 10px; }
@@ -210,6 +222,9 @@
     /* :has() — a card containing a checked checkbox looks selected; one with a link inside lifts on hover */
     &:has(:checked) { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-soft); }
     &:has(a:hover, button:hover) { box-shadow: var(--c-shadow); } }
+
+  /* A dialog card stays within the viewport; native dialog supplies modality. */
+  dialog.card { inline-size: min(32rem, calc(100% - 2rem)); max-block-size: calc(100% - 2rem); overflow: auto; }
 
   .badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
     background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));

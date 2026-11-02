@@ -13,14 +13,26 @@ More Kit packages to come.
 
 ## Getting started
 
+The package names below match the source manifests; npm registry releases are not published yet. Install from a checkout for bundler/React projects:
+
+```sh
+git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
+npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css
+```
+
+For plain HTML, copy the checkout's assets and use the relative paths below:
+
 ```html
 <link rel="stylesheet" href="packages/colibri-css/dist/colibri.css">
 <!-- with Colibri UI components -->
 <link rel="stylesheet" href="themes/colibri.css">
 <link rel="stylesheet" href="packages/colibri-css/dist/colibri-ui-bridge.css">
+<script type="module" src="src/core/auto.js"></script>
 ```
 
 Re-brand: `:root { --c-hue: 160; }` · Force dark: `<html data-theme="dark">`
+
+Scoped palette: `<section data-colibri-theme style="--c-hue: 20">…</section>`. A child hue alone cannot recompute inherited derived tokens.
 
 No utility classes: in React you use the same primitives and attributes (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React: `import { Dialog, Tabs, Part } from "@colibri-kit/ui/react"`. Every snippet is shown in HTML, FreeMarker and React at https://colibri.l3v.ai/#start.
 
@@ -41,6 +53,19 @@ No utility classes: in React you use the same primitives and attributes (`classN
 - **Cursor**: copy it to `.cursor/skills/colibri-kit/` in your project (or `~/.cursor/skills/`), or reference `skills/colibri-kit/SKILL.md` from a rule in `.cursor/rules/`.
 - **GitHub Copilot**: copy it to `.github/skills/colibri-kit/` (Copilot agent skills), or paste `SKILL.md` into `.github/copilot-instructions.md`.
 - Other agents that read `SKILL.md` (Codex, Gemini CLI, OpenCode, …): drop the folder into their skills directory.
+
+## Development checks
+
+Node 22.12+, Python 3 and an installed Chrome are needed for maintainer checks. Consumers still use plain CSS and browser modules without a build step.
+
+```sh
+npm ci --ignore-scripts
+npm test
+npm run build
+npm run test:e2e
+```
+
+Browser tests start their own temporary servers. Set `CHROME=/path/to/chrome` if Chrome is not in a standard location. CI checks unit tests, the built site, component flows, responsive foundations, and tab/accordion styles across core and all packs. CSS visibility safeguards deliberately use `!important`; normal layered declarations remain overridable.
 
 ## License
 

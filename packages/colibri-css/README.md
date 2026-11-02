@@ -1,6 +1,6 @@
 # Colibri CSS (`@colibri-kit/css`)
 
-A small, modern, token-first stylesheet. No build step and no utility-class explosion: semantic tokens, good defaults, seven layout primitives and a few opt-in components.
+A small, modern, token-first stylesheet. No build step and no utility-class explosion: semantic tokens, good defaults, a small set of layout primitives and a few opt-in components.
 
 ```html
 <link rel="stylesheet" href="packages/colibri-css/dist/colibri.css">
@@ -8,7 +8,7 @@ A small, modern, token-first stylesheet. No build step and no utility-class expl
 
 ## Why Colibri CSS
 
-**What it is.** Colibri CSS (`@colibri/css`) is one small stylesheet (15 KB, 11 KB minified, zero dependencies, no build step) that gives a page finished defaults, a themable token system, a handful of layout primitives and a few opt-in components. It is the styling half of Colibri: Colibri UI provides headless behaviour (`data-ui`), Colibri CSS provides the look.
+**What it is.** Colibri CSS (`@colibri-kit/css`) is one small stylesheet (15 KB, 11 KB minified, zero dependencies, no build step) that gives a page finished defaults, a themable token system, a handful of layout primitives and a few opt-in components. It is the styling half of Colibri: Colibri UI provides headless behaviour (`data-ui`), Colibri CSS provides the look.
 
 **Why we built it.** We wanted pages that look right with plain, semantic HTML, the kind FreeMarker templates and CMS content produce, without two bad options:
 - **Utility frameworks** (Tailwind-style) turn every element into 20 classes, need a compiler, and spread the design across thousands of lines of markup. Changing the design means editing templates.
@@ -17,8 +17,8 @@ A small, modern, token-first stylesheet. No build step and no utility-class expl
 Modern CSS now does natively what those tools were invented to work around. Colibri CSS is a thin, opinionated layer over the platform.
 
 **How it works.**
-- **Cascade layers.** Everything lives in `@layer colibri.reset, tokens, base, layout, components, utilities`. Your own CSS outside a layer always wins: no `!important`, no specificity wars.
-- **Design tokens.** Colour, space, type, radius, shadow and motion are custom properties. Colours are OKLCH and derive from a single `--c-hue`, so changing one number re-brands everything. Tokens cascade, so any section can carry its own theme.
+- **Cascade layers.** Everything lives in `@layer colibri.reset, tokens, base, layout, components, utilities`. Your own CSS outside a layer wins for normal declarations. Visibility invariants (`[hidden]`, closed dialogs) and coarse-pointer minimum sizes use `!important`.
+- **Design tokens.** Colour, space, type, radius, shadow and motion are custom properties. Colours are OKLCH and derive from a single `--c-hue`, so changing one number re-brands everything. Use `data-colibri-theme` on a section to recompute derived colours from its local hue.
 - **Dark mode built in.** Every colour is a `light-dark()` pair. It follows the OS by default; `data-theme="dark"` or `"light"` on any element forces it for that subtree.
 - **Fluid type and spacing.** `clamp()` scales grow smoothly from phone to desktop, with no breakpoints to maintain.
 - **Layout primitives, not utilities.** `.stack`, `.cluster`, `.grid`, `.split`, `.switcher`, `.center`, `.reel`, `.prose` and a few more. You tune them with custom properties (`--gap`, `--min`, `--side`) instead of new classes, and they are responsive without media queries.
@@ -40,7 +40,6 @@ Modern CSS now does natively what those tools were invented to work around. Coli
 <link rel="stylesheet" href="packages/colibri-css/dist/colibri.css">
 <!-- with Colibri UI components: -->
 <link rel="stylesheet" href="themes/colibri.css">
-<link rel="stylesheet" href="packages/colibri-css/dist/colibri.css">
 <link rel="stylesheet" href="packages/colibri-css/dist/colibri-ui-bridge.css">
 ```
 Re-brand: `:root { --c-hue: 160; }`. Force dark: `<html data-theme="dark">`.
@@ -56,7 +55,7 @@ Re-brand: `:root { --c-hue: 160; }`. Force dark: `<html data-theme="dark">`.
 | `colibri.components` | `src/50-components.css` | `.btn .card .badge .field .callout .enter`; variants are `data-variant`, `data-size`, `data-tone`; `:has()` and container queries built in |
 | `colibri.utilities` | `src/60-utilities.css` | only `.visually-hidden .muted .flow .truncate` |
 
-Your own unlayered CSS beats every layer, so overrides never need `!important`.
+Your own unlayered CSS beats normal declarations in every layer. Visibility and touch-target safeguards use `!important`; override those deliberately.
 
 ## How you style: primitives, attributes, your CSS
 
@@ -81,6 +80,8 @@ The markup is identical in HTML, FreeMarker and React. React just says `classNam
 
 ## React
 
+The npm names describe the source packages; registry releases are not published yet. Clone the repository and install its root and `packages/colibri-css` directories as local dependencies (see the root README).
+
 ```jsx
 import { Dialog, Tabs, Part, cx } from "@colibri-kit/ui/react";
 
@@ -99,7 +100,7 @@ These are thin wrappers around the same engine (no auto-init, and cleanup on unm
 ## Theming
 * Re-brand: `:root { --c-hue: 160; }`
 * Dark mode follows the OS; force it with `data-theme="dark"` (or `"light"`) on `<html>` or on any element.
-* Scope tokens to a container: `<section style="--c-radius: 0; --c-hue: 20">`.
+* Scope tokens to a container: `<section data-colibri-theme style="--c-radius: 0; --c-hue: 20">`.
 
 ## With Colibri UI
 Load `themes/colibri.css`, then `dist/colibri.css`, then `dist/colibri-ui-bridge.css`. The bridge maps `--ui-*` to `--c-*`, so components follow your Colibri CSS tokens.

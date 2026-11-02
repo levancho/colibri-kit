@@ -229,7 +229,7 @@
    "uses": [
     "clipboard"
    ],
-   "html": "<pre data-ui-part=\"code-block\">\n  <code id=\"snippet\">import { createTabs } from \"@colibri/ui/core/tabs\";</code>\n</pre>\n<button data-ui=\"clipboard\" data-target=\"#snippet\">Copy</button> <button data-ui=\"clipboard\" data-text=\"გამარჯობა\">Copy Georgian</button>",
+   "html": "<pre data-ui-part=\"code-block\">\n  <code id=\"snippet\">import { createTabs } from \"@colibri-kit/ui/core/tabs\";</code>\n</pre>\n<button data-ui=\"clipboard\" data-target=\"#snippet\">Copy</button> <button data-ui=\"clipboard\" data-text=\"გამარჯობა\">Copy Georgian</button>",
    "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n<pre data-ui-part=\"code-block\"><code id=\"snippet\">${code}</code></pre>\n[@ui.clipboard target=\"#snippet\"]Copy[/@ui.clipboard]"
   },
   {
@@ -674,7 +674,7 @@
    "parts": [],
    "uses": [],
    "html": "<button id=\"t-default\">Default</button> <button id=\"t-success\">Success</button> <button id=\"t-error\">Error</button> <button id=\"t-action\">With action</button> <button id=\"t-promise\">Promise (2s)</button>",
-   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[#-- once per layout --]\n[@ui.toaster position=\"bottom-right\" max=3/]\n<script type=\"module\">\n  import { toast } from \"@colibri/ui/core/base\";\n  toast({ title: \"შენახულია\", variant: \"success\", action: { label: \"Undo\", onClick: undo } });\n</script>"
+   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n[#-- once per layout --]\n[@ui.toaster position=\"bottom-right\" max=3/]\n<script type=\"module\">\n  import { toast } from \"@colibri-kit/ui/core/base\";\n  toast({ title: \"შენახულია\", variant: \"success\", action: { label: \"Undo\", onClick: undo } });\n</script>"
   },
   {
    "name": "toggle",
@@ -1435,7 +1435,7 @@
     "button"
    ],
    "html": "<div class=\"mo-box\" id=\"mo-target\" style=\"width:120px\">🐦 Colibri</div>\n<div style=\"display:flex;gap:.4rem;flex-wrap:wrap;justify-content:center;flex-basis:100%\">\n  <button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"shake\" data-target=\"mo-target\">shake</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"bounce\" data-target=\"mo-target\">bounce</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"pop\" data-target=\"mo-target\">pop</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"flash\" data-target=\"mo-target\">flash</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"heartbeat\" data-target=\"mo-target\">heartbeat</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"tada\" data-target=\"mo-target\">tada</button><button data-ui=\"button\" data-variant=\"outline\" data-size=\"sm\" data-motion-play-btn=\"wiggle\" data-target=\"mo-target\">wiggle</button>\n</div>\n<form id=\"mo-invalid\" style=\"display:flex;gap:.5rem\">\n  <input placeholder=\"Leave empty, press Check\" aria-label=\"Required value\"><button data-ui=\"button\" type=\"submit\">Check</button>\n</form>",
-   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n<script type=\"module\">\n  import { play } from \"@colibri/ui/core/motion\";\n  form.addEventListener(\"submit\", (e) => { if (!form.checkValidity()) { e.preventDefault(); play(form, \"shake\"); } });\n</script>"
+   "freemarker": "[#import \"/ui/ui.ftl\" as ui]\n<script type=\"module\">\n  import { play } from \"@colibri-kit/ui/core/motion\";\n  form.addEventListener(\"submit\", (e) => { if (!form.checkValidity()) { e.preventDefault(); play(form, \"shake\"); } });\n</script>"
   },
   {
    "name": "motion-wired",

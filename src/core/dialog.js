@@ -1,5 +1,5 @@
 import { owner } from "./util.js";
-// @colibri/ui core: Dialog controller. Headless; built on the native <dialog> element.
+// @colibri-kit/ui core: Dialog controller. Headless; built on the native <dialog> element.
 //
 //   <div data-ui="dialog" [data-modal="true|false"] [data-default-open] [data-dismissible="true|false"]
 //        [data-close-on-backdrop="true|false"]>

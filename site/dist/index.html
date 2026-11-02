@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Colibri Kit: the look (Colibri CSS) + the behaviour (Colibri UI)</title>
-<meta name="description" content="Colibri Kit has two parts: Colibri CSS, a 15 KB stylesheet that makes plain HTML look good, and Colibri UI, components that add behaviour (dialogs, menus, tabs) without forcing a look on you. No build step, no utility bloat.">
+<meta name="description" content="Colibri Kit has two parts: Colibri CSS, a small stylesheet that makes plain HTML look good, and Colibri UI, components that add behaviour (dialogs, menus, tabs) without forcing a look on you. No build step, no utility bloat.">
 <meta property="og:title" content="Colibri Kit"><meta property="og:description" content="Colibri CSS = the look. Colibri UI = the behaviour. Plain HTML, no build step.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
 <script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,d=localStorage.getItem("colibri.kit.theme");if(d)H.dataset.theme=d;var q=new URLSearchParams(location.search).get("theme"),p=q!==null?q:localStorage.getItem("colibri.kit.pack");if(p)H.dataset.kitTheme=p}catch(_){}</script>
@@ -26,11 +26,11 @@
     <div class="hero-copy stack">
       <a class="pill" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><span class="pill-dot" aria-hidden="true"></span>Open source · MIT <span aria-hidden="true">→</span></a>
       <h1 id="hero-h">Plain HTML,<br><span class="grad">beautifully finished.</span></h1>
-      <p class="lede"><b>Colibri CSS</b> gives your pages the look. <b>Colibri UI</b> makes things work: dialogs, menus, tabs, all keyboard- and screen-reader-ready. No utility classes, no compiler, no framework lock-in. The same markup works in HTML, FreeMarker and React.</p>
+      <p class="lede"><b>Colibri CSS</b> gives your pages the look. <b>Colibri UI</b> makes things work: dialogs, menus, tabs, with keyboard controls and ARIA wiring. No utility classes, no compiler, no framework lock-in. The same markup works in HTML, FreeMarker and React.</p>
       <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
         <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
-        <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse 156 components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
-      <div class="stats cluster" data-gap="l"><div><b>15 KB</b><span>Colibri CSS</span></div><div><b>145</b><span>components &amp; blocks</span></div><div><b>0</b><span>build steps</span></div><div><b>1</b><span>token to re-brand</span></div></div>
+        <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
+      <div class="stats cluster" data-gap="l"><div><b data-css-size>18 KiB</b><span>Colibri CSS</span></div><div><b data-catalog-count>132</b><span>catalog entries</span></div><div><b>0</b><span>build steps</span></div><div><b>1</b><span>token to re-brand</span></div></div>
     </div>
     <div class="specimen" aria-label="Live example: re-brand with one token">
       <div class="spec-card card stack" data-gap="s">
@@ -119,9 +119,9 @@
       <div class="card stack"><h3>Not a utility framework</h3><p class="muted">No twenty-class elements, no compiler and no design scattered through templates. The design lives in CSS and tokens.</p></div>
       <div class="card stack"><h3>Not a heavy framework</h3><p class="muted">No 300 KB bundle, no specificity fights, no look you have to undo. Layers mean your CSS always wins.</p></div>
       <div class="card stack"><h3>Platform-native</h3><p class="muted">Layers, <code>:has()</code>, container queries, nesting, <code>light-dark()</code>, OKLCH and native <code>&lt;dialog&gt;</code>: the browser does the heavy lifting.</p></div>
-      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Tokens cascade, so any section can carry its own colour. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
+      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Add <code>data-colibri-theme</code> to a section to derive its palette from a local hue. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
       <div class="card stack"><h3>Works with server templates</h3><p class="muted">Plain HTML, FreeMarker macros and custom elements. No SPA required, no hydration.</p></div>
-      <div class="card stack"><h3>Accessible by default</h3><p class="muted">Keyboard support, ARIA wiring, focus rings and reduced-motion handling are part of every component.</p></div>
+      <div class="card stack"><h3>Accessibility foundations</h3><p class="muted">Behavior controllers provide keyboard controls and ARIA wiring; CSS supplies focus rings and reduced-motion tokens. Test your content, contrast and integrations before release.</p></div>
     </div>
   </section>
 
@@ -155,15 +155,22 @@
     <h3>1. Add it to your project</h3>
     <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri.css&quot;&gt;
-&lt;!-- 2. the behaviour: every data-ui element wires itself --&gt;
+&lt;!-- 2. component styling + shared tokens --&gt;
+&lt;link rel="stylesheet" href="https://colibri.l3v.ai/ui/themes/colibri.css"&gt;
+&lt;link rel="stylesheet" href="https://colibri.l3v.ai/css/colibri-ui-bridge.css"&gt;
+&lt;!-- 3. behaviour: every data-ui element wires itself --&gt;
 &lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
 [#import &quot;/colibri/ui.ftl&quot; as ui]
 &lt;link rel=&quot;stylesheet&quot; href=&quot;${base}/css/colibri.css&quot;&gt;
 &lt;script type=&quot;module&quot; src=&quot;${base}/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;
 
 [#-- then use macros anywhere --]
-[@ui.button variant=&quot;outline&quot;]Save[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// npm i @colibri-kit/css @colibri-kit/ui
-import &quot;@colibri-kit/css&quot;;            // the look (tokens + primitives)
+[@ui.button variant=&quot;outline&quot;]Save[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// Install from source (npm registry releases are not published yet):
+// git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
+// npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css
+import &quot;@colibri-kit/ui/themes/colibri.css&quot;;
+import &quot;@colibri-kit/css&quot;;
+import &quot;@colibri-kit/css/bridge&quot;;
 import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
 // No auto-init in React: each wrapper wires itself on mount.</code></pre></div></div>
     <h3>2. A dialog</h3>
@@ -174,7 +181,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
           <dialog data-ui-part="content" class="card stack" style="--gap:var(--c-space-s);inline-size:min(26rem,92vw)">
             <h2 data-ui-part="title" style="font-size:var(--c-text-lg)">Invite a teammate</h2>
             <div class="field"><label for="em">Email</label><input id="em" type="email" required placeholder="name@example.com"></div>
-            <div class="cluster" style="--justify:flex-end"><button class="btn" data-variant="ghost" data-ui-part="close">Cancel</button><button class="btn" data-ui-part="close">Send</button></div>
+            <div class="cluster" style="--justify:flex-end"><button class="btn" data-variant="ghost" data-ui-part="close">Cancel</button><button class="btn" data-ui-part="close">Done</button></div>
           </dialog>
         </div>
       </div>
@@ -185,7 +192,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
     &lt;div class=&quot;field&quot;&gt;&lt;label for=&quot;em&quot;&gt;Email&lt;/label&gt;
       &lt;input id=&quot;em&quot; type=&quot;email&quot; required&gt;&lt;/div&gt;
     &lt;div class=&quot;cluster&quot;&gt;
-      &lt;button class=&quot;btn&quot; data-ui-part=&quot;close&quot;&gt;Send&lt;/button&gt;
+      &lt;button class=&quot;btn&quot; data-ui-part=&quot;close&quot;&gt;Done&lt;/button&gt;
       &lt;button class=&quot;btn&quot; data-variant=&quot;ghost&quot; data-ui-part=&quot;close&quot;&gt;Cancel&lt;/button&gt;
     &lt;/div&gt;
   &lt;/dialog&gt;
@@ -290,37 +297,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
 </main>
 
 
-<script>
-  const t = document.getElementById("theme"), k = "colibri.kit.theme", s = localStorage.getItem(k);
-  if (s) document.documentElement.dataset.theme = s;
-  t.onclick = () => { const d = document.documentElement, dark = d.dataset.theme ? d.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; d.dataset.theme = dark ? "light" : "dark"; localStorage.setItem(k, d.dataset.theme); };
-</script>
-<script type="module">
-import { highlightAll } from "/kitchen-sink/examples/code-highlight.js"; highlightAll();
-  import "/ui/src/core/auto.js";
-  // keep every code-tab group on the same language, remembered across visits
-  const K = "colibri.kit.lang", groups = [...document.querySelectorAll('[data-sync="lang"]')];
-  const pick = (v) => groups.forEach((g) => { const t = g.querySelector(`[data-ui-part=trigger][data-value="${v}"]`); if (t && t.getAttribute("aria-selected") !== "true") t.click(); });
-  let syncing = false;
-  groups.forEach((g) => g.addEventListener("ui:change", (e) => { if (syncing) return; syncing = true; localStorage.setItem(K, e.detail.value); pick(e.detail.value); syncing = false; }));
-  const saved = localStorage.getItem(K); if (saved) { syncing = true; pick(saved); syncing = false; }
-  document.addEventListener("click", async (e) => { const b = e.target.closest("[data-copy]"); if (!b) return;
-    await navigator.clipboard.writeText(b.nextElementSibling.textContent); b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1400); });
-</script>
-<script>
-(() => { const r = document.getElementById("hue"); if (!r) return;
-  const set = (v) => { document.documentElement.style.setProperty("--c-hue", v); document.getElementById("hue-out").textContent = v; document.getElementById("hue-chip").textContent = v; };
-  r.addEventListener("input", () => set(r.value)); })();
-</script>
-<script>
-(() => { const K = "colibri.kit.pack", d = document.documentElement, sel = document.getElementById("kit-theme");
-  const q = new URLSearchParams(location.search).get("theme");
-  const apply = (v) => { v ? (d.dataset.kitTheme = v) : delete d.dataset.kitTheme; sel.value = v || ""; localStorage.setItem(K, v || "");
-    document.querySelectorAll("[data-pick-theme]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.pickTheme === v))); };
-  apply(q ?? localStorage.getItem(K) ?? "");
-  sel.onchange = () => apply(sel.value);
-  document.addEventListener("click", (e) => { const b = e.target.closest("[data-pick-theme]"); if (b) apply(d.dataset.kitTheme === b.dataset.pickTheme ? "" : b.dataset.pickTheme); });
-})();
-</script>
+<p class="visually-hidden" role="status" id="site-status"></p>
+<script type="module" src="/site.js"></script>
 </body>
 </html>

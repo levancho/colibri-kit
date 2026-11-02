@@ -20,6 +20,9 @@
     &:has(:checked) { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-soft); }
     &:has(a:hover, button:hover) { box-shadow: var(--c-shadow); } }
 
+  /* A dialog card stays within the viewport; native dialog supplies modality. */
+  dialog.card { inline-size: min(32rem, calc(100% - 2rem)); max-block-size: calc(100% - 2rem); overflow: auto; }
+
   .badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
     background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));
     &[data-tone=accent] { --tone: var(--c-accent); --tone-soft: var(--c-accent-soft); }

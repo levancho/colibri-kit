@@ -1,27 +1,33 @@
 {
-  "name": "@colibri/ui",
+  "name": "@colibri-kit/ui",
   "version": "0.1.0",
   "description": "Colibri UI: headless, unstyled, framework-agnostic UI primitives",
   "type": "module",
   "sideEffects": [
-    "./src/elements/*.js"
+    "./src/elements/*.js",
+    "./src/core/auto.js",
+    "./themes/*.css",
+    "./themes/packs/*.css"
   ],
   "exports": {
     "./core/*": "./src/core/*.js",
     "./elements/*": "./src/elements/*.js",
-    "./react": "./src/react/index.js"
+    "./react": "./src/react/index.js",
+    "./themes/*": "./themes/*"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
     "serve": "python3 -m http.server 8395",
-    "test:e2e": "node test/e2e/kitchen-sink.e2e.mjs && node test/e2e/blocks.e2e.mjs && node test/e2e/ftl-output.e2e.mjs",
+    "test:e2e": "node test/e2e/run.mjs && node test/e2e/foundations.e2e.mjs && node test/e2e/navigation-styles.e2e.mjs",
     "sink": "python3 tools/kitchen-sink.py && python3 tools/readme-catalog.py && python3 tools/registry.py",
-    "registry": "python3 tools/registry.py"
+    "registry": "python3 tools/registry.py",
+    "build": "sh site/build.sh",
+    "test:foundations": "node test/e2e/foundations.e2e.mjs"
   },
   "license": "MIT",
   "devDependencies": {
     "jsdom": "^25.0.0",
-    "puppeteer-core": "^23.0.0"
+    "puppeteer-core": "^25.16.0"
   },
   "bin": {
     "colibri": "bin/colibri.mjs",
@@ -34,5 +40,15 @@
     "react": {
       "optional": true
     }
-  }
+  },
+  "files": [
+    "src",
+    "themes",
+    "freemarker",
+    "bin",
+    "registry",
+    "skills",
+    "LICENSE",
+    "README.md"
+  ]
 }

@@ -142,3 +142,20 @@ test("tabs inside dialog: tab triggers don't open/close dialog", () => {
   const d = $(r, '[data-ui="dialog"]'); $(r, ':scope [data-ui="dialog"] > [data-ui-part="trigger"]').click(); assert.equal(d.__uiDialog.open, true);
   $$(r, '[data-ui="tabs"] [data-ui-part="trigger"]')[1].click(); assert.equal(d.__uiDialog.open, true); assert.equal($(r, '[data-ui="tabs"]').__uiTabs.value, "b");
 });
+
+test("combobox chips keep custom values and option labels as text, never HTML", () => {
+  const r = mount(`<div data-ui="combobox" data-multiple data-allow-custom>
+    <div data-ui-part="chips"></div><input data-ui-part="input">
+    <div data-ui-part="content"><div data-ui-part="option" data-value="safe">&lt;img src=x onerror=alert(1)&gt; &quot;label&quot;</div></div>
+  </div>`);
+  const api = r.__uiCombobox || r.querySelector('[data-ui="combobox"]').__uiCombobox;
+  const attack = '<img src=x onerror=alert(1)> "custom" & value';
+  api.value = [attack, "safe"];
+  const chips = r.querySelector('[data-ui-part="chips"]');
+  assert.equal(chips.querySelector("img"), null);
+  assert.equal(chips.children[0].dataset.value, attack);
+  assert.equal(chips.children[0].firstChild.textContent, attack);
+  assert.equal(chips.children[1].querySelector("button").getAttribute("aria-label"), 'Remove <img src=x onerror=alert(1)> "label"');
+  chips.children[0].querySelector("button").click();
+  assert.deepEqual(api.value, ["safe"]);
+});

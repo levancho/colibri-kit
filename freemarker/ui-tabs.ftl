@@ -1,5 +1,5 @@
 [#ftl]
-[#-- Colibri UI (@colibri/ui) Tabs for FreeMarker. Emits the data-* contract only; no classes, no styling.
+[#-- Colibri UI (@colibri-kit/ui) Tabs for FreeMarker. Emits the data-* contract only; no classes, no styling.
      Usage:
        [#import "ui/ui-tabs.ftl" as ui]
        [@ui.tabs id="settings" default="general" tabs=[{"value":"general","label":"General"},{"value":"seo","label":"SEO"}]]

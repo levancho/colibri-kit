@@ -45,7 +45,7 @@ add(G, "carousel", "Carousel", "done", "Carousel", "Carousel", "Scroll-snap view
  """<div data-ui="carousel" data-loop aria-label="Featured"><div data-ui-part="viewport"><div data-ui-part="slide">სლაიდი 1</div><div data-ui-part="slide">სლაიდი 2</div><div data-ui-part="slide">სლაიდი 3</div></div>
 <button data-ui-part="prev" aria-label="Previous slide"></button><button data-ui-part="next" aria-label="Next slide"></button><div data-ui-part="dots"></div></div>""")
 add(G, "code-block", "Code Block / Clipboard", "done", "Clipboard (plugin)", "Code Block", "data-ui=clipboard copies data-text or target text; data-state=copied; ui:copy.",
- """<pre data-ui-part="code-block"><code id="snippet">import { createTabs } from "@colibri/ui/core/tabs";</code></pre><button data-ui="clipboard" data-target="#snippet">Copy</button> <button data-ui="clipboard" data-text="გამარჯობა">Copy Georgian</button>""")
+ """<pre data-ui-part="code-block"><code id="snippet">import { createTabs } from "@colibri-kit/ui/core/tabs";</code></pre><button data-ui="clipboard" data-target="#snippet">Copy</button> <button data-ui="clipboard" data-text="გამარჯობა">Copy Georgian</button>""")
 add(G, "collapsible", "Collapsible / Collapse", "done", "Collapse", "Collapsible", "button[aria-expanded][aria-controls]; content[hidden]; data-default-open.",
  """<div data-ui="collapsible"><button data-ui-part="trigger">Show 3 more</button><div data-ui-part="content"><p>ერთი</p><p>ორი</p><p>სამი</p></div></div>""")
 

@@ -25,7 +25,6 @@ html[data-kit-theme=glacier]{
   --ui-font:"Inter","Geist",ui-sans-serif,system-ui,sans-serif;
   --ui-radius:6px; --ui-radius-sm:4px; --ui-radius-lg:10px; --ui-control-h:34px;
   --ui-shadow-sm:0 1px 2px #0f172a14; --ui-shadow:0 8px 24px -10px #0f172a2e;
-  --acc-head:#f8fafc; --acc-head-open:#eef4ff; --acc-body:#fff; --acc-rule:#2563eb;
   /* kitchen-sink chrome */
   --s-bg:#f7f9fc; --s-fg:#0f172a; --s-muted:#5b6b82; --s-line:#e3e8ef; --s-soft:#eef2f7; --s-acc:#2563eb; --s-ring:#93c5fd;
 }
@@ -34,23 +33,11 @@ html[data-kit-theme=glacier][data-theme=dark]{
   --ui-muted:#172033; --ui-muted-foreground:#94a3b8; --ui-accent:#16233b; --ui-accent-foreground:#e8edf5;
   --ui-primary:#60a5fa; --ui-primary-foreground:#0b1220; --ui-ring:#93c5fd; --ui-border:#1f2a3d; --ui-input:#2a3650;
   --ui-shadow-sm:0 1px 2px #0008; --ui-shadow:0 10px 30px -10px #000c;
-  --acc-head:#111827; --acc-head-open:#16233b; --acc-body:#0c111b; --acc-rule:#60a5fa;
   --s-bg:#0a0f18; --s-fg:#e8edf5; --s-muted:#94a3b8; --s-line:#1f2a3d; --s-soft:#111827; --s-acc:#93c5fd; --s-ring:#3b82f6;
 }
-/* tabs: underline rail */
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{background:none;padding:0;gap:1.1rem;border-radius:0;border-bottom:1px solid var(--ui-border);display:flex}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{height:38px;padding:0 .1rem;border-radius:0;border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:none;box-shadow:none;color:var(--ui-foreground);border-bottom-color:var(--ui-primary)}
-html[data-kit-theme=glacier] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;padding:1rem .1rem;margin:0;background:none}
-/* accordion: one bordered sheet; header strip vs white indented body */
-html[data-kit-theme=glacier] [data-ui=accordion]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);overflow:hidden;background:var(--acc-body)}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=item]{border-bottom:1px solid var(--ui-border)}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=item]:last-child{border-bottom:0}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger]{padding:.7rem 1rem!important;background:var(--acc-head)!important;font-weight:600!important;font-size:.9rem!important;letter-spacing:-.005em}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--acc-head-open)!important;box-shadow:inset 0 -1px var(--ui-border)}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none;background:var(--acc-head-open)!important}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=content]{background:var(--acc-body);padding:.85rem 1rem 1rem 1.75rem;margin:0;position:relative;font-size:.875rem;line-height:1.6}
-html[data-kit-theme=glacier] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:1.05rem;top:.85rem;bottom:1rem;width:2px;border-radius:2px;background:var(--acc-rule);opacity:.55}
+/* Component geometry and surfaces are tokens; core owns all part styling. */
+html[data-kit-theme=glacier] [data-ui=tabs]{--ui-tabs-background:transparent;--ui-tabs-padding:0;--ui-tabs-gap:.75rem;--ui-tabs-radius:0;--ui-tabs-rail:1px solid var(--ui-border);--ui-tabs-indicator:2px solid transparent;--ui-tabs-trigger-radius:0;--ui-tabs-active-background:transparent;--ui-tabs-active-shadow:none;--ui-tabs-active-line:var(--ui-primary);}
+html[data-kit-theme=glacier] [data-ui=accordion]{--ui-acc-border:1px solid var(--ui-border);--ui-acc-radius:var(--ui-radius-lg);--ui-acc-padding:.85rem 1rem;--ui-acc-content-padding:0 1rem 1rem;--ui-acc-hover:var(--ui-muted);}
 /* Colibri CSS chrome */
 html[data-kit-theme=glacier] .btn{border-radius:var(--c-radius);font-weight:550;letter-spacing:-.005em}
 html[data-kit-theme=glacier] .card{box-shadow:none;border:1px solid var(--c-line)}
