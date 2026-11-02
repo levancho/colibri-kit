@@ -19,9 +19,9 @@ body{margin:0}
 .dash-nav a .badge{margin-inline-start:auto}
 .dash-side footer{margin-block-start:auto;font-size:var(--c-text-xs);color:var(--c-muted);padding:var(--c-space-xs)}
 .dash-main{min-inline-size:0;display:flex;flex-direction:column}
-.dash-top{position:sticky;inset-block-start:0;z-index:2;display:flex;align-items:center;gap:var(--c-space-s);padding:var(--c-space-xs) var(--c-space-m);background:color-mix(in oklch,var(--c-bg) 85%,transparent);backdrop-filter:blur(10px);border-block-end:1px solid var(--c-line)}
+.dash-top{flex-wrap:wrap;position:sticky;inset-block-start:0;z-index:2;display:flex;align-items:center;gap:var(--c-space-s);padding:var(--c-space-xs) var(--c-space-m);background:color-mix(in oklch,var(--c-bg) 85%,transparent);backdrop-filter:blur(10px);border-block-end:1px solid var(--c-line)}
 .dash-top label{display:flex;flex-wrap:nowrap;white-space:nowrap;flex-direction:row;align-items:center;gap:.4rem;font-size:var(--c-text-sm);margin:0}
-.dash-top .search{flex:1;max-inline-size:26rem}
+.dash-top .search{min-inline-size:0;flex:1 1 10rem;max-inline-size:26rem}
 .dash-top select,.dash-top input{font:inherit;font-size:var(--c-text-sm);padding:.4rem .6rem;border-radius:var(--c-radius-s);border:1px solid var(--c-line);background:var(--c-surface);color:var(--c-fg)}
 .dash-top .search input{inline-size:100%}
 .dash-top select,#pack{inline-size:auto}

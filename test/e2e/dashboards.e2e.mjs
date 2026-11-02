@@ -96,7 +96,7 @@ try {
     for (const name of ['analytics', 'crm']) {
       await page.setViewport({ width, height: 900 });
       await page.goto(base + name + '.html', { waitUntil: 'networkidle0' });
-      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: no page overflow at ${width}px`);
+      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: no page overflow at ${width}px; ${JSON.stringify(await page.evaluate(() => [...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > innerWidth + 1).slice(0,12).map(el => ({tag:el.tagName, class:el.className, right:el.getBoundingClientRect().right}))))}`);
       if (width < 900) {
         assert.equal(await page.$eval('.dash-side', e => e.inert), true);
         await page.click('.menu-btn');
