@@ -1,21 +1,21 @@
 ---
 name: colibri-kit
-description: Build web UIs with Colibri Kit (Colibri CSS tokens and layout primitives plus headless data-ui / <ui-*> components, no build step); use when a project includes colibri.css, themes/colibri.css, data-ui attributes, @colibri-kit/ui, or the user asks for a Colibri page, form, dashboard, dialog, table or theme.
+description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, FreeMarker and React without adding Tailwind.
 ---
 # Colibri Kit
 
-Colibri Kit is two no-build packages that work together:
+Colibri Kit is a UI library for web applications. It combines reusable components, layouts and themes through two independently usable layers:
 
 - **Colibri CSS** (`packages/colibri-css/dist/colibri.css`): one stylesheet with cascade layers, OKLCH `--c-*` tokens, `light-dark()` dark mode, fluid type/space, layout primitives (`.stack .cluster .grid .split .switcher .center .cover .frame .reel .bleed .container .prose`) and a few components (`.btn .card .badge .field .callout`).
-- **Colibri UI** (`src/`, `themes/colibri.css`, `freemarker/ui.ftl`): headless, accessible behaviour. Mark a root with `data-ui="name"`, its pieces with `data-ui-part="part"`. Works in plain HTML, FreeMarker and React.
+- **Colibri UI** (`src/`, `themes/colibri.css`, `freemarker/ui.ftl`): headless behaviour with keyboard, focus and ARIA support. Mark a root with `data-ui="name"`, its pieces with `data-ui-part="part"`. Works in plain HTML, FreeMarker and React.
 
 Repo: https://github.com/levancho/colibri-kit · Docs and live examples: https://colibri.l3v.ai
 
-Details live in `reference/`: `components.md` (every component, parts, ARIA/attributes, blocks), `tokens.md` (all tokens and primitives), `theme-packs.md` (theming and writing a pack).
+Read only the references needed for the task: [components](reference/components.md) for names and parts, [tokens](reference/tokens.md) for styles and layout, [theme packs](reference/theme-packs.md) for theming, and [maintenance](reference/maintenance.md) for composition, overrides, interactive demos and maintainer checks. These files ship with the skill; do not assume the full repository is installed beside it.
 
 ## 1. Install (no build step)
 
-Copy or clone the repo (or vendor the folders you need) and link the files:
+Locate the project’s existing Colibri checkout or vendor folder first. For a new project, clone a pinned repository revision or vendor the required files. Do not assume the named npm packages are published; verify registry availability before recommending registry installation. Plain HTML consumers need no build step; maintaining generated distributions does require the repository build. Link local files:
 
 ```html
 <link rel="stylesheet" href="themes/colibri.css">                              <!-- Colibri UI tokens -->
@@ -36,7 +36,9 @@ If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs i
 1. **Semantic HTML first.** `<button>`, `<dialog>`, `<table>`, `<label>`, `<nav>`; base styles already look finished.
 2. **Layout = primitives**, tuned with custom properties, not extra classes: `<div class="grid" style="--min: 18rem">`, `<div class="stack" data-gap="l">`.
 3. **Variants = attributes**: `data-variant="ghost|outline|soft|danger"`, `data-size="s|l"`, `data-tone="ok|warn|bad|accent"`, `data-gap="3xs…2xl"`.
-4. **Design = tokens**: change `--c-hue` to rebrand; override tokens on `:root` or any subtree. Your unlayered CSS beats every layer, so no `!important`.
+4. **Design = tokens**: change `--c-hue` to rebrand; override tokens on `:root` or any subtree. Ordinary unlayered CSS overrides normal declarations in the CSS core’s layers. The optional UI theme and packs still contain unlayered rules and legacy important declarations; do not promise that any user rule always wins. For local palette overrides, add `data-colibri-theme` to the container so derived tokens are recomputed.
+
+Keep repeated product UI in named components or template partials. Do not replace utility strings with repeated inline presentation styles. Inline custom properties are appropriate for data such as chart values; stable layout and presentation belong in CSS. Keep helpers limited to `.visually-hidden`, `.muted`, `.flow` and `.truncate`; do not generate a second utility framework. Preserve an existing project’s chosen stack unless a migration is requested.
 
 ## 3. Components (headless)
 
@@ -54,7 +56,7 @@ If the repo is present, ask the CLI instead of guessing: `node bin/colibri.mjs i
 </div>
 ```
 
-- State is in `data-state`, `aria-*` and `hidden`; never toggle classes or inline styles for state.
+- Expose semantic state through `data-state`, `aria-*` and `hidden`. Do not duplicate it with presentation classes. Library controllers may write custom properties for measured geometry; keep that distinct from application styling.
 - Events are bubbling, `ui:`-prefixed CustomEvents (`ui:change`, `ui:open`, `ui:close`, `ui:beforeclose`, `ui:submit`, `ui:select`…). Cancelable ones honour `preventDefault()`.
 - After inserting HTML yourself: `document.dispatchEvent(new Event("ui:refresh"))` (htmx swaps are handled automatically).
 - Pick components from `reference/components.md`; do not invent `data-ui` names. Layout wrappers are classes.
@@ -78,7 +80,7 @@ import { Dialog, Tabs, Part, UI, useColibri, cx } from "@colibri-kit/ui/react";
 <UI kind="accordion" type="multiple" onChange={(e) => …}>…</UI>
 ```
 
-Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React is an optional peer dependency; no JSX build is required by the library itself.
+Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React is an optional peer dependency; JSX examples need the application’s JSX tooling. Do not also run `auto.js` on React-owned roots. The React adapter and automatic initializer import the full registry; explicit core-controller imports are the smaller integration for a few controls. Verify rerenders and teardown in the actual React integration.
 
 ## 6. FreeMarker (Spring)
 
@@ -115,12 +117,12 @@ For full app shells copy a block: `sidebar-01` … `sidebar-16`; auth pages `log
 ```html
 <section class="grid" style="--min: 16rem">
   <article class="card stack" data-gap="xs">
-    <h3 class="muted">Revenue</h3><p style="font-size: var(--c-text-2xl)">$48.2k</p>
+    <h3 class="muted">Revenue</h3><p class="revenue-value">$48.2k</p>
     <span class="badge" data-tone="ok">+12%</span>
   </article>
 </section>
 ```
-Cards respond to their container (container queries), so the same markup works in a sidebar.
+Define `.revenue-value { font-size: var(--c-text-2xl); }` in the application stylesheet. Label example metrics as sample data. The grid adapts to available width; test its actual container at narrow sizes. See [maintenance](reference/maintenance.md) before copying the interactive dashboard demos.
 
 **Data table**: use `data-ui="datatable"` (alias `data-table`) for sorting, selection, search and paging; it emits `ui:sort`, `ui:select`, `ui:query` (add `data-remote` to page server-side). Run `colibri view datatable` for the exact parts. Plain `<table>` is already styled for read-only data.
 
@@ -129,6 +131,6 @@ Cards respond to their container (container queries), so the same markup works i
 ## 8. Do / don't
 
 - Do: semantic elements, primitives + custom properties, `data-*` variants, tokens, one `data-ui` per behaviour.
-- Don't: Tailwind-style utility soup (`class="flex p-4 mt-2 text-sm …"`), `!important`, JS-driven styling, raw colours, new `data-ui` names for layout, Shadow DOM wrappers.
-- Accessibility: every interactive element keyboard-reachable and labelled; keep `<label>`s, `aria-label` on icon buttons, use `dialog`/`alert-dialog` (focus trap + return built in). Motion and colours respect `prefers-reduced-motion` and `prefers-contrast`. Check `colibri docs <name>` for expected keys.
-- Before finishing: run the project tests (`npm test`, `npm run test:e2e`) if present.
+- Avoid: long utility chains, repeated inline presentation, specificity escalation, raw brand colors in component rules, and invented `data-ui` names for layout. Fix the owning component instead of appending overrides. Do not remove deliberate hidden-state, touch-target or reduced-motion safeguards simply to reduce important-declaration counts.
+- Accessibility: every interactive element keyboard-reachable and labelled; keep `<label>`s, `aria-label` on icon buttons, use `dialog`/`alert-dialog` (focus trap + return built in). Verify reduced motion, visible focus, contrast and keyboard behavior. Existing ARIA wiring and browser tests are not screen-reader certification. Check `colibri docs <name>` for expected keys.
+- Before finishing: use checks appropriate to the change. In the Colibri repository, run `npm test`, `npm run build`, `npm run check:architecture` and relevant browser tests (`npm run test:e2e` for shared-style changes). Edit source/generators, not generated copies. Report what was tested and whether changes are local, committed, merged or deployed; skill updates do not themselves publish a marketplace release.

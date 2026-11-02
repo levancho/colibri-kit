@@ -17,6 +17,7 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm test
       - run: npm run build
+      - run: npm run check:architecture
       - run: npm run test:e2e
         env:
           CHROME: /usr/bin/google-chrome

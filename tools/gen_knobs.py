@@ -35,13 +35,14 @@ for v, body in {"solid": "background:var(--ui-primary);color:var(--ui-primary-fo
 for sz, (fs, pad) in {"sm": ("10.5px", "1px 6px"), "md": ("12px", "2px 8px"), "lg": ("13.5px", "4px 11px")}.items():
     R(f"{BD}{BD}[data-size={sz}]", f"font-size:{fs};padding:{pad}")
 R(f"{BD}{BD}[data-look]", "display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:max(4px,var(--ui-radius-sm));font:500 12px/1.4 var(--ui-font);white-space:nowrap")
-# callout looks
+# Callout appearance preserves semantic tone and changes component tokens only.
 CO = "[data-ui=callout]"
-for v, body in {"soft": f"background:color-mix(in oklab,var(--ui-primary) 12%,var(--ui-background))!important;border:1px solid transparent!important;color:{soft_fg}",
-                "surface": f"background:color-mix(in oklab,var(--ui-primary) 6%,var(--ui-background))!important;border:1px solid color-mix(in oklab,var(--ui-primary) 30%,var(--ui-background))!important;color:{soft_fg}",
-                "outline": f"background:transparent!important;border:1px solid color-mix(in oklab,var(--ui-primary) 55%,var(--ui-background))!important;color:{soft_fg}"}.items():
-    R(f"{CO}{CO}[data-look={v}]", body)
-R(f"{CO}{CO}[data-look] [data-ui-part=icon]", "color:var(--ui-primary)")
+for v, tokens in {
+    "soft": "--ui-callout-background:color-mix(in oklab,var(--co) 12%,var(--ui-background));--ui-callout-border:1px solid transparent",
+    "surface": "--ui-callout-background:color-mix(in oklab,var(--co) 6%,var(--ui-background));--ui-callout-border:1px solid color-mix(in oklab,var(--co) 30%,var(--ui-background))",
+    "outline": "--ui-callout-background:transparent;--ui-callout-border:1px solid color-mix(in oklab,var(--co) 55%,var(--ui-background))",
+}.items():
+    R(f"{CO}[data-look={v}]", tokens)
 # Accordion looks only set tokens on the owning component.
 A = "[data-ui=accordion]"
 base_acc = "--ui-acc-gap:0;--ui-acc-border:0;--ui-acc-radius:0;--ui-acc-background:transparent;--ui-acc-item-border:0;--ui-acc-divider:1px solid var(--ui-border);--ui-acc-item-radius:0;--ui-acc-item-background:transparent;--ui-acc-open:transparent;--ui-acc-hover:transparent;"
@@ -52,8 +53,7 @@ for value, tokens in {
 }.items():
     R(S("data-ui-acc", A, value), base_acc + tokens)
 # tabs + tab-nav
-TB = "[data-ui=tabs]"; TN = "[data-ui=tab-nav]"; L = " [data-ui-part=list]"; TR = " [data-ui-part=trigger]"; ACT = ":is([data-state=active],[aria-selected=true])"; LK = " [data-ui-part=link]"
-base_tr = "font:500 var(--ui-text-sm) var(--ui-font)!important;letter-spacing:0!important;text-transform:none!important;text-decoration:none!important"
+TB = "[data-ui=tabs]"; TN = "[data-ui=tab-nav]"
 # Tabs share one structure across packs and per-component looks.
 base_tabs = "--ui-tabs-background:transparent;--ui-tabs-border:0;--ui-tabs-rail:0;--ui-tabs-radius:0;--ui-tabs-padding:0;--ui-tabs-gap:.25rem;--ui-tabs-indicator:0;--ui-tabs-active-line:transparent;--ui-tabs-active-shadow:none;--ui-tabs-active-color:var(--ui-foreground);"
 for value, tokens in {
@@ -62,21 +62,13 @@ for value, tokens in {
     "segmented": "--ui-tabs-background:var(--ui-muted);--ui-tabs-padding:.25rem;--ui-tabs-radius:var(--ui-radius);--ui-tabs-trigger-radius:var(--ui-radius-sm);--ui-tabs-active-background:var(--ui-background);--ui-tabs-active-shadow:var(--ui-shadow-sm);",
 }.items():
     R(S("data-ui-tabs", TB, value), base_tabs + tokens)
-# Tab-nav is a separate link-based component.
-for comp, item, act, lst in ((TN, LK, "[aria-current=page]", ""),):
-    R(S("data-ui-tabs", comp, "underline", lst), "display:flex!important;background:none!important;border:0!important;border-bottom:1px solid var(--ui-border)!important;border-radius:0!important;padding:0!important;gap:1.1rem!important;box-shadow:none!important")
-    R(S("data-ui-tabs", comp, "underline", item), base_tr + ";background:none!important;border:0!important;border-radius:0!important;box-shadow:none!important;padding:0 .1rem!important;height:40px!important;display:inline-flex!important;align-items:center;border-bottom:2px solid transparent!important;margin-bottom:-1px!important;color:var(--ui-muted-foreground)!important")
-    R(S("data-ui-tabs", comp, "underline", item + act), "border-bottom-color:var(--ui-primary)!important;color:var(--ui-foreground)!important")
-    R(S("data-ui-tabs", comp, "pill", lst), "display:inline-flex!important;background:none!important;border:0!important;padding:0!important;gap:.35rem!important;box-shadow:none!important")
-    R(S("data-ui-tabs", comp, "pill", item), base_tr + ";border:0!important;border-radius:999px!important;background:none!important;box-shadow:none!important;padding:0 .95rem!important;height:32px!important;display:inline-flex!important;align-items:center;color:var(--ui-muted-foreground)!important")
-    R(S("data-ui-tabs", comp, "pill", item + ":hover"), "background:var(--ui-muted)!important")
-    R(S("data-ui-tabs", comp, "pill", item + act), "background:var(--ui-primary)!important;color:var(--ui-primary-foreground)!important")
-    R(S("data-ui-tabs", comp, "segmented", lst), "display:inline-flex!important;background:var(--ui-muted)!important;border:0!important;border-radius:var(--ui-radius)!important;padding:3px!important;gap:2px!important;box-shadow:none!important")
-    R(S("data-ui-tabs", comp, "segmented", item), base_tr + ";border:0!important;border-radius:var(--ui-radius-sm)!important;background:none!important;box-shadow:none!important;padding:0 .9rem!important;height:30px!important;display:inline-flex!important;align-items:center;color:var(--ui-muted-foreground)!important")
-    R(S("data-ui-tabs", comp, "segmented", item + act), "background:var(--ui-background)!important;color:var(--ui-foreground)!important;box-shadow:var(--ui-shadow-sm)!important")
-for v in ("underline","pill","segmented"): R(S("data-ui-tabs", TN, v, LK + "::after") + "," + S("data-ui-tabs", TN, v, LK + "::before"), "display:none!important")
-for v in ("pill","segmented"): R(S("data-ui-tabs", TN, v), "border-bottom:0!important")
-R(f"[data-ui-tabs] {TN}{TN}:not([data-look]),{TN}{TN}[data-look]", "display:flex;background:none;border:0;padding:0;box-shadow:none")
+# Link navigation owns its structure; looks only configure the root.
+for value, tokens in {
+    "underline": "--ui-tn-background:transparent;--ui-tn-rail:1px solid var(--ui-border);--ui-tn-radius:0;--ui-tn-padding:0;--ui-tn-gap:1.1rem;--ui-tn-link-radius:0;--ui-tn-link-padding:.55rem .1rem;--ui-tn-active-background:transparent;--ui-tn-active-color:var(--ui-foreground);--ui-tn-active-shadow:none;--ui-tn-indicator:block",
+    "pill": "--ui-tn-background:transparent;--ui-tn-rail:0;--ui-tn-radius:0;--ui-tn-padding:0;--ui-tn-gap:.35rem;--ui-tn-link-radius:999px;--ui-tn-link-padding:.45rem .95rem;--ui-tn-active-background:var(--ui-primary);--ui-tn-active-color:var(--ui-primary-foreground);--ui-tn-active-shadow:none;--ui-tn-indicator:none",
+    "segmented": "--ui-tn-background:var(--ui-muted);--ui-tn-rail:0;--ui-tn-radius:var(--ui-radius);--ui-tn-padding:3px;--ui-tn-gap:2px;--ui-tn-link-radius:var(--ui-radius-sm);--ui-tn-link-padding:.4rem .9rem;--ui-tn-active-background:var(--ui-background);--ui-tn-active-color:var(--ui-foreground);--ui-tn-active-shadow:var(--ui-shadow-sm);--ui-tn-indicator:none",
+}.items():
+    R(f"[data-ui-tabs={value}] {TN}:not([data-look]),{TN}[data-look={value}]", tokens)
 # cards
 CD = ":is([data-ui=card],.card)"
 for v, body in {"outline": "background:var(--ui-background)!important;border:1px solid var(--ui-border)!important;box-shadow:none!important",

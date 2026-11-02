@@ -66,8 +66,8 @@
   <section class="center" aria-label="Packages"><div class="grid pk" style="--min:19rem">
     <article class="card stack" id="css">
       <div class="cluster" style="--justify:space-between"><h2>Colibri CSS</h2><code>@colibri-kit/css</code></div>
-      <p class="muted"><b>The stylesheet.</b> This is the look, and it is <em>not</em> headless. A token-first stylesheet: modern reset, OKLCH colour tokens from one hue, fluid type, built-in dark mode, seven layout primitives and a few opt-in components, all in cascade layers.</p>
-      <ul class="ticks"><li>Cascade layers: your CSS always wins</li><li>Container queries, <code>:has()</code>, native nesting</li><li><code>light-dark()</code> dark mode, <code>clamp()</code> fluid scale</li><li>Primitives, not utilities: <code>.stack .grid .split .cluster</code></li></ul>
+      <p class="muted"><b>The stylesheet.</b> This is the look, and it is <em>not</em> headless. A token-first stylesheet: modern reset, OKLCH colour tokens from one hue, fluid type, built-in dark mode, reusable layout primitives and a few opt-in components, all in cascade layers.</p>
+      <ul class="ticks"><li>Cascade layers for normal style overrides</li><li>Container queries, <code>:has()</code>, native nesting</li><li><code>light-dark()</code> dark mode, <code>clamp()</code> fluid scale</li><li>Primitives, not utilities: <code>.stack .grid .split .cluster</code></li></ul>
       <a class="more" href="/kitchen-sink/examples/colibri-css.html">Colibri CSS library page →</a>
     </article>
     <article class="card stack" id="ui">
@@ -114,21 +114,74 @@
     </div>
   </section>
 
-  <section class="center stack" id="why">
-    <h2>Why choose Colibri Kit?</h2>
-    <p class="muted">Keep the design in CSS, the structure in HTML, and your choice of framework open.</p>
-    <div class="callout">
-      <h3>Coming from shadcn/ui?</h3>
-      <p><a href="https://ui.shadcn.com/docs/installation/manual">shadcn/ui uses Tailwind</a>. Colibri uses semantic CSS and framework-independent behaviour. Choose Colibri for server templates, mixed stacks or a Tailwind-free workflow. Already committed to React and Tailwind? shadcn/ui may be the closer fit.</p>
+  <section class="center stack" id="why" aria-labelledby="why-h">
+    <h2 id="why-h">How Colibri avoids CSS soup</h2>
+    <p class="muted">The goal is code you can change later. Here is what Colibri provides, how it works, and where your application still needs its own component structure.</p>
+    <div class="grid maintenance-grid">
+      <article class="card stack">
+        <h3>1. Components instead of class strings</h3>
+        <p><b>The problem:</b> Copying long style strings into every template makes changes easy to miss.</p>
+        <p><b>Colibri’s approach:</b> A component class names the element; an attribute selects its variant. The stylesheet owns the styling.</p>
+        <pre class="code"><code>&lt;button class="btn" data-variant="outline"&gt;
+  Save changes
+&lt;/button&gt;</code></pre>
+        <p class="muted">Change the button rule once. Reuse larger compositions through your own template partials or components.</p>
+      </article>
+      <article class="card stack">
+        <h3>2. Shared design tokens</h3>
+        <p><b>The problem:</b> Scattered colors, spacing and font values drift apart as the application grows.</p>
+        <p><b>Colibri’s approach:</b> Components consume named CSS variables for color, spacing, typography and shape. Theme changes happen in CSS.</p>
+        <pre class="code"><code>:root {
+  --c-hue: 160;
+  --c-radius: 8px;
+  --c-space-s: 1rem;
+}</code></pre>
+        <p class="muted">The CSS/UI bridge connects the two token sets. Dark mode changes shared palette values rather than adding dark-mode classes to every element.</p>
+      </article>
+      <article class="card stack">
+        <h3>3. Separate structure, style and behavior</h3>
+        <p><b>The problem:</b> Rebuilding interaction logic whenever a component’s design changes couples unrelated work.</p>
+        <p><b>Colibri’s approach:</b> HTML identifies component parts. JavaScript manages state, focus and keyboard controls. Optional stylesheets control appearance.</p>
+        <pre class="code"><code>&lt;div data-ui="dialog"&gt;
+  &lt;button data-ui-part="trigger"&gt;Open&lt;/button&gt;
+  &lt;dialog data-ui-part="content"&gt;…&lt;/dialog&gt;
+&lt;/div&gt;</code></pre>
+        <p class="muted">Use the same behavior controllers from HTML, FreeMarker macros or React bindings. Bring your own styles when you need a different design.</p>
+      </article>
+      <article class="card stack">
+        <h3>4. Reusable layouts, limited helpers</h3>
+        <p><b>The problem:</b> Replacing utility classes with dozens of one-off inline styles produces the same maintenance burden.</p>
+        <p><b>Colibri’s approach:</b> Layout primitives handle common arrangements. Component styles live in CSS; markup supplies content, variants and data-driven values.</p>
+        <pre class="code"><code>&lt;section class="card stack" data-gap="m"&gt;
+  &lt;h2&gt;Account settings&lt;/h2&gt;
+  …
+&lt;/section&gt;</code></pre>
+        <p class="muted">The CSS helper set is intentionally small: visually-hidden, muted, flow and truncate. Repeated product UI belongs in a named component, not a growing utility vocabulary.</p>
+      </article>
+      <article class="card stack">
+        <h3>5. Override styles deliberately</h3>
+        <p><b>The problem:</b> Specificity contests and repeated overrides make it unclear which rule controls the design.</p>
+        <p><b>Colibri’s approach:</b> The CSS core uses named cascade layers. Ordinary unlayered application rules can override its normal declarations without stronger selectors.</p>
+        <pre class="code"><code>/* Application CSS, outside a layer */
+.btn {
+  border-radius: 6px;
+}</code></pre>
+        <p class="muted">The optional UI theme still has legacy overrides. Prefer its tokens or use the headless controllers with your own CSS; cascade-layer guarantees currently apply to the CSS core.</p>
+      </article>
+      <article class="card stack">
+        <h3>6. Keep the runtime under your control</h3>
+        <p><b>The problem:</b> A hosted service or required compiler adds dependencies to keeping an interface working.</p>
+        <p><b>Colibri’s approach:</b> Serve the CSS and JavaScript with your application. The core controllers have no third-party runtime imports, and plain HTML usage needs no build step.</p>
+        <pre class="code"><code>import { createTabs } from "./ui/src/core/tabs.js";
+createTabs(document.querySelector("#settings"));</code></pre>
+        <p class="muted">You can keep and modify the source. That reduces runtime dependencies; it does not guarantee future maintenance, browser compatibility or project funding.</p>
+      </article>
     </div>
-    <div class="grid" style="--min:16rem">
-      <div class="card stack"><h3>Readable markup, reusable design</h3><p class="muted">Describe components with semantic classes and attributes. Keep colours, spacing and variants in CSS and tokens, so a design change does not mean editing utility strings across your templates.</p></div>
-      <div class="card stack"><h3>Start without a build pipeline</h3><p class="muted">Link the stylesheet and import the behaviour modules in a plain HTML page. No Tailwind compiler or frontend framework is required. Add Colibri to your existing application without rebuilding it around a new stack.</p></div>
-      <div class="card stack"><h3>Platform-native</h3><p class="muted">Layers, <code>:has()</code>, container queries, nesting, <code>light-dark()</code>, OKLCH and native <code>&lt;dialog&gt;</code>: the browser does the heavy lifting.</p></div>
-      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> changes the base palette. Add <code>data-colibri-theme</code> to a section to derive its palette from a local hue. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
-      <div class="card stack"><h3>Works with server templates</h3><p class="muted">Plain HTML, FreeMarker macros and custom elements. No SPA required, no hydration.</p></div>
-      <div class="card stack"><h3>Accessibility foundations</h3><p class="muted">Behavior controllers provide keyboard controls and ARIA wiring; CSS supplies focus rings and reduced-motion tokens. Test your content, contrast and integrations before release.</p></div>
-    </div>
+    <details class="callout">
+      <summary>How is this different from Tailwind or shadcn/ui?</summary>
+      <p><a href="https://tailwindcss.com/docs/styling-with-utility-classes#using-components">Tailwind also recommends reusable components</a> and supports design tokens. It does not bypass the CSS cascade. Colibri’s distinction is its default authoring model: semantic component classes, CSS-owned styles and framework-independent behavior, with no Tailwind dependency. <a href="https://ui.shadcn.com/docs/installation/manual">shadcn/ui’s documented setup uses Tailwind</a>.</p>
+      <p>Choose Colibri when that model fits your project. Keeping application components small and reusable still matters whichever library you use.</p>
+    </details>
   </section>
 
   <section class="center stack" id="themes">
