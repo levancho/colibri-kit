@@ -90,3 +90,34 @@ details.source summary{cursor:pointer;font-size:var(--c-text-sm);color:var(--c-m
 
 /* touch: >=44px targets */
 @media (pointer:coarse){.dash-shell :is(button,a[href],select,input:not([type=checkbox],[type=radio],[type=range])),.dash-main :is(button,select,input:not([type=checkbox],[type=radio],[type=range])),.dash-side a{min-block-size:44px!important;min-inline-size:44px}.dash-side a{display:flex;align-items:center}}
+
+/* Interactive demo controls share the same tokens and native form semantics. */
+.demo-note{margin:0;color:var(--c-muted);font-size:var(--c-text-sm)}
+#demo-status{margin:0;font-size:var(--c-text-sm)}
+#demo-status:empty{display:none}
+.demo-dialog{margin:auto;padding:var(--c-space-m);inline-size:min(36rem,calc(100% - 2rem));max-block-size:calc(100dvh - 2rem);overflow:auto;background:var(--c-surface);color:var(--c-fg);border:1px solid var(--c-line);border-radius:var(--c-radius);box-shadow:var(--c-shadow-l)}
+.demo-dialog::backdrop{background:rgb(0 0 0 / .45)}
+.demo-dialog>header,.demo-actions{display:flex;align-items:center;justify-content:space-between;gap:var(--c-space-s);flex-wrap:wrap}
+.demo-dialog h2{font-size:var(--c-text-lg);margin:0}
+.demo-form{display:grid;gap:var(--c-space-s);margin-block-start:var(--c-space-s)}
+.demo-form label{display:grid;gap:.3rem}
+.demo-form :is(input,select),.demo-filter select{font:inherit;color:var(--c-fg);background:var(--c-bg);border:1px solid var(--c-line);padding:.5rem;border-radius:var(--c-radius-s);min-inline-size:0;max-inline-size:100%}
+.deal{font:inherit;text-align:start;color:var(--c-fg);cursor:pointer;inline-size:100%;overflow-wrap:anywhere}
+.deal:hover{border-color:var(--c-accent)}
+.dash :is(button,a,input,select):focus-visible,.demo-dialog :focus-visible{outline:2px solid var(--c-accent);outline-offset:3px}
+.chart-data{font-size:var(--c-text-sm)}
+.chart-data pre{max-block-size:12rem;overflow:auto;white-space:pre-wrap}
+.nav-backdrop,.nav-close{display:none}
+@media(max-width:900px){
+ .nav-close{display:inline-flex}
+ .nav-backdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:4;border:0;border-radius:0;background:rgb(0 0 0 / .45);font-size:0}
+}
+@media(prefers-reduced-motion:reduce){.dash-side{transition:none}}
+
+/* Reusable dashboard presentation stays here; markup only supplies data tokens. */
+.dash-breadcrumb{margin:0;font-size:var(--c-text-sm);color:var(--c-muted)}
+.dash-top #hue{inline-size:6rem}
+.dash-top #hue-out{min-inline-size:3ch;font-size:var(--c-text-xs)}
+.table-scroll{overflow:auto}
+.quota-list{padding:0;margin:0;list-style:none}
+.source-heading{font-size:var(--c-text-lg);margin-block:var(--c-space-s) 0}

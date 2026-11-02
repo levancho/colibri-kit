@@ -65,13 +65,12 @@ export const createCheckboxGroup = choiceGroup("__uiCheckboxGroup");
 export function createTabNav(root, o = {}) {
   return once(root, "__uiTabNav", () => {
     const b = bag(), links = () => parts(root, "link");
-    const mark = (a) => { links().forEach((l) => { const on = l === a; on ? l.setAttribute("aria-current", "page") : l.removeAttribute("aria-current"); setState(l, on ? "active" : "inactive"); });
-      root.style.setProperty("--tn-x", (a?.offsetLeft ?? 0) + "px"); root.style.setProperty("--tn-w", (a?.offsetWidth ?? 0) + "px"); };
+    const mark = (a) => { if (a && !links().includes(a)) return; links().forEach((l) => { const on = l === a; on ? l.setAttribute("aria-current", "page") : l.removeAttribute("aria-current"); setState(l, on ? "active" : "inactive"); }); };
     const fromUrl = () => links().find((l) => l.getAttribute("aria-current") === "page") || links().find((l) => l.href === location.href || (l.hash && l.hash === location.hash)) || links()[0];
-    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=link]"); if (a) { mark(a); emit(root, "change", { href: a.getAttribute("href") }); } });
-    b.on(root, "keydown", (e) => { const a = e.target.closest("[data-ui-part=link]"); const n = a && roving(links(), a, e.key, { orientation: "horizontal" }); if (n) { e.preventDefault(); n.focus(); } });
+    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=link]"); if (a && links().includes(a)) { mark(a); emit(root, "change", { href: a.getAttribute("href") }); } });
+    b.on(root, "keydown", (e) => { const a = e.target.closest("[data-ui-part=link]"); const n = a && links().includes(a) && roving(links(), a, e.key, { orientation: "horizontal" }); if (n) { e.preventDefault(); n.focus(); } });
     b.on(window, "hashchange", () => mark(fromUrl()));
-    mark(fromUrl()); requestAnimationFrame(() => mark(links().find((l) => l.getAttribute("aria-current") === "page")));
+    mark(fromUrl());
     return { select: mark, destroy: b.off };
   });
 }

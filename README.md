@@ -62,10 +62,11 @@ Node 22.12+, Python 3 and an installed Chrome are needed for maintainer checks. 
 npm ci --ignore-scripts
 npm test
 npm run build
+npm run check:architecture
 npm run test:e2e
 ```
 
-Browser tests start their own temporary servers. Set `CHROME=/path/to/chrome` if Chrome is not in a standard location. CI checks unit tests, the built site, component flows, responsive foundations, and tab/accordion styles across core and all packs. CSS visibility safeguards deliberately use `!important`; normal layered declarations remain overridable.
+Browser tests start their own temporary servers. Set `CHROME=/path/to/chrome` if Chrome is not in a standard location. CI checks unit tests, the built site, component flows, responsive foundations, dashboard interactions, and navigation/callout styles across core and all packs. Architecture checks flag new important declarations, external core imports, utility-vocabulary growth and presentation styles in dashboard screens. See `docs/maintenance-audit.md` for scope and remaining debt. CSS visibility safeguards deliberately use `!important`; normal layered declarations remain overridable.
 
 ## License
 

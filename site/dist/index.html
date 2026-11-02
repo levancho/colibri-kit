@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Colibri Kit: the look (Colibri CSS) + the behaviour (Colibri UI)</title>
-<meta name="description" content="Colibri Kit has two parts: Colibri CSS, a small stylesheet that makes plain HTML look good, and Colibri UI, components that add behaviour (dialogs, menus, tabs) without forcing a look on you. No build step, no utility bloat.">
-<meta property="og:title" content="Colibri Kit"><meta property="og:description" content="Colibri CSS = the look. Colibri UI = the behaviour. Plain HTML, no build step.">
+<title>Colibri — A simple, powerful UI library. Without the CSS soup.</title>
+<meta name="description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.">
+<meta property="og:title" content="Colibri — A simple, powerful UI library. Without the CSS soup."><meta property="og:description" content="Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
 <script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{var H=document.documentElement,d=localStorage.getItem("colibri.kit.theme");if(d)H.dataset.theme=d;var q=new URLSearchParams(location.search).get("theme"),p=q!==null?q:localStorage.getItem("colibri.kit.pack");if(p)H.dataset.kitTheme=p}catch(_){}</script>
 <link rel="stylesheet" href="/css/colibri.css">
@@ -25,8 +25,8 @@
   <section class="hero center" aria-labelledby="hero-h">
     <div class="hero-copy stack">
       <a class="pill" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><span class="pill-dot" aria-hidden="true"></span>Open source · MIT <span aria-hidden="true">→</span></a>
-      <h1 id="hero-h">Plain HTML,<br><span class="grad">beautifully finished.</span></h1>
-      <p class="lede"><b>Colibri CSS</b> gives your pages the look. <b>Colibri UI</b> makes things work: dialogs, menus, tabs, with keyboard controls and ARIA wiring. No utility classes, no compiler, no framework lock-in. The same markup works in HTML, FreeMarker and React.</p>
+      <h1 id="hero-h">A simple, powerful UI library.<br><span class="grad">Without the CSS soup.</span></h1>
+      <p class="lede">Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, FreeMarker and React. No Tailwind nightmare.</p>
       <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
         <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
         <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
@@ -47,7 +47,8 @@
 
 
   <section class="center stack explain" id="what" aria-labelledby="what-h">
-    <h2 id="what-h">Two pieces, one kit</h2>
+    <h2 id="what-h">One kit, from layout to interaction</h2>
+    <p class="muted">Start with components, page blocks and dashboard examples that share a design language. Underneath, two independent layers let you use the whole kit or bring just the styling or behaviour into an existing project.</p>
     <div class="kit-diagram" role="img" aria-label="Colibri Kit contains Colibri CSS, which is the look, and Colibri UI, which is the behaviour">
       <div class="kd-kit"><img src="/colibri-mark.svg" alt="" width="20" height="20" style="vertical-align:-4px;border-radius:5px"> Colibri Kit <small>the family</small></div>
       <div class="kd-row">
@@ -65,8 +66,8 @@
   <section class="center" aria-label="Packages"><div class="grid pk" style="--min:19rem">
     <article class="card stack" id="css">
       <div class="cluster" style="--justify:space-between"><h2>Colibri CSS</h2><code>@colibri-kit/css</code></div>
-      <p class="muted"><b>The stylesheet.</b> This is the look, and it is <em>not</em> headless. A token-first stylesheet: modern reset, OKLCH colour tokens from one hue, fluid type, built-in dark mode, seven layout primitives and a few opt-in components, all in cascade layers.</p>
-      <ul class="ticks"><li>Cascade layers: your CSS always wins</li><li>Container queries, <code>:has()</code>, native nesting</li><li><code>light-dark()</code> dark mode, <code>clamp()</code> fluid scale</li><li>Primitives, not utilities: <code>.stack .grid .split .cluster</code></li></ul>
+      <p class="muted"><b>The stylesheet.</b> This is the look, and it is <em>not</em> headless. A token-first stylesheet: modern reset, OKLCH colour tokens from one hue, fluid type, built-in dark mode, reusable layout primitives and a few opt-in components, all in cascade layers.</p>
+      <ul class="ticks"><li>Cascade layers for normal style overrides</li><li>Container queries, <code>:has()</code>, native nesting</li><li><code>light-dark()</code> dark mode, <code>clamp()</code> fluid scale</li><li>Primitives, not utilities: <code>.stack .grid .split .cluster</code></li></ul>
       <a class="more" href="/kitchen-sink/examples/colibri-css.html">Colibri CSS library page →</a>
     </article>
     <article class="card stack" id="ui">
@@ -113,16 +114,74 @@
     </div>
   </section>
 
-  <section class="center stack" id="why">
-    <h2>Why Colibri Kit</h2>
-    <div class="grid" style="--min:16rem">
-      <div class="card stack"><h3>Not a utility framework</h3><p class="muted">No twenty-class elements, no compiler and no design scattered through templates. The design lives in CSS and tokens.</p></div>
-      <div class="card stack"><h3>Not a heavy framework</h3><p class="muted">No 300 KB bundle, no specificity fights, no look you have to undo. Layers mean your CSS always wins.</p></div>
-      <div class="card stack"><h3>Platform-native</h3><p class="muted">Layers, <code>:has()</code>, container queries, nesting, <code>light-dark()</code>, OKLCH and native <code>&lt;dialog&gt;</code>: the browser does the heavy lifting.</p></div>
-      <div class="card stack"><h3>Re-colour in one line</h3><p class="muted"><code>:root { --c-hue: 160 }</code> re-brands everything. Add <code>data-colibri-theme</code> to a section to derive its palette from a local hue. For a whole new look (shapes, tabs, density), use a theme pack.</p></div>
-      <div class="card stack"><h3>Works with server templates</h3><p class="muted">Plain HTML, FreeMarker macros and custom elements. No SPA required, no hydration.</p></div>
-      <div class="card stack"><h3>Accessibility foundations</h3><p class="muted">Behavior controllers provide keyboard controls and ARIA wiring; CSS supplies focus rings and reduced-motion tokens. Test your content, contrast and integrations before release.</p></div>
+  <section class="center stack" id="why" aria-labelledby="why-h">
+    <h2 id="why-h">How Colibri avoids CSS soup</h2>
+    <p class="muted">The goal is code you can change later. Here is what Colibri provides, how it works, and where your application still needs its own component structure.</p>
+    <div class="grid maintenance-grid">
+      <article class="card stack">
+        <h3>1. Components instead of class strings</h3>
+        <p><b>The problem:</b> Copying long style strings into every template makes changes easy to miss.</p>
+        <p><b>Colibri’s approach:</b> A component class names the element; an attribute selects its variant. The stylesheet owns the styling.</p>
+        <pre class="code"><code>&lt;button class="btn" data-variant="outline"&gt;
+  Save changes
+&lt;/button&gt;</code></pre>
+        <p class="muted">Change the button rule once. Reuse larger compositions through your own template partials or components.</p>
+      </article>
+      <article class="card stack">
+        <h3>2. Shared design tokens</h3>
+        <p><b>The problem:</b> Scattered colors, spacing and font values drift apart as the application grows.</p>
+        <p><b>Colibri’s approach:</b> Components consume named CSS variables for color, spacing, typography and shape. Theme changes happen in CSS.</p>
+        <pre class="code"><code>:root {
+  --c-hue: 160;
+  --c-radius: 8px;
+  --c-space-s: 1rem;
+}</code></pre>
+        <p class="muted">The CSS/UI bridge connects the two token sets. Dark mode changes shared palette values rather than adding dark-mode classes to every element.</p>
+      </article>
+      <article class="card stack">
+        <h3>3. Separate structure, style and behavior</h3>
+        <p><b>The problem:</b> Rebuilding interaction logic whenever a component’s design changes couples unrelated work.</p>
+        <p><b>Colibri’s approach:</b> HTML identifies component parts. JavaScript manages state, focus and keyboard controls. Optional stylesheets control appearance.</p>
+        <pre class="code"><code>&lt;div data-ui="dialog"&gt;
+  &lt;button data-ui-part="trigger"&gt;Open&lt;/button&gt;
+  &lt;dialog data-ui-part="content"&gt;…&lt;/dialog&gt;
+&lt;/div&gt;</code></pre>
+        <p class="muted">Use the same behavior controllers from HTML, FreeMarker macros or React bindings. Bring your own styles when you need a different design.</p>
+      </article>
+      <article class="card stack">
+        <h3>4. Reusable layouts, limited helpers</h3>
+        <p><b>The problem:</b> Replacing utility classes with dozens of one-off inline styles produces the same maintenance burden.</p>
+        <p><b>Colibri’s approach:</b> Layout primitives handle common arrangements. Component styles live in CSS; markup supplies content, variants and data-driven values.</p>
+        <pre class="code"><code>&lt;section class="card stack" data-gap="m"&gt;
+  &lt;h2&gt;Account settings&lt;/h2&gt;
+  …
+&lt;/section&gt;</code></pre>
+        <p class="muted">The CSS helper set is intentionally small: visually-hidden, muted, flow and truncate. Repeated product UI belongs in a named component, not a growing utility vocabulary.</p>
+      </article>
+      <article class="card stack">
+        <h3>5. Override styles deliberately</h3>
+        <p><b>The problem:</b> Specificity contests and repeated overrides make it unclear which rule controls the design.</p>
+        <p><b>Colibri’s approach:</b> The CSS core uses named cascade layers. Ordinary unlayered application rules can override its normal declarations without stronger selectors.</p>
+        <pre class="code"><code>/* Application CSS, outside a layer */
+.btn {
+  border-radius: 6px;
+}</code></pre>
+        <p class="muted">The optional UI theme still has legacy overrides. Prefer its tokens or use the headless controllers with your own CSS; cascade-layer guarantees currently apply to the CSS core.</p>
+      </article>
+      <article class="card stack">
+        <h3>6. Keep the runtime under your control</h3>
+        <p><b>The problem:</b> A hosted service or required compiler adds dependencies to keeping an interface working.</p>
+        <p><b>Colibri’s approach:</b> Serve the CSS and JavaScript with your application. The core controllers have no third-party runtime imports, and plain HTML usage needs no build step.</p>
+        <pre class="code"><code>import { createTabs } from "./ui/src/core/tabs.js";
+createTabs(document.querySelector("#settings"));</code></pre>
+        <p class="muted">You can keep and modify the source. That reduces runtime dependencies; it does not guarantee future maintenance, browser compatibility or project funding.</p>
+      </article>
     </div>
+    <details class="callout">
+      <summary>How is this different from Tailwind or shadcn/ui?</summary>
+      <p><a href="https://tailwindcss.com/docs/styling-with-utility-classes#using-components">Tailwind also recommends reusable components</a> and supports design tokens. It does not bypass the CSS cascade. Colibri’s distinction is its default authoring model: semantic component classes, CSS-owned styles and framework-independent behavior, with no Tailwind dependency. <a href="https://ui.shadcn.com/docs/installation/manual">shadcn/ui’s documented setup uses Tailwind</a>.</p>
+      <p>Choose Colibri when that model fits your project. Keeping application components small and reusable still matters whichever library you use.</p>
+    </details>
   </section>
 
   <section class="center stack" id="themes">

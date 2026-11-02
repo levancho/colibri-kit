@@ -1,6 +1,6 @@
 ---
 name: colibri-ui
-description: Build UI with Colibri UI (headless data-ui components, FreeMarker macros, --ui-* theme tokens). Use when a project has colibri.json or imports colibri-ui, or the user asks for a login page, sidebar, dashboard, chat, form or any component in a Colibri/Despani project.
+description: Build UI with Colibri UI (headless data-ui components, FreeMarker macros, --ui-* theme tokens). Use when a project has colibri.json or imports colibri-ui, or the user asks to build or change components in an existing Colibri project.
 ---
 # Colibri UI skill
 
@@ -11,7 +11,7 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 
 ## 2. Markup contract (never break these)
 - A component root has `data-ui="name"`; its pieces have `data-ui-part="part"`. Nested components stay isolated.
-- State lives in `data-state`, `aria-*` and `hidden`. Do not toggle classes for state; never inline styles for state.
+- Semantic state lives in `data-state`, `aria-*` and `hidden`. Do not duplicate it with presentation classes; controller-owned custom properties for measured geometry are a separate concern.
 - Behaviour is automatic: `src/core/auto.js` initialises on load, on `ui:refresh` and after `htmx:afterSwap`.
   After inserting HTML yourself, dispatch `document.dispatchEvent(new Event("ui:refresh"))`.
 - Events are bubbling `ui:*` CustomEvents (`ui:change`, `ui:submit`, `ui:open`…); cancelable ones honour preventDefault().
@@ -36,10 +36,14 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
   Token list: MCP `get_theme_tokens`. Use semantic tokens (`--ui-muted-foreground`, `--ui-destructive`), not raw colours.
 - Motion: `data-ui-motion="fade|slide-up|scale|…"` on anything that appears/disappears; respects reduced motion.
 
+- Prefer semantic component classes and reusable template/React compositions over repeated class strings or inline presentation styles. Keep spacing, typography and color decisions in shared tokens; keep data-driven custom properties in markup only where needed.
+- The optional UI theme is not fully layered and still contains legacy important rules. Prefer token customization; do not claim every application rule automatically wins. Tab, accordion, tab-navigation and callout looks use component tokens; edit their owning rules rather than adding competing descendant overrides.
+- Headless does not mean no CSS is allowed or that accessibility is certified. Preserve labels, focus visibility, native semantics and ownership of nested parts.
+
 ## 5. Server side (Spring + FreeMarker)
 `[#import "/ui/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments.
 Keep Spring binding: macros only emit markup; `name=` attributes are yours.
 
 ## 6. Before you finish
 Every interactive thing must be reachable by keyboard and labelled. Check `colibri docs <name>` for the expected
-keys. Run the project's tests (`npm test`, `npm run test:e2e`).
+keys. For Colibri repository changes, build before browser tests: `npm test`, `npm run build`, `npm run check:architecture`, `npm run test:e2e`. Do not edit generated distribution files directly. Outside this repository, run the host project’s applicable checks instead. Do not infer permission to publish, deploy or migrate the host stack from using this skill.

@@ -102,3 +102,7 @@ html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--
   .specimen { padding-inline: var(--c-space-s); }
   .spec-chip.c3 { inset-inline-end: 0; }
 }
+
+.maintenance-grid { --min: 20rem; align-items: start; }
+.maintenance-grid > article { min-inline-size: 0; }
+.maintenance-grid .code { font-size: var(--c-text-xs); }

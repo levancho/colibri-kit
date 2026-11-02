@@ -7,21 +7,30 @@ mount();
 initPackPicker(document.getElementById("pack"));
 initScheme(document.getElementById("scheme"));
 initHue(document.getElementById("hue"), document.getElementById("hue-out"));
-const shell = document.querySelector(".dash");
-document.querySelector(".menu-btn")?.addEventListener("click", () => shell.toggleAttribute("data-open"));
-// segmented range buttons: re-plot charts with deterministic pseudo data
-const rnd = (seed, n, base, amp) => Array.from({ length: n }, (_, i) => Math.round(base + amp * (Math.sin(i * 0.7 + seed) + Math.sin(i * 0.23 + seed * 2) * 0.6 + i / n)));
-for (const seg of document.querySelectorAll(".seg[data-target]")) seg.addEventListener("click", (e) => {
-  const b = e.target.closest("button"); if (!b) return;
-  seg.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", x === b));
-  const el = document.getElementById(seg.dataset.target), n = +b.dataset.n, k = (el.dataset.values.match(/\[\[/) ? 2 : 1);
-  el.dataset.values = JSON.stringify(k === 2 ? [rnd(n, n, 420, 120), rnd(n + 3, n, 260, 90)] : rnd(n, n, 300, 120)); mount(el.parentElement);
-});
+import { initDashboard } from "./demo.js";
+initDashboard();
+// Range changes select the same underlying sample series, never invent new data.
+for (const seg of document.querySelectorAll(".seg[data-target]")) {
+  const el = document.getElementById(seg.dataset.target), source = JSON.parse(el.dataset.values);
+  seg.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+    const n = Number(b.dataset.n);
+    el.dataset.values = JSON.stringify(Array.isArray(source[0]) ? source.map(s => s.slice(-n)) : source.slice(-n));
+    mount(el.parentElement);
+    el.dispatchEvent(new Event("chartchange"));
+  });
+}
 // HTML | FreeMarker | React tabs
-for (const box of document.querySelectorAll(".code-tabs")) {
+for (const [index, box] of [...document.querySelectorAll(".code-tabs")].entries()) {
   const tabs = [...box.querySelectorAll("[role=tab]")], panels = [...box.querySelectorAll("[role=tabpanel]")];
-  tabs.forEach((t, i) => t.addEventListener("click", () => { tabs.forEach((x, j) => { x.setAttribute("aria-selected", i === j); panels[j].hidden = i !== j; }); }));
+  tabs.forEach((t, i) => {
+    t.id = `source-${index}-tab-${i}`; panels[i].id = `source-${index}-panel-${i}`;
+    t.setAttribute("aria-controls", panels[i].id); panels[i].setAttribute("aria-labelledby", t.id);
+    t.tabIndex = i === 0 ? 0 : -1;
+  });
+  tabs.forEach((t, i) => t.addEventListener("click", () => { tabs.forEach((x, j) => { x.setAttribute("aria-selected", i === j); panels[j].hidden = i !== j; x.tabIndex = i === j ? 0 : -1; }); }));
   box.querySelector("[role=tablist]").addEventListener("keydown", (e) => { const i = tabs.indexOf(document.activeElement); if (i < 0) return;
-    const n = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i + tabs.length - 1) % tabs.length : -1; if (n >= 0) { tabs[n].focus(); tabs[n].click(); } });
+    const n = e.key === "ArrowRight" ? (i + 1) % tabs.length : e.key === "ArrowLeft" ? (i + tabs.length - 1) % tabs.length : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : -1; if (n >= 0) { e.preventDefault(); tabs[n].focus(); tabs[n].click(); } });
 }
 highlightAll();
