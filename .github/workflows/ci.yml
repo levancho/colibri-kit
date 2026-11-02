@@ -1,0 +1,23 @@
+name: Library checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      - run: npm run build
+      - run: npm run test:e2e
+        env:
+          CHROME: /usr/bin/google-chrome
+      - run: git diff --exit-code -- packages/colibri-css/dist site/dist examples/kitchen-sink.html registry/colibri.json themes/knobs.css README.md

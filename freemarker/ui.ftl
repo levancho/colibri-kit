@@ -1,5 +1,5 @@
 [#ftl]
-[#-- Colibri UI (@colibri/ui): shared FreeMarker macros. Emit ONLY the data-ui contract (no classes/styles).
+[#-- Colibri UI (@colibri-kit/ui): shared FreeMarker macros. Emit ONLY the data-ui contract (no classes/styles).
      [#import "/ui/ui.ftl" as ui]
      Generic (works for every component, incl. future ones):
        [@ui.c "popover" {"id":"x"}] [@ui.p "trigger" tag="button"]Open[/@ui.p] [@ui.p "content"]…[/@ui.p] [/@ui.c]

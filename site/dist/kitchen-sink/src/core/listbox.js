@@ -138,7 +138,18 @@ export function createCombobox(root, o = {}) {
     const render = () => {
       renderSelected(box, sel); root.dataset.value = sel.values.join(","); hiddenInputs(root, name, sel.values);
       const chips = parts(root, "chips")[0];
-      if (chips && sel.multiple) chips.innerHTML = sel.values.map((v) => `<span data-ui-part="chip" data-value="${v.replace(/"/g, "&quot;")}">${textFor(v)}<button type="button" data-ui-part="chip-remove" aria-label="Remove ${textFor(v)}">×</button></span>`).join("");
+      if (chips && sel.multiple) {
+        const doc = root.ownerDocument;
+        chips.replaceChildren(...sel.values.map((v) => {
+          const chip = doc.createElement("span"), remove = doc.createElement("button");
+          chip.dataset.uiPart = "chip"; chip.dataset.value = v;
+          chip.textContent = textFor(v);
+          remove.type = "button"; remove.dataset.uiPart = "chip-remove";
+          remove.setAttribute("aria-label", `Remove ${textFor(v)}`); remove.textContent = "×";
+          chip.append(remove);
+          return chip;
+        }));
+      }
     };
     const setOpen = (v) => {
       if (v === open) return; open = v; box.hidden = !open; input.setAttribute("aria-expanded", String(open));

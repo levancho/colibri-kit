@@ -1,4 +1,4 @@
-/* Colibri UI motion library (@colibri/ui/themes/motion.css). OPTIONAL, opt-in, token-driven.
+/* Colibri UI motion library (@colibri-kit/ui/themes/motion.css). OPTIONAL, opt-in, token-driven.
    ─ Attributes (combine freely on any element, component part or not):
        data-ui-motion="fade|slide-up|slide-down|slide-left|slide-right|scale|zoom|flip|pop|collapse|blur|none"
                                     enter animation when the element appears (hidden removed / display:none → shown / inserted),

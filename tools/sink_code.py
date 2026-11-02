@@ -35,7 +35,7 @@ FTL = {
 "skeleton": '[@ui.skeleton w="220px" h="14px"/]\n[@ui.spinner label="იტვირთება…"/]',
 "table": '<table><caption>ბოლო სტატიები</caption>\n  <thead><tr><th scope="col">სათაური</th></tr></thead>\n  <tbody>[#list articles as a]<tr><td>${a.title}</td></tr>[/#list]</tbody>\n</table>',
 "theme-switch": '[@ui.themeSwitch key="colibri.theme"]Theme[/@ui.themeSwitch]',
-"toast": '[#-- once per layout --]\n[@ui.toaster position="bottom-right" max=3/]\n<script type="module">\n  import { toast } from "@colibri/ui/core/base";\n  toast({ title: "შენახულია", variant: "success", action: { label: "Undo", onClick: undo } });\n</script>',
+"toast": '[#-- once per layout --]\n[@ui.toaster position="bottom-right" max=3/]\n<script type="module">\n  import { toast } from "@colibri-kit/ui/core/base";\n  toast({ title: "შენახულია", variant: "success", action: { label: "Undo", onClick: undo } });\n</script>',
 "toggle": '[@ui.toggle label="Bold" pressed=false]<b>B</b>[/@ui.toggle]',
 "tooltip": '[@ui.tooltip text="ეს არის მინიშნება"]\n  <button type="button" data-ui-part="trigger">Hover / focus me</button>\n[/@ui.tooltip]',
 "typography": '<h1>${title}</h1><p>${body}</p><blockquote>${quote}</blockquote>',
@@ -77,7 +77,7 @@ FTL = {
 FTL.update({
 "motion": '<link rel="stylesheet" href="/ui/themes/motion.css">\n<div data-ui-motion="slide-up">…appears with slide-up, exits the same way…</div>\n<div data-ui-motion="fade" data-ui-motion-exit="collapse" data-ui-motion-speed="slow">…</div>\n[#-- register your own (CSS): --]\n<style>\n  @keyframes ui-swing-in { from { opacity:0; transform:rotate(-12deg) } }\n  @keyframes ui-swing-out { to { opacity:0; transform:rotate(10deg) } }\n  [data-ui-motion=swing] { --ui-motion-in:ui-swing-in; --ui-motion-out:ui-swing-out }\n</style>',
 "motion-states": '<article data-ui-motion-hover="lift">card</article>\n<input data-ui-motion-focus="ring">\n<span data-ui-motion-loop="spin" aria-hidden="true">⟳</span>\n<div data-ui-motion-loop="shimmer" style="height:14px"></div>',
-"motion-play": '<script type="module">\n  import { play } from "@colibri/ui/core/motion";\n  form.addEventListener("submit", (e) => { if (!form.checkValidity()) { e.preventDefault(); play(form, "shake"); } });\n</script>',
+"motion-play": '<script type="module">\n  import { play } from "@colibri-kit/ui/core/motion";\n  form.addEventListener("submit", (e) => { if (!form.checkValidity()) { e.preventDefault(); play(form, "shake"); } });\n</script>',
 "motion-wired": '[#-- default animations come from themes/motion.css; override any part: --]\n[@ui.dropdown trigger="Actions" items=items attrs={}/]\n<div data-ui="dropdown-menu">\n  <button data-ui-part="trigger">Actions</button>\n  <div data-ui-part="content" data-ui-motion="flip">…</div>\n</div>',
 "theme-tokens": '<link rel="stylesheet" href="/ui/themes/colibri.css">\n<style>\n  :root {\n    --ui-primary: #0f766e; --ui-primary-foreground: #fff;\n    --ui-radius: 6px; --ui-font: "Noto Sans Georgian", system-ui, sans-serif;\n  }\n  html[data-theme=dark] { --ui-primary: #2dd4bf; --ui-primary-foreground: #042f2e; }\n</style>\n<html data-ui-theme="blue">  [#-- built-in accents: blue green rose orange violet --]',
 "theme-scoped": '<section class="admin-dense" style="--ui-control-h:30px; --ui-text-sm:13px; --ui-radius:4px">\n  [@ui.button]Save[/@ui.button]\n</section>',

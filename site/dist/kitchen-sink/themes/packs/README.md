@@ -16,3 +16,5 @@ Three complete looks that restyle **both** Colibri CSS (`--c-*`) and Colibri UI 
 ```
 
 Remove the attribute to get the default Colibri look. Packs are plain token overrides — scope them to any subtree by copying the selector, and override single tokens after them as usual.
+
+Tabs and accordion parts are styled once in `themes/colibri.css`. Packs set `--ui-tabs-*` and `--ui-acc-*` tokens on component roots. Per-component `data-look` settings in `themes/knobs.css` override those tokens without `!important`. The core accordion uses aligned text and separators; Glacier uses one bordered group, Ember separate rounded items, and Midnight a subtle open surface.

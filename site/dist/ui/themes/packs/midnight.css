@@ -23,24 +23,11 @@ html[data-kit-theme=midnight]{
   --ui-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif; --ui-font-mono:"JetBrains Mono",ui-monospace,monospace;
   --ui-radius:10px; --ui-radius-sm:6px; --ui-radius-lg:14px; --ui-control-h:38px;
   --ui-shadow-sm:0 0 0 1px #ffffff08,0 2px 8px #0009; --ui-shadow:0 0 0 1px #ffffff0a,0 18px 40px -16px #000e,0 0 40px -18px #8b5cf680;
-  --acc-head:#15183a; --acc-head-open:#1c1f4a; --acc-body:#0d0f22; --acc-rule:#a78bfa;
   --s-bg:#080914; --s-fg:#eceefe; --s-muted:#9ca1c9; --s-line:#20234a; --s-soft:#0f1128; --s-acc:#c4b5fd; --s-ring:#7c3aed;
 }
-/* tabs: segmented with glow */
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{background:var(--ui-card);border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:4px;gap:4px}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:var(--ui-radius-sm);height:32px;padding:0 .95rem;font:500 .78rem var(--ui-font-mono);letter-spacing:.02em;text-transform:uppercase}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:linear-gradient(180deg,#2a2563,#1f1d45);color:#fff;box-shadow:inset 0 0 0 1px #a78bfa66,0 0 18px -4px #8b5cf6aa}
-html[data-kit-theme=midnight] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{background:var(--ui-card);border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);padding:1.1rem 1.2rem}
-/* accordion: joined panel; raised header, recessed indented body with glowing rail */
-html[data-kit-theme=midnight] [data-ui=accordion]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);overflow:hidden;background:var(--acc-body);box-shadow:var(--ui-shadow)}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=item]{border-bottom:1px solid var(--ui-border)}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=item]:last-child{border-bottom:0}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger]{padding:.85rem 1.1rem!important;background:var(--acc-head)!important;font:600 .92rem var(--ui-font)!important;letter-spacing:.005em}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--acc-head-open)!important;color:#fff!important;box-shadow:inset 3px 0 0 var(--acc-rule),inset 0 -1px var(--ui-border)}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none;background:var(--acc-head-open)!important}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]::after{color:var(--ui-primary)!important}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=content]{background:var(--acc-body);padding:.9rem 1.1rem 1.05rem 2rem;position:relative;color:#b9bde3;line-height:1.65;font-size:.9rem}
-html[data-kit-theme=midnight] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:1.15rem;top:.9rem;bottom:1.05rem;width:2px;border-radius:2px;background:linear-gradient(var(--acc-rule),transparent);box-shadow:0 0 10px var(--acc-rule)}
+/* Component geometry and surfaces are tokens; core owns all part styling. */
+html[data-kit-theme=midnight] [data-ui=tabs]{--ui-tabs-background:var(--ui-card);--ui-tabs-border:1px solid var(--ui-border);--ui-tabs-active-background:var(--ui-accent);--ui-tabs-active-color:var(--ui-foreground);--ui-tabs-active-shadow:inset 0 0 0 1px var(--ui-border);}
+html[data-kit-theme=midnight] [data-ui=accordion]{--ui-acc-border:1px solid var(--ui-border);--ui-acc-radius:var(--ui-radius);--ui-acc-background:var(--ui-card);--ui-acc-padding:.9rem 1rem;--ui-acc-content-padding:0 1rem 1rem;--ui-acc-open:var(--ui-muted);}
 /* Colibri CSS chrome */
 html[data-kit-theme=midnight] .btn{border-radius:var(--c-radius-s);text-transform:uppercase;letter-spacing:.06em;font:600 .8rem var(--c-font-mono)}
 html[data-kit-theme=midnight] .btn[data-variant=primary]{box-shadow:0 0 24px -6px var(--c-accent)}

@@ -1,8 +1,8 @@
-/* Colibri UI: default theme (@colibri/ui/themes/colibri.css). OPTIONAL.
+/* Colibri UI: default theme (@colibri-kit/ui/themes/colibri.css). OPTIONAL.
    The library (src/core) ships no CSS. This file styles components ONLY through [data-ui], [data-ui-part] and
    state attributes (data-state, aria-*, hidden), and every visual value comes from a --ui-* token.
 
-   Use:   <link rel="stylesheet" href="@colibri/ui/themes/colibri.css">  and add class="ui-root" to <body> (or any
+   Use:   <link rel="stylesheet" href="@colibri-kit/ui/themes/colibri.css">  and add class="ui-root" to <body> (or any
           container) so native inputs/buttons inside it get the theme. [data-ui] components are styled everywhere.
    Dark:  <html data-theme="dark">   (the Light/dark switch component sets this)
    Accent presets: <html data-ui-theme="blue|green|rose|orange|violet">
@@ -28,7 +28,7 @@
   /* size / spacing */
   --ui-control-h:36px; --ui-space-1:.25rem; --ui-space-2:.5rem; --ui-space-3:.75rem; --ui-space-4:1rem;
   /* type */
-  --ui-font:inherit; --ui-font-mono:ui-monospace,SFMono-Regular,Menlo,monospace; --ui-text-sm:14px; --ui-text-xs:12px;
+  --ui-font:ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; --ui-font-mono:ui-monospace,SFMono-Regular,Menlo,monospace; --ui-text-sm:14px; --ui-text-xs:12px;
   /* elevation */
   --ui-shadow-sm:0 1px 3px #0000001a; --ui-shadow:0 10px 38px -10px #16171840,0 10px 20px -15px #16171833;
   color-scheme:light}
@@ -122,26 +122,80 @@ dialog form{display:grid;gap:.75rem}dialog form label{display:grid;gap:.35rem}
 :is([data-ui=sheet],[data-ui=drawer])[data-side=bottom] dialog{width:100vw;margin-top:auto;border-radius:14px 14px 0 0;border-width:1px 0 0;padding-top:2rem}
 :is([data-ui=sheet],[data-ui=drawer])[data-side=bottom] dialog::before{content:"";position:absolute;top:.6rem;left:50%;width:48px;height:5px;margin-left:-24px;border-radius:9px;background:var(--ui-muted)}
 
-/* accordion / collapsible */
-[data-ui=accordion]{width:min(100%,480px);display:block}
-[data-ui=accordion] [data-ui-part=item]{border-bottom:1px solid var(--ui-border)}
-[data-ui=accordion] h3{margin:0;font-size:inherit}
-[data-ui=accordion] [data-ui-part=trigger],[data-ui=collapsible] [data-ui-part=trigger]{display:flex!important;width:100%;justify-content:space-between!important;align-items:center;padding:.9rem 0!important;height:auto!important;border:0!important;background:none!important;color:var(--ui-foreground)!important;font:500 var(--ui-text-sm) var(--ui-font)!important;cursor:pointer;text-align:left}
-[data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:underline}
-:is([data-ui=accordion],[data-ui=collapsible]) [data-ui-part=trigger]::after{content:""}
-:is([data-ui=accordion],[data-ui=collapsible]) [data-ui-part=trigger][aria-expanded=true]::after{transform:rotate(180deg)}
-[data-ui=accordion] [data-ui-part=content]{padding:0 0 1rem;color:var(--ui-muted-foreground)}
-[data-ui=collapsible]{width:min(100%,360px);border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:0 1rem}
-[data-ui=collapsible] [data-ui-part=content] p{margin:0 0 .5rem;padding:.5rem .75rem;border:1px solid var(--ui-border);border-radius:var(--ui-radius-sm);font-family:ui-monospace,monospace;font-size:13px}
+/* Accordion: one structural rule set. Packs and looks supply tokens, never descendant overrides.
+   Direct ownership prevents a nested button, tabs or accordion inheriting header styling. */
+[data-ui=accordion] {
+  box-sizing: border-box; display: grid; inline-size: 100%; min-inline-size: 0; gap: var(--ui-acc-gap, 0);
+  border: var(--ui-acc-border, 0); border-radius: var(--ui-acc-radius, 0);
+  background: var(--ui-acc-background, transparent);
+  & > [data-ui-part=item] {
+    box-sizing: border-box; min-inline-size: 0; border: var(--ui-acc-item-border, 0);
+    border-block-end: var(--ui-acc-divider, 1px solid var(--ui-border));
+    border-radius: var(--ui-acc-item-radius, 0); background: var(--ui-acc-item-background, transparent);
+    & > :is(h2,h3,h4,h5,h6) { margin: 0; font: inherit; }
+    & > [data-ui-part=trigger], & > :is(h2,h3,h4,h5,h6) > [data-ui-part=trigger] {
+      box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      inline-size: 100%; min-block-size: 2.75rem; block-size: auto;
+      padding: var(--ui-acc-padding, 1rem 0); border: 0;
+      border-radius: var(--ui-acc-item-radius, 0); background: transparent;
+      color: var(--ui-foreground); font: 500 var(--ui-text-sm)/1.5 var(--ui-font);
+      text-align: start; white-space: normal; cursor: pointer;
+      transition: background-color var(--ui-duration, 160ms), color var(--ui-duration, 160ms);
+      &:hover:not(:disabled):not([aria-disabled=true]) { background: var(--ui-acc-hover, transparent); color: var(--ui-primary); }
+      &[aria-expanded=true] { background: var(--ui-acc-open, transparent); }
+      &:focus-visible { outline: 2px solid var(--ui-ring); outline-offset: -2px; }
+      &:disabled, &[aria-disabled=true] { opacity: .45; cursor: not-allowed; }
+      &::after { content: ""; inline-size: 1rem; block-size: 1rem; flex: none;
+        background: var(--ui-muted-foreground); mask: var(--i-down) center / contain no-repeat;
+        transition: rotate 160ms; }
+      &[aria-expanded=true]::after { rotate: 180deg; }
+    }
+    & > [data-ui-part=content] {
+      padding: var(--ui-acc-content-padding, 0 0 1rem); color: var(--ui-muted-foreground);
+      font: 400 var(--ui-text-sm)/1.65 var(--ui-font); overflow-wrap: anywhere;
+    }
+  }
+  & > [data-ui-part=item]:last-child { border-block-end: var(--ui-acc-item-border, 0); }
+}
 
-/* tabs */
-:where(.ui-root) [data-ui=tabs]{width:min(100%,480px)}
-:where(.ui-root) [data-ui=tabs] [data-ui-part=list]{display:inline-flex;gap:2px;padding:3px;border-radius:var(--ui-radius);background:var(--ui-muted)}
-:where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{height:30px;padding:0 .8rem;border:0;border-radius:var(--ui-radius-sm);background:none;color:var(--ui-muted-foreground);font:500 var(--ui-text-sm) var(--ui-font);cursor:pointer}
-:where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:var(--ui-background);color:var(--ui-foreground);box-shadow:var(--ui-shadow-sm)}
-:where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-disabled]{opacity:.45;cursor:not-allowed}
-:where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{margin-top:.6rem;padding:1rem;border:1px solid var(--ui-border);border-radius:var(--ui-radius);background:var(--ui-background)}
-:where(.ui-root) [data-ui=tabs][data-orientation=vertical] [data-ui-part=list]{flex-direction:column;align-self:flex-start}[data-ui=tabs][data-orientation=vertical] [data-ui-part=panel]{margin:0;flex:1}
+/* Tabs: bounded scrolling rail and unboxed content; layout stays the same in every pack. */
+:where(.ui-root) [data-ui=tabs] {
+  box-sizing: border-box; inline-size: 100%; min-inline-size: 0;
+  & > [data-ui-part=list] {
+    box-sizing: border-box; display: flex; inline-size: fit-content; max-inline-size: 100%; overflow-x: auto;
+    gap: var(--ui-tabs-gap, .25rem); padding: var(--ui-tabs-padding, .25rem);
+    border: var(--ui-tabs-border, 0); border-block-end: var(--ui-tabs-rail, 0);
+    border-radius: var(--ui-tabs-radius, var(--ui-radius)); background: var(--ui-tabs-background, var(--ui-muted));
+    & > [data-ui-part=trigger] {
+      display: inline-flex; flex: none; align-items: center; justify-content: center;
+      min-block-size: 2.5rem; block-size: auto; padding: .5rem 1rem;
+      border: 0; border-block-end: var(--ui-tabs-indicator, 0);
+      border-radius: var(--ui-tabs-trigger-radius, var(--ui-radius-sm));
+      background: transparent; color: var(--ui-muted-foreground);
+      font: 500 var(--ui-text-sm)/1.4 var(--ui-font); white-space: nowrap; cursor: pointer;
+      &:hover:not(:disabled):not([aria-disabled=true]) { color: var(--ui-foreground); }
+      &[data-state=active] { background: var(--ui-tabs-active-background, var(--ui-background));
+        color: var(--ui-tabs-active-color, var(--ui-foreground)); box-shadow: var(--ui-tabs-active-shadow, var(--ui-shadow-sm));
+        border-block-end-color: var(--ui-tabs-active-line, transparent); }
+      &:focus-visible { outline: 2px solid var(--ui-ring); outline-offset: -2px; }
+      &:disabled, &[data-disabled], &[aria-disabled=true] { opacity: .45; cursor: not-allowed; }
+    }
+  }
+  & > [data-ui-part=panel] { min-inline-size: 0; padding: 1rem 0 0; color: var(--ui-foreground); overflow-wrap: anywhere; }
+  &[data-orientation=vertical] { display: flex; gap: 1rem; align-items: start;
+    & > [data-ui-part=list] { flex-direction: column; flex: none; max-inline-size: 45%; }
+    & > [data-ui-part=panel] { flex: 1; padding: 0; }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-ui=accordion] { --ui-duration: 0ms; }
+  [data-ui=accordion] [data-ui-part=trigger]::after { transition: none; }
+}
+
+/* collapsible */
+[data-ui=collapsible]{width:min(100%,360px);border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:0 1rem}
+[data-ui=collapsible] > [data-ui-part=trigger]{display:flex;width:100%;justify-content:space-between;align-items:center;padding:.9rem 0;height:auto;border:0;background:none;color:var(--ui-foreground);font:500 var(--ui-text-sm)/1.5 var(--ui-font);cursor:pointer;text-align:start}
+[data-ui=collapsible] > [data-ui-part=content] p{margin:0 0 .5rem;padding:.5rem .75rem;border:1px solid var(--ui-border);border-radius:var(--ui-radius-sm);font-family:ui-monospace,monospace;font-size:13px}
 
 /* toggle / toggle-group / button-group */
 [data-ui=toggle],[data-ui=toggle-group] [data-ui-part=item]{display:inline-grid;place-items:center;min-width:var(--ui-control-h);height:var(--ui-control-h);padding:0 .6rem;border:1px solid var(--ui-input);border-radius:var(--ui-radius);background:var(--ui-background);color:var(--ui-foreground);font:inherit;cursor:pointer}
@@ -408,7 +462,7 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 .ui-ico,
 [data-ui-part=sub-trigger]::after,
 [data-ui=navigation-menu] [data-ui-part=trigger]::after,
-:is([data-ui=accordion],[data-ui=collapsible]) [data-ui-part=trigger]::after,
+[data-ui=collapsible] [data-ui-part=trigger]::after,
 [data-ui=select] [data-ui-part=trigger]::after,
 [data-ui=dropdown-menu]>[data-ui-part=trigger]::after,
 [data-ui=combobox] [data-ui-part=trigger]::before,
@@ -423,11 +477,11 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 [data-ui-part=sub-trigger]::after{-webkit-mask-image:var(--i-right);mask-image:var(--i-right);margin-left:auto;opacity:.6}
 [data-ui=navigation-menu] [data-ui-part=trigger]::after{width:14px;height:14px;opacity:.7;margin-left:.15rem}
 [data-ui=navigation-menu] [data-ui-part=trigger][aria-expanded=true]::after,
-:is([data-ui=accordion],[data-ui=collapsible]) [data-ui-part=trigger][aria-expanded=true]::after,
+[data-ui=collapsible] [data-ui-part=trigger][aria-expanded=true]::after,
 [data-ui=select] [data-ui-part=trigger][aria-expanded=true]::after,
 [data-ui=dropdown-menu]>[data-ui-part=trigger][aria-expanded=true]::after,
 [data-ui=combobox] [data-ui-part=trigger][aria-expanded=true]::before{transform:rotate(180deg)}
-:is([data-ui=accordion],[data-ui=collapsible]) [data-ui-part=trigger]::after{color:var(--ui-muted-foreground)}
+[data-ui=collapsible] [data-ui-part=trigger]::after{color:var(--ui-muted-foreground)}
 [data-ui=select] [data-ui-part=trigger]::after{opacity:.5;margin-left:.75rem}
 [data-ui=dropdown-menu]>[data-ui-part=trigger]::after{width:14px;height:14px;margin-left:.1rem;opacity:.8}
 [data-ui=combobox] [data-ui-part=trigger]{display:inline-grid;place-items:center;font-size:0}[data-ui=combobox] [data-ui-part=trigger]::before{opacity:.55}
@@ -933,11 +987,6 @@ html[data-ui-motion=off] [data-ui=spinner]::before,html[data-ui-motion=off] [dat
 }
 
 
-/* accordion default: header row vs indented body (distinct surface + guide rule) */
-[data-ui=accordion] [data-ui-part=trigger]{padding-inline:.75rem!important}
-[data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{background:var(--ui-muted)!important}
-[data-ui=accordion] [data-ui-part=content]{position:relative;padding:.75rem .75rem 1rem 1.6rem;background:var(--ui-background)}
-[data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:.95rem;top:.75rem;bottom:1rem;width:2px;border-radius:2px;background:var(--ui-border)}
 
 /* ===== Added after the Radix audit (Oct 2026): toolbar, segmented control, checkbox/radio cards, checkbox group,
    tab nav, data list, callout, inset, icon button, accessible icon + theme dials (scaling, panel, gray tint). ===== */

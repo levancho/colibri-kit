@@ -1,7 +1,7 @@
 @layer colibri.reset {
   *, *::before, *::after { box-sizing: border-box; }
   * { margin: 0; }
-  html { -webkit-text-size-adjust: none; text-size-adjust: none; interpolate-size: allow-keywords; hanging-punctuation: first last; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; interpolate-size: allow-keywords; hanging-punctuation: first last; }
   body { min-block-size: 100svh; line-height: var(--c-leading, 1.6); -webkit-font-smoothing: antialiased; }
   img, picture, video, canvas, svg { display: block; max-inline-size: 100%; block-size: auto; }
   input, button, textarea, select { font: inherit; color: inherit; letter-spacing: inherit; }
@@ -12,4 +12,7 @@
   [hidden]:not([hidden="until-found"]) { display: none !important; }
   table { border-collapse: collapse; }
   dialog, [popover] { color: inherit; }
+  /* Preserve native dialog invariants when layout primitives set display. */
+  dialog { margin: auto; }
+  dialog:not([open]) { display: none !important; }
 }

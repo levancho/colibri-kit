@@ -1,6 +1,6 @@
 /* Colibri Kit site: everything here builds on Colibri CSS tokens */
 :root { --c-hue: 250; }
-body { overflow-x: hidden; }
+
 header.site { position: sticky; inset-block-start: 0; z-index: 10; padding-block: var(--c-space-xs); background: color-mix(in oklch, var(--c-bg) 82%, transparent); backdrop-filter: blur(10px); border-block-end: 1px solid var(--c-line);
   & a:not(.btn) { color: var(--c-fg); text-decoration: none; font-size: var(--c-text-sm); &:hover { color: var(--c-accent); } }
   & .brand { font-weight: 800; font-size: var(--c-text-md); letter-spacing: -.01em; } }
@@ -45,7 +45,7 @@ footer { padding-block: var(--c-space-l); border-block-start: 1px solid var(--c-
   &:focus-visible { outline: var(--c-ring); outline-offset: 1px; } }
 .codetabs [data-ui-part=panel] { position: relative; }
 .codetabs [data-ui-part=panel] pre.code { border: 0; border-radius: 0; margin: 0; min-block-size: 9rem; padding-inline-end: 5rem; }
-.copy { all: unset; cursor: pointer; position: absolute; inset-block-start: var(--c-space-xs); inset-inline-end: var(--c-space-xs); padding: .25em .7em; border: 1px solid var(--c-line); border-radius: var(--c-radius-s); background: var(--c-surface); font-size: var(--c-text-xs); font-weight: 600;
+.copy { all: unset; z-index: 1; cursor: pointer; position: absolute; inset-block-start: var(--c-space-xs); inset-inline-end: var(--c-space-xs); padding: .25em .7em; border: 1px solid var(--c-line); border-radius: var(--c-radius-s); background: var(--c-surface); font-size: var(--c-text-xs); font-weight: 600;
   &:hover { background: var(--c-sunken); } &:focus-visible { outline: var(--c-ring); } }
 .demo-row { display: grid; grid-template-columns: minmax(14rem, 1fr) 2fr; gap: var(--c-space-m); align-items: start; }
 @container (inline-size < 52rem) { .demo-row { grid-template-columns: 1fr; } }
@@ -55,7 +55,7 @@ footer { padding-block: var(--c-space-l); border-block-start: 1px solid var(--c-
 .demo-tabs { inline-size: min(100%, 22rem); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface); overflow: hidden;
   & [data-ui-part=panel] { padding: var(--c-space-s); font-size: var(--c-text-sm); } }
 dialog[data-ui-part=content]::backdrop { background: oklch(0% 0 0 / .45); backdrop-filter: blur(2px); }
-dialog[data-ui-part=content] { border: 1px solid var(--c-line); color: var(--c-fg); }
+dialog[data-ui-part=content] { margin: auto; border: 1px solid var(--c-line); color: var(--c-fg); }
 #start h3, #styling h3 { font-size: var(--c-text-lg); }
 .path pre.code { margin-block-start: auto; }
 
@@ -94,3 +94,11 @@ header.site a.gh-btn { padding-block: .3em; }
 
 .kit-theme-pick select{font:inherit;font-size:var(--c-text-sm);padding:.25rem .5rem;border:1px solid var(--c-line);border-radius:var(--c-radius-s);background:var(--c-surface);color:var(--c-fg)}
 html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--c-font)}
+
+/* Wrapping content must fit without hiding horizontal overflow. */
+.hero > *, .demo-row > * { min-inline-size: 0; }
+.codetabs > [data-ui-part=list] { overflow-x: auto; }
+@media (width < 30rem) {
+  .specimen { padding-inline: var(--c-space-s); }
+  .spec-chip.c3 { inset-inline-end: 0; }
+}

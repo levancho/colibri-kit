@@ -23,7 +23,6 @@ html[data-kit-theme=ember]{
   --ui-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
   --ui-radius:16px; --ui-radius-sm:12px; --ui-radius-lg:22px; --ui-control-h:42px;
   --ui-shadow-sm:0 2px 6px -1px #9a341214; --ui-shadow:0 20px 44px -18px #9a34122e;
-  --acc-card:#f6ede3; --acc-head:#fff; --acc-body:#f9f2ea; --acc-rule:#ea580c;
   --s-bg:#fbf7f2; --s-fg:#2b1a12; --s-muted:#7a6355; --s-line:#efe4d8; --s-soft:#f6eee5; --s-acc:#ea580c; --s-ring:#fdba74;
 }
 html[data-kit-theme=ember][data-theme=dark]{
@@ -31,24 +30,11 @@ html[data-kit-theme=ember][data-theme=dark]{
   --ui-muted:#232323; --ui-muted-foreground:#a8a29e; --ui-accent:#2a1d16; --ui-accent-foreground:#f5f1ec;
   --ui-primary:#fb7a3c; --ui-primary-foreground:#1a0c05; --ui-ring:#fdba74; --ui-border:#2c2c2c; --ui-input:#383838;
   --ui-shadow-sm:0 2px 6px #0008; --ui-shadow:0 24px 50px -20px #000d;
-  --acc-card:#1c1c1c; --acc-head:#232323; --acc-body:#161616; --acc-rule:#fb7a3c;
   --s-bg:#111111; --s-fg:#f5f1ec; --s-muted:#a8a29e; --s-line:#2a2a2a; --s-soft:#1a1a1a; --s-acc:#fb923c; --s-ring:#c2410c;
 }
-/* tabs: filled pills */
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=list]{border-radius:999px;padding:5px;gap:4px;background:var(--ui-muted)}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger]{border-radius:999px;height:36px;padding:0 1.15rem;font-weight:700}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=trigger][data-state=active]{background:var(--ui-primary);color:var(--ui-primary-foreground);box-shadow:0 6px 16px -6px var(--ui-primary)}
-html[data-kit-theme=ember] :where(.ui-root) [data-ui=tabs] [data-ui-part=panel]{border:0;background:var(--ui-card);box-shadow:var(--ui-shadow);border-radius:var(--ui-radius-lg);padding:1.25rem 1.4rem;margin-top:.8rem}
-/* accordion: separate fat cards; header row vs inset body panel */
-html[data-kit-theme=ember] [data-ui=accordion]{display:grid!important;gap:.7rem}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=item]{border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);background:var(--acc-card);overflow:hidden;box-shadow:var(--ui-shadow-sm);transition:box-shadow .3s}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=item]:has([aria-expanded=true]){box-shadow:var(--ui-shadow);border-color:color-mix(in srgb,var(--ui-primary) 35%,var(--ui-border))}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]{padding:1.05rem 1.25rem!important;background:var(--acc-head)!important;font-weight:700!important;font-size:1rem!important}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]:hover{text-decoration:none}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger][aria-expanded=true]{color:var(--ui-primary)!important}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=trigger]::after{color:var(--ui-primary)!important}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=content]{margin:0 .55rem .55rem;padding:.9rem 1.1rem .95rem 1.6rem;background:var(--acc-body);border-radius:calc(var(--ui-radius-lg) - 8px);position:relative;line-height:1.65}
-html[data-kit-theme=ember] [data-ui=accordion] [data-ui-part=content]::before{content:"";position:absolute;left:.8rem;top:1rem;bottom:1rem;width:3px;border-radius:3px;background:var(--acc-rule);opacity:.7}
+/* Component geometry and surfaces are tokens; core owns all part styling. */
+html[data-kit-theme=ember] [data-ui=tabs]{--ui-tabs-radius:999px;--ui-tabs-trigger-radius:999px;--ui-tabs-padding:.3rem;--ui-tabs-active-background:var(--ui-primary);--ui-tabs-active-color:var(--ui-primary-foreground);--ui-tabs-active-shadow:none;}
+html[data-kit-theme=ember] [data-ui=accordion]{--ui-acc-gap:.75rem;--ui-acc-divider:1px solid var(--ui-border);--ui-acc-item-border:1px solid var(--ui-border);--ui-acc-item-radius:var(--ui-radius);--ui-acc-item-background:var(--ui-card);--ui-acc-padding:1rem 1.1rem;--ui-acc-content-padding:0 1.1rem 1.1rem;}
 /* Colibri CSS chrome */
 html[data-kit-theme=ember] .btn{border-radius:999px;min-block-size:2.8rem;padding-inline:1.35em;font-weight:700}
 html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-shadow);border-radius:var(--c-radius-l)}

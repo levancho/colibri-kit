@@ -2,7 +2,7 @@
 /* ---- 70-colibri-ui-bridge.css ---- */
 /* Bridge: Colibri UI components read --ui-* tokens. Load Colibri CSS AFTER themes/colibri.css to drive them from --c-* tokens.
    Change --c-hue and the components follow. Unlayered on purpose so it wins over the theme's :root values. */
-:root, [data-theme] {
+:root, [data-theme], [data-colibri-theme] {
   --ui-background: var(--c-bg); --ui-foreground: var(--c-fg);
   --ui-card: var(--c-surface); --ui-popover: var(--c-surface);
   --ui-muted: var(--c-sunken); --ui-muted-foreground: var(--c-muted);

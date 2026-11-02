@@ -186,6 +186,10 @@ html.dp-framed .sink-top{top:0}
 @keyframes sink-bob{0%,100%{transform:translateY(2px)}50%{transform:translateY(-3px)}}
 @media (prefers-reduced-motion:reduce){.sink-totop{transition:none}}
 body[data-log=bottom] .sink-totop{bottom:calc(22px + var(--sink-log-h,0px))}
+
+/* Open floating layers use viewport coordinates; auto containment would create
+   a local fixed-position containing block and push them outside the viewport. */
+.sink-sec:has([data-state="open"]) { content-visibility: visible; }
 </style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"><link rel="stylesheet" href="kit-bar.css"></head>
 <body><a id="top"></a><a class="sink-skip" href="#main">Skip to components</a>
@@ -798,9 +802,9 @@ export function Demo() {
 <p class="sink-dim">Technical names: <code>data-ui="alert-dialog"</code> · shadcn “Alert Dialog” · Metronic “Modal (confirm)”</p></details></section><section id="code-block" class="sink-sec" tabindex="-1" aria-labelledby="h-code-block">
 <header class="sink-sec-h"><div><h3 id="h-code-block">Copy to clipboard</h3><p class="sink-what">A code snippet or text with a Copy button that shows &quot;Copied&quot;.</p></div>
 <div class="sink-sec-meta"><span class="sink-st" data-status="done" title="Works and is tested in this page.">Ready</span><span data-ui="tooltip" data-side="bottom" data-align="end"><button class="sink-info" data-ui-part="trigger" aria-label="More about Copy to clipboard">?</button><span data-ui-part="content" class="sink-tip"><b>When to use:</b> Install commands, share links, API keys.<br><b>Status:</b> Ready, Works and is tested in this page.<br><span class="sink-dim">Code name <code>data-ui="code-block"</code> · shadcn: Code Block · Metronic: Clipboard (plugin)</span></span></span></div></header>
-<div class="sink-preview ui-root"><pre data-ui-part="code-block"><code id="snippet">import { createTabs } from "@colibri/ui/core/tabs";</code></pre><button data-ui="clipboard" data-target="#snippet">Copy</button> <button data-ui="clipboard" data-text="გამარჯობა">Copy Georgian</button></div>
+<div class="sink-preview ui-root"><pre data-ui-part="code-block"><code id="snippet">import { createTabs } from "@colibri-kit/ui/core/tabs";</code></pre><button data-ui="clipboard" data-target="#snippet">Copy</button> <button data-ui="clipboard" data-text="გამარჯობა">Copy Georgian</button></div>
 <details class="sink-code" open><summary>Code</summary><div data-ui="tabs" class="sink-code-tabs" data-default-value="html"><div data-ui-part="list" aria-label="Code for Copy to clipboard"><button data-ui-part="trigger" data-value="html">HTML</button><button data-ui-part="trigger" data-value="ftl">FreeMarker</button><button data-ui-part="trigger" data-value="react">React</button></div><div data-ui-part="panel" data-value="html"><button class="sink-copy" data-ui="clipboard" data-target="#code-code-block-html" aria-label="Copy HTML code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-code-block-html">&lt;pre data-ui-part=&quot;code-block&quot;&gt;
-  &lt;code id=&quot;snippet&quot;&gt;import { createTabs } from &quot;@colibri/ui/core/tabs&quot;;&lt;/code&gt;
+  &lt;code id=&quot;snippet&quot;&gt;import { createTabs } from &quot;@colibri-kit/ui/core/tabs&quot;;&lt;/code&gt;
 &lt;/pre&gt;
 &lt;button data-ui=&quot;clipboard&quot; data-target=&quot;#snippet&quot;&gt;Copy&lt;/button&gt; &lt;button data-ui=&quot;clipboard&quot; data-text=&quot;გამარჯობა&quot;&gt;Copy Georgian&lt;/button&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-code-block-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-code-block-ftl">[#import &quot;/ui/ui.ftl&quot; as ui]
 &lt;pre data-ui-part=&quot;code-block&quot;&gt;&lt;code id=&quot;snippet&quot;&gt;${code}&lt;/code&gt;&lt;/pre&gt;
@@ -810,7 +814,7 @@ export function Demo() {
   return (
     &lt;&gt;
       &lt;pre data-ui-part=&quot;code-block&quot;&gt;
-        &lt;code id=&quot;snippet&quot;&gt;import {&#x27;{&#x27;} createTabs {&#x27;}&#x27;} from &quot;@colibri/ui/core/tabs&quot;;&lt;/code&gt;
+        &lt;code id=&quot;snippet&quot;&gt;import {&#x27;{&#x27;} createTabs {&#x27;}&#x27;} from &quot;@colibri-kit/ui/core/tabs&quot;;&lt;/code&gt;
       &lt;/pre&gt;
       &lt;UI kind=&quot;clipboard&quot; as=&quot;button&quot; data-target=&quot;#snippet&quot;&gt;Copy&lt;/UI&gt;
       &lt;UI kind=&quot;clipboard&quot; as=&quot;button&quot; data-text=&quot;გამარჯობა&quot;&gt;Copy Georgian&lt;/UI&gt;
@@ -1971,7 +1975,7 @@ export function Demo() {
 [#-- once per layout --]
 [@ui.toaster position=&quot;bottom-right&quot; max=3/]
 &lt;script type=&quot;module&quot;&gt;
-  import { toast } from &quot;@colibri/ui/core/base&quot;;
+  import { toast } from &quot;@colibri-kit/ui/core/base&quot;;
   toast({ title: &quot;შენახულია&quot;, variant: &quot;success&quot;, action: { label: &quot;Undo&quot;, onClick: undo } });
 &lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="react"><button class="sink-copy" data-ui="clipboard" data-target="#code-toast-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toast-react">export function Demo() {
   return (
@@ -14636,7 +14640,7 @@ export function Demo() {
   &lt;input placeholder=&quot;Leave empty, press Check&quot; aria-label=&quot;Required value&quot;&gt;&lt;button data-ui=&quot;button&quot; type=&quot;submit&quot;&gt;Check&lt;/button&gt;
 &lt;/form&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-play-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-play-ftl">[#import &quot;/ui/ui.ftl&quot; as ui]
 &lt;script type=&quot;module&quot;&gt;
-  import { play } from &quot;@colibri/ui/core/motion&quot;;
+  import { play } from &quot;@colibri-kit/ui/core/motion&quot;;
   form.addEventListener(&quot;submit&quot;, (e) =&gt; { if (!form.checkValidity()) { e.preventDefault(); play(form, &quot;shake&quot;); } });
 &lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="react"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-play-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-play-react">import { UI } from &quot;@colibri-kit/ui/react&quot;;
 

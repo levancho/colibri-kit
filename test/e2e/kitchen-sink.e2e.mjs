@@ -19,6 +19,15 @@ const shot = async (n, sel) => { if (!SHOTS) return; fs.mkdirSync(SHOTS, { recur
 const go = async (id) => { await p.$eval("#" + id, (s) => s.scrollIntoView({ block: "start" })); await wait(120); };
 const focusEl = (sel) => p.$eval(sel, (e) => e.focus());
 
+// Developer tools now live inside the shared Customize popover. Exercise the
+// same visible path as users, and close it before interacting with the gallery.
+async function tool(selector) {
+  const button = '.kbar-tools > button[aria-controls="kbar-custom"]';
+  if (!await q("#kbar-custom", (e) => e.matches(":popover-open"))) await p.click(button);
+  await p.click(selector);
+  if (await q("#kbar-custom", (e) => e.matches(":popover-open"))) await p.click(button);
+}
+
 await t("no JS errors on load", async () => eq(errors.length, 0, errors.join(" | ")));
 await t("opens at the very top", async () => eq(await p.evaluate(() => scrollY), 0, "scrollY"));
 await t("all nav groups start collapsed", async () => eq(await p.$$eval("#sink-sidebar .sink-group", (gs) => gs.filter((g) => g.__uiCollapsible?.open).length), 0, "open groups"));
@@ -31,7 +40,7 @@ await t("back-to-top arrow: hidden at top, appears on scroll, returns to top", a
 });
 await t("event log hidden by default, not covering content", async () => eq(await q("#sink-log", (e) => e.hidden), true, "hidden"));
 await t("event log: open, collapse, dock, drag, close", async () => {
-  await p.click("#log-open"); await wait(50);
+  await tool("#log-open"); await wait(50);
   eq(await q("#sink-log", (e) => getComputedStyle(e).display), "flex", "visible");
   eq(await q("#sink-log", (e) => e.dataset.dock), "bottom", "docked bottom");
   eq(await p.evaluate(() => getComputedStyle(document.body).paddingBottom), "260px", "page reserves space");
@@ -44,7 +53,7 @@ await t("event log: open, collapse, dock, drag, close", async () => {
   const r = await q("#sink-log", (e) => { const x = e.getBoundingClientRect(); return [Math.round(x.left), Math.round(x.top)]; }); yes(Math.abs(r[0] - 295) < 20 && Math.abs(r[1] - 295) < 20, "moved to " + r);
   await p.click("#log-dock"); eq(await q("#sink-log", (e) => e.dataset.dock), "bottom", "back to bottom");
   await p.click("#log-close"); eq(await q("#sink-log", (e) => e.hidden), true, "closed");
-  await p.click("#log-open"); eq(await q("#sink-log", (e) => e.hidden), false, "reopened");
+  await tool("#log-open"); eq(await q("#sink-log", (e) => e.hidden), false, "reopened");
 });
 await t("event log records ui:* events with plain section name", async () => {
   await go("toggle"); await p.click("#toggle [data-ui=toggle]");
@@ -117,8 +126,8 @@ await t("Toast: shows and auto-dismisses", async () => { await go("toast"); awai
 await t("Pagination: click changes page", async () => { await go("pagination"); await p.click('#pagination nav [data-page="8"]'); eq(await q('#pagination nav [aria-current=page]', (e) => e.dataset.page), "8", "page 8"); });
 await t("Badge remove deletes badge", async () => { await go("badge"); const n = await p.$$eval("#badge [data-ui=badge]", (x) => x.length); await p.click("#badge [data-ui=badge] [data-ui-part=remove]"); eq(await p.$$eval("#badge [data-ui=badge]", (x) => x.length), n - 1, "removed"); });
 await t("Command palette opens with Ctrl+K", async () => { await p.keyboard.down("Control"); await p.keyboard.press("k"); await p.keyboard.up("Control"); await wait(120); eq(await q("#cmd-dialog dialog", (d) => d.open), true, "open"); await shot("command-open"); await p.keyboard.press("Escape"); });
-await t("Demo styling off = raw headless", async () => { await p.click("#css-toggle"); eq(await q("#demo-css", (s) => s.disabled), true, "disabled"); await go("dropdown-menu"); await shot("raw", "#dropdown-menu"); await p.click("#css-toggle"); });
-await t("Dark mode applies", async () => { await p.click(".sink-top [data-ui=theme-switch]"); await wait(50); const th = await p.evaluate(() => document.documentElement.dataset.theme); yes(["dark", "light"].includes(th), th); });
+await t("Demo styling off = raw headless", async () => { await tool("#css-toggle"); eq(await q("#demo-css", (s) => s.disabled), true, "disabled"); await go("dropdown-menu"); await shot("raw", "#dropdown-menu"); await tool("#css-toggle"); });
+await t("Dark mode applies", async () => { await p.click(".kbar [data-ui=theme-switch]"); await wait(50); const th = await p.evaluate(() => document.documentElement.dataset.theme); yes(["dark", "light"].includes(th), th); });
 await t("Scrollspy highlights the section in view", async () => {
   for (const id of ["dialog", "badge", "tabs", "slider"]) { await go(id); await wait(150); eq(await p.evaluate(() => document.querySelector("#sink-sidebar a[aria-current]")?.getAttribute("href")), "#" + id, id); }
 });
