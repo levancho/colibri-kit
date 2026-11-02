@@ -21,7 +21,7 @@ try {
   await page.select('[name="stage"]', 'Won');
   await page.click('.demo-form [type="submit"]');
   assert.equal(await page.$$eval('.deal', els => els.length), 9);
-  assert.equal(await page.$('.deal img'), null, 'user text is not interpreted as HTML');
+  assert.equal(await page.$('.deal img[src="x"], .deal [onerror]'), null, 'user text is not interpreted as HTML');
   await page.reload({ waitUntil: 'networkidle0' });
   assert.equal(await page.$$eval('.deal', els => els.length), 9, 'new deal persists');
   await page.type('.search input', 'Test Owner');
@@ -29,7 +29,7 @@ try {
   await page.click('.deal');
   await page.select('[name="stage"]', 'Proposal');
   await page.click('.demo-form [type="submit"]');
-  assert.equal(await page.$eval('[aria-label="Proposal"] .deal small', e => e.textContent), 'Test Owner');
+  assert.equal(await page.$eval('[aria-label="Proposal"] .deal-owner strong', e => e.textContent), 'Test Owner');
   await page.click('.deal');
   await page.locator('::-p-text(Delete deal)').click();
   await page.locator('::-p-text(Delete permanently)').click();
@@ -45,7 +45,7 @@ try {
     const dt = new DataTransfer(); dt.items.add(new File([JSON.stringify([{id:'1',name:'Imported',owner:'Test Owner',value:123,stage:'Lead'}])], 'good.json')); el.files = dt.files; el.dispatchEvent(new Event('change'));
   });
   await page.waitForFunction(() => !document.querySelector('dialog').open);
-  assert.equal(await page.$eval('.deal > span', e => e.textContent), 'Imported');
+  assert.equal(await page.$eval('.deal-company > span:last-child', e => e.textContent), 'Imported');
   console.log('ok CRM create/edit/delete, derived metrics, safe text, persistence, search, atomic import validation');
   await page.goto(base + 'analytics.html', { waitUntil: 'networkidle0' });
   const original = await page.$eval('#traffic', e => JSON.parse(e.dataset.values));

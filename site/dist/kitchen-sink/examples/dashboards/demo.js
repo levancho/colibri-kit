@@ -1,3 +1,4 @@
+import {avatar,person,companyMark} from './visuals.js';
 // Demo application state is deliberately local. No backend or account is implied.
 const KEY = 'colibri-dashboard-v1';
 const stages = ['Lead', 'Qualified', 'Proposal', 'Won'];
@@ -78,7 +79,7 @@ export function initDashboard() {
       for (const deal of visible) {
         const card = button('', () => editDeal(deal)); card.className = 'deal'; card.dataset.dealId = deal.id;
         card.setAttribute('aria-label', `Edit ${deal.name}`);
-        card.append(node('span', deal.name), node('b', money(deal.value)), node('small', deal.owner, { class: 'muted' })); lane.append(card);
+        const title=node('span','',{class:'deal-company'});title.innerHTML=companyMark(deal.name);title.append(node('span',deal.name));const owner=node('span','',{class:'deal-owner'});owner.innerHTML=person(deal.owner);card.append(title,node('b',money(deal.value)),owner); lane.append(card);
       }
       if (!visible.length) lane.append(node('p', query ? 'No matching deals' : 'No deals yet', { class: 'muted' }));
       pipeline.append(lane);
@@ -253,3 +254,5 @@ export function initDashboard() {
   }
   renderDeals(); updateBadge();
 }
+
+for(const el of document.querySelectorAll('.av')){const name=({NK:'Nino Kapanadze',GB:'Giorgi Beridze',AM:'Ana Meladze',DT:'Dato Tsiklauri',SL:'Salome Lomidze',LD:'Levan D.'})[el.textContent.trim()];if(name)el.outerHTML=avatar(name).replace('class="portrait','class="av portrait');}

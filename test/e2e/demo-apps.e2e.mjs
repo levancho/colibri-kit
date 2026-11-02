@@ -23,13 +23,21 @@ try {
  await page.click('[data-action=ticket-status]');await page.select('dialog select','Resolved');await save();await go('support.html?view=resolved');assert.match(await page.$eval('.support-queue',e=>e.textContent),/Cannot invite/);
  const axe=fs.readFileSync('node_modules/axe-core/axe.min.js','utf8');
  for(const width of [390,1440])for(const scheme of ['light','dark'])for(const name of ['workspace','account','commerce','support']){
-  await page.setViewport({width,height:1000});await go(name+'.html');await page.evaluate(s=>document.documentElement.dataset.theme=s,scheme);
+  await page.setViewport({width,height:1000});await go(name+'.html');await page.evaluate(s=>document.documentElement.dataset.theme=s,scheme);await page.evaluate(async()=>{await Promise.all(document.getAnimations().map(a=>a.finished.catch(()=>{})));});
   assert.equal(await page.$$eval('a.btn',els=>els.every(el=>getComputedStyle(el).color!==getComputedStyle(el).backgroundColor)),true,'button links need visible text');
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),`${name} ${width}: overflow`);
   await page.addScriptTag({content:axe});const violations=await page.evaluate(async()=>(await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})));assert.deepEqual(violations,[],`${name} ${scheme} ${width}: accessibility`);
   if(width===1440&&scheme==='light')await page.screenshot({path:`/tmp/colibri-${name}.png`});
  }
- for(const name of ['analytics','crm']){await go(name+'.html');await page.screenshot({path:`/tmp/colibri-${name}-distinct.png`});}
+ for(const route of ['workspace.html?view=teams','workspace.html?view=members','account.html?view=members','commerce.html?view=inventory','support.html?view=knowledge']){
+  await page.setViewport({width:1440,height:1000});await go(route);
+  await page.evaluate(async()=>{for(const img of document.images){img.loading='eager';await img.decode();}});
+  assert.ok(await page.$$eval('#app-content img',imgs=>imgs.length>0&&imgs.every(i=>i.naturalWidth>0)),route+': local imagery loads');
+  await page.screenshot({path:'/tmp/colibri-detail-'+route.split('.')[0]+'-'+new URLSearchParams(route.split('?')[1]).get('view')+'.png'});
+  await page.setViewport({width:390,height:1000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),route+': mobile overflow');
+  await page.addScriptTag({content:axe});assert.deepEqual(await page.evaluate(async()=>(await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>v.id)),[],route+': accessibility');
+ }
+ for(const name of ['analytics','crm']){await page.setViewport({width:1440,height:1000});await go(name+'.html');await page.screenshot({path:`/tmp/colibri-${name}-distinct.png`});}
  await go('index.html');assert.equal(await page.$$eval('.dashboard-preview',e=>e.length),6);
  assert.deepEqual(errors,[]);console.log('ok four distinct apps: persistence, team/member forms, agenda, profile/security/billing, fulfillment/inventory, ticket assignments/replies/status, light/dark mobile layouts, axe and six gallery entries');
 }finally{await browser.close();await server.close();}

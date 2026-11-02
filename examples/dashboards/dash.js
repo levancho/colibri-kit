@@ -7,7 +7,7 @@ mount();
 initPackPicker(document.getElementById("pack"));
 initScheme(document.getElementById("scheme"));
 initHue(document.getElementById("hue"), document.getElementById("hue-out"));
-import { initDashboard } from "./demo.js?v=workspace-3";
+import { initDashboard } from "./demo.js?v=visual-2";
 initDashboard();
 // Range changes select the same underlying sample series, never invent new data.
 for (const seg of document.querySelectorAll(".seg[data-target]")) {

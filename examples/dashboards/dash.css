@@ -163,3 +163,4 @@ body[data-demo=crm] .kpi { border:0; box-shadow:none; border-radius:0; border-in
  body[data-demo=crm] .dash-body { inline-size:100%; max-inline-size:1600px; margin:auto; padding:2rem; }
  body[data-demo=crm] .pipeline { grid-template-columns:repeat(4,minmax(0,1fr)); }
 }
+.deal-company{display:flex;align-items:center;gap:.6rem}.deal-owner{display:block;border-block-start:1px solid var(--c-line);padding-block-start:.65rem;margin-block-start:.5rem}.deal .portrait{inline-size:24px;block-size:24px}.deal .person strong{font-size:.75rem}.av.portrait{padding:0}
