@@ -2,8 +2,8 @@ import fs from "node:fs";
 import path from "node:path";
 import http from "node:http";
 
-export async function serveBuild() {
-  const root = path.resolve("site/dist");
+export async function serveBuild(directory = "site/dist") {
+  const root = path.resolve(directory);
   const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml" };
   const server = http.createServer((req, res) => {
     const file = path.resolve(root, "." + new URL(req.url, "http://localhost").pathname.replace(/\/$/, "/index.html"));

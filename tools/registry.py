@@ -19,7 +19,7 @@ for c in C:
                   "shadcn": c["shadcn"], "metronic": c["metronic"], "accessibility": c["notes"], "parts": parts, "uses": [u for u in uis if u != c["id"]],
                   "html": pretty(c["demo"]), "freemarker": (IMP + FTL[c["id"]]) if c["id"] in FTL else None})
 out = {"$schema": "https://colibri-ui.local/schema/registry.json", "name": "colibri-ui", "version": pkg.get("version", "0.0.0"),
-       "files": {"core": "src/core/", "auto": "src/core/auto.js", "elements": "src/elements/all.js", "theme": "themes/colibri.css", "motion": "themes/motion.css", "freemarker": "freemarker/ui.ftl"},
+       "files": {"core": "src/core/", "auto": "src/core/auto.js", "elements": "src/elements/all.js", "theme": "themes/colibri.css", "motion": "themes/motion.css", "freemarker": "freemarker/ui.ftl", "thymeleaf": "thymeleaf/", "css": "packages/colibri-css/dist/colibri.css", "bridge": "packages/colibri-css/dist/colibri-ui-bridge.css"},
        "rules": ["Markup contract: data-ui=\"name\" roots, data-ui-part=\"part\" children; state in data-state / aria-* / hidden.",
                  "Never style by JS; theme only through --ui-* tokens in themes/colibri.css (or your own CSS).",
                  "Events are ui:* CustomEvents that bubble; cancelable ones can be preventDefault()-ed.",

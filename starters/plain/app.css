@@ -1,0 +1,7 @@
+/* App-owned, unlayered CSS overrides Colibri without editing vendor files. */
+:root { --c-hue: 160; --c-radius: 0.75rem; }
+.app-shell { max-inline-size: 42rem; margin-inline: auto; padding: 2rem 1rem; }
+.app-shell header { justify-content: space-between; }
+.app-shell h1 { margin: 0; }
+.app-shell input { inline-size: 100%; }
+.app-shell button { inline-size: fit-content; }

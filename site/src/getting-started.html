@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Install and use Colibri</title><link rel="stylesheet" href="/css/colibri.css"><link rel="stylesheet" href="/site.css"></head><body><main class="center stack prose"><p><a href="/">← Colibri Kit</a></p><h1>Install and use Colibri</h1>
+<h2>Start without a bundler</h2>
+<p>Prerequisites: Git and Node.js 22.12+ to run the installer. Python 3 is used below only as a local HTTP server; any static web server works. Your deployed application needs only the copied CSS and JavaScript, not Node, Python or Maven.</p>
+<p>From the directory where you keep projects:</p>
+<pre class="code"><code>git clone https://github.com/levancho/colibri-kit.git colibri-kit
+mkdir my-app
+cd my-app
+node ../colibri-kit/bin/colibri.mjs init --starter
+python3 -m http.server 8080</code></pre>
+<p>Open http://localhost:8080/. You get a settings form with local persistence, a keyboard-operable dialog, a dark-mode switch, and application-owned CSS. No npm install or library build is needed for this route. The form uses browser storage, not a backend; replace its save handler with your authenticated API request for shared data.</p>
+<p><code>init</code> copies the CSS distribution, core controllers, custom elements, themes, FreeMarker macros and Thymeleaf fragments into <code>colibri/</code>. <code>--dir assets/colibri</code> changes the destination and the starter&#x27;s links. Run it from the directory your server exposes as its static root. URLs in the starter are relative, so it can run below an application path as well as at <code>/</code>.</p>
+<p>For an existing application omit <code>--starter</code> to avoid creating page files. Include these in order:</p>
+<pre class="code"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;./colibri/css/colibri.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;./colibri/themes/colibri.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;./colibri/css/colibri-ui-bridge.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;./app.css&quot;&gt;
+&lt;script type=&quot;module&quot; src=&quot;./colibri/core/auto.js&quot;&gt;&lt;/script&gt;
+&lt;body class=&quot;ui-root&quot;&gt;</code></pre>
+<p>Use the public URL where your server mounts these assets. Never expose <code>node_modules</code> as your application&#x27;s static root. Java template files belong in the server&#x27;s template resources; the copied versions are convenience sources, not browser dependencies.</p>
+<h2>Install into a bundler / React project</h2>
+<p>The source package names are <code>@colibri-kit/ui</code> and <code>@colibri-kit/css</code>. These instructions do not depend on a public npm release. From an existing application, install a pinned checkout:</p>
+<pre class="code"><code>git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
+# Record the revision used by your application:
+git -C vendor/colibri-kit rev-parse HEAD
+npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css</code></pre>
+<p>Commit or otherwise retain that vendor revision for your deployment. To distribute immutable archives internally, run <code>npm pack</code> in each package directory and install the resulting tarballs instead. The package has no install scripts or required React dependency for plain HTML consumers.</p>
+<p>In the application&#x27;s entry module:</p>
+<pre class="code"><code>import &#x27;@colibri-kit/css&#x27;;
+import &#x27;@colibri-kit/ui/themes/colibri.css&#x27;;
+import &#x27;@colibri-kit/css/bridge&#x27;;
+import &#x27;./app.css&#x27;;</code></pre>
+<p>For non-React pages, also import <code>@colibri-kit/ui/core/auto</code>. In React, use the adapter instead; do not run auto-initialization on React-owned components:</p>
+<pre class="code"><code>import { Dialog, Part } from &#x27;@colibri-kit/ui/react&#x27;;
+
+export function Help() {
+  return &lt;div className=&quot;ui-root&quot;&gt;
+    &lt;Dialog&gt;
+      &lt;Part name=&quot;trigger&quot; as=&quot;button&quot;&gt;Help&lt;/Part&gt;
+      &lt;Part name=&quot;content&quot; as=&quot;dialog&quot;&gt;
+        &lt;Part name=&quot;title&quot; as=&quot;h2&quot;&gt;Project help&lt;/Part&gt;
+        &lt;p&gt;Your application content goes here.&lt;/p&gt;
+        &lt;Part name=&quot;close&quot; as=&quot;button&quot;&gt;Close&lt;/Part&gt;
+      &lt;/Part&gt;
+    &lt;/Dialog&gt;
+  &lt;/div&gt;;
+}</code></pre>
+<p>The host supplies React and JSX tooling. For a small non-React page you can import a single controller (<code>@colibri-kit/ui/core/dialog</code> exports <code>createDialog</code>) instead of the full automatic registry. Keep its returned API and call <code>destroy()</code> when removing it.</p>
+<h2>Customize without editing vendor files</h2>
+<p>The bridge maps CSS tokens (<code>--c-*</code>) to UI tokens (<code>--ui-*</code>). Put your overrides in your own unlayered stylesheet:</p>
+<pre class="code"><code>:root { --c-hue: 160; --c-radius: 0.75rem; }
+/* Override an individual UI decision without changing the whole palette. */
+.billing-form { --ui-control-h: 44px; }</code></pre>
+<p>Set <code>&lt;html data-theme=&quot;dark&quot;&gt;</code> or <code>data-theme=&quot;light&quot;</code>; omit the attribute to use the CSS system preference. For an independently branded section, add <code>data-colibri-theme</code> before overriding <code>--c-hue</code> there so derived colors are recalculated. If using only the UI theme without Colibri CSS/bridge, customize <code>--ui-*</code> directly. Use semantic component rules for repeated application patterns rather than spreading presentation styles through markup.</p>
+<h2>Dynamic content and application data</h2>
+<p><code>auto.js</code> initializes the initial document and HTMX swaps. For HTML inserted by your own code, call <code>init(container)</code> from that module after insertion, or dispatch a bubbling <code>ui:refresh</code> event from the container. Removed components are disposed automatically by the auto module. Manual controllers need explicit cleanup; React wrappers own their cleanup.</p>
+<p>Listen to documented <code>ui:*</code> events on the component root; for example tabs dispatch <code>ui:change</code> with <code>event.detail.value</code>. Component behavior does not provide API endpoints, authentication, authorization or server validation. Use normal form <code>name</code> attributes and server-side validation. Render untrusted text with <code>textContent</code> or your template engine&#x27;s escaping.</p>
+<p>Java setup, engine dependencies, resource JAR and bindings: <a href="/java-templates.html">Java template integration</a>, also available at https://colibri.l3v.ai/java-templates.html.</p>
+<h2>Upgrade and diagnose</h2>
+<p>Run <code>colibri diff</code> (or <code>node path/to/bin/colibri.mjs diff</code>) from the folder containing <code>colibri.json</code> using the new package revision. It reports changed or missing vendor files. Back up local changes before upgrading. <code>init</code> refuses conflicting files before writing anything; <code>--dry-run</code> previews the operation and <code>--force</code> explicitly replaces conflicts. Keep <code>app.css</code> and <code>app.js</code> outside the vendor directory. <strong>Do not use <code>--starter --force</code> on an existing application</strong> unless you intend to replace its starter files too.</p>
+<table>
+<tr><th scope="col">Symptom</th><th scope="col">Check</th></tr>
+<tr><td>Unstyled layout</td><td>CSS request is 200 with a CSS content type; include the CSS distribution.</td></tr>
+<tr><td>Controls ignore brand colors</td><td>Load the bridge after the UI theme; check your application token overrides.</td></tr>
+<tr><td>Dialog/menu does nothing</td><td>Serve HTTP, not <code>file://</code>; check the module request and console.</td></tr>
+<tr><td>Native inputs look different</td><td>Put <code>ui-root</code> on the body or application container.</td></tr>
+<tr><td>Inserted component is inactive</td><td>Call <code>init(container)</code> after insertion; avoid double ownership with React.</td></tr>
+<tr><td>Java import cannot resolve</td><td>Install the template JAR and host engine; check the template resolver paths.</td></tr>
+<tr><td>Assets 404 below an application prefix</td><td>Match URLs to the host&#x27;s static-resource mount, not a filesystem path.</td></tr>
+</table>
+<p>The modern CSS requires browsers supporting cascade layers, <code>:has()</code>, OKLCH and <code>light-dark()</code>. Test your supported browser versions; this is not a legacy-browser stylesheet. Repository CI exercises Chromium, Firefox and WebKit, plus a consumer test that installs packed archives and runs the standalone starter. Accessibility also depends on the labels, content and application behavior you supply.</p></main></body></html>
