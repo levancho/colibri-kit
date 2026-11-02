@@ -8,7 +8,16 @@
 &lt;/dependency&gt;
 &lt;!-- OR: spring-boot-starter-thymeleaf --&gt;</code></pre>
 <p>Maven downloads FreeMarker or Thymeleaf and its dependencies. Colibri’s resource JAR does not bundle either engine.</p>
-<h2>2. Add Colibri’s templates</h2><p>From the Colibri checkout, build the supplemental JAR:</p><pre><code>mvn -f java/colibri-templates/pom.xml clean install</code></pre>
+<h2>2. Add Colibri’s templates</h2>
+<p><a class="btn" href="/downloads/colibri-templates-0.1.0-SNAPSHOT.jar" download>Download the template JAR</a></p>
+<p><a href="https://github.com/levancho/colibri-kit/tree/main/java/colibri-templates">Source and Java tests on GitHub</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/thymeleaf">Thymeleaf fragments</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/freemarker">FreeMarker macros</a></p>
+<p>Install the downloaded JAR in your local Maven repository:</p>
+<pre><code>mvn install:install-file \
+  -Dfile=colibri-templates-0.1.0-SNAPSHOT.jar \
+  -DgroupId=ai.l3v.colibri \
+  -DartifactId=colibri-templates \
+  -Dversion=0.1.0-SNAPSHOT -Dpackaging=jar</code></pre>
+<p>From the Colibri checkout, build the supplemental JAR:</p><pre><code>mvn -f java/colibri-templates/pom.xml clean install</code></pre>
 <pre><code>&lt;dependency&gt;
   &lt;groupId&gt;ai.l3v.colibri&lt;/groupId&gt;
   &lt;artifactId&gt;colibri-templates&lt;/artifactId&gt;

@@ -186,5 +186,6 @@ html.dp-framed .sink-top{top:0}
 body[data-log=bottom] .sink-totop{bottom:calc(22px + var(--sink-log-h,0px))}
 
 /* Open floating layers use viewport coordinates; auto containment would create
-   a local fixed-position containing block and push them outside the viewport. */
-.sink-sec:has([data-state="open"]) { content-visibility: visible; }
+   a local fixed-position containing block and push them outside the viewport.
+   Keep the same coordinate space until exit copies finish, after state closes. */
+.sink-sec:has([data-state="open"], [data-motion-ghost]) { content-visibility: visible; }
