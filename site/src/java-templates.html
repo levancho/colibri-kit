@@ -2,7 +2,7 @@
 <p><a href="/">← Colibri Kit</a></p><h1>FreeMarker and Thymeleaf for Java applications</h1>
 <p>Colibri supplies the component templates. Your Java application supplies the template engine. The browser loads Colibri CSS and JavaScript after the server renders the page.</p>
 <h2>1. Add your template engine</h2><p>In a Spring Boot application, choose the starter you use. Your existing Spring Boot dependency management supplies its version.</p>
-<pre><code>&lt;dependency&gt;
+<pre class="code"><code>&lt;dependency&gt;
   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
   &lt;artifactId&gt;spring-boot-starter-freemarker&lt;/artifactId&gt;
 &lt;/dependency&gt;
@@ -12,21 +12,21 @@
 <p><a class="btn" href="/downloads/colibri-templates-0.1.0-SNAPSHOT.jar" download>Download the template JAR</a></p>
 <p><a href="https://github.com/levancho/colibri-kit/tree/main/java/colibri-templates">Source and Java tests on GitHub</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/thymeleaf">Thymeleaf fragments</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/freemarker">FreeMarker macros</a></p>
 <p>Install the downloaded JAR in your local Maven repository:</p>
-<pre><code>mvn install:install-file \
+<pre class="code"><code>mvn install:install-file \
   -Dfile=colibri-templates-0.1.0-SNAPSHOT.jar \
   -DgroupId=ai.l3v.colibri \
   -DartifactId=colibri-templates \
   -Dversion=0.1.0-SNAPSHOT -Dpackaging=jar</code></pre>
-<p>From the Colibri checkout, build the supplemental JAR:</p><pre><code>mvn -f java/colibri-templates/pom.xml clean install</code></pre>
-<pre><code>&lt;dependency&gt;
+<p>From the Colibri checkout, build the supplemental JAR:</p><pre class="code"><code>mvn -f java/colibri-templates/pom.xml clean install</code></pre>
+<pre class="code"><code>&lt;dependency&gt;
   &lt;groupId&gt;ai.l3v.colibri&lt;/groupId&gt;
   &lt;artifactId&gt;colibri-templates&lt;/artifactId&gt;
   &lt;version&gt;0.1.0-SNAPSHOT&lt;/version&gt;
 &lt;/dependency&gt;</code></pre><p>This artifact is installed locally by the command above; it is not published to Maven Central. You can also copy the <code>freemarker/</code> or <code>thymeleaf/</code> directory into your application’s <code>src/main/resources/templates/colibri/</code> directory.</p>
-<h2>3. Render components with model data</h2><h3>FreeMarker</h3><pre><code>[#ftl output_format="HTML"]
+<h2>3. Render components with model data</h2><h3>FreeMarker</h3><pre class="code"><code>[#ftl output_format="HTML"]
 [#import "/colibri/freemarker/ui.ftl" as ui]
 [@ui.button disabled=saving]${buttonLabel}[/@ui.button]</code></pre><p>Use <code>.ftlh</code> for Spring Boot’s default HTML template suffix, or configure your application’s suffix. HTML auto-escaping stays enabled.</p>
-<h3>Thymeleaf</h3><pre><code>&lt;button th:replace="~{colibri/thymeleaf/button :: button(${buttonLabel}, 'outline', ${saving})}"&gt;&lt;/button&gt;</code></pre><p>Native fragments bind model values, iterate collections and conditionally render content. The Spring field fragment supports <code>th:field</code>, rejected values and validation errors. No custom dialect is required.</p>
+<h3>Thymeleaf</h3><pre class="code"><code>&lt;button th:replace="~{colibri/thymeleaf/button :: button(${buttonLabel}, 'outline', ${saving})}"&gt;&lt;/button&gt;</code></pre><p>Native fragments bind model values, iterate collections and conditionally render content. The Spring field fragment supports <code>th:field</code>, rejected values and validation errors. No custom dialect is required.</p>
 <h2>4. Serve the browser assets</h2><p>Serve Colibri’s <code>src/</code> and <code>themes/</code> under your application’s static <code>/ui/</code> path. Link <code>/ui/themes/colibri.css</code>, put <code>class="ui-root"</code> on the app root and load <code>/ui/src/core/auto.js</code> as a module. The template JAR contains server templates, not these browser assets.</p>
 <p><a href="https://github.com/levancho/colibri-kit/blob/main/docs/java-templates.md">Full setup, plain Java dependencies and Spring form examples →</a></p>
 </main></body></html>

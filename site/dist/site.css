@@ -112,3 +112,7 @@ html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--
 .invite-dialog { --gap: var(--c-space-s); inline-size: min(26rem,92vw); }
 .invite-title { font-size: var(--c-text-lg); }
 .not-found { text-align: center; align-items: center; }
+
+/* Setup guides must remain readable on narrow application screens. */
+.prose { min-inline-size: 0; overflow-wrap: anywhere; }
+.prose table { inline-size: 100%; table-layout: fixed; }

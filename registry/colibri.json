@@ -8,7 +8,10 @@
   "elements": "src/elements/all.js",
   "theme": "themes/colibri.css",
   "motion": "themes/motion.css",
-  "freemarker": "freemarker/ui.ftl"
+  "freemarker": "freemarker/ui.ftl",
+  "thymeleaf": "thymeleaf/",
+  "css": "packages/colibri-css/dist/colibri.css",
+  "bridge": "packages/colibri-css/dist/colibri-ui-bridge.css"
  },
  "rules": [
   "Markup contract: data-ui=\"name\" roots, data-ui-part=\"part\" children; state in data-state / aria-* / hidden.",

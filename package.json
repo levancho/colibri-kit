@@ -25,7 +25,8 @@
     "check:architecture": "python3 tools/check-architecture.py",
     "test:foundations": "node test/e2e/foundations.e2e.mjs",
     "test:cross-browser": "node test/e2e/cross-browser.mjs",
-    "test:java": "mvn -f java/colibri-templates/pom.xml verify"
+    "test:java": "mvn -f java/colibri-templates/pom.xml verify",
+    "test:consumer": "node test/e2e/consumer.e2e.mjs"
   },
   "license": "MIT",
   "devDependencies": {
@@ -59,6 +60,9 @@
     "README.md",
     "thymeleaf",
     "java/colibri-templates/pom.xml",
-    "docs/java-templates.md"
+    "docs/java-templates.md",
+    "packages/colibri-css/dist",
+    "starters",
+    "docs/getting-started.md"
   ]
 }

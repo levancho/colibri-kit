@@ -4,7 +4,7 @@
 //   npx colibri search sidebar      find components/blocks
 //   npx colibri view login-01       print HTML + FreeMarker snippet
 //   npx colibri docs tool           description, when to use, accessibility notes
-//   npx colibri init [--dir ui]     copy core + theme + FreeMarker into your project, write colibri.json
+//   npx colibri init [--dir ui]     copy CSS + core + themes + Java templates into your project, write colibri.json
 //   npx colibri add <name…>         print snippets for the named items (core is shared, copied by init) [--dry-run]
 //   npx colibri diff                show which copied files differ from this package
 //   npx colibri build               regenerate registry/colibri.json (needs python3; maintainers only)
@@ -20,8 +20,7 @@ export function score(it, q) { q = q.toLowerCase(); const hay = [it.name, it.tit
   return q.split(/\s+/).filter(Boolean).reduce((s, w) => s + (it.name === w ? 10 : 0) + (it.name.includes(w) ? 4 : 0) + (it.title.toLowerCase().includes(w) ? 3 : 0) + (hay.includes(w) ? 1 : 0), 0); }
 export const search = (q, n = 10) => registry().items.map((it) => [score(it, q), it]).filter(([s]) => s > 0).sort((a, b) => b[0] - a[0]).slice(0, n).map(([, it]) => it);
 const get = (n) => registry().items.find((i) => i.name === n) || (() => { console.error(`colibri: no item "${n}". Try: colibri search ${n}`); process.exit(1); })();
-const copyDir = (from, to, dry) => { for (const f of fs.readdirSync(from)) { const s = path.join(from, f), d = path.join(to, f); if (fs.statSync(s).isDirectory()) copyDir(s, d, dry); else { if (!dry) { fs.mkdirSync(to, { recursive: true }); fs.copyFileSync(s, d); } console.log(`${dry ? "would copy" : "copied"} ${path.relative(process.cwd(), d)}`); } } };
-const COPY = [["src/core", "core"], ["src/elements", "elements"], ["themes", "themes"], ["freemarker", "freemarker"]];
+const COPY = [["src/core", "core"], ["src/elements", "elements"], ["themes", "themes"], ["freemarker", "freemarker"], ["thymeleaf", "thymeleaf"], ["packages/colibri-css/dist", "css"]];
 
 switch (cmd) {
   case "info": { const r = registry(), c = cfg();
@@ -31,14 +30,40 @@ switch (cmd) {
   case "search": out(flags.has("--json") ? search(pos.join(" ")).map(({ name, title, description }) => ({ name, title, description })) : search(pos.join(" ")).map((i) => `${i.name.padEnd(22)} ${i.title} — ${i.description}`).join("\n") || "no matches"); break;
   case "view": { const i = get(pos[0]); out(flags.has("--json") ? i : `<!-- ${i.title} (${i.name}) -->\n${i.html}\n${i.freemarker ? `\n<#-- FreeMarker -->\n${i.freemarker}` : ""}`); break; }
   case "docs": { const i = get(pos[0]); out(flags.has("--json") ? { name: i.name, title: i.title, description: i.description, whenToUse: i.whenToUse, accessibility: i.accessibility, parts: i.parts, uses: i.uses } : `# ${i.title}  (data-ui="${i.name}", ${i.status})\n\n${i.description}\n\nWhen to use: ${i.whenToUse}\n\nParts: ${i.parts.join(", ") || "-"}\nComposes: ${i.uses.join(", ") || "-"}\n\nAccessibility & keyboard: ${i.accessibility}\n\nshadcn: ${i.shadcn} · Metronic: ${i.metronic}`); break; }
-  case "init": { const dir = opt("dir", "colibri"), dry = flags.has("--dry-run"); for (const [f, t] of COPY) copyDir(path.join(PKG, f), path.resolve(dir, t), dry);
-    const conf = { $schema: "colibri.json", dir, theme: `${dir}/themes/colibri.css`, motion: `${dir}/themes/motion.css`, freemarker: `${dir}/freemarker/ui.ftl`, import: `${dir}/core/auto.js`, version: registry().version };
-    if (!dry) fs.writeFileSync(cfgPath, JSON.stringify(conf, null, 2)); console.log(`${dry ? "would write" : "wrote"} colibri.json\nAdd to your layout:\n  <link rel="stylesheet" href="/${conf.theme}"><link rel="stylesheet" href="/${conf.motion}">\n  <script type="module" src="/${conf.import}"></script>\n  <body class="ui-root">`); break; }
+  case "init": {
+    const dir = opt("dir", cfg()?.dir || "colibri"), dry = flags.has("--dry-run");
+    if (!/^[a-zA-Z0-9_/-]+$/.test(dir) || path.isAbsolute(dir) || dir.split("/").some(p => !p || p === "..")) {
+      console.error("colibri: --dir must be a relative asset directory, for example assets/colibri"); process.exit(1);
+    }
+    const pending = new Map();
+    const collect = (from, to) => {
+      for (const entry of fs.readdirSync(from, {withFileTypes:true})) {
+        const source = path.join(from, entry.name), target = path.join(to, entry.name);
+        if (entry.isDirectory()) collect(source, target); else pending.set(target, fs.readFileSync(source));
+      }
+    };
+    for (const [from, to] of COPY) collect(path.join(PKG, from), path.resolve(dir, to));
+    const conf = { dir, css: `${dir}/css/colibri.css`, bridge: `${dir}/css/colibri-ui-bridge.css`, theme: `${dir}/themes/colibri.css`, motion: `${dir}/themes/motion.css`, freemarker: `${dir}/freemarker/ui.ftl`, thymeleaf: `${dir}/thymeleaf`, import: `${dir}/core/auto.js`, version: registry().version };
+    pending.set(cfgPath, Buffer.from(JSON.stringify(conf, null, 2) + "\n"));
+    if (flags.has("--starter")) {
+      for (const file of ["index.html", "app.css", "app.js"]) pending.set(path.resolve(file), Buffer.from(fs.readFileSync(path.join(PKG, "starters/plain", file), "utf8").replaceAll("__COLIBRI__", dir)));
+    }
+    // Check the entire operation before writing anything. Never silently replace application edits.
+    const conflicts = [...pending].filter(([file, data]) => fs.existsSync(file) && (!fs.statSync(file).isFile() || !fs.readFileSync(file).equals(data)));
+    if (conflicts.length && !flags.has("--force")) {
+      console.error("colibri: existing files differ; no files changed. Review with colibri diff, back up your changes, then use --force if intended:\n" + conflicts.map(([file]) => path.relative(process.cwd(),file)).join("\n")); process.exitCode = 1; break;
+    }
+    for (const [file,data] of pending) {
+      if (!dry) {fs.mkdirSync(path.dirname(file), {recursive:true}); fs.writeFileSync(file,data);}
+    }
+    console.log(`${dry ? "Would write" : "Wrote"} ${pending.size} files. Serve this directory over HTTP.\nInclude ${conf.css}, ${conf.theme}, ${conf.bridge}, then your application CSS.\nLoad ${conf.import} as a module and put class="ui-root" on your app root.\n${flags.has("--starter") ? "Starter: python3 -m http.server 8080 — open http://localhost:8080/" : "Use --starter to include a working index.html, app.css and app.js."}`);
+    break;
+  }
   case "add": { if (!cfg() && !flags.has("--dry-run")) console.log("note: run `colibri init` first to copy the shared core + theme.");
     for (const n of pos) { const i = get(n); console.log(`\n=== ${i.title} (${i.name}) ===\n${i.html}${i.freemarker ? `\n\n${i.freemarker}` : ""}`); } break; }
   case "diff": { const c = cfg(); if (!c) { console.error("no colibri.json; run colibri init"); process.exit(1); } let n = 0;
     const walk = (from, to) => { for (const f of fs.readdirSync(from)) { const s = path.join(from, f), d = path.join(to, f); if (fs.statSync(s).isDirectory()) walk(s, d); else if (!fs.existsSync(d)) { n++; console.log(`missing  ${d}`); } else if (fs.readFileSync(s, "utf8") !== fs.readFileSync(d, "utf8")) { n++; console.log(`changed  ${d}`); } } };
     for (const [f, t] of COPY) walk(path.join(PKG, f), path.resolve(c.dir, t)); console.log(n ? `${n} file(s) differ` : "up to date"); break; }
   case "build": execSync("python3 tools/registry.py", { cwd: PKG, stdio: "inherit" }); break;
-  default: console.log("usage: colibri <info|list|search|view|docs|init|add|diff|build> [args] [--json] [--dry-run] [--dir path] [--type component|block|motion]");
+  default: console.log("usage: colibri <info|list|search|view|docs|init|add|diff|build> [args] [--json] [--dry-run] [--dir path] [--starter] [--force] [--type component|block|motion]");
 }
