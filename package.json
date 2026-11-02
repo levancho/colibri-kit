@@ -18,7 +18,7 @@
     "sink": "python3 tools/kitchen-sink.py && python3 tools/readme-catalog.py && python3 tools/registry.py",
     "registry": "python3 tools/registry.py"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "devDependencies": {
     "jsdom": "^25.0.0",
     "puppeteer-core": "^23.0.0"
