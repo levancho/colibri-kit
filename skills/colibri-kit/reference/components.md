@@ -177,10 +177,10 @@ A horizontal or vertical line between content.
 - A11y / attributes: role=separator + aria-orientation; data-decorative = role none.
 
 ### `skeleton` (CSS/markup only, no JS behaviour)
-Grey shapes and a spinner shown while content loads.
+Skeleton shapes preview the layout while content loads.
 - When: Any slow-loading area.
-- Parts: `card`, `skeleton`, `spinner`
-- A11y / attributes: skeleton aria-hidden; spinner role=status + visually-hidden label.
+- Parts: `card`, `skeleton`
+- A11y / attributes: decorative skeleton shapes use `aria-hidden`; the loading region supplies its accessible status. Use the separate `spinner` component for activity indicators.
 
 ### `table` (CSS/markup only, no JS behaviour)
 A simple styled table with caption and headers.

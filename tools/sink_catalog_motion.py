@@ -26,7 +26,7 @@ add(G, "motion-wired", "Animated components", "done", "-", "-",
 <div data-ui="dialog"><button data-ui-part="trigger">Dialog (scale + backdrop)</button><dialog data-ui-part="content"><h2 data-ui-part="title">Animated dialog</h2><p data-ui-part="description">Native dialog with @starting-style enter and exit.</p><button data-ui-part="close">Close</button></dialog></div>
 <div data-ui="sheet" data-side="right"><button data-ui-part="trigger">Sheet (slide)</button><dialog data-ui-part="content"><h2 data-ui-part="title">Sheet</h2><button data-ui-part="close">Close</button></dialog></div>
 <button data-ui="button" id="t-success2" onclick="document.getElementById('t-success').click()">Toast (spring)</button>
-<div data-ui="collapsible" style="flex-basis:100%;max-width:360px"><button data-ui-part="trigger">Collapsible (height)</button><div data-ui-part="content"><p>ერთი</p><p>ორი</p></div></div>''')
+<div data-ui="collapsible" style="flex-basis:100%;max-width:360px"><button data-ui-part="trigger">Collapsible (height)</button><div data-ui-part="content"><p>One</p><p>Two</p></div></div>''')
 
 G = "Theming"
 TOK = [("--ui-background","Background"),("--ui-foreground","Text"),("--ui-card","Card"),("--ui-muted","Muted"),("--ui-muted-foreground","Muted text"),("--ui-primary","Primary"),("--ui-primary-foreground","On primary"),("--ui-accent","Accent"),("--ui-destructive","Destructive"),("--ui-success","Success"),("--ui-warning","Warning"),("--ui-border","Border"),("--ui-input","Input border"),("--ui-ring","Focus ring")]
