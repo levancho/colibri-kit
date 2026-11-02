@@ -84,4 +84,3 @@ INFO.update({
 "theme-scoped": ("Scoped theme", "Restyle just one area of a page by setting tokens on a container.", "Admin panels, embedded widgets, a dense data area."),
 })
 
-INFO["clothline"] = ("Clothline (minimize to a line)", "Floating panels you can move, resize and \"hang up\" on a line of tags instead of closing them; click a tag to bring the panel back.", "Workspaces with several tool panels (chat, notes, previews) where users want room without losing what they opened. Invented by L3V; see it live on l3v.ai.")

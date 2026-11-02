@@ -103,8 +103,6 @@ html[data-theme=dark] .sink-st[data-status=done]{background:#052e16;color:#86efa
 .tk-row{display:flex;gap:.75rem;flex-wrap:wrap;justify-content:center;width:100%}
 .tk-box{display:grid;place-items:center;width:130px;height:64px;border:1px solid var(--ui-border,var(--s-line));background:var(--ui-card,var(--s-bg));font:11px ui-monospace,monospace}
 .tk-pane{display:grid;gap:.75rem;justify-items:start;padding:1rem;border:1px dashed var(--ui-border,var(--s-line));border-radius:var(--ui-radius-lg,12px);min-width:240px}
-.cl-desk{position:relative;width:100%;height:300px;border:1px dashed var(--s-border,#ddd);border-radius:10px;overflow:hidden;background:repeating-linear-gradient(0deg,transparent 0 23px,color-mix(in srgb,currentColor 4%,transparent) 23px 24px)}
-.cl-desk [data-ui=clothline]{position:absolute;top:0;left:0;right:0;z-index:60}
 /* left nav: collapsible groups */
 .sink-nav-tools{display:flex;flex-wrap:wrap;gap:.35rem;padding:.6rem .5rem .4rem;position:sticky;top:-1rem;z-index:2;background:var(--s-bg);margin:-1rem -.25rem .25rem}
 .sink-nav-tools input{flex:1 1 100%;min-width:0;height:32px;padding:0 .6rem;border:1px solid var(--s-line);border-radius:8px;font:inherit;font-size:13px;background:var(--s-bg);color:var(--s-fg)}
@@ -176,3 +174,13 @@ html.dp-framed .sink-top{top:0}
  .sink-chk{min-height:44px}.sink-chk input{min-width:24px;min-height:24px}}
 
 .sink-sec{content-visibility:auto;contain-intrinsic-size:auto 640px}
+
+/* floating back-to-top arrow */
+.sink-totop{position:fixed;right:22px;bottom:22px;z-index:900;width:46px;height:46px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ui-primary,#6d28d9) 40%,transparent);background:var(--ui-primary,#6d28d9);color:var(--ui-primary-foreground,#fff);display:grid;place-items:center;cursor:pointer;box-shadow:0 6px 20px color-mix(in srgb,var(--ui-primary,#6d28d9) 35%,transparent);opacity:0;transform:translateY(16px) scale(.85);pointer-events:none;transition:opacity .25s,transform .25s}
+.sink-totop.is-on{opacity:1;transform:none;pointer-events:auto}
+.sink-totop:hover{filter:brightness(1.1)}
+.sink-totop:focus-visible{outline:2px solid var(--ui-ring,#a78bfa);outline-offset:3px}
+@media (prefers-reduced-motion:no-preference){.sink-totop.is-on svg{animation:sink-bob 1.6s ease-in-out infinite}.sink-totop:hover svg{animation-duration:.8s}}
+@keyframes sink-bob{0%,100%{transform:translateY(2px)}50%{transform:translateY(-3px)}}
+@media (prefers-reduced-motion:reduce){.sink-totop{transition:none}}
+body[data-log=bottom] .sink-totop{bottom:calc(22px + var(--sink-log-h,0px))}

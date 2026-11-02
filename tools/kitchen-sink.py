@@ -84,7 +84,8 @@ page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset
 <p class="sink-legend kpage-meta">{legend}</p>
 <p class="sink-dim">Untick <b>Demo styling</b> to see the components with no CSS at all: the library itself ships no styles. Turn on <b>⚡ Events</b> to watch what each component reports.</p></div>
 {"".join(body)}
-<p class="sink-dim sink-end"><a data-ui="scrollto" href="#top">↑ Back to top</a></p></main></div>
+</main></div>
+<button type="button" class="sink-totop" id="sink-totop" aria-label="Back to top" title="Back to top" hidden><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
 <section id="sink-log" class="sink-log" data-dock="bottom" hidden aria-label="Component events">
 <header class="sink-log-h" title="Drag to move"><strong>⚡ Events</strong><span class="sink-dim" id="log-hint">what the components just did</span>
 <span class="sink-log-tools"><button class="sink-icon" id="log-clear" title="Clear">⌫</button><button class="sink-icon" id="log-dock" title="Dock: bottom / right / floating">⇲</button>

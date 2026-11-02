@@ -30,7 +30,7 @@ function wireList(box, id, multiple) {
 }
 function highlight(box, o, owner) {
   opts(box).forEach((x) => { x.toggleAttribute("data-highlighted", x === o); });
-  if (o) { owner.setAttribute("aria-activedescendant", o.id); o.scrollIntoView?.({ block: "nearest" }); }
+  if (o) { owner.setAttribute("aria-activedescendant", o.id); { const sc = o.parentElement && o.closest("[role=listbox],[data-ui-part=list],[data-ui-part=content]"); if (sc && sc.scrollHeight > sc.clientHeight) { const r = o.getBoundingClientRect(), v = sc.getBoundingClientRect(); if (r.top < v.top) sc.scrollTop -= v.top - r.top; else if (r.bottom > v.bottom) sc.scrollTop += r.bottom - v.bottom; } } }
   else owner.removeAttribute("aria-activedescendant");
 }
 function step(box, cur, key) {

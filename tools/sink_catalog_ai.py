@@ -170,7 +170,7 @@ add(G, "stack-trace", "Stack trace", "done", "-", "AI: Stack Trace",
  coll("stack-trace", "TypeError: Cannot read properties of null (reading 'rows')", f'<pre data-ui-part="output">at createDataTable (src/core/base.js:212:31)\nat init (src/core/auto.js:52:17)\nat HTMLDocument.&lt;anonymous&gt; (src/core/auto.js:60:3)</pre><button data-ui-part="copy" data-ui="button" data-variant="ghost" data-size="sm">{I("copy",14)} Copy</button>', "error", trig_extra=I("alert", 14)))
 add(G, "subagent", "Subagent", "done", "-", "AI: Subagent",
  "Disclosure for a delegated run: name, status, a nested Trace of its tool calls and its result.",
- coll("subagent", "Researcher · l3v.ai Clothline", '<div data-ui="trace">' + f'<div data-ui-part="line">{I("search",14)}<span data-ui-part="title">Fetched l3v.ai bundle</span></div><div data-ui-part="line">{I("file",14)}<span data-ui-part="title">Read index.css (clothline rules)</span></div></div><p><b>Result:</b> minimized cells hang as tilted tags; click restores.</p>', "completed", trig_extra=I("bot", 14)))
+ coll("subagent", "Researcher · l3v.ai bundle", '<div data-ui="trace">' + f'<div data-ui-part="line">{I("search",14)}<span data-ui-part="title">Fetched l3v.ai bundle</span></div><div data-ui-part="line">{I("file",14)}<span data-ui-part="title">Read index.css (panel rules)</span></div></div><p><b>Result:</b> minimized panels hang as tilted tags; click restores.</p>', "completed", trig_extra=I("bot", 14)))
 add(G, "suggestion", "Suggestion", "done", "-", "AI: Suggestion",
  "A labelled group of buttons; clicking fills the linked Prompt input (data-target) or sends it (data-submit). ui:suggest {text} is cancelable.",
  '<div data-ui="suggestion" data-target="#pi-demo"><button data-ui-part="item">Summarise this page</button><button data-ui-part="item">Translate to Georgian</button><button data-ui-part="item">Write tests</button></div>')
@@ -183,7 +183,7 @@ add(G, "terminal", "Terminal", "done", "-", "AI: Terminal",
 add(G, "test-results", "Test results", "done", "-", "AI: Test Results",
  "Summary computed from the tests ('5 passed · 1 failed'), status error when anything failed; suites are nested disclosures marked passed/failed.",
  coll("test-results", "Test run", '<div data-ui-part="summary"></div>'
-  '<div data-ui="collapsible" data-ui-part="suite"><button data-ui-part="trigger">clothline.test.js</button><div data-ui-part="content"><ul>' + "".join(f'<li data-ui-part="test" data-status="passed">{t}</li>' for t in ("labels + roles", "hang moves the cell", "restore from the tag")) + '</ul></div></div>'
+  '<div data-ui="collapsible" data-ui-part="suite"><button data-ui-part="trigger">registry.test.js</button><div data-ui-part="content"><ul>' + "".join(f'<li data-ui-part="test" data-status="passed">{t}</li>' for t in ("labels + roles", "hang moves the cell", "restore from the tag")) + '</ul></div></div>'
   '<div data-ui="collapsible" data-ui-part="suite" data-default-open><button data-ui-part="trigger">ai.test.js</button><div data-ui-part="content"><ul><li data-ui-part="test" data-status="passed">prompt input submits</li><li data-ui-part="test" data-status="failed">file tree arrows <pre>expected "src" got "README.md"</pre></li><li data-ui-part="test" data-status="skipped">chart tooltips</li></ul></div></div>', open_=True))
 add(G, "tool", "Tool call", "done", "-", "AI: Tool",
  "Disclosure: tool name + status badge (pending, running, completed, error) as a polite live region; input and output sections.",

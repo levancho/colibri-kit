@@ -14,7 +14,6 @@ import { createPagination, createStepper, createScrollspy, createScrollTo, creat
 import * as AI from "./ai.js";
 import { createToolbar, createSegmentedControl, createCheckboxCards, createRadioCards, createCheckboxGroup, createTabNav, createAccessibleIcon } from "./extras.js";
 import { createAuthForm } from "./blocks.js";
-import { createClothline, createCell } from "./clothline.js";
 import { createDismiss, createToaster, createProgress, createCarousel, createAvatar, createThemeSwitch, createDataTable, createResizable, createReparent, createScrollArea, createMessageScroller, createClipboard, createButton, createSeparator, createItemGroup, createBadge } from "./base.js";
 
 export const registry = {
@@ -35,7 +34,7 @@ export const registry = {
   dismiss: createDismiss, alert: createDismiss, toaster: createToaster, progress: createProgress, carousel: createCarousel, avatar: createAvatar,
   "theme-switch": createThemeSwitch, datatable: createDataTable, "data-table": createDataTable, resizable: createResizable, reparent: createReparent,
   "scroll-area": createScrollArea, scrollable: createScrollArea, "message-scroller": createMessageScroller, clipboard: createClipboard,
-  button: createButton, separator: createSeparator, "item-group": createItemGroup, badge: createBadge, clothline: createClothline, cell: createCell,
+  button: createButton, separator: createSeparator, "item-group": createItemGroup, badge: createBadge,
   bubble: AI.createBubble, message: AI.createMessage, marker: AI.createMarker, trace: AI.createTrace,
   attachment: AI.createAttachment, questionnaire: AI.createQuestionnaire, chart: AI.createChart,
   "chain-of-thought": AI.createChainOfThought, task: AI.createTask, plan: AI.createPlan, tool: AI.createTool, reasoning: AI.createReasoning,

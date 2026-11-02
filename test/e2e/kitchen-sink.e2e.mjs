@@ -20,6 +20,15 @@ const go = async (id) => { await p.$eval("#" + id, (s) => s.scrollIntoView({ blo
 const focusEl = (sel) => p.$eval(sel, (e) => e.focus());
 
 await t("no JS errors on load", async () => eq(errors.length, 0, errors.join(" | ")));
+await t("opens at the very top", async () => eq(await p.evaluate(() => scrollY), 0, "scrollY"));
+await t("all nav groups start collapsed", async () => eq(await p.$$eval("#sink-sidebar .sink-group", (gs) => gs.filter((g) => g.__uiCollapsible?.open).length), 0, "open groups"));
+await t("no clothline left", async () => eq(await p.evaluate(() => document.querySelectorAll("[data-ui=clothline],[data-ui=cell],.cl-desk").length), 0, "nodes"));
+await t("back-to-top arrow: hidden at top, appears on scroll, returns to top", async () => {
+  eq(await q("#sink-totop", (e) => e.classList.contains("is-on")), false, "off at top");
+  await p.evaluate(() => scrollTo(0, 4000)); await wait(400);
+  eq(await q("#sink-totop", (e) => !e.hidden && e.classList.contains("is-on") && getComputedStyle(e).position === "fixed"), true, "visible");
+  await p.click("#sink-totop"); await p.waitForFunction(() => scrollY === 0, { timeout: 5000 });
+});
 await t("event log hidden by default, not covering content", async () => eq(await q("#sink-log", (e) => e.hidden), true, "hidden"));
 await t("event log: open, collapse, dock, drag, close", async () => {
   await p.click("#log-open"); await wait(50);

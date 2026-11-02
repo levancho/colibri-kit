@@ -149,7 +149,6 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 | Colibri (`data-ui`) | Status | Metronic | shadcn |
 |---|---|---|---|
 | Breadcrumb (`breadcrumb`) | 🔷 structure (markup/CSS only) | Breadcrumb | Breadcrumb |
-| Clothline (`clothline`) | ✅ done | - | - (L3V original) |
 | Command (`command`) | ✅ done | (search modal) | Command |
 | Menubar (`menu`) | ✅ done | Menu (horizontal) | Menubar |
 | Navigation Menu (`navigation-menu`) | ✅ done | Menu (mega) | Navigation Menu |
@@ -284,21 +283,6 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 | Scoped theme override (`theme-scoped`) | ✅ done | - | - |
 
 <!-- CATALOG:END -->
-
-## Clothline (after L3V, l3v.ai)
-
-L3V's site lays everything out as floating **Cells** (movable, resizable panels). The **Clothline** is a fixed strip under the header where Cells hang when you minimize them: each one becomes a tilted tag with a peg, its kind mark and its name. Clicking the tag restores the Cell, and × (shown on hover, always shown on touch screens) closes it. The strip hides itself when it is empty.
-
-Colibri adds this as two primitives:
-
-- `data-ui="clothline"` is a `<nav aria-label="Minimized cells">` landmark. Use ←/→/Home/End to move between tags.
-- `data-ui="cell"` has these parts: `header` (drag handle; Alt+Arrows moves the cell, Alt+Shift+Arrows resizes it), `title`, `mark`, `minimize`, `maximize`, `close`, `body` and `resize`. Point it at its line with `data-line="#id"`.
-- API: `createCell(el).hang() / restore() / close() / open() / toggleMaximize()`.
-- Events: `ui:hang`, `ui:restore`, `ui:close` (cancellable), `ui:maximize`, `ui:move`, `ui:resize`.
-- Focus: minimizing focuses the new tag; restoring focuses the cell again.
-- Custom elements: `<ui-clothline>` and `<ui-cell>`.
-- FreeMarker: `[@ui.clothline/]` and `[@ui.cell title=… mark=… hanging=true]…[/@ui.cell]`.
-- Styling: the theme is in `themes/colibri.css` and the hang animation is in `themes/motion.css` (turned off by reduced motion).
 
 ## shadcn parity: conversation, AI elements, blocks, skills
 

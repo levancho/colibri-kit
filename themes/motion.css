@@ -117,5 +117,3 @@
 /* off switch + reduced motion */
 html[data-ui-motion=off] *,html[data-ui-motion=off] *::before,html[data-ui-motion=off] *::after,html[data-ui-motion=off] ::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after,::backdrop{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
-@media (prefers-reduced-motion:no-preference){:where(html:not([data-ui-motion=off])) [data-ui=clothline] [data-ui-part=item]{animation:ui-cl-hang .45s cubic-bezier(.3,1.6,.5,1)}}
-@keyframes ui-cl-hang{0%{opacity:0;transform:translateY(-14px) rotate(-8deg)}60%{opacity:1;transform:translateY(2px) rotate(4deg)}}

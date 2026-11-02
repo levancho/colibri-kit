@@ -192,7 +192,7 @@ export function createRepeater(root, o = {}) {
       const n = rows().length; if (addBtn) addBtn.disabled = n >= max; rows().forEach((r) => { const rm = r.querySelector('[data-ui-part="remove"]'); if (rm) rm.disabled = n <= min; });
       root.dataset.count = n;
     };
-    const add = () => { if (rows().length >= max) return; const node = tpl.content.firstElementChild.cloneNode(true); list.append(node); node.querySelectorAll('[data-ui-part="remove"]').forEach(btn); renumber(); node.querySelector("input,select,textarea")?.focus(); emit(root, "add", { row: node, index: rows().length - 1 }); root.ownerDocument.dispatchEvent(new CustomEvent("ui:refresh", { bubbles: true })); };
+    const add = () => { if (rows().length >= max) return; const node = tpl.content.firstElementChild.cloneNode(true); list.append(node); node.querySelectorAll('[data-ui-part="remove"]').forEach(btn); renumber(); if (root.contains(root.ownerDocument.activeElement)) node.querySelector("input,select,textarea")?.focus(); emit(root, "add", { row: node, index: rows().length - 1 }); root.ownerDocument.dispatchEvent(new CustomEvent("ui:refresh", { bubbles: true })); };
     addBtn && b.on(addBtn, "click", add);
     b.on(root, "click", (e) => { const r = e.target.closest('[data-ui-part="remove"]'); if (!r) return; const row = r.closest('[data-ui-part="row"]'); if (rows().length <= min) return; row.remove(); renumber(); emit(root, "remove", { row }); });
     while (rows().length < min) add();

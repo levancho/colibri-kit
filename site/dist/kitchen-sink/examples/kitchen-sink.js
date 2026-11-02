@@ -1,3 +1,8 @@
+// ---- open at the very top (no restored scroll) unless the URL names a section ----
+if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+const sinkTop = () => { if (!location.hash) scrollTo({ top: 0, left: 0, behavior: "instant" }); };
+sinkTop(); addEventListener("load", sinkTop); addEventListener("pageshow", sinkTop);
+
 import { highlightAll } from "./code-highlight.js";
 // Highlight lazily: colouring all ~476 code blocks up front built ~118k nodes. Colour each code box as it nears the viewport.
 const hlIO = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { hlIO.unobserve(e.target); highlightAll(e.target); } }), { rootMargin: "900px 0px" });
@@ -111,10 +116,6 @@ document.addEventListener("click", (e) => {
 });
 $("#mo-invalid")?.addEventListener("submit", (e) => { e.preventDefault(); const i = e.target.querySelector("input"); if (!i.value) { i.setAttribute("aria-invalid", "true"); play(e.target, "shake"); } else { i.removeAttribute("aria-invalid"); toast({ title: "OK", variant: "success" }); } });
 
-// ---- Clothline demo: reset desk ----
-const clDesk = document.querySelector(".cl-desk"); const clInit = clDesk?.innerHTML;
-document.getElementById("cl-reset")?.addEventListener("click", () => { Object.keys(localStorage).filter((k) => k.startsWith("colibri.cell.sink-")).forEach((k) => localStorage.removeItem(k)); clDesk.innerHTML = clInit; document.dispatchEvent(new Event("ui:refresh")); });
-
 // ---- Conversation + AI elements demos (demo-only wiring; components themselves are generic) ----
 const byId = (id) => document.getElementById(id);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -125,7 +126,7 @@ byId("rs-run")?.addEventListener("click", async () => { const r = byId("rs-demo"
   for (const w of "The user wants the blocked accounts. Check block=1 in dsp2_users, then comprofiler approval flags.".split(" ")) { t.textContent += w + " "; await sleep(90); } r.dataset.duration = "3"; r.dataset.status = "done"; });
 setTimeout(() => { const r = byId("rs-demo"); if (r && r.dataset.status === "streaming") { r.dataset.duration = "2"; r.dataset.status = "done"; } }, 2500);
 byId("term-run")?.addEventListener("click", async () => { const t = byId("term-demo"), api = t.__uiAgent; t.dataset.status = "running"; t.__uiAgent.open();
-  for (const l of ["▶ clothline.test.js", "  ✔ labels + roles", "  ✔ hang moves the cell", "▶ ai.test.js", "  ✔ prompt input submits", "ℹ pass 5  fail 0", ""]) { api.write(l + "\n"); await sleep(250); } t.dataset.status = "completed"; });
+  for (const l of ["▶ registry.test.js", "  ✔ labels + roles", "  ✔ elements register", "▶ ai.test.js", "  ✔ prompt input submits", "ℹ pass 5  fail 0", ""]) { api.write(l + "\n"); await sleep(250); } t.dataset.status = "completed"; });
 byId("pi-demo")?.addEventListener("ui:submit", (e) => { toast?.({ title: "Prompt sent", description: e.detail.text + (e.detail.files.length ? ` (+${e.detail.files.length} file)` : "") }); });
 // chat: append the user's message, stream a fake reply, Send becomes Stop meanwhile
 byId("chat-pi")?.addEventListener("ui:submit", async (e) => {
@@ -152,13 +153,15 @@ document.addEventListener("ui:provider", (e) => toast?.({ title: `Continue with 
   let saved = null; try { saved = JSON.parse(localStorage.getItem(NK) || "null"); } catch {}
   const save = () => localStorage.setItem(NK, JSON.stringify(groups.filter((g) => api(g)?.open).map((g) => g.dataset.group)));
   const activeGroup = () => document.querySelector('#sink-sidebar [data-ui-part=link][aria-current]')?.closest(".sink-group");
-  groups.forEach((g, i) => { const a = api(g); if (a) a.open = saved ? saved.includes(g.dataset.group) : i === 0; });
+  // on open every group starts collapsed (saved state only feeds the filter reset)
+  groups.forEach((g) => { const a = api(g); if (a) a.open = false; });
+  let userScrolled = false; addEventListener("scroll", () => { if (scrollY > 40) userScrolled = true; }, { passive: true });
   let filtering = false;
   document.querySelector("#sink-sidebar").addEventListener("ui:open", (e) => { if (!filtering && groups.includes(e.target)) save(); });
   document.querySelector("#sink-sidebar").addEventListener("ui:close", (e) => { if (!filtering && groups.includes(e.target)) save(); });
   // keep the group of the section in view open (without persisting it)
-  document.querySelector("#sink-sidebar [data-ui=scrollspy]").addEventListener("ui:change", (e) => { const id = e.detail?.id, g = id ? document.querySelector(`#sink-sidebar [data-ui-part=link][href="#${CSS.escape(id)}"]`)?.closest(".sink-group") : null; if (g && !api(g).open && !filtering) { filtering = true; api(g).open = true; filtering = false; } });
-  const g0 = activeGroup(); if (g0 && !api(g0).open) { filtering = true; api(g0).open = true; filtering = false; }
+  document.querySelector("#sink-sidebar [data-ui=scrollspy]").addEventListener("ui:change", (e) => { const id = e.detail?.id, g = id ? document.querySelector(`#sink-sidebar [data-ui-part=link][href="#${CSS.escape(id)}"]`)?.closest(".sink-group") : null; if (g && userScrolled && !api(g).open && !filtering) { filtering = true; api(g).open = true; filtering = false; } });
+  if (location.hash) { const g0 = activeGroup(); if (g0 && !api(g0).open) { filtering = true; api(g0).open = true; filtering = false; } }
   document.getElementById("nav-expand").onclick = () => { groups.forEach((g) => (api(g).open = true)); save(); };
   document.getElementById("nav-collapse").onclick = () => { groups.forEach((g) => (api(g).open = false)); save(); };
   // filter: show matching links, open groups that match, restore saved state when cleared
@@ -192,4 +195,16 @@ document.addEventListener("click", (e) => {
   const show = () => { const s = v("bg-style"); out.textContent = `Align: ${v("bg-align") ?? "none"} · Style: ${s?.length ? s.join(", ") : "none"} · View: ${v("bg-view") ?? "none"}`; };
   document.querySelectorAll(".bg-demo [data-ui=button-group]").forEach((g) => g.addEventListener("ui:change", show));
   document.getElementById("bg-actions")?.addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) out.textContent = `Action: ${b.textContent}`; });
+}
+
+// ---- floating animated back-to-top arrow ----
+{
+  const b = document.getElementById("sink-totop");
+  if (b) {
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+    const upd = () => { const on = scrollY > 600; if (on) b.hidden = false; b.classList.toggle("is-on", on); };
+    addEventListener("scroll", upd, { passive: true }); upd();
+    b.addEventListener("transitionend", () => { if (!b.classList.contains("is-on")) b.hidden = true; });
+    b.addEventListener("click", () => { scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" }); (document.querySelector(".sink-skip") || document.body).focus?.({ preventScroll: true }); });
+  }
 }
