@@ -158,10 +158,10 @@ addEventListener("message", (e) => { if (e.data?.type !== "colibri-theme" || !B.
 function renderBridge() {
   const t = S.bridge, rl = t ? Object.fromEntries(Object.entries(t.roles).map(([k, v]) => [v, k])) : {};
   $("#bsw").innerHTML = t ? t.colors.map((c) => `<i style="background:${c}" title="${c}${rl[c] ? " · " + rl[c] : ""}"${rl[c] ? ` data-r="${rl[c] === "background" ? "bg" : rl[c]}"` : ""}></i>`).join("") : "";
-  $("#bsub").textContent = t ? `${t.source === "colibria" ? "From Colibria" : "Linked"}${t.name ? ": " + t.name : ""} · ${t.scheme}` : "Design colours on colibria.ai, test them here";
-  if (S.gen) $("#bsub").textContent = `Generated theme: ${S.gen.name} · ${S.gen.slug} · ${CS.resolveScheme(S)}`; $("#bridge").classList.toggle("gen", !!S.gen); $("#genTag").hidden = !S.gen;
+  $("#bsub").textContent = t ? `${t.source === "colibria" ? "From Colibria" : "Linked"}${t.name ? ": " + t.name : ""} · ${t.scheme}` : "Design your theme, preview it here";
+  if (S.gen) $("#bsub").textContent = `${S.gen.name} · ${CS.resolveScheme(S)}`; $("#bridge").classList.toggle("gen", !!S.gen); $("#genTag").hidden = !S.gen;
   $("#unlink").textContent = S.gen ? "Remove generated theme" : "Unlink palette";
-  $("#unlink").hidden = !t; $("#toColibria").textContent = t ? "Refine in Colibria ↗" : "Open in Colibria ↗";
+  $("#unlink").hidden = !t;
 }
 try { const inc = JSON.parse(sessionStorage.getItem("colibri-bridge-incoming") || "null"); if (inc) { sessionStorage.removeItem("colibri-bridge-incoming"); setTimeout(() => toast(inc.source === "colibria" ? `Palette from Colibria applied${inc.name ? ": " + inc.name : ""}` : "Linked palette applied"), 400); } } catch {}
 // ---------- keyboard ----------

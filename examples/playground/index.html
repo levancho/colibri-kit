@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Themes Studio — Colibri Kit</title>
-<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio"></script><script src="studio-theme.js"></script>
+<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=kit-theme-generator"></script><script src="studio-theme.js"></script>
 <script>/* before paint: adopt a shared #link, persist it for the preview frames, and paint Studio chrome in the resolved scheme */
 (function(){var C=window.ColibriStudio,S=C.load();try{var q=new URLSearchParams(location.hash.slice(1));if(q.has("pack")){for(var k in C.DEF)if(q.has(k)){var v=q.get(k);S[k]=v==="null"?null:v;}localStorage.setItem(C.KEY,JSON.stringify(S));}}catch(e){}
 /* incoming Colibria palette: #colibri=<payload>&return=<url> */try{var B=window.ColibriBridge,inc=B.read();if(inc){var t=inc.theme;S.bridge=t;S.hue=null;S.scheme=t.scheme;S.gen=t.gen||null;if(t.gen){var GR={radius:"pack",font:"pack",hfont:"pack",hweight:"pack",shadow:"pack",motion:"pack",focus:"pack",tscale:100,scaling:"100"},GK=window.ColibriThemeGen.studio(t.gen);for(var g1 in GR)S[g1]=GR[g1];for(var g2 in GK)S[g2]=GK[g2];}else if(t.kit)for(var kk in t.kit)if(kk in C.DEF&&kk!=="bridge")S[kk]=t.kit[kk];if(C.DARK_ONLY[S.pack]&&t.scheme==="light")S.pack="glacier";localStorage.setItem(C.KEY,JSON.stringify(S));sessionStorage.setItem("colibri-bridge-incoming",JSON.stringify({ret:inc.ret,name:t.name,source:t.source}));history.replaceState(null,"",location.pathname);}}catch(e){}
@@ -18,10 +18,10 @@ var sc=C.resolveScheme(S),r=document.documentElement;r.dataset.chrome=sc;r.style
 <aside class="rail" id="rail" aria-label="Theme settings">
  <div class="rhead"><b>Theme</b><span class="sp"></span><button type="button" class="lnk" id="surprise" title="Random but tasteful">Surprise me</button><button type="button" class="lnk" id="reset">Reset</button></div>
 
- <section class="bridge" id="bridge" aria-label="Colibria"><div class="bh"><img src="/colibri-mark.svg" alt="" width="22" height="22"><div><b>Colibria palette <em id="genTag" hidden>custom theme</em></b><small id="bsub">Design colours on colibria.ai, test them here</small></div></div>
+ <section class="bridge" id="bridge" aria-label="Colibria"><div class="bh"><img src="/colibri-mark.svg" alt="" width="22" height="22"><div><div class="btitle"><b>Colibria</b><em id="genTag" hidden>Custom theme</em></div><small id="bsub">Design your theme, preview it here</small></div></div>
   <div class="bsw" id="bsw"></div>
-  <div class="brow"><button type="button" class="ib pri" id="toColibria">Open in Colibria ↗</button><button type="button" class="ib" id="toDash">Try on dashboard ↗</button></div>
-  <div class="brow2"><button type="button" class="lnk" id="importTheme" title="Load a theme.json or theme ZIP made with the Colibria Kit Theme Generator (or drop the file anywhere)">Import theme (.zip / .json)</button><input type="file" id="importFile" accept=".zip,.json,application/zip,application/json" hidden><a class="lnk" href="https://colibria.ai/?view=kit-theme-generator" target="colibria">Create a theme ↗</a></div>
+  <div class="brow"><button type="button" class="ib pri" id="toColibria" title="Open the Colibri Kit Theme Generator in Colibria with this theme">Design in Colibria ↗</button><button type="button" class="ib" id="toDash">Preview dashboard ↗</button></div>
+  <div class="brow2"><button type="button" class="lnk" id="importTheme" title="Load a theme.json or theme ZIP made with the Colibria Kit Theme Generator (or drop the file anywhere)">Import theme (.zip / .json)</button><input type="file" id="importFile" accept=".zip,.json,application/zip,application/json" hidden></div>
   <button type="button" class="lnk" id="unlink" hidden>Unlink palette</button></section>
 
  <details open><summary>Theme pack <em>shape · type · depth · motion</em></summary>
