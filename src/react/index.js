@@ -73,7 +73,16 @@ export function useColibri(kind, { on = {}, options, apiRef } = {}) {
 const DATA_PROPS = ["type", "side", "align", "orientation", "value", "defaultValue", "label", "name", "variant", "size", "tone", "required", "offset", "max", "min", "step"];
 export const UI = forwardRef(function UI({ kind, as = "div", children, apiRef, onChange, onOpen, onClose, on = {}, ...rest }, fwd) {
   const events = { ...on }; if (onChange) events.change = onChange; if (onOpen) events.open = onOpen; if (onClose) events.close = onClose;
-  const [ref] = useColibri(kind, { on: events, apiRef });
+  const change=events.change;
+  if(kind === "tabs" && rest.value !== undefined) events.change=event=>{
+    change?.(event);
+    api.current?.select(rest.value,{silent:true});
+  };
+  const [ref, api] = useColibri(kind, { on: events, apiRef });
+  // Controlled selection is synchronized through the controller, never data-attribute mutation.
+  useEffect(() => {
+    if (kind === "tabs" && rest.value !== undefined && api.current?.value !== rest.value) api.current?.select(rest.value,{silent:true});
+  });
   const combinedRef = useCallback(node => { ref(node); setRef(fwd, node); }, [ref, fwd]);
   const props = { "data-ui": kind };
   for (const [k, v] of Object.entries(rest)) {
@@ -117,3 +126,5 @@ export const TabNav = named("tab-nav", "nav");
 export const DataList = named("data-list", "dl");
 export const Callout = named("callout");
 export const Inset = named("inset");
+export { ChartPanel } from './chart-panel.js';
+export { ApplicationShell, MetricRail, RecordTable, OpportunityBoard, ProjectCards, DayPlanner, IdentityCard, ProductCollection, OrderReceipt, ConversationDesk, ApplicationForm, PhotoFeature, KnowledgeArticle } from './application-components.js';

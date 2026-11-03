@@ -1,0 +1,205 @@
+@layer colibri.components {.colibri-application{--suite-sidebar:232px;--suite-gap:22px}
+:where(.colibri-application) .dash,:where(.colibri-application) .app-shell,.colibri-application[data-layout=support] .app-shell{grid-template-columns:var(--suite-sidebar) minmax(0,1fr)}
+:where(.colibri-application) .suite-sidebar{position:sticky;inset-block-start:0;block-size:100dvh;overflow:auto;padding:22px 14px;display:flex;flex-direction:column;gap:22px;background:var(--c-surface);color:var(--c-fg);border-inline-end:1px solid var(--c-line)}
+.colibri-application[data-layout=commerce] .suite-sidebar,.colibri-application[data-layout=support] .suite-sidebar{background:var(--c-surface);color:var(--c-fg)}
+:where(.colibri-application) .suite-brand{display:flex;align-items:center;gap:10px;padding:0 10px;text-decoration:none;color:var(--c-fg)}
+:where(.colibri-application) .suite-brand>span{display:grid;place-items:center;inline-size:36px;block-size:36px;background:var(--c-accent);color:var(--c-brand-fg);border-radius:11px}
+:where(.colibri-application) .suite-brand strong{font-size:19px;letter-spacing:-.5px}
+:where(.colibri-application) .suite-brand small{display:block;font-size:10px;font-weight:500;letter-spacing:.02em;color:var(--c-muted);margin-block-start:2px}
+:where(.colibri-application) .suite-label{font-size:10px;font-weight:650;text-transform:uppercase;letter-spacing:.12em;color:var(--c-muted);margin:0 12px 9px}
+:where(.colibri-application) .suite-nav{display:flex;flex-direction:column;gap:4px}
+:where(.colibri-application) .suite-nav a,:where(.colibri-application) .suite-context a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;color:var(--c-muted);text-decoration:none;font-size:13px;font-weight:500}
+:where(.colibri-application) .suite-nav a:hover,:where(.colibri-application) .suite-context a:hover{background:var(--c-sunken);color:var(--c-fg)}
+:where(.colibri-application) .suite-nav a[aria-current=page]{background:var(--c-accent-soft);color:var(--c-accent);font-weight:650}
+:where(.colibri-application) .suite-nav .app-icon{inline-size:18px;block-size:18px}
+:where(.colibri-application) .suite-active-dot{inline-size:5px;block-size:5px;background:currentColor;border-radius:50%;margin-inline-start:auto}
+:where(.colibri-application) .suite-context{padding-block-start:18px;border-block-start:1px solid var(--c-line)}
+:where(.colibri-application) .suite-sidebar .suite-context a{font-size:12px;padding:8px 12px}
+:where(.colibri-application) .suite-sidebar .suite-context .app-icon{inline-size:16px;block-size:16px}
+:where(.colibri-application) .suite-sidebar footer{margin-block-start:auto;display:grid;gap:12px;padding:18px 10px 0;border-block-start:1px solid var(--c-line)}
+:where(.colibri-application) .suite-sidebar footer a,.colibri-application[data-layout=commerce] .suite-sidebar footer a{display:flex;align-items:center;gap:8px;color:var(--c-muted);text-decoration:none;font-size:12px}
+:where(.colibri-application) .suite-sidebar footer .app-icon{inline-size:15px;block-size:15px}
+:where(.colibri-application) .suite-sidebar footer small{font-size:10px;color:var(--c-muted)}
+:where(.colibri-application) .dash-top,:where(.colibri-application) .app-top{min-block-size:72px;padding:14px 28px;gap:14px;background:var(--c-surface);backdrop-filter:none;position:static;align-items:center}
+:where(.colibri-application) .dash-top .search,:where(.colibri-application) .app-top .app-search{flex:1 1 160px;max-inline-size:280px;margin-inline-start:auto}
+:where(.colibri-application) .dashboard-back{font-size:12px}
+:where(.colibri-application) .dash-top label,:where(.colibri-application) .app-top label{font-size:11px}
+:where(.colibri-application) .dash-top select,:where(.colibri-application) .app-top select{max-inline-size:170px;font-size:12px}
+:where(.colibri-application) .dash-top label:has(#hue){display:none}
+:where(.colibri-application) .dash-top .dp-slot{margin-inline-start:0}
+:where(.colibri-application) .dash-body,:where(.colibri-application) .app-main,.colibri-application[data-layout=support] .app-main{padding:26px 28px;gap:24px;max-inline-size:1600px;inline-size:100%;margin:auto}
+:where(.colibri-application) .app-stack{gap:22px}
+:where(.colibri-application) .app-note,:where(.colibri-application) .app-note{font-size:10px;margin:0;color:var(--c-muted)}
+:where(.colibri-application) .dash-head h1,:where(.colibri-application) .app-heading h1,.colibri-application[data-layout=crm] .dash-head h1{font-size:28px;line-height:1.2;font-weight:650;letter-spacing:-1px}
+:where(.colibri-application) .dash-head p,:where(.colibri-application) .app-heading p{font-size:13px;margin:.4rem 0 0}
+:where(.colibri-application) .dash-breadcrumb,:where(.colibri-application) .eyebrow{font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+:where(.colibri-application) .dash-head,:where(.colibri-application) .app-heading{align-items:center}
+:where(.colibri-application) .app-heading .eyebrow{display:block;margin-block-end:7px}
+:where(.colibri-application) .panel,:where(.colibri-application) .app-card,:where(.colibri-application) .kpi{border-radius:12px;border:1px solid var(--c-line);box-shadow:0 2px 5px color-mix(in oklch,var(--c-fg) 3%,transparent)}
+:where(.colibri-application) .panel,:where(.colibri-application) .app-card{padding:20px}
+:where(.colibri-application) .panel header h3,:where(.colibri-application) .app-card h2{font-size:14px;font-weight:650;letter-spacing:-.2px}
+:where(.colibri-application) .panel header p{font-size:11px;margin-block-start:4px}
+:where(.colibri-application) .app-card p{font-size:12px;line-height:1.7}
+:where(.colibri-application) .btn{font-size:12px;border-radius:7px}
+:where(.colibri-application) .app-table,:where(.colibri-application) .data{font-size:12px}
+:where(.colibri-application) .app-table th,:where(.colibri-application) table.data th{font-size:10px;letter-spacing:.04em}
+:where(.colibri-application) .app-table td,:where(.colibri-application) table.data td{padding:14px 10px}
+:where(.colibri-application) .app-pill,:where(.colibri-application) .badge{font-size:10px}
+:where(.colibri-application) .app-grid{gap:20px}
+:where(.colibri-application) .app-columns,:where(.colibri-application) .panels,:where(.colibri-application) .panels.even{gap:22px}
+.colibri-application[data-layout=analytics] .dash-body>.kpis{background:none;padding:0;border-radius:0}
+:where(.colibri-application) .kpis{gap:18px;grid-template-columns:repeat(4,minmax(0,1fr))}
+:where(.colibri-application) .kpi{padding:18px}
+:where(.colibri-application) .kpi b{font-size:27px}
+:where(.colibri-application) .kpi small{font-size:11px}
+:where(.colibri-application) .kpi .delta{font-size:10px}
+:where(.colibri-application) .kpi .chart{inline-size:80px;block-size:32px}
+:where(.colibri-application) .chart-box .chart{block-size:255px}
+:where(.colibri-application) .legend{font-size:11px}
+:where(.colibri-application) .donut-wrap{flex-wrap:wrap;justify-content:center}
+:where(.colibri-application) .donut-wrap .chart{inline-size:165px;block-size:165px}
+:where(.colibri-application) .legend.col{inline-size:100%;display:grid;grid-template-columns:1fr 1fr}
+.colibri-application[data-layout=crm] .kpis{gap:18px}
+.colibri-application[data-layout=crm] .kpi{padding:18px}
+.colibri-application[data-layout=crm] .pipeline{grid-template-columns:repeat(4,minmax(220px,1fr));gap:14px}
+.colibri-application[data-layout=crm] .lane{background:var(--c-bg);padding:8px;gap:10px}
+:where(.colibri-application) .lane-total{font-size:11px}
+.colibri-application[data-layout=crm] .deal{padding:14px;gap:9px;background:var(--c-surface)}
+.colibri-application[data-layout=crm] .deal b{font-size:19px}
+:where(.colibri-application) .deal-next{font-size:11px}
+:where(.colibri-application) .deal-company .company-mark{inline-size:30px;block-size:30px}
+:where(.colibri-application) .source-heading{font-size:16px;margin-block-start:12px}
+:where(.colibri-application) .workspace-intro{grid-template-columns:minmax(250px,1fr) minmax(0,1.5fr);gap:22px}
+:where(.colibri-application) .app-metric strong{font-size:27px}
+:where(.colibri-application) .app-metric small{font-size:11px}
+:where(.colibri-application) .workspace-welcome h2{font-size:25px;font-weight:650}
+:where(.colibri-application) .workspace-welcome{min-block-size:300px}
+:where(.colibri-application) .meeting-date strong{font-size:36px}
+:where(.colibri-application) .team-card>.photo-cover,:where(.colibri-application) .knowledge-card>.photo-cover{margin:-20px -20px 18px;inline-size:calc(100% + 40px);border-radius:12px 12px 0 0}
+:where(.colibri-application) .team-card h2{margin-block-end:7px}
+:where(.colibri-application) .account-tiles{gap:18px}
+:where(.colibri-application) .account-tile{min-block-size:205px;background:var(--c-surface)}
+:where(.colibri-application) .account-tile .icon-tile{margin-block-end:18px}
+:where(.colibri-application) .account-tile a{font-size:12px}
+:where(.colibri-application) .account-balance{font-size:36px}
+:where(.colibri-application) .account-profile{display:flex;align-items:center;gap:18px;padding:22px;background:linear-gradient(105deg,var(--c-accent-soft),var(--c-surface));border:1px solid var(--c-line);border-radius:12px}
+:where(.colibri-application) .account-profile h2{font-size:19px;margin:0 0 5px}
+:where(.colibri-application) .account-profile p{font-size:12px;margin:0;color:var(--c-muted)}
+:where(.colibri-application) .account-profile .app-actions{margin-inline-start:auto}
+:where(.colibri-application) .account-profile .portrait{inline-size:64px;block-size:64px}
+:where(.colibri-application) .store-hero{padding:24px;grid-template-columns:1.2fr 1fr;gap:18px;border-radius:12px}
+:where(.colibri-application) .store-hero h2{font-size:48px}
+:where(.colibri-application) .store-hero p{font-size:13px;max-inline-size:35ch}
+:where(.colibri-application) .store-editorial{max-inline-size:320px;margin-inline-start:auto}
+:where(.colibri-application) .store-facts strong{font-size:23px}
+:where(.colibri-application) .store-hero>.store-facts{gap:16px;padding-block-start:18px}
+:where(.colibri-application) .product-photo{border-radius:9px}
+:where(.colibri-application) .product-showcase{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+:where(.colibri-application) .product-showcase>a{display:grid;gap:8px;color:var(--c-fg);text-decoration:none;font-size:12px}
+:where(.colibri-application) .product-showcase small{color:var(--c-muted);font-size:11px}
+:where(.colibri-application) .support-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+:where(.colibri-application) .support-counts>span{background:var(--c-surface);border:1px solid var(--c-line);border-radius:12px;padding:17px 20px;display:flex;align-items:center;justify-content:space-between;flex-direction:row-reverse;font-size:12px;color:var(--c-muted)}
+:where(.colibri-application) .support-counts strong{font-size:25px;color:var(--c-fg)}
+:where(.colibri-application) .support-layout{grid-template-columns:minmax(260px,1fr) minmax(0,1.8fr);border-radius:12px}
+:where(.colibri-application) .support-thread{padding:24px}
+:where(.colibri-application) .support-thread h2{font-size:19px;line-height:1.4}
+:where(.colibri-application) .support-ticket{padding:16px 12px;gap:10px}
+:where(.colibri-application) .support-message{padding:18px;font-size:13px;line-height:1.7}
+:where(.colibri-application) .support-thread>.app-actions{padding-block-end:16px;border-block-end:1px solid var(--c-line)}
+:where(.colibri-application) .support-thread>p{font-size:12px;color:var(--c-muted)}
+:where(.colibri-application) .suite-menu,:where(.colibri-application) .suite-close{display:none}
+:where(.colibri-application) .suite-backdrop{position:fixed;inset:0;z-index:4;background:#0007;border:0;inline-size:100%;block-size:100%}
+:where(.colibri-application) .suite-backdrop[hidden]{display:none}
+
+@media(max-width:1150px){:where(.colibri-application) .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+:where(.colibri-application) .workspace-intro,:where(.colibri-application) .app-columns{grid-template-columns:minmax(0,1fr)}
+:where(.colibri-application) .app-top>.person>span:last-child{display:none}
+:where(.colibri-application) .dash-top .dp-slot{display:none}
+}
+
+@media(max-width:900px){:where(.colibri-application) .dash,:where(.colibri-application) .app-shell,.colibri-application[data-layout=support] .app-shell{grid-template-columns:minmax(0,1fr)}
+:where(.colibri-application) .suite-sidebar{position:fixed;inset-block:0;inset-inline-start:0;inline-size:232px;z-index:5;translate:-100% 0;block-size:100dvh;gap:20px}
+:where(.colibri-application) .dash[data-open] .suite-sidebar,:where(.colibri-application) .app-shell[data-open] .suite-sidebar,:where(body.colibri-application)[data-nav-open] .suite-sidebar{translate:0}
+:where(.colibri-application) .suite-sidebar nav,:where(.colibri-application) .suite-sidebar .suite-context{display:flex;flex-direction:column}
+:where(.colibri-application) .suite-sidebar footer{display:grid}
+:where(.colibri-application) .suite-menu,:where(.colibri-application) .suite-close{display:inline-flex}
+:where(.colibri-application) .suite-close{align-self:start}
+:where(.colibri-application) .dash-body,:where(.colibri-application) .app-main,.colibri-application[data-layout=support] .app-main{padding:20px;gap:20px}
+:where(.colibri-application) .dash-top,:where(.colibri-application) .app-top{padding:12px 20px}
+:where(.colibri-application) .support-layout{grid-template-columns:minmax(0,1fr)}
+:where(.colibri-application) .support-queue{max-block-size:320px;overflow:auto;border-inline-end:0;border-block-end:1px solid var(--c-line)}
+:where(.colibri-application) .account-profile{flex-wrap:wrap}
+:where(.colibri-application) .account-profile .app-actions{margin:0}
+:where(.colibri-application) .product-showcase{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
+@media(max-width:560px){:where(.colibri-application) .dash-body,:where(.colibri-application) .app-main,.colibri-application[data-layout=support] .app-main{padding:16px}
+:where(.colibri-application) .dash-top,:where(.colibri-application) .app-top{padding:12px 16px;gap:10px}
+:where(.colibri-application) .dash-top .search,:where(.colibri-application) .app-top .app-search{order:5;flex-basis:100%;max-inline-size:none}
+:where(.colibri-application) .dash-top select,:where(.colibri-application) .app-top select{max-inline-size:130px}
+:where(.colibri-application) .app-top>.person{display:none}
+:where(.colibri-application) .app-grid,:where(.colibri-application) .account-tiles{grid-template-columns:minmax(0,1fr)}
+:where(.colibri-application) .panel,:where(.colibri-application) .app-card{padding:16px}
+:where(.colibri-application) .team-card>.photo-cover,:where(.colibri-application) .knowledge-card>.photo-cover{margin:-16px -16px 18px;inline-size:calc(100% + 32px)}
+:where(.colibri-application) .support-counts{gap:8px}
+:where(.colibri-application) .support-counts>span{padding:12px;display:grid;gap:6px}
+:where(.colibri-application) .store-hero{grid-template-columns:1fr}
+:where(.colibri-application) .store-editorial{margin:0;max-inline-size:250px}
+:where(.colibri-application) .app-table .person strong{font-size:12px}
+:where(.colibri-application) .dash-head h1,:where(.colibri-application) .app-heading h1,.colibri-application[data-layout=crm] .dash-head h1{font-size:25px}
+:where(.colibri-application) .kpis,.colibri-application[data-layout=crm] .kpis{gap:10px}
+:where(.colibri-application) .kpi b{font-size:23px}
+:where(.colibri-application) .kpi .chart{inline-size:65px}
+:where(.colibri-application) .kpi{padding:14px}
+:where(.colibri-application) .app-top label{margin:0}
+:where(.colibri-application) .suite-sidebar .suite-label{display:block}
+}
+:where(.colibri-application) .team-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+:where(.colibri-application) .team-overview>a{display:grid;gap:14px;text-decoration:none;color:var(--c-fg);align-content:start}
+:where(.colibri-application) .team-overview .photo-cover{block-size:115px;border-radius:8px}
+:where(.colibri-application) .team-overview-title{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:11px}
+:where(.colibri-application) .team-overview-title>span{font-size:10px;color:var(--c-muted)}
+:where(.colibri-application) .team-overview .person strong{font-size:11px}
+:where(.colibri-application) .team-overview .person small{font-size:10px}
+:where(.colibri-application) .team-overview .portrait{inline-size:28px;block-size:28px}
+:where(.colibri-application) .tile-state{font-size:11px;color:var(--c-fg);padding:9px 0;margin-block-start:auto}
+:where(.colibri-application) .account-tile a{margin-block-start:0}
+:where(.colibri-application) .support-assignee{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-block:16px;font-size:12px}
+:where(.colibri-application) .article-steps{padding-inline-start:22px;line-height:1.8;font-size:13px;max-inline-size:65ch}
+:where(.colibri-application) .article-steps li{padding:8px}
+:where(.colibri-application) .app-card:has(.article-steps)>p{max-inline-size:75ch}
+:where(.colibri-application) .app-card:has(.article-steps)>.photo-cover{block-size:220px}
+
+@media(max-width:600px){:where(.colibri-application) .team-overview{grid-template-columns:1fr}
+:where(.colibri-application) .team-overview .photo-cover{block-size:150px}
+:where(.colibri-application) .support-assignee{flex-wrap:wrap}
+}
+:where(.colibri-application) .suite-sidebar .suite-brand small,:where(.colibri-application) .suite-sidebar footer small{padding:0;text-transform:none;letter-spacing:0;font-size:10px;line-height:1.5;color:var(--c-muted)}
+:where(.colibri-application) .suite-sidebar .suite-nav a{font-size:13px;padding:10px 12px;color:var(--c-muted);gap:10px}
+:where(.colibri-application) .suite-sidebar .suite-nav a[aria-current=page],.colibri-application[data-layout=commerce] .suite-sidebar a[aria-current]{color:var(--c-accent);background:var(--c-accent-soft)}
+.colibri-application[data-layout=commerce] .suite-sidebar small,.colibri-application[data-layout=commerce] .suite-sidebar footer{color:var(--c-muted)}
+:where(.colibri-application) .app-top>label{display:flex;align-items:center;flex-direction:row;gap:8px}
+:where(.colibri-application) .app-top .person strong{font-size:12px}
+:where(.colibri-application) table.data th .btn{background:transparent;color:var(--c-muted);border:0;padding:0;min-block-size:28px;font-size:10px;letter-spacing:.04em;text-transform:uppercase;box-shadow:none}
+:where(.colibri-application) table.data th .btn:hover{color:var(--c-accent)}
+:where(.colibri-application) .app-filter{display:flex;align-items:center;gap:10px;font-size:11px;color:var(--c-muted);align-self:flex-start}
+:where(.colibri-application) .app-filter select{inline-size:auto;min-inline-size:120px;font-size:11px;padding:7px 10px;background:var(--c-bg);border:1px solid var(--c-line);border-radius:7px;color:var(--c-fg)}
+:where(.colibri-application) .store-editorial{inline-size:100%}
+
+@media(max-width:560px){:where(.colibri-application) .app-top>label:not(.app-search),:where(.colibri-application) .dash-top>label{font-size:0;gap:0}
+:where(.colibri-application) .app-top select,:where(.colibri-application) .dash-top select{font-size:11px;max-inline-size:110px}
+:where(.colibri-application) .app-top .suite-menu,:where(.colibri-application) .dash-top .menu-btn{min-inline-size:40px;padding-inline:8px}
+:where(.colibri-application) .dash-top>.av{display:none}
+:where(.colibri-application) .app-top,:where(.colibri-application) .dash-top{column-gap:8px}
+:where(.colibri-application) .app-top #app-scheme,:where(.colibri-application) .dash-top #scheme{min-inline-size:36px;padding-inline:8px}
+}
+:where(.colibri-application) .suite-current{font-size:14px;font-weight:650;padding:14px 12px;background:var(--c-accent-soft);color:var(--c-accent);border-radius:9px}
+:where(.colibri-application) .suite-context{padding-block-start:0;border-block-start:0}
+:where(.colibri-application) .suite-sidebar .suite-context a[aria-current=page]{background:var(--c-accent-soft);color:var(--c-accent);font-weight:650}
+:where(.colibri-application) .task-check{display:flex;align-items:center;gap:8px;font-size:12px;white-space:nowrap}
+:where(.colibri-application) .task-check input{inline-size:16px;block-size:16px;accent-color:var(--c-accent)}
+:where(.colibri-application) .app-table-wrap:focus-visible{outline:2px solid var(--c-accent);outline-offset:3px}
+
+
+}
+

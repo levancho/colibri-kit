@@ -1,46 +1,45 @@
 #!/usr/bin/env python3
 """Generates examples/kitchen-sink.html from tools/sink_catalog_*.py + sink_info.py. Run: python3 tools/kitchen-sink.py"""
-import html, pathlib, sys
+import html, pathlib, sys, re
 HERE = pathlib.Path(__file__).parent; sys.path.insert(0, str(HERE))
 from sink_catalog_more import C
 import sink_catalog_motion  # noqa: adds Motion + Theming groups
 import sink_catalog_ai, sink_catalog_blocks  # noqa: Conversation, AI Elements, blocks
 import sink_catalog_css  # noqa: Colibri CSS group
 import sink_catalog_radix  # noqa: Radix-audit additions
+import sink_catalog_applications
 from sink_info import INFO
 from sink_code import FTL, IMP
 from sink_pretty import pretty
 from sink_react import render as react_src
 from sink_thymeleaf import render as thymeleaf_src
+from sink_adapters import adapters
 E = html.escape
-GROUPS = [("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
+GROUPS = [("Application components", "Application components"), ("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
 ST = {"done": ("Ready", "Works and is tested in this page."), "partial": ("Partly ready", "Works, but some features are still missing."),
       "planned": ("Planned", "Not built yet."), "css": ("Markup only", "No JavaScript needed: just HTML structure plus your CSS.")}
 missing = [c["id"] for c in C if c["id"] not in INFO]
 if missing: sys.exit(f"missing INFO for {missing}")
 
 def code(c):
-    tabs = []
-    if c.get("snips"): tabs += c["snips"]
-    elif c["demo"]: tabs.append(("html", "HTML", pretty(c["demo"])))
-    html_src = next((src for k, _, src in tabs if k == "html"), None)
-    if c["id"] in FTL: tabs.append(("ftl", "FreeMarker", IMP + FTL[c["id"]]))
-    elif html_src: tabs.append(("ftl", "FreeMarker", "[#-- No macro needed: FreeMarker outputs this markup as-is. --]\n" + html_src))
-    if html_src: tabs.append(("react", "React", react_src(html_src)))
-    if html_src: tabs.append(("thymeleaf", "Thymeleaf", thymeleaf_src(html_src, c["id"])))
+    tabs, support = adapters(c)
     order = {"html": 0, "react": 1, "ftl": 2, "thymeleaf": 3}
     tabs.sort(key=lambda tab: order.get(tab[0], 4))
     if not tabs: return ""
     cid = c["id"]
     trig = "".join(f'<button data-ui-part="trigger" data-value="{k}">{lab}</button>' for k, lab, _ in tabs)
     pan = "".join(f'<div data-ui-part="panel" data-value="{k}"><button class="sink-copy" data-ui="clipboard" data-target="#code-{cid}-{k}" aria-label="Copy {lab} code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-{cid}-{k}">{E(src)}</code></pre></div>' for k, lab, src in tabs)
-    return f'<details class="sink-code" open><summary>Code</summary><div data-ui="tabs" class="sink-code-tabs" data-default-value="{tabs[0][0]}"><div data-ui-part="list" aria-label="Code for {E(INFO[cid][0])}">{trig}</div>{pan}</div></details>'
+    return '<p class="sink-dim">Framework support: '+E(' · '.join(k+': '+v for k,v in support.items()))+'</p>'+f'<details class="sink-code" open><summary>Code</summary><div data-ui="tabs" class="sink-code-tabs" data-default-value="{tabs[0][0]}"><div data-ui-part="list" aria-label="Code for {E(INFO[cid][0])}">{trig}</div>{pan}</div></details>'
 
 def section(c):
     title, what, when = INFO[c["id"]]; st, st_help = ST[c["status"]]
+    technical=('data-chart="area"' if c['id']=='application-chart' else 'data-application-component="'+c['id'].removeprefix('application-')+'"') if c['id'].startswith('application-') else ('data-ui="'+c['id']+'"' if 'data-ui="'+c['id']+'"' in c['demo'] else 'example id="'+c['id']+'"')
+    if not c['id'].startswith('application-'):
+        controllers=list(dict.fromkeys(re.findall(r'data-ui="([a-z0-9-]+)"',c.get('public_html',c['demo']))))
+        if controllers: technical=', '.join('data-ui="'+name+'"' for name in controllers)
     tip = (f'<span data-ui="tooltip" data-side="bottom" data-align="end"><button class="sink-info" data-ui-part="trigger" aria-label="More about {E(title)}">?</button>'
            f'<span data-ui-part="content" class="sink-tip"><b>When to use:</b> {E(when)}<br><b>Status:</b> {st}, {st_help}<br>'
-           f'<span class="sink-dim">Code name <code>data-ui="{c["id"]}"</code> · shadcn: {E(c["shadcn"])} · Metronic: {E(c["metronic"])}</span></span></span>')
+           f'<span class="sink-dim">Code name <code>{E(technical)}</code> · shadcn: {E(c["shadcn"])} · Metronic: {E(c["metronic"])}</span></span></span>')
     demo = c["demo"] or f'<p class="sink-dim">Not built yet. {E(c["notes"])}</p>'
     return f'''<section id="{c["id"]}" class="sink-sec" tabindex="-1" aria-labelledby="h-{c["id"]}">
 <header class="sink-sec-h"><div><h3 id="h-{c["id"]}">{E(title)}</h3><p class="sink-what">{E(what)}</p></div>
@@ -48,7 +47,7 @@ def section(c):
 <div class="sink-preview ui-root">{demo}</div>
 {code(c)}
 <details class="sink-a11y"><summary>Accessibility &amp; keyboard</summary><p>{E(c["notes"])}</p>
-<p class="sink-dim">Technical names: <code>data-ui="{c["id"]}"</code> · shadcn “{E(c["shadcn"])}” · Metronic “{E(c["metronic"])}”</p></details></section>'''
+<p class="sink-dim">Technical names: <code>{E(technical)}</code> · shadcn “{E(c["shadcn"])}” · Metronic “{E(c["metronic"])}”</p></details></section>'''
 
 nav, body = [], []
 for g, label in GROUPS:

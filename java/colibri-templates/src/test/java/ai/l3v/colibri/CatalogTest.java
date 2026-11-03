@@ -15,7 +15,7 @@ class CatalogTest {
    String args=name.equals("dialog")?"'dialog','Open','Title',null,~{::body}":name.equals("card")?"'Title',null,~{::body}":"'Details',~{::body}";
    var c=new Context();c.setVariable("text","Slot value");String result=helper.engine().process("<main><section th:fragment=\"body\" th:text=\"${text}\">Fallback</section><div th:replace=\"~{colibri/thymeleaf/"+name+" :: "+name+"("+args+")}\"></div></main>",c);assertTrue(result.contains("Slot value"));
   }
-  var dir=Path.of("../../thymeleaf");try(var files=Files.list(dir)){assertEquals(cases.size()+4,files.filter(f->f.toString().endsWith(".html")).count(),"Every new fragment needs a binding test, including Spring field");}
+  var dir=Path.of("../../thymeleaf");try(var files=Files.list(dir)){assertEquals(cases.size()+4+ApplicationComponentsTest.MODELS.size()+1,files.filter(f->f.toString().endsWith(".html")).count(),"Every new fragment needs a binding test, including Spring field");}
   Files.createDirectories(Path.of("target/rendered"));Files.writeString(Path.of("target/rendered/thymeleaf.html"),helper.render("tabs",cases.get("tabs"),model)+helper.render("select",cases.get("select"),model));
  }
 }

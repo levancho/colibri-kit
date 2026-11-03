@@ -46,3 +46,5 @@ html[data-kit-theme=glacier] .card{box-shadow:none;border:1px solid var(--c-line
 html[data-kit-theme=glacier] .badge{border-radius:4px;text-transform:uppercase;font-size:.68em;letter-spacing:.06em}
 html[data-kit-theme=glacier] :is(h1,h2,h3){letter-spacing:-.025em}
 }
+
+@layer colibri.packs { html[data-kit-theme=glacier]:has(.colibri-application){--c-accent:light-dark(oklch(43% .11 var(--c-hue)),oklch(78% .10 var(--c-hue)));--c-brand-fg:light-dark(#fff,#17251e)} }

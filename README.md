@@ -76,11 +76,30 @@ MIT © Levan Dvalishvili
 
 Live demos: `examples/kitchen-sink.html` (served at http://localhost:8395/examples/kitchen-sink.html).
 
-Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (markup/CSS only) 14
+Status: ✅ done 132 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (markup/CSS only) 14
+
+### Application components
+
+| Colibri catalog entry | Status | Metronic | shadcn |
+|---|---|---|---|
+| Application form (`application-form`) | ✅ done | — | — |
+| Application shell (`application-shell`) | ✅ done | — | — |
+| Chart panel (`application-chart`) | ✅ done | — | — |
+| Conversation desk (`application-conversation`) | ✅ done | — | — |
+| Day planner (`application-planner`) | ✅ done | — | — |
+| Identity and settings (`application-identity`) | ✅ done | — | — |
+| Knowledge article (`application-article`) | ✅ done | — | — |
+| Metric rail (`application-metrics`) | ✅ done | — | — |
+| Opportunity board (`application-board`) | ✅ done | — | — |
+| Photographic feature (`application-photo`) | ✅ done | — | — |
+| Product collection (`application-products`) | ✅ done | — | — |
+| Project cards (`application-projects`) | ✅ done | — | — |
+| Record table (`application-table`) | ✅ done | — | — |
+| Store summary (`application-receipt`) | ✅ done | — | — |
 
 ### Base
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Accordion (`accordion`) | ✅ done | Accordion | Accordion |
 | Alert / Dismiss (`alert`) | ✅ done | Dismiss | Alert |
@@ -125,7 +144,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Navigation
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Breadcrumb (`breadcrumb`) | 🔷 structure (markup/CSS only) | Breadcrumb | Breadcrumb |
 | Command (`command`) | ✅ done | (search modal) | Command |
@@ -141,7 +160,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Forms
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Calendar (`calendar`) | ✅ done | (date-picker grid) | Calendar |
 | Checkbox (`checkbox`) | ✅ done | Checkbox | Checkbox |
@@ -166,7 +185,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Conversation
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Attachment (`attachment`) | ✅ done | - | Attachment |
 | Bubble (`bubble`) | ✅ done | - | Bubble |
@@ -179,7 +198,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### AI Elements
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Chain of thought (`chain-of-thought`) | ✅ done | - | AI: Chain of Thought |
 | Chat (`chat`) | ✅ done | - | AI: Chat |
@@ -205,7 +224,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Sidebar blocks
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Sidebar: Collapses to icons (`sidebar-07`) | ✅ done | Sidebar layouts | Block sidebar-07 |
 | Sidebar: Collapsible file tree (`sidebar-11`) | ✅ done | Sidebar layouts | Block sidebar-11 |
@@ -226,7 +245,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Login blocks
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Login: Email only (magic link) (`login-05`) | ✅ done | Authentication pages | Block login-05 |
 | Login: Form and image in a card (`login-04`) | ✅ done | Authentication pages | Block login-04 |
@@ -236,7 +255,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Signup blocks
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Signup: Form and image in a card (`signup-04`) | ✅ done | Authentication pages | Block signup-04 |
 | Signup: Muted background (`signup-03`) | ✅ done | Authentication pages | Block signup-03 |
@@ -246,7 +265,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Motion
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Animated components (`motion-wired`) | ✅ done | - | - |
 | Enter / exit presets (`motion`) | ✅ done | - | (tw-animate / data-[state] animations) |
@@ -255,7 +274,7 @@ Status: ✅ done 118 · 🟡 partial 0 · ⚪ planned 0 · 🔷 structure (marku
 
 ### Theming
 
-| Colibri (`data-ui`) | Status | Metronic | shadcn |
+| Colibri catalog entry | Status | Metronic | shadcn |
 |---|---|---|---|
 | Design tokens (`theme-tokens`) | ✅ done | - | Theming (CSS variables) |
 | Scoped theme override (`theme-scoped`) | ✅ done | - | - |

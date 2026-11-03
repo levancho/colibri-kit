@@ -28,8 +28,8 @@ switch (cmd) {
       counts: r.items.reduce((m, i) => ((m[i.status] = (m[i.status] || 0) + 1), m), {}), components: r.items.filter((i) => i.type === "component").map((i) => i.name), blocks: r.items.filter((i) => i.type === "block").map((i) => i.name) }); break; }
   case "list": { const r = registry(); const t = opt("type"); out(flags.has("--json") ? r.items.filter((i) => !t || i.type === t).map(({ name, title, type, status, group }) => ({ name, title, type, status, group })) : r.items.filter((i) => !t || i.type === t).map((i) => `${i.name.padEnd(22)} ${i.status.padEnd(8)} ${i.group.padEnd(16)} ${i.title}`).join("\n")); break; }
   case "search": out(flags.has("--json") ? search(pos.join(" ")).map(({ name, title, description }) => ({ name, title, description })) : search(pos.join(" ")).map((i) => `${i.name.padEnd(22)} ${i.title} — ${i.description}`).join("\n") || "no matches"); break;
-  case "view": { const i = get(pos[0]); out(flags.has("--json") ? i : `<!-- ${i.title} (${i.name}) -->\n${i.html}\n${i.freemarker ? `\n<#-- FreeMarker -->\n${i.freemarker}` : ""}`); break; }
-  case "docs": { const i = get(pos[0]); out(flags.has("--json") ? { name: i.name, title: i.title, description: i.description, whenToUse: i.whenToUse, accessibility: i.accessibility, parts: i.parts, uses: i.uses } : `# ${i.title}  (data-ui="${i.name}", ${i.status})\n\n${i.description}\n\nWhen to use: ${i.whenToUse}\n\nParts: ${i.parts.join(", ") || "-"}\nComposes: ${i.uses.join(", ") || "-"}\n\nAccessibility & keyboard: ${i.accessibility}\n\nshadcn: ${i.shadcn} · Metronic: ${i.metronic}`); break; }
+  case "view": { const i = get(pos[0]); const language=opt("language"); if(language){const key={freemarker:"ftl",javascript:"js"}[language]||language; if(!i.adapters?.[key]){console.error(`No ${language} adapter for ${i.name}`);process.exitCode=1;}else out(i.adapters[key]);break;} out(flags.has("--json") ? i : `<!-- ${i.title} (${i.name}) -->\n${i.html}\n${i.freemarker ? `\n<#-- FreeMarker -->\n${i.freemarker}` : ""}`); break; }
+  case "docs": { const i = get(pos[0]); out(flags.has("--json") ? { name: i.name, title: i.title, description: i.description, whenToUse: i.whenToUse, accessibility: i.accessibility, parts: i.parts, uses: i.uses } : `# ${i.title}  (${i.controller ? `data-ui="${i.controller}"` : `catalog entry: ${i.name}`}, ${i.status})\n\n${i.description}\n\nWhen to use: ${i.whenToUse}\n\nParts: ${i.parts.join(", ") || "-"}\nComposes: ${i.uses.join(", ") || "-"}\n\nAccessibility & keyboard: ${i.accessibility}\n\nshadcn: ${i.shadcn} · Metronic: ${i.metronic}`); break; }
   case "init": {
     const dir = opt("dir", cfg()?.dir || "colibri"), dry = flags.has("--dry-run");
     if (!/^[a-zA-Z0-9_/-]+$/.test(dir) || path.isAbsolute(dir) || dir.split("/").some(p => !p || p === "..")) {
@@ -43,7 +43,7 @@ switch (cmd) {
       }
     };
     for (const [from, to] of COPY) collect(path.join(PKG, from), path.resolve(dir, to));
-    const conf = { dir, css: `${dir}/css/colibri.css`, bridge: `${dir}/css/colibri-ui-bridge.css`, theme: `${dir}/themes/colibri.css`, motion: `${dir}/themes/motion.css`, freemarker: `${dir}/freemarker/ui.ftl`, thymeleaf: `${dir}/thymeleaf`, import: `${dir}/core/auto.js`, version: registry().version };
+    const conf = { dir, applications: `${dir}/css/colibri-applications.css`, css: `${dir}/css/colibri.css`, bridge: `${dir}/css/colibri-ui-bridge.css`, theme: `${dir}/themes/colibri.css`, motion: `${dir}/themes/motion.css`, freemarker: `${dir}/freemarker/ui.ftl`, thymeleaf: `${dir}/thymeleaf`, import: `${dir}/core/auto.js`, version: registry().version };
     pending.set(cfgPath, Buffer.from(JSON.stringify(conf, null, 2) + "\n"));
     if (flags.has("--starter")) {
       for (const file of ["index.html", "app.css", "app.js"]) pending.set(path.resolve(file), Buffer.from(fs.readFileSync(path.join(PKG, "starters/plain", file), "utf8").replaceAll("__COLIBRI__", dir)));

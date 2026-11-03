@@ -1,0 +1,16 @@
+<section xmlns:th="http://www.thymeleaf.org"
+ th:fragment="chartPanel(id, title, description, rows, labels, ranges, defaultRange)"
+ class="card panel chart-box" data-application-chart th:attr="aria-labelledby=${id + '-title'}">
+ <header><div><h3 th:id="${id + '-title'}" th:text="${title}">Audience growth</h3><p th:if="${!#strings.isEmpty(description)}" th:text="${description}"></p></div>
+  <div class="seg" role="group" aria-label="Range" th:attr="data-target=${id}">
+   <button th:each="n : ${ranges}" type="button" th:attr="data-n=${n},aria-pressed=${n == defaultRange}" th:text="${n + 'd'}">7d</button>
+  </div>
+ </header>
+ <div th:id="${id}" data-chart="area" th:attr="aria-label=${title}"></div>
+ <p role="status" aria-live="polite"></p>
+ <details class="chart-data"><summary>View chart data</summary><table class="data"><caption th:text="${title}">Chart data</caption>
+  <thead><tr><th scope="col">Day</th><th th:each="label : ${labels}" scope="col" th:text="${label}">Series</th></tr></thead>
+  <tbody><tr th:each="row : ${rows}"><th scope="row" th:text="${row.label}">Day 1</th><td th:each="value : ${row['values']}" th:text="${value}">0</td></tr></tbody>
+ </table></details>
+ <ul class="legend"><li th:each="label, item : ${labels}" th:style="${'--dot:var(--chart-' + (item.index + 1) + ')'}" th:text="${label}">Series</li></ul>
+</section>

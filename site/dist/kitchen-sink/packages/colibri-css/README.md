@@ -109,3 +109,8 @@ Load `themes/colibri.css`, then `dist/colibri.css`, then `dist/colibri-ui-bridge
 `node build.mjs` concatenates `src/*.css` into `dist/colibri.css`, `dist/colibri.min.css` and `dist/colibri-ui-bridge.css`.
 
 Browser baseline: evergreen browsers from 2024 onward (layers, nesting, `:has()`, container queries, `light-dark()`). `field-sizing` and `interpolate-size` are progressive enhancements.
+
+
+## Application components
+
+The optional `@colibri-kit/css/applications` export provides the documented application shell, record tables, metric panels, boards, identity/settings, project and product cards, conversation desk and article compositions. Load it after the core stylesheet and use `class="colibri-application"` on the application root. No stylesheet from the dashboard examples is required. See [the public component contract](applications/README.md) and the kitchen sink's **Application components** section for copyable markup. The optional navigation controller is `@colibri-kit/ui/core/application-shell.js`.

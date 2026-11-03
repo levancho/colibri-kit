@@ -12,14 +12,13 @@ const preferences = window.ColibriDemoTheme || {scope:"gallery",pack:"",hue:""};
 const key = name => `colibri-demo:${preferences.scope}:${name}`;
 const read = key => { try { return localStorage.getItem(key); } catch { return null; } };
 const write = (key, value) => { try { localStorage.setItem(key, value); } catch { /* Themes still work in memory. */ } };
-export function setPack(id) { id ? (root.dataset.kitTheme = id) : delete root.dataset.kitTheme; const gen = window.ColibriBridge?.store.get()?.gen; if (!gen || id !== gen.slug) write(key("pack"), id); }
+export function setPack(id) { preferences.apply?.(id,true); }
 export function initPackPicker(select) {
-  // a theme made in the Colibria Kit Theme Generator (via the bridge) shows up as its own pack
-  const gen = window.ColibriBridge?.store.get()?.gen, packs = gen ? [...PACKS, { id: gen.slug, name: gen.name + " (generated)" }] : PACKS;
-  select.replaceChildren(...packs.map(p => new Option(p.name, p.id)));
-  const q = new URLSearchParams(location.search).get("theme");
-  select.value = gen && root.dataset.kitTheme === gen.slug ? gen.slug : q ?? read(key("pack")) ?? preferences.pack; if (!packs.some((p) => p.id === select.value)) select.value = "";
-  setPack(select.value); select.addEventListener("change", () => setPack(select.value));
+  const {custom,customId}=preferences;
+  const packs=custom?[...PACKS,{id:customId,name:(custom.name||'Colibria palette')+' (saved)'}]:PACKS;
+  select.replaceChildren(...packs.map(p=>new Option(p.name,p.id)));
+  select.value=preferences.pack;
+  select.addEventListener('change',()=>setPack(select.value));
 }
 export function initScheme(btn) {
   const saved = read(key("scheme")); if (saved) root.dataset.theme = saved;
@@ -30,7 +29,8 @@ export function initScheme(btn) {
 export function initHue(input, out) {
   const apply = (v) => { if (v === "") { root.style.removeProperty("--c-hue"); input.value = 255; } else root.style.setProperty("--c-hue", v);
     if (out) out.textContent = v === "" ? "pack" : v; write(key("hue"), v); };
-  apply(read(key("hue")) ?? preferences.hue);
+  input.value=read(key("hue"))||preferences.hue||255;
+  if(out)out.textContent=input.value;
   input.addEventListener("input", () => apply(input.value));
   input.addEventListener("dblclick", () => apply(""));
 }

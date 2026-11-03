@@ -11,7 +11,7 @@ def require(ok, message):
 def clean(text): return re.sub(r'/\*.*?\*/', '', text, flags=re.S)
 
 # Count authored CSS once, not the copies shipped in the generated site.
-css_files = sorted({p for directory in ('themes', 'packages/colibri-css/src', 'examples', 'site/src', 'tools') for p in (ROOT / directory).rglob('*.css')})
+css_files = sorted({p for directory in ('themes', 'packages/colibri-css/src', 'packages/colibri-css/applications', 'examples', 'site/src', 'tools') for p in (ROOT / directory).rglob('*.css')})
 budgets = json.loads((ROOT / 'tools/css-important-budget.json').read_text())
 counts = {}
 for path in css_files:
@@ -76,6 +76,21 @@ for folder in ('skills/colibri-kit', 'skills/colibri-ui'):
         for link in re.findall(r'\]\(([^)]+)\)', path.read_text()):
             if '://' not in link and not link.startswith('#'):
                 require((path.parent / link.split('#')[0]).exists(), f'{path.relative_to(ROOT)}: missing bundled reference {link}')
+
+
+# Dashboard applications are consumers of the public kit, never private CSS owners.
+for path in (ROOT / 'examples/dashboards').glob('*.html'):
+    source=path.read_text()
+    if 'class="colibri-application"' not in source: continue
+    require('colibri-applications.css' in source, f'{path.name}: missing public application component bundle')
+    require(not re.search(r'href="(?:dash|apps|experience|visuals|designs)\.css',source), f'{path.name}: private dashboard styling returned')
+require((ROOT/'packages/colibri-css/dist/colibri-applications.css').exists(),'Public application bundle missing')
+
+# Website and machine discovery use the same item inventory and framework contracts.
+for item in catalog:
+    require('support' in item and 'adapters' in item, f"Missing support contract: {item['name']}")
+    if item['name'].startswith('application-'):
+        require(all(item.get(key) for key in ('react','freemarker','thymeleaf')), f"Application adapter missing: {item['name']}")
 
 print(json.dumps({'important_declarations': counts, 'markup': markup, 'css_helpers': sorted(helpers)}, indent=2))
 if errors:

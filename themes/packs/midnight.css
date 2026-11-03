@@ -38,3 +38,5 @@ html[data-kit-theme=midnight] .badge{font-family:var(--c-font-mono);border-radiu
 html[data-kit-theme=midnight] :is(h1,h2,h3){font-family:var(--c-font-mono);letter-spacing:-.03em}
 html[data-kit-theme=midnight] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}
 }
+
+@layer colibri.packs { html[data-kit-theme=midnight]:has(.colibri-application){--c-accent:light-dark(oklch(43% .11 var(--c-hue)),oklch(78% .10 var(--c-hue)));--c-brand-fg:light-dark(#fff,#17251e)} }

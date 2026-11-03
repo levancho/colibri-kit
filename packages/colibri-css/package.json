@@ -9,11 +9,13 @@
     ".": "./dist/colibri.css",
     "./min": "./dist/colibri.min.css",
     "./bridge": "./dist/colibri-ui-bridge.css",
-    "./src/*": "./src/*"
+    "./src/*": "./src/*",
+    "./applications": "./dist/colibri-applications.css"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "applications"
   ],
   "scripts": {
     "build": "node build.mjs"

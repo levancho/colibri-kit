@@ -1,0 +1,1 @@
+<section xmlns:th="http://www.thymeleaf.org" th:fragment="component(model)" class="kpis" data-application-component="metrics" th:attr="aria-label=${model.title}"><article th:each="item : ${model.items}" class="card kpi"><small th:text="${item.label}"></small><b th:text="${item.value}"></b><p th:text="${item.change}"></p></article></section>

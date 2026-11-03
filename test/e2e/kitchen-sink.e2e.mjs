@@ -31,6 +31,11 @@ async function tool(selector) {
 await t("no JS errors on load", async () => eq(errors.length, 0, errors.join(" | ")));
 await t("opens at the very top", async () => eq(await p.evaluate(() => scrollY), 0, "scrollY"));
 await t("all nav groups start collapsed", async () => eq(await p.$$eval("#sink-sidebar .sink-group", (gs) => gs.filter((g) => g.__uiCollapsible?.open).length), 0, "open groups"));
+await t("programmatic startup scrolling does not expand navigation", async () => {
+  await p.evaluate(()=>scrollTo(0,1200)); await wait(150);
+  await p.evaluate(()=>scrollTo(0,0)); await wait(150);
+  eq(await p.$$eval("#sink-sidebar .sink-group",gs=>gs.filter(g=>g.__uiCollapsible?.open).length),0,"open groups after programmatic scroll");
+});
 await t("no clothline left", async () => eq(await p.evaluate(() => document.querySelectorAll("[data-ui=clothline],[data-ui=cell],.cl-desk").length), 0, "nodes"));
 await t("back-to-top arrow: hidden at top, appears on scroll, returns to top", async () => {
   eq(await q("#sink-totop", (e) => e.classList.contains("is-on")), false, "off at top");
@@ -62,7 +67,7 @@ await t("event log records ui:* events with plain section name", async () => {
 });
 await t("info tooltip (?) shows technical names on hover", async () => {
   await go("item"); await p.hover("#item .sink-info"); await wait(700);
-  const txt = await q("#item .sink-tip", (e) => (e.hidden ? "" : e.textContent)); yes(/shadcn/.test(txt) && /data-ui="item"/.test(txt), "tip: " + txt);
+  const txt = await q("#item .sink-tip", (e) => (e.hidden ? "" : e.textContent)); yes(/shadcn/.test(txt) && /data-ui="item-group"/.test(txt), "tip: " + txt);
   await shot("tooltip-info", "#item"); await p.mouse.move(5, 500); await wait(200);
 });
 await t("Item list: roving focus + Enter activates clickable row", async () => {

@@ -20,7 +20,7 @@ try {
   await page.type('[name="value"]', '500');
   await page.type('[name="nextStep"]','Send the revised proposal');
   await page.select('[name="stage"]', 'Won');
-  await page.click('.demo-form [type="submit"]');
+  await page.click('.app-form [type="submit"]');
   assert.equal(await page.$$eval('.deal', els => els.length), 9);
   assert.equal(await page.$('.deal img[src="x"], .deal [onerror]'), null, 'user text is not interpreted as HTML');
   await page.reload({ waitUntil: 'networkidle0' });
@@ -30,7 +30,7 @@ try {
   assert.equal(await page.$$eval('.deal', els => els.length), 1);
   await page.click('.deal');
   await page.select('[name="stage"]', 'Proposal');
-  await page.click('.demo-form [type="submit"]');
+  await page.click('.app-form [type="submit"]');
   assert.equal(await page.$eval('[aria-label="Proposal"] .deal-owner strong', e => e.textContent), 'Test Owner');
   await page.click('.deal');
   await page.locator('::-p-text(Delete deal)').click();
@@ -67,7 +67,7 @@ try {
   assert.equal((await page.evaluate(() => window.exportedCSV)).split('\r\n').length, 2, 'CSV contains only filtered rows');
   await page.click('[data-action="report"]');
   await page.type('[name=reportName]', 'Trial customers');
-  await page.click('.demo-form [type=submit]');
+  await page.click('.app-form [type=submit]');
   assert.match(await page.$eval('dialog', e => e.textContent), /Trial customers/);
   await page.keyboard.press('Escape');
   await page.reload({ waitUntil: 'networkidle0' });

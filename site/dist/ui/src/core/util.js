@@ -18,6 +18,7 @@ const instances = new WeakMap();
 export const controllers = (root) => [...(instances.get(root) || [])];
 export function trackController(root, api) {
   if (!api || controllers(root).includes(api)) return api;
+  root.setAttribute?.('data-colibri-controller','');
   const owned = instances.get(root) || new Set(); owned.add(api); instances.set(root, owned);
   const destroy = api.destroy; let destroyed = false;
   api.destroy = () => {
@@ -26,13 +27,13 @@ export function trackController(root, api) {
       const Event = root.ownerDocument?.defaultView?.CustomEvent;
       if (Event) root.dispatchEvent(new Event("ui:destroy", { bubbles: false }));
       destroy?.call(api);
-    } finally { owned.delete(api); if (!owned.size) instances.delete(root); }
+    } finally { owned.delete(api); if (!owned.size) { instances.delete(root); root.removeAttribute?.('data-colibri-controller'); } }
   };
   return api;
 }
 /** Dispose a removed subtree, innermost first. Safe to call more than once. */
 export function dispose(root) {
-  const nodes = [...(root.querySelectorAll?.("[data-ui]") || [])].reverse();
+  const nodes = [...(root.querySelectorAll?.("[data-ui],[data-colibri-controller]") || [])].reverse();
   nodes.push(root);
   for (const node of nodes) for (const api of controllers(node)) api.destroy?.();
 }
@@ -120,4 +121,12 @@ export function layer(el, close, { outside = true, escape = true, ignore = [] } 
     doc.removeEventListener("keydown", onKey, true);
     doc.removeEventListener("pointerdown", onDown, true);
   };
+}
+
+/** A callable cleanup with the same ownership/idempotence contract as controllers. */
+export function cleanupController(root,key,teardown) {
+ if(root[key])return root[key];
+ const cleanup=()=>cleanup.destroy();
+ cleanup.destroy=()=>{try{teardown();}finally{delete root[key];}};
+ root[key]=cleanup;trackController(root,cleanup);return cleanup;
 }

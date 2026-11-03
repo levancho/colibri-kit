@@ -35,7 +35,7 @@ document.querySelector('#app-nav').innerHTML=navigation[app].map(([id,label])=>`
 document.querySelector('.app-avatar').outerHTML=person('Jordan Lee');
 initPackPicker(document.querySelector('#app-pack'));initScheme(document.querySelector('#app-scheme'));
 search.addEventListener('input',()=>render());
-if((app==='account'&&['profile','security','billing'].includes(view))||(app==='workspace'&&view==='agenda')||(params.has('id')&&app!=='support'))search.closest('label').hidden=true;
+if((app==='account'&&['profile','security','billing'].includes(view))||(app==='workspace'&&view==='agenda')||(params.has('id')&&app!=='support'))search.closest('label').dataset.searchUnavailable='';
 function workspace(){
  const teams=state.teams.filter(t=>match(t.name+' '+t.lead));
  if(view==='members')return head('Your people','Manage the local demo roster.',btn('Add member','add-member'))+card('Workspace members',table(['Name','Email','Role','Action'],state.members.filter(m=>match(m.name+' '+m.email)).map((m)=>`<tr><td>${person(m.name)}</td><td>${esc(m.email)}</td><td>${pill(m.role)}</td><td>${btn('Edit role','member-role',state.members.indexOf(m),true)}</td></tr>`)));

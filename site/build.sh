@@ -3,6 +3,7 @@
 set -e
 cd "$(dirname "$0")/.."
 (cd packages/colibri-css && node build.mjs)
+python3 tools/applications/generate.py
 python3 tools/ftl-fixture.py
 python3 tools/gen_knobs.py >/dev/null
 python3 tools/kitchen-sink.py >/dev/null
@@ -13,6 +14,7 @@ cp -R site/src/* site/dist/
 # The download must match these templates. Build it rather than publish a stale JAR.
 python3 tools/package-java-download.py
 cp packages/colibri-css/dist/*.css site/dist/css/
+cp packages/colibri-css/dist/bundle-sizes.json site/dist/css/
 cp -R themes src freemarker thymeleaf site/dist/ui/
 # kitchen sink keeps its relative paths (../src, ../themes, ../packages)
 mkdir -p site/dist/kitchen-sink/packages/colibri-css
@@ -33,3 +35,4 @@ s = re.sub(r'(<b data-catalog-count>).*?(</b>)', lambda m: f"{m[1]}{count}{m[2]}
 s = re.sub(r'(<b data-css-size>).*?(</b>)', lambda m: f"{m[1]}{size} KiB{m[2]}", s)
 p.write_text(s)
 PYMETRICS
+node tools/site-manifest.mjs create site/dist

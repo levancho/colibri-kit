@@ -626,3 +626,45 @@ One tool call from input to output, with a pending/running/completed/error badge
 ## Other registered behaviours
 
 `toolbar`, `segmented-control`, `checkbox-cards`, `radio-cards`, `checkbox-group`, `tab-nav`, `accessible-icon`, `sheet`, `menubar`, `input-otp`, `dismiss`, `toaster`, `data-table`, `scrollable`, `clipboard`, `item-group`, `auth-form`
+
+## Application components
+
+Install the public `@colibri-kit/css/applications` entry after the core CSS. See [application contract](applications.md).
+
+- `application-shell`: Responsive shell and navigation.
+- `application-metrics`: Summary metrics with values, trends and captions.
+- `application-chart`: A chart canvas, range controls and readable data alternative.
+- `application-table`: Scrollable records, status badges and filter controls.
+- `application-board`: Stage lanes containing editable opportunity cards.
+- `application-projects`: Project images, descriptions, progress and detail actions.
+- `application-planner`: Scheduled events with times, locations and detail actions.
+- `application-identity`: Profile identity, account details and an edit action.
+- `application-products`: Product imagery, prices, stock counts and application-owned actions.
+- `application-receipt`: Order line items, totals and a downloadable receipt.
+- `application-conversation`: Selectable ticket queue, assignment, status and replies.
+- `application-form`: Labeled native inputs and a submit action.
+- `application-photo`: Image, introductory copy and a destination link.
+- `application-article`: Article title, author, instructions and a related destination.
+
+## Support discovery
+
+Use `colibri view NAME --language react|ftl|thymeleaf|html|js`. Read the registry `support` fields: native, markup-adapter, static-html, or unavailable. A static example is not a native parameterized adapter.
+
+## Additional catalog entries
+
+- `css-start`: One stylesheet: reset, tokens, base styles, a few layout primitives and opt-in components, all in cascade layers.
+- `css-tokens`: Colour, space, type, radius, shadow and motion are custom properties. The palette is OKLCH and derives from one hue.
+- `css-layers`: Everything lives in @layer colibri.*, so your own unlayered CSS always wins without !important or specificity fights.
+- `css-layout`: Seven primitives configured by custom properties: stack, cluster, grid, split, switcher, center, reel. No breakpoints.
+- `css-container`: Components respond to the width of their container, not the viewport. .card is a container by default.
+- `css-has`: Parent styling from child state: selected cards, invalid fields, required markers, with no JavaScript.
+- `css-nesting`: The library source uses native CSS nesting for variants and states; so can you, with no preprocessor.
+- `css-fluid`: Type and space scales use clamp(), so they grow smoothly from phone to desktop with no media queries.
+- `css-dark`: Follows the OS by default (prefers-color-scheme via color-scheme + light-dark()). data-theme="light|dark" on any element forces a scheme for that subtree.
+- `css-motion`: Duration and easing tokens (including a linear() spring). With prefers-reduced-motion they collapse to 0, so every transition built on them turns off automatically.
+- `css-forms`: Unclassed inputs, selects, textareas, tables, code and kbd look finished out of the box. Textareas grow with their content (field-sizing).
+- `css-bridge`: dist/colibri-ui-bridge.css maps Colibri UI's --ui-* tokens to Colibri CSS's --c-* tokens, so the components and your page share one palette.
+- `data-list`: Label and value pairs laid out in two columns.
+- `callout`: A tinted inline note with an icon that belongs to the page content.
+- `inset`: Lets media inside a card run to the card's edges.
+- `icon-button`: A square button that shows only an icon.

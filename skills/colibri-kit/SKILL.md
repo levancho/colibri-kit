@@ -1,6 +1,6 @@
 ---
 name: colibri-kit
-description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, FreeMarker and React without adding Tailwind.
+description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, React, FreeMarker and Thymeleaf without adding Tailwind.
 ---
 # Colibri Kit
 
@@ -139,3 +139,7 @@ Define `.revenue-value { font-size: var(--c-text-2xl); }` in the application sty
 
 ## Consumer installation and upgrades
 For a new plain HTML project, run `node <checkout>/bin/colibri.mjs init --starter` from the app's static root, then serve it over HTTP. This copies CSS, UI, FreeMarker and Thymeleaf and creates app-owned files. Omit `--starter` in existing apps. `--dir assets/colibri` updates starter paths. The installer refuses conflicting files before writing; inspect `diff`, back up changes and only use `--force` deliberately. Never force starter files over an existing app. Load CSS, UI theme, bridge and application CSS in that order. The bridge maps `--c-*` tokens to UI controls; keep branding in application CSS. The starter persists locally only; connect real APIs in the host. See https://colibri.l3v.ai/getting-started.html for complete installation, React, lifecycle and troubleshooting. Repository checks include `npm run test:consumer`, which installs packed archives and tests the resulting app outside the checkout.
+
+## Application adapters and support contracts
+
+Read [application components](reference/applications.md) before building dashboards or using the native application adapters. React requires version 18 or newer. Check each registry entry’s `support` and `adapters` fields; static HTML is not a parameterized Java API. Form callbacks retain native `formData` and `submitter`; repeated convenience values are arrays. Use explicit record/reset keys or controlled values for React form state.

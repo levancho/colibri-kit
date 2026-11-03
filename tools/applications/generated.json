@@ -1,0 +1,1870 @@
+{
+  "shell": {
+    "name": "ApplicationShell",
+    "tree": {
+      "tag": "div",
+      "attrs": {
+        "class": "app-shell",
+        "data-application-component": "shell"
+      },
+      "children": [
+        {
+          "tag": "aside",
+          "attrs": {
+            "class": "app-nav suite-sidebar",
+            "data-app-part": "sidebar"
+          },
+          "children": [
+            {
+              "tag": "button",
+              "attrs": {
+                "class": "btn suite-close",
+                "type": "button",
+                "data-app-part": "close"
+              },
+              "children": [
+                "Close menu"
+              ]
+            },
+            {
+              "tag": "strong",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.brand"
+                }
+              ]
+            },
+            {
+              "tag": "nav",
+              "attrs": {
+                "class": "suite-context",
+                "aria-label": "Application navigation"
+              },
+              "children": [
+                {
+                  "each": "model.pages",
+                  "as": "page",
+                  "node": {
+                    "tag": "button",
+                    "attrs": {
+                      "type": "button",
+                      "class": "btn",
+                      "data-app-action": "navigate",
+                      "data-id": {
+                        "value": "page.id"
+                      }
+                    },
+                    "children": [
+                      {
+                        "value": "page.title"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "app-stage"
+          },
+          "children": [
+            {
+              "tag": "header",
+              "attrs": {
+                "class": "app-top"
+              },
+              "children": [
+                {
+                  "tag": "button",
+                  "attrs": {
+                    "type": "button",
+                    "class": "btn suite-menu",
+                    "data-app-part": "trigger",
+                    "aria-expanded": "false"
+                  },
+                  "children": [
+                    "Menu"
+                  ]
+                },
+                {
+                  "tag": "strong",
+                  "attrs": {},
+                  "children": [
+                    {
+                      "value": "model.brand"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "main",
+              "attrs": {
+                "class": "app-main"
+              },
+              "children": [
+                {
+                  "tag": "h1",
+                  "attrs": {
+                    "data-app-heading": ""
+                  },
+                  "children": [
+                    {
+                      "value": "model.title"
+                    }
+                  ]
+                },
+                {
+                  "tag": "p",
+                  "attrs": {
+                    "data-app-description": ""
+                  },
+                  "children": [
+                    {
+                      "value": "model.description"
+                    }
+                  ]
+                },
+                {
+                  "slot": "content"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "button",
+          "attrs": {
+            "type": "button",
+            "class": "suite-backdrop",
+            "data-app-part": "backdrop",
+            "aria-label": "Close navigation",
+            "hidden": true
+          },
+          "children": []
+        }
+      ]
+    },
+    "model": {
+      "brand": "Northstar",
+      "title": "Overview",
+      "description": "Three projects are on track. One needs your review.",
+      "pages": [
+        {
+          "id": "overview",
+          "title": "Overview",
+          "description": "Three projects are on track. One needs your review."
+        },
+        {
+          "id": "records",
+          "title": "Records",
+          "description": "Project Atlas \u00b7 Active. Website refresh \u00b7 In review. Mobile release \u00b7 Planned."
+        }
+      ]
+    },
+    "html": "<div class=\"app-shell\" data-application-component=\"shell\"><aside class=\"app-nav suite-sidebar\" data-app-part=\"sidebar\"><button class=\"btn suite-close\" type=\"button\" data-app-part=\"close\">Close menu</button><strong>Northstar</strong><nav class=\"suite-context\" aria-label=\"Application navigation\"><button type=\"button\" class=\"btn\" data-app-action=\"navigate\" data-id=\"overview\">Overview</button><button type=\"button\" class=\"btn\" data-app-action=\"navigate\" data-id=\"records\">Records</button></nav></aside><div class=\"app-stage\"><header class=\"app-top\"><button type=\"button\" class=\"btn suite-menu\" data-app-part=\"trigger\" aria-expanded=\"false\">Menu</button><strong>Northstar</strong></header><main class=\"app-main\"><h1 data-app-heading=\"\">Overview</h1><p data-app-description=\"\">Three projects are on track. One needs your review.</p></main></div><button type=\"button\" class=\"suite-backdrop\" data-app-part=\"backdrop\" aria-label=\"Close navigation\" hidden></button></div>"
+  },
+  "metrics": {
+    "name": "MetricRail",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "kpis",
+        "aria-label": {
+          "value": "model.title"
+        },
+        "data-application-component": "metrics"
+      },
+      "children": [
+        {
+          "each": "model.items",
+          "as": "item",
+          "node": {
+            "tag": "article",
+            "attrs": {
+              "class": "card kpi"
+            },
+            "children": [
+              {
+                "tag": "small",
+                "attrs": {},
+                "children": [
+                  {
+                    "value": "item.label"
+                  }
+                ]
+              },
+              {
+                "tag": "b",
+                "attrs": {},
+                "children": [
+                  {
+                    "value": "item.value"
+                  }
+                ]
+              },
+              {
+                "tag": "p",
+                "attrs": {},
+                "children": [
+                  {
+                    "value": "item.change"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "model": {
+      "title": "Key metrics",
+      "items": [
+        {
+          "label": "Revenue",
+          "value": "$48,250",
+          "change": "+12% from last month"
+        },
+        {
+          "label": "Active customers",
+          "value": "1,240",
+          "change": "+84 this month"
+        },
+        {
+          "label": "Churn",
+          "value": "2.4%",
+          "change": "\u22120.3 percentage points"
+        }
+      ]
+    },
+    "html": "<section class=\"kpis\" aria-label=\"Key metrics\" data-application-component=\"metrics\"><article class=\"card kpi\"><small>Revenue</small><b>$48,250</b><p>+12% from last month</p></article><article class=\"card kpi\"><small>Active customers</small><b>1,240</b><p>+84 this month</p></article><article class=\"card kpi\"><small>Churn</small><b>2.4%</b><p>\u22120.3 percentage points</p></article></section>"
+  },
+  "table": {
+    "name": "RecordTable",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "app-card",
+        "data-application-component": "table"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "label",
+          "attrs": {},
+          "children": [
+            "Search records",
+            {
+              "tag": "input",
+              "attrs": {
+                "type": "search",
+                "data-app-filter": "",
+                "aria-label": "Search records"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "app-table-wrap"
+          },
+          "children": [
+            {
+              "tag": "table",
+              "attrs": {
+                "class": "app-table"
+              },
+              "children": [
+                {
+                  "tag": "caption",
+                  "attrs": {},
+                  "children": [
+                    {
+                      "value": "model.title"
+                    }
+                  ]
+                },
+                {
+                  "tag": "thead",
+                  "attrs": {},
+                  "children": [
+                    {
+                      "tag": "tr",
+                      "attrs": {},
+                      "children": [
+                        {
+                          "each": "model.columns",
+                          "as": "column",
+                          "node": {
+                            "tag": "th",
+                            "attrs": {
+                              "scope": "col"
+                            },
+                            "children": [
+                              {
+                                "value": "column"
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "tag": "th",
+                          "attrs": {
+                            "scope": "col"
+                          },
+                          "children": [
+                            "Actions"
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "tag": "tbody",
+                  "attrs": {},
+                  "children": [
+                    {
+                      "each": "model.rows",
+                      "as": "row",
+                      "node": {
+                        "tag": "tr",
+                        "attrs": {
+                          "data-record-id": {
+                            "value": "row.id"
+                          }
+                        },
+                        "children": [
+                          {
+                            "each": "row.cells",
+                            "as": "cell",
+                            "node": {
+                              "tag": "td",
+                              "attrs": {},
+                              "children": [
+                                {
+                                  "value": "cell"
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "tag": "td",
+                            "attrs": {},
+                            "children": [
+                              {
+                                "tag": "button",
+                                "attrs": {
+                                  "class": "btn",
+                                  "type": "button",
+                                  "data-app-action": "view-record",
+                                  "data-id": {
+                                    "value": "row.id"
+                                  }
+                                },
+                                "children": [
+                                  "View record"
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Customers",
+      "description": "Search and inspect customer records.",
+      "columns": [
+        "Name",
+        "Plan",
+        "Revenue"
+      ],
+      "rows": [
+        {
+          "id": "maya",
+          "cells": [
+            "Maya Chen",
+            "Pro",
+            "$240"
+          ]
+        },
+        {
+          "id": "alex",
+          "cells": [
+            "Alex Rivera",
+            "Team",
+            "$1,100"
+          ]
+        },
+        {
+          "id": "sam",
+          "cells": [
+            "Sam Patel",
+            "Starter",
+            "$79"
+          ]
+        }
+      ]
+    },
+    "html": "<section class=\"app-card\" data-application-component=\"table\"><header><h3>Customers</h3><p>Search and inspect customer records.</p></header><label>Search records<input type=\"search\" data-app-filter=\"\" aria-label=\"Search records\"></label><div class=\"app-table-wrap\"><table class=\"app-table\"><caption>Customers</caption><thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Plan</th><th scope=\"col\">Revenue</th><th scope=\"col\">Actions</th></tr></thead><tbody><tr data-record-id=\"maya\"><td>Maya Chen</td><td>Pro</td><td>$240</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"maya\">View record</button></td></tr><tr data-record-id=\"alex\"><td>Alex Rivera</td><td>Team</td><td>$1,100</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"alex\">View record</button></td></tr><tr data-record-id=\"sam\"><td>Sam Patel</td><td>Starter</td><td>$79</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"sam\">View record</button></td></tr></tbody></table></div></section>"
+  },
+  "board": {
+    "name": "OpportunityBoard",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "app-card",
+        "data-application-component": "board"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "pipeline"
+          },
+          "children": [
+            {
+              "each": "model.lanes",
+              "as": "lane",
+              "node": {
+                "tag": "section",
+                "attrs": {
+                  "class": "lane"
+                },
+                "children": [
+                  {
+                    "tag": "h4",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "lane.title"
+                      }
+                    ]
+                  },
+                  {
+                    "each": "lane.deals",
+                    "as": "deal",
+                    "node": {
+                      "tag": "button",
+                      "attrs": {
+                        "class": "deal",
+                        "type": "button",
+                        "data-app-action": "edit-deal",
+                        "data-id": {
+                          "value": "deal.id"
+                        }
+                      },
+                      "children": [
+                        {
+                          "tag": "strong",
+                          "attrs": {},
+                          "children": [
+                            {
+                              "value": "deal.company"
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "p",
+                          "attrs": {},
+                          "children": [
+                            {
+                              "value": "deal.value"
+                            }
+                          ]
+                        },
+                        {
+                          "tag": "small",
+                          "attrs": {},
+                          "children": [
+                            {
+                              "value": "deal.owner"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Sales pipeline",
+      "description": "Select an opportunity to update its stage.",
+      "lanes": [
+        {
+          "id": "new",
+          "title": "New",
+          "deals": [
+            {
+              "id": "atlas",
+              "company": "Atlas Studio",
+              "value": "$12,000",
+              "owner": "Maya Chen"
+            }
+          ]
+        },
+        {
+          "id": "proposal",
+          "title": "Proposal",
+          "deals": [
+            {
+              "id": "north",
+              "company": "North & Co",
+              "value": "$24,000",
+              "owner": "Alex Rivera"
+            }
+          ]
+        },
+        {
+          "id": "won",
+          "title": "Won",
+          "deals": []
+        }
+      ]
+    },
+    "html": "<section class=\"app-card\" data-application-component=\"board\"><header><h3>Sales pipeline</h3><p>Select an opportunity to update its stage.</p></header><div class=\"pipeline\"><section class=\"lane\"><h4>New</h4><button class=\"deal\" type=\"button\" data-app-action=\"edit-deal\" data-id=\"atlas\"><strong>Atlas Studio</strong><p>$12,000</p><small>Maya Chen</small></button></section><section class=\"lane\"><h4>Proposal</h4><button class=\"deal\" type=\"button\" data-app-action=\"edit-deal\" data-id=\"north\"><strong>North &amp; Co</strong><p>$24,000</p><small>Alex Rivera</small></button></section><section class=\"lane\"><h4>Won</h4></section></div></section>"
+  },
+  "projects": {
+    "name": "ProjectCards",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "data-application-component": "projects"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "project-grid"
+          },
+          "children": [
+            {
+              "each": "model.projects",
+              "as": "project",
+              "node": {
+                "tag": "article",
+                "attrs": {
+                  "class": "project-card"
+                },
+                "children": [
+                  {
+                    "tag": "img",
+                    "attrs": {
+                      "src": {
+                        "value": "project.image"
+                      },
+                      "alt": {
+                        "value": "project.name"
+                      },
+                      "width": "320",
+                      "height": "180",
+                      "loading": "lazy"
+                    },
+                    "children": []
+                  },
+                  {
+                    "tag": "div",
+                    "attrs": {
+                      "class": "project-body"
+                    },
+                    "children": [
+                      {
+                        "tag": "h3",
+                        "attrs": {},
+                        "children": [
+                          {
+                            "value": "project.name"
+                          }
+                        ]
+                      },
+                      {
+                        "tag": "p",
+                        "attrs": {},
+                        "children": [
+                          {
+                            "value": "project.description"
+                          }
+                        ]
+                      },
+                      {
+                        "tag": "label",
+                        "attrs": {},
+                        "children": [
+                          "Progress",
+                          {
+                            "tag": "progress",
+                            "attrs": {
+                              "max": "100",
+                              "value": {
+                                "value": "project.progress"
+                              }
+                            },
+                            "children": [
+                              {
+                                "value": "project.progress"
+                              }
+                            ]
+                          }
+                        ]
+                      },
+                      {
+                        "tag": "button",
+                        "attrs": {
+                          "class": "btn",
+                          "type": "button",
+                          "data-app-action": "view-project",
+                          "data-id": {
+                            "value": "project.id"
+                          }
+                        },
+                        "children": [
+                          "View project"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Projects",
+      "description": "Track current work.",
+      "projects": [
+        {
+          "id": "atlas",
+          "name": "Project Atlas",
+          "description": "Customer portal launch \u00b7 8 tasks remaining",
+          "progress": 65,
+          "image": "dashboards/assets/studio-office.jpg"
+        },
+        {
+          "id": "mobile",
+          "name": "Mobile release",
+          "description": "Version 2.4 \u00b7 QA in progress",
+          "progress": 85,
+          "image": "dashboards/assets/meeting-space.jpg"
+        }
+      ]
+    },
+    "html": "<section data-application-component=\"projects\"><header><h3>Projects</h3><p>Track current work.</p></header><div class=\"project-grid\"><article class=\"project-card\"><img src=\"dashboards/assets/studio-office.jpg\" alt=\"Project Atlas\" width=\"320\" height=\"180\" loading=\"lazy\"><div class=\"project-body\"><h3>Project Atlas</h3><p>Customer portal launch \u00b7 8 tasks remaining</p><label>Progress<progress max=\"100\" value=\"65\">65</progress></label><button class=\"btn\" type=\"button\" data-app-action=\"view-project\" data-id=\"atlas\">View project</button></div></article><article class=\"project-card\"><img src=\"dashboards/assets/meeting-space.jpg\" alt=\"Mobile release\" width=\"320\" height=\"180\" loading=\"lazy\"><div class=\"project-body\"><h3>Mobile release</h3><p>Version 2.4 \u00b7 QA in progress</p><label>Progress<progress max=\"100\" value=\"85\">85</progress></label><button class=\"btn\" type=\"button\" data-app-action=\"view-project\" data-id=\"mobile\">View project</button></div></article></div></section>"
+  },
+  "planner": {
+    "name": "DayPlanner",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "workspace-day",
+        "data-application-component": "planner"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "agenda-list"
+          },
+          "children": [
+            {
+              "each": "model.events",
+              "as": "event",
+              "node": {
+                "tag": "article",
+                "attrs": {
+                  "class": "agenda-item"
+                },
+                "children": [
+                  {
+                    "tag": "time",
+                    "attrs": {
+                      "datetime": {
+                        "value": "event.datetime"
+                      }
+                    },
+                    "children": [
+                      {
+                        "value": "event.time"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "div",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "tag": "h4",
+                        "attrs": {},
+                        "children": [
+                          {
+                            "value": "event.title"
+                          }
+                        ]
+                      },
+                      {
+                        "tag": "p",
+                        "attrs": {},
+                        "children": [
+                          {
+                            "value": "event.location"
+                          }
+                        ]
+                      },
+                      {
+                        "tag": "button",
+                        "attrs": {
+                          "class": "btn",
+                          "type": "button",
+                          "data-app-action": "view-event",
+                          "data-id": {
+                            "value": "event.id"
+                          }
+                        },
+                        "children": [
+                          "View event"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Today\u2019s agenda",
+      "description": "Monday, November 2",
+      "events": [
+        {
+          "id": "standup",
+          "datetime": "2026-11-02T09:00",
+          "time": "9:00 AM",
+          "title": "Product standup",
+          "location": "Meeting room A"
+        },
+        {
+          "id": "review",
+          "datetime": "2026-11-02T14:00",
+          "time": "2:00 PM",
+          "title": "Design review",
+          "location": "Studio \u00b7 45 minutes"
+        }
+      ]
+    },
+    "html": "<section class=\"workspace-day\" data-application-component=\"planner\"><header><h3>Today\u2019s agenda</h3><p>Monday, November 2</p></header><div class=\"agenda-list\"><article class=\"agenda-item\"><time datetime=\"2026-11-02T09:00\">9:00 AM</time><div><h4>Product standup</h4><p>Meeting room A</p><button class=\"btn\" type=\"button\" data-app-action=\"view-event\" data-id=\"standup\">View event</button></div></article><article class=\"agenda-item\"><time datetime=\"2026-11-02T14:00\">2:00 PM</time><div><h4>Design review</h4><p>Studio \u00b7 45 minutes</p><button class=\"btn\" type=\"button\" data-app-action=\"view-event\" data-id=\"review\">View event</button></div></article></div></section>"
+  },
+  "identity": {
+    "name": "IdentityCard",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "identity-card",
+        "data-application-component": "identity"
+      },
+      "children": [
+        {
+          "tag": "span",
+          "attrs": {
+            "class": "portrait portrait-large",
+            "data-face": "3"
+          },
+          "children": [
+            {
+              "tag": "img",
+              "attrs": {
+                "src": {
+                  "value": "model.image"
+                },
+                "alt": {
+                  "value": "model.name"
+                },
+                "width": "320",
+                "height": "180",
+                "loading": "lazy"
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "tag": "h3",
+          "attrs": {},
+          "children": [
+            {
+              "value": "model.name"
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {},
+          "children": [
+            {
+              "value": "model.role"
+            }
+          ]
+        },
+        {
+          "tag": "dl",
+          "attrs": {},
+          "children": [
+            {
+              "each": "model.details",
+              "as": "detail",
+              "node": {
+                "tag": "div",
+                "attrs": {},
+                "children": [
+                  {
+                    "tag": "dt",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "detail.label"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "dd",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "detail.value"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tag": "button",
+          "attrs": {
+            "class": "btn",
+            "type": "button",
+            "data-app-action": "edit-profile"
+          },
+          "children": [
+            "Edit profile"
+          ]
+        }
+      ]
+    },
+    "model": {
+      "name": "Jordan Lee",
+      "role": "Workspace administrator",
+      "image": "dashboards/assets/portraits.jpg",
+      "details": [
+        {
+          "label": "Email",
+          "value": "jordan@example.com"
+        },
+        {
+          "label": "Team",
+          "value": "Product"
+        }
+      ]
+    },
+    "html": "<section class=\"identity-card\" data-application-component=\"identity\"><span class=\"portrait portrait-large\" data-face=\"3\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Jordan Lee\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Jordan Lee</h3><p>Workspace administrator</p><dl><div><dt>Email</dt><dd>jordan@example.com</dd></div><div><dt>Team</dt><dd>Product</dd></div></dl><button class=\"btn\" type=\"button\" data-app-action=\"edit-profile\">Edit profile</button></section>"
+  },
+  "products": {
+    "name": "ProductCollection",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "data-application-component": "products"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "store-products"
+          },
+          "children": [
+            {
+              "each": "model.products",
+              "as": "product",
+              "node": {
+                "tag": "article",
+                "attrs": {
+                  "class": "store-product"
+                },
+                "children": [
+                  {
+                    "tag": "span",
+                    "attrs": {
+                      "class": "product-photo",
+                      "data-product": {
+                        "value": "product.sprite"
+                      }
+                    },
+                    "children": [
+                      {
+                        "tag": "img",
+                        "attrs": {
+                          "src": {
+                            "value": "product.image"
+                          },
+                          "alt": {
+                            "value": "product.name"
+                          },
+                          "width": "320",
+                          "height": "180",
+                          "loading": "lazy"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "h3",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "product.name"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "p",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "product.price"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "small",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "product.stock"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "button",
+                    "attrs": {
+                      "class": "btn",
+                      "type": "button",
+                      "data-app-action": "add-product",
+                      "data-id": {
+                        "value": "product.id"
+                      }
+                    },
+                    "children": [
+                      "Add to order"
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {
+            "role": "status",
+            "data-cart-status": ""
+          },
+          "children": [
+            "No items added."
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Products",
+      "description": "Create a sample order.",
+      "products": [
+        {
+          "id": "desk",
+          "name": "Studio headphones",
+          "price": "$320",
+          "amount": 320,
+          "stock": "12 available",
+          "sprite": "0",
+          "image": "dashboards/assets/products.jpg"
+        },
+        {
+          "id": "chair",
+          "name": "Canvas daypack",
+          "price": "$180",
+          "amount": 180,
+          "stock": "8 available",
+          "sprite": "1",
+          "image": "dashboards/assets/products.jpg"
+        }
+      ]
+    },
+    "html": "<section data-application-component=\"products\"><header><h3>Products</h3><p>Create a sample order.</p></header><div class=\"store-products\"><article class=\"store-product\"><span class=\"product-photo\" data-product=\"0\"><img src=\"dashboards/assets/products.jpg\" alt=\"Studio headphones\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Studio headphones</h3><p>$320</p><small>12 available</small><button class=\"btn\" type=\"button\" data-app-action=\"add-product\" data-id=\"desk\">Add to order</button></article><article class=\"store-product\"><span class=\"product-photo\" data-product=\"1\"><img src=\"dashboards/assets/products.jpg\" alt=\"Canvas daypack\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Canvas daypack</h3><p>$180</p><small>8 available</small><button class=\"btn\" type=\"button\" data-app-action=\"add-product\" data-id=\"chair\">Add to order</button></article></div><p role=\"status\" data-cart-status=\"\">No items added.</p></section>"
+  },
+  "receipt": {
+    "name": "OrderReceipt",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "sales-receipt",
+        "data-application-component": "receipt"
+      },
+      "children": [
+        {
+          "tag": "header",
+          "attrs": {},
+          "children": [
+            {
+              "tag": "h3",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "dl",
+          "attrs": {},
+          "children": [
+            {
+              "each": "model.items",
+              "as": "item",
+              "node": {
+                "tag": "div",
+                "attrs": {},
+                "children": [
+                  {
+                    "tag": "dt",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "item.label"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "dd",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "item.amount"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {},
+          "children": [
+            "Total: ",
+            {
+              "tag": "strong",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.total"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "button",
+          "attrs": {
+            "class": "btn",
+            "type": "button",
+            "data-app-action": "download-receipt"
+          },
+          "children": [
+            "Download receipt"
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Order #1048",
+      "description": "November 2 \u00b7 Paid",
+      "items": [
+        {
+          "label": "Studio desk \u00d7 1",
+          "amount": "$320"
+        },
+        {
+          "label": "Shipping",
+          "amount": "$20"
+        }
+      ],
+      "total": "$340"
+    },
+    "html": "<section class=\"sales-receipt\" data-application-component=\"receipt\"><header><h3>Order #1048</h3><p>November 2 \u00b7 Paid</p></header><dl><div><dt>Studio desk \u00d7 1</dt><dd>$320</dd></div><div><dt>Shipping</dt><dd>$20</dd></div></dl><p>Total: <strong>$340</strong></p><button class=\"btn\" type=\"button\" data-app-action=\"download-receipt\">Download receipt</button></section>"
+  },
+  "form": {
+    "name": "ApplicationForm",
+    "tree": {
+      "tag": "form",
+      "attrs": {
+        "class": "app-form",
+        "data-app-form": "profile",
+        "method": "post",
+        "action": {
+          "value": "model.action"
+        },
+        "data-application-component": "form"
+      },
+      "children": [
+        {
+          "tag": "h3",
+          "attrs": {},
+          "children": [
+            {
+              "value": "model.title"
+            }
+          ]
+        },
+        {
+          "each": "model.fields",
+          "as": "field",
+          "node": {
+            "tag": "label",
+            "attrs": {},
+            "children": [
+              {
+                "value": "field.label"
+              },
+              {
+                "tag": "input",
+                "attrs": {
+                  "name": {
+                    "value": "field.name"
+                  },
+                  "type": {
+                    "value": "field.type"
+                  },
+                  "value": {
+                    "value": "field.value"
+                  },
+                  "required": true,
+                  "maxlength": "100"
+                },
+                "children": []
+              }
+            ]
+          }
+        },
+        {
+          "tag": "button",
+          "attrs": {
+            "class": "btn",
+            "type": "submit"
+          },
+          "children": [
+            {
+              "value": "model.submitLabel"
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {
+            "role": "status"
+          },
+          "children": []
+        }
+      ]
+    },
+    "model": {
+      "title": "Edit profile",
+      "action": "#profile",
+      "submitLabel": "Save profile",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Full name",
+          "type": "text",
+          "value": "Jordan Lee"
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "value": "jordan@example.com"
+        }
+      ]
+    },
+    "html": "<form class=\"app-form\" data-app-form=\"profile\" method=\"post\" action=\"#profile\" data-application-component=\"form\"><h3>Edit profile</h3><label>Full name<input name=\"name\" type=\"text\" value=\"Jordan Lee\" required maxlength=\"100\"></label><label>Email<input name=\"email\" type=\"email\" value=\"jordan@example.com\" required maxlength=\"100\"></label><button class=\"btn\" type=\"submit\">Save profile</button><p role=\"status\"></p></form>"
+  },
+  "photo": {
+    "name": "PhotoFeature",
+    "tree": {
+      "tag": "section",
+      "attrs": {
+        "class": "workspace-lead",
+        "data-application-component": "photo"
+      },
+      "children": [
+        {
+          "tag": "div",
+          "attrs": {
+            "class": "workspace-story"
+          },
+          "children": [
+            {
+              "tag": "span",
+              "attrs": {
+                "class": "eyebrow"
+              },
+              "children": [
+                {
+                  "value": "model.eyebrow"
+                }
+              ]
+            },
+            {
+              "tag": "h2",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {},
+              "children": [
+                {
+                  "value": "model.description"
+                }
+              ]
+            },
+            {
+              "tag": "a",
+              "attrs": {
+                "class": "btn",
+                "href": {
+                  "value": "model.href"
+                }
+              },
+              "children": [
+                {
+                  "value": "model.linkLabel"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "tag": "img",
+          "attrs": {
+            "src": {
+              "value": "model.image"
+            },
+            "alt": {
+              "value": "model.imageAlt"
+            },
+            "width": "320",
+            "height": "180",
+            "loading": "lazy"
+          },
+          "children": []
+        }
+      ]
+    },
+    "model": {
+      "eyebrow": "Team workspace",
+      "title": "Meet your project team",
+      "description": "See the people working on your next release.",
+      "href": "dashboards/workspace.html?view=members",
+      "linkLabel": "View team",
+      "image": "dashboards/assets/studio-office.jpg",
+      "imageAlt": "A bright shared workspace"
+    },
+    "html": "<section class=\"workspace-lead\" data-application-component=\"photo\"><div class=\"workspace-story\"><span class=\"eyebrow\">Team workspace</span><h2>Meet your project team</h2><p>See the people working on your next release.</p><a class=\"btn\" href=\"dashboards/workspace.html?view=members\">View team</a></div><img src=\"dashboards/assets/studio-office.jpg\" alt=\"A bright shared workspace\" width=\"320\" height=\"180\" loading=\"lazy\"></section>"
+  },
+  "article": {
+    "name": "KnowledgeArticle",
+    "tree": {
+      "tag": "article",
+      "attrs": {
+        "class": "app-card",
+        "data-application-component": "article"
+      },
+      "children": [
+        {
+          "tag": "h2",
+          "attrs": {},
+          "children": [
+            {
+              "value": "model.title"
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {
+            "class": "article-byline"
+          },
+          "children": [
+            {
+              "value": "model.author"
+            }
+          ]
+        },
+        {
+          "tag": "p",
+          "attrs": {},
+          "children": [
+            {
+              "value": "model.summary"
+            }
+          ]
+        },
+        {
+          "tag": "ol",
+          "attrs": {
+            "class": "article-steps"
+          },
+          "children": [
+            {
+              "each": "model.steps",
+              "as": "step",
+              "node": {
+                "tag": "li",
+                "attrs": {},
+                "children": [
+                  {
+                    "tag": "h3",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "step.title"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "p",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "step.text"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tag": "a",
+          "attrs": {
+            "href": {
+              "value": "model.href"
+            }
+          },
+          "children": [
+            {
+              "value": "model.linkLabel"
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "title": "Invite a teammate",
+      "author": "Jordan Lee \u00b7 Updated November 2",
+      "summary": "Add people to your workspace and choose their access.",
+      "steps": [
+        {
+          "title": "Open Members",
+          "text": "Choose Members from workspace settings."
+        },
+        {
+          "title": "Send an invitation",
+          "text": "Enter the email address and select a role."
+        }
+      ],
+      "href": "dashboards/account.html?view=members",
+      "linkLabel": "Open member settings"
+    },
+    "html": "<article class=\"app-card\" data-application-component=\"article\"><h2>Invite a teammate</h2><p class=\"article-byline\">Jordan Lee \u00b7 Updated November 2</p><p>Add people to your workspace and choose their access.</p><ol class=\"article-steps\"><li><h3>Open Members</h3><p>Choose Members from workspace settings.</p></li><li><h3>Send an invitation</h3><p>Enter the email address and select a role.</p></li></ol><a href=\"dashboards/account.html?view=members\">Open member settings</a></article>"
+  },
+  "conversation": {
+    "name": "ConversationDesk",
+    "tree": {
+      "tag": "div",
+      "attrs": {
+        "class": "support-layout",
+        "data-application-component": "conversation"
+      },
+      "children": [
+        {
+          "tag": "section",
+          "attrs": {
+            "class": "support-queue",
+            "aria-label": "Tickets"
+          },
+          "children": [
+            {
+              "each": "model.tickets",
+              "as": "ticket",
+              "node": {
+                "tag": "button",
+                "attrs": {
+                  "class": "support-ticket",
+                  "type": "button",
+                  "data-app-action": "select-ticket",
+                  "data-id": {
+                    "value": "ticket.id"
+                  },
+                  "aria-current": {
+                    "value": "ticket.id == model.selected.id"
+                  }
+                },
+                "children": [
+                  {
+                    "tag": "span",
+                    "attrs": {
+                      "class": "portrait",
+                      "data-face": {
+                        "value": "ticket.face"
+                      }
+                    },
+                    "children": [
+                      {
+                        "tag": "img",
+                        "attrs": {
+                          "src": {
+                            "value": "ticket.image"
+                          },
+                          "alt": {
+                            "value": "ticket.customer"
+                          },
+                          "width": "320",
+                          "height": "180",
+                          "loading": "lazy"
+                        },
+                        "children": []
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "strong",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "ticket.customer"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "p",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "ticket.title"
+                      }
+                    ]
+                  },
+                  {
+                    "tag": "small",
+                    "attrs": {},
+                    "children": [
+                      {
+                        "value": "ticket.status"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "tag": "article",
+          "attrs": {
+            "class": "support-thread"
+          },
+          "children": [
+            {
+              "tag": "h2",
+              "attrs": {
+                "data-ticket-title": ""
+              },
+              "children": [
+                {
+                  "value": "model.selected.title"
+                }
+              ]
+            },
+            {
+              "tag": "p",
+              "attrs": {
+                "data-ticket-customer": ""
+              },
+              "children": [
+                {
+                  "value": "model.selected.customer"
+                }
+              ]
+            },
+            {
+              "tag": "label",
+              "attrs": {},
+              "children": [
+                "Assigned to",
+                {
+                  "tag": "select",
+                  "attrs": {
+                    "data-ticket-assignee": "",
+                    "aria-label": "Assign ticket",
+                    "value": {
+                      "value": "model.selected.assigned"
+                    }
+                  },
+                  "children": [
+                    {
+                      "tag": "option",
+                      "attrs": {
+                        "value": "Unassigned",
+                        "selected": {
+                          "value": "model.selected.assigned == \"Unassigned\""
+                        }
+                      },
+                      "children": [
+                        "Unassigned"
+                      ]
+                    },
+                    {
+                      "each": "model.agents",
+                      "as": "agent",
+                      "node": {
+                        "tag": "option",
+                        "attrs": {
+                          "value": {
+                            "value": "agent"
+                          },
+                          "selected": {
+                            "value": "agent == model.selected.assigned"
+                          }
+                        },
+                        "children": [
+                          {
+                            "value": "agent"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "label",
+              "attrs": {},
+              "children": [
+                "Status",
+                {
+                  "tag": "select",
+                  "attrs": {
+                    "data-ticket-status": "",
+                    "aria-label": "Ticket status",
+                    "value": {
+                      "value": "model.selected.status"
+                    }
+                  },
+                  "children": [
+                    {
+                      "each": "model.statuses",
+                      "as": "status",
+                      "node": {
+                        "tag": "option",
+                        "attrs": {
+                          "value": {
+                            "value": "status"
+                          },
+                          "selected": {
+                            "value": "status == model.selected.status"
+                          }
+                        },
+                        "children": [
+                          {
+                            "value": "status"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "div",
+              "attrs": {
+                "data-ticket-messages": ""
+              },
+              "children": [
+                {
+                  "tag": "div",
+                  "attrs": {
+                    "class": "support-message"
+                  },
+                  "children": [
+                    {
+                      "tag": "p",
+                      "attrs": {},
+                      "children": [
+                        {
+                          "value": "model.selected.message"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "tag": "form",
+              "attrs": {
+                "class": "app-form",
+                "data-app-form": "reply"
+              },
+              "children": [
+                {
+                  "tag": "label",
+                  "attrs": {},
+                  "children": [
+                    "Reply",
+                    {
+                      "tag": "textarea",
+                      "attrs": {
+                        "name": "reply",
+                        "required": true,
+                        "maxlength": "2000"
+                      },
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "tag": "button",
+                  "attrs": {
+                    "type": "submit",
+                    "class": "btn"
+                  },
+                  "children": [
+                    "Save demo reply"
+                  ]
+                },
+                {
+                  "tag": "p",
+                  "attrs": {
+                    "role": "status"
+                  },
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "model": {
+      "tickets": [
+        {
+          "id": "2081",
+          "face": "0",
+          "image": "dashboards/assets/portraits.jpg",
+          "customer": "Maya Chen",
+          "title": "Cannot invite a teammate",
+          "status": "Open",
+          "message": "Could you check our workspace member limit?"
+        },
+        {
+          "id": "2080",
+          "face": "1",
+          "image": "dashboards/assets/portraits.jpg",
+          "customer": "Alex Rivera",
+          "title": "Update our invoice address",
+          "status": "Pending",
+          "message": "Please add 12 Market Street to invoice #1048."
+        }
+      ],
+      "selected": {
+        "assigned": "Unassigned",
+        "id": "2081",
+        "customer": "Maya Chen",
+        "title": "Cannot invite a teammate",
+        "status": "Open",
+        "message": "Could you check our workspace member limit?"
+      },
+      "agents": [
+        "Jordan Lee",
+        "Maya Chen"
+      ],
+      "statuses": [
+        "Open",
+        "Pending",
+        "Resolved"
+      ]
+    },
+    "html": "<div class=\"support-layout\" data-application-component=\"conversation\"><section class=\"support-queue\" aria-label=\"Tickets\"><button class=\"support-ticket\" type=\"button\" data-app-action=\"select-ticket\" data-id=\"2081\" aria-current=\"true\"><span class=\"portrait\" data-face=\"0\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Maya Chen\" width=\"320\" height=\"180\" loading=\"lazy\"></span><strong>Maya Chen</strong><p>Cannot invite a teammate</p><small>Open</small></button><button class=\"support-ticket\" type=\"button\" data-app-action=\"select-ticket\" data-id=\"2080\" aria-current=\"false\"><span class=\"portrait\" data-face=\"1\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Alex Rivera\" width=\"320\" height=\"180\" loading=\"lazy\"></span><strong>Alex Rivera</strong><p>Update our invoice address</p><small>Pending</small></button></section><article class=\"support-thread\"><h2 data-ticket-title=\"\">Cannot invite a teammate</h2><p data-ticket-customer=\"\">Maya Chen</p><label>Assigned to<select data-ticket-assignee=\"\" aria-label=\"Assign ticket\"><option value=\"Unassigned\" selected>Unassigned</option><option value=\"Jordan Lee\">Jordan Lee</option><option value=\"Maya Chen\">Maya Chen</option></select></label><label>Status<select data-ticket-status=\"\" aria-label=\"Ticket status\"><option value=\"Open\" selected>Open</option><option value=\"Pending\">Pending</option><option value=\"Resolved\">Resolved</option></select></label><div data-ticket-messages=\"\"><div class=\"support-message\"><p>Could you check our workspace member limit?</p></div></div><form class=\"app-form\" data-app-form=\"reply\"><label>Reply<textarea name=\"reply\" required maxlength=\"2000\"></textarea></label><button type=\"submit\" class=\"btn\">Save demo reply</button><p role=\"status\"></p></form></article></div>"
+  }
+}

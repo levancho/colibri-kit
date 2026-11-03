@@ -41,8 +41,8 @@ def render(markup, name='component'):
 <!-- Reusable field supplied in colibri-templates.jar: -->
 ''' + (ROOT / 'thymeleaf/spring-field.html').read_text()
     if name not in ARGS:
-        return ('<!-- Native HTML works directly in a Thymeleaf page.\n'
-                'This example needs no server-side fragment or extra wrapper.\n'
+        return ('<!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.\n'
+                'Use the markup directly, or author a fragment for your application model.\n'
                 'Load Colibri CSS and core/auto.js in the page layout. -->\n' + markup)
     source=(ROOT / f'thymeleaf/{name}.html').read_text().strip()
     fragment=name.replace('-','_')

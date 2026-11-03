@@ -1,0 +1,93 @@
+[
+  {
+    "id": "application-metrics",
+    "title": "Metric rail",
+    "description": "Summary metrics with values, trends and captions.",
+    "layout": "analytics",
+    "html": "<section class=\"kpis\" aria-label=\"Key metrics\" data-application-component=\"metrics\"><article class=\"card kpi\"><small>Revenue</small><b>$48,250</b><p>+12% from last month</p></article><article class=\"card kpi\"><small>Active customers</small><b>1,240</b><p>+84 this month</p></article><article class=\"card kpi\"><small>Churn</small><b>2.4%</b><p>\u22120.3 percentage points</p></article></section>"
+  },
+  {
+    "id": "application-chart",
+    "title": "Chart panel",
+    "description": "A chart canvas, range controls and readable data alternative.",
+    "layout": "analytics",
+    "html": "<section class=\"card panel chart-box\"><header><div><h3>Audience growth</h3><p>Daily visitors and signups \u00b7 October sample</p></div><div class=\"seg\" role=\"group\" aria-label=\"Range\" data-target=\"traffic\"><button data-n=\"7\" aria-pressed=\"false\">7d</button><button data-n=\"14\" aria-pressed=\"false\">14d</button><button data-n=\"30\" aria-pressed=\"true\">30d</button></div></header>\n<div id=\"traffic\" data-chart=\"area\" data-values=\"[[420, 518, 578, 581, 533, 464, 410, 402, 446, 521, 593, 624, 597, 521, 426, 353, 330, 364, 436, 509, 547, 534, 477, 406, 360, 366, 430, 529, 625, 682], [258, 212, 190, 207, 262, 336, 397, 423, 404, 351, 290, 249, 247, 281, 334, 376, 384, 351, 288, 223, 184, 188, 233, 300, 358, 385, 372, 330, 286, 266]]\" aria-label=\"Traffic, visitors vs signups\"><svg viewBox=\"0 0 600 200\" role=\"img\" aria-label=\"Traffic, visitors vs signups\" preserveAspectRatio=\"none\" class=\"chart\"><line x1=\"0\" x2=\"600\" y1=\"50\" y2=\"50\" stroke=\"var(--c-line)\" vector-effect=\"non-scaling-stroke\" stroke-dasharray=\"3 4\"></line><line x1=\"0\" x2=\"600\" y1=\"100\" y2=\"100\" stroke=\"var(--c-line)\" vector-effect=\"non-scaling-stroke\" stroke-dasharray=\"3 4\"></line><line x1=\"0\" x2=\"600\" y1=\"150\" y2=\"150\" stroke=\"var(--c-line)\" vector-effect=\"non-scaling-stroke\" stroke-dasharray=\"3 4\"></line><path d=\"M0.0 88.0L20.7 61.9L41.4 45.9L62.1 45.1L82.8 57.9L103.4 76.3L124.1 90.7L144.8 92.8L165.5 81.1L186.2 61.1L206.9 41.9L227.6 33.6L248.3 40.8L269.0 61.1L289.7 86.4L310.3 105.9L331.0 112.0L351.7 103.0L372.4 83.8L393.1 64.3L413.8 54.2L434.5 57.6L455.2 72.8L475.9 91.8L496.6 104.0L517.2 102.4L537.9 85.4L558.6 59.0L579.3 33.4L600.0 18.2 L600 200 L0 200Z\" fill=\"var(--chart-1, var(--c-accent))\" opacity=\".14\"></path><path d=\"M0.0 88.0L20.7 61.9L41.4 45.9L62.1 45.1L82.8 57.9L103.4 76.3L124.1 90.7L144.8 92.8L165.5 81.1L186.2 61.1L206.9 41.9L227.6 33.6L248.3 40.8L269.0 61.1L289.7 86.4L310.3 105.9L331.0 112.0L351.7 103.0L372.4 83.8L393.1 64.3L413.8 54.2L434.5 57.6L455.2 72.8L475.9 91.8L496.6 104.0L517.2 102.4L537.9 85.4L558.6 59.0L579.3 33.4L600.0 18.2\" fill=\"none\" stroke=\"var(--chart-1, var(--c-accent))\" stroke-width=\"2.25\" vector-effect=\"non-scaling-stroke\"></path><path d=\"M0.0 131.2L20.7 143.5L41.4 149.3L62.1 144.8L82.8 130.2L103.4 110.4L124.1 94.2L144.8 87.2L165.5 92.3L186.2 106.4L206.9 122.7L227.6 133.6L248.3 134.2L269.0 125.1L289.7 111.0L310.3 99.8L331.0 97.6L351.7 106.4L372.4 123.2L393.1 140.5L413.8 150.9L434.5 149.9L455.2 137.9L475.9 120.0L496.6 104.6L517.2 97.4L537.9 100.8L558.6 112.0L579.3 123.8L600.0 129.1 L600 200 L0 200Z\" fill=\"var(--chart-2, var(--c-accent))\" opacity=\".14\"></path><path d=\"M0.0 131.2L20.7 143.5L41.4 149.3L62.1 144.8L82.8 130.2L103.4 110.4L124.1 94.2L144.8 87.2L165.5 92.3L186.2 106.4L206.9 122.7L227.6 133.6L248.3 134.2L269.0 125.1L289.7 111.0L310.3 99.8L331.0 97.6L351.7 106.4L372.4 123.2L393.1 140.5L413.8 150.9L434.5 149.9L455.2 137.9L475.9 120.0L496.6 104.6L517.2 97.4L537.9 100.8L558.6 112.0L579.3 123.8L600.0 129.1\" fill=\"none\" stroke=\"var(--chart-2, var(--c-accent))\" stroke-width=\"2.25\" vector-effect=\"non-scaling-stroke\"></path></svg></div><details class=\"chart-data\"><summary>View chart data</summary><pre>Day 1: 420 visitors, 258 signups\nDay 2: 518 visitors, 212 signups\nDay 3: 578 visitors, 190 signups\nDay 4: 581 visitors, 207 signups\nDay 5: 533 visitors, 262 signups\nDay 6: 464 visitors, 336 signups\nDay 7: 410 visitors, 397 signups\nDay 8: 402 visitors, 423 signups\nDay 9: 446 visitors, 404 signups\nDay 10: 521 visitors, 351 signups\nDay 11: 593 visitors, 290 signups\nDay 12: 624 visitors, 249 signups\nDay 13: 597 visitors, 247 signups\nDay 14: 521 visitors, 281 signups\nDay 15: 426 visitors, 334 signups\nDay 16: 353 visitors, 376 signups\nDay 17: 330 visitors, 384 signups\nDay 18: 364 visitors, 351 signups\nDay 19: 436 visitors, 288 signups\nDay 20: 509 visitors, 223 signups\nDay 21: 547 visitors, 184 signups\nDay 22: 534 visitors, 188 signups\nDay 23: 477 visitors, 233 signups\nDay 24: 406 visitors, 300 signups\nDay 25: 360 visitors, 358 signups\nDay 26: 366 visitors, 385 signups\nDay 27: 430 visitors, 372 signups\nDay 28: 529 visitors, 330 signups\nDay 29: 625 visitors, 286 signups\nDay 30: 682 visitors, 266 signups</pre></details>\n<ul class=\"legend\"><li style=\"--dot:var(--chart-1)\">Visitors</li><li style=\"--dot:var(--chart-2)\">Signups</li></ul><a href=\"dashboards/analytics-traffic.html\" class=\"panel-link\">View acquisition report \u2192</a></section>"
+  },
+  {
+    "id": "application-table",
+    "title": "Record table",
+    "description": "Scrollable records, status badges and filter controls.",
+    "layout": "analytics",
+    "html": "<section class=\"app-card\" data-application-component=\"table\"><header><h3>Customers</h3><p>Search and inspect customer records.</p></header><label>Search records<input type=\"search\" data-app-filter=\"\" aria-label=\"Search records\"></label><div class=\"app-table-wrap\"><table class=\"app-table\"><caption>Customers</caption><thead><tr><th scope=\"col\">Name</th><th scope=\"col\">Plan</th><th scope=\"col\">Revenue</th><th scope=\"col\">Actions</th></tr></thead><tbody><tr data-record-id=\"maya\"><td>Maya Chen</td><td>Pro</td><td>$240</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"maya\">View record</button></td></tr><tr data-record-id=\"alex\"><td>Alex Rivera</td><td>Team</td><td>$1,100</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"alex\">View record</button></td></tr><tr data-record-id=\"sam\"><td>Sam Patel</td><td>Starter</td><td>$79</td><td><button class=\"btn\" type=\"button\" data-app-action=\"view-record\" data-id=\"sam\">View record</button></td></tr></tbody></table></div></section>"
+  },
+  {
+    "id": "application-board",
+    "title": "Opportunity board",
+    "description": "Stage lanes containing editable opportunity cards.",
+    "layout": "crm",
+    "html": "<section class=\"app-card\" data-application-component=\"board\"><header><h3>Sales pipeline</h3><p>Select an opportunity to update its stage.</p></header><div class=\"pipeline\"><section class=\"lane\"><h4>New</h4><button class=\"deal\" type=\"button\" data-app-action=\"edit-deal\" data-id=\"atlas\"><strong>Atlas Studio</strong><p>$12,000</p><small>Maya Chen</small></button></section><section class=\"lane\"><h4>Proposal</h4><button class=\"deal\" type=\"button\" data-app-action=\"edit-deal\" data-id=\"north\"><strong>North &amp; Co</strong><p>$24,000</p><small>Alex Rivera</small></button></section><section class=\"lane\"><h4>Won</h4></section></div></section>"
+  },
+  {
+    "id": "application-projects",
+    "title": "Project cards",
+    "description": "Project images, descriptions, progress and detail actions.",
+    "layout": "workspace",
+    "html": "<section data-application-component=\"projects\"><header><h3>Projects</h3><p>Track current work.</p></header><div class=\"project-grid\"><article class=\"project-card\"><img src=\"dashboards/assets/studio-office.jpg\" alt=\"Project Atlas\" width=\"320\" height=\"180\" loading=\"lazy\"><div class=\"project-body\"><h3>Project Atlas</h3><p>Customer portal launch \u00b7 8 tasks remaining</p><label>Progress<progress max=\"100\" value=\"65\">65</progress></label><button class=\"btn\" type=\"button\" data-app-action=\"view-project\" data-id=\"atlas\">View project</button></div></article><article class=\"project-card\"><img src=\"dashboards/assets/meeting-space.jpg\" alt=\"Mobile release\" width=\"320\" height=\"180\" loading=\"lazy\"><div class=\"project-body\"><h3>Mobile release</h3><p>Version 2.4 \u00b7 QA in progress</p><label>Progress<progress max=\"100\" value=\"85\">85</progress></label><button class=\"btn\" type=\"button\" data-app-action=\"view-project\" data-id=\"mobile\">View project</button></div></article></div></section>"
+  },
+  {
+    "id": "application-planner",
+    "title": "Day planner",
+    "description": "Scheduled events with times, locations and detail actions.",
+    "layout": "workspace",
+    "html": "<section class=\"workspace-day\" data-application-component=\"planner\"><header><h3>Today\u2019s agenda</h3><p>Monday, November 2</p></header><div class=\"agenda-list\"><article class=\"agenda-item\"><time datetime=\"2026-11-02T09:00\">9:00 AM</time><div><h4>Product standup</h4><p>Meeting room A</p><button class=\"btn\" type=\"button\" data-app-action=\"view-event\" data-id=\"standup\">View event</button></div></article><article class=\"agenda-item\"><time datetime=\"2026-11-02T14:00\">2:00 PM</time><div><h4>Design review</h4><p>Studio \u00b7 45 minutes</p><button class=\"btn\" type=\"button\" data-app-action=\"view-event\" data-id=\"review\">View event</button></div></article></div></section>"
+  },
+  {
+    "id": "application-identity",
+    "title": "Identity and settings",
+    "description": "Profile identity, account details and an edit action.",
+    "layout": "account",
+    "html": "<section class=\"identity-card\" data-application-component=\"identity\"><span class=\"portrait portrait-large\" data-face=\"3\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Jordan Lee\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Jordan Lee</h3><p>Workspace administrator</p><dl><div><dt>Email</dt><dd>jordan@example.com</dd></div><div><dt>Team</dt><dd>Product</dd></div></dl><button class=\"btn\" type=\"button\" data-app-action=\"edit-profile\">Edit profile</button></section>"
+  },
+  {
+    "id": "application-products",
+    "title": "Product collection",
+    "description": "Product imagery, prices, stock counts and application-owned actions.",
+    "layout": "commerce",
+    "html": "<section data-application-component=\"products\"><header><h3>Products</h3><p>Create a sample order.</p></header><div class=\"store-products\"><article class=\"store-product\"><span class=\"product-photo\" data-product=\"0\"><img src=\"dashboards/assets/products.jpg\" alt=\"Studio headphones\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Studio headphones</h3><p>$320</p><small>12 available</small><button class=\"btn\" type=\"button\" data-app-action=\"add-product\" data-id=\"desk\">Add to order</button></article><article class=\"store-product\"><span class=\"product-photo\" data-product=\"1\"><img src=\"dashboards/assets/products.jpg\" alt=\"Canvas daypack\" width=\"320\" height=\"180\" loading=\"lazy\"></span><h3>Canvas daypack</h3><p>$180</p><small>8 available</small><button class=\"btn\" type=\"button\" data-app-action=\"add-product\" data-id=\"chair\">Add to order</button></article></div><p role=\"status\" data-cart-status=\"\">No items added.</p></section>"
+  },
+  {
+    "id": "application-receipt",
+    "title": "Store summary",
+    "description": "Order line items, totals and a downloadable receipt.",
+    "layout": "commerce",
+    "html": "<section class=\"sales-receipt\" data-application-component=\"receipt\"><header><h3>Order #1048</h3><p>November 2 \u00b7 Paid</p></header><dl><div><dt>Studio desk \u00d7 1</dt><dd>$320</dd></div><div><dt>Shipping</dt><dd>$20</dd></div></dl><p>Total: <strong>$340</strong></p><button class=\"btn\" type=\"button\" data-app-action=\"download-receipt\">Download receipt</button></section>"
+  },
+  {
+    "id": "application-conversation",
+    "title": "Conversation desk",
+    "description": "Selectable ticket queue, assignment, status and replies.",
+    "layout": "support",
+    "html": "<div class=\"support-layout\" data-application-component=\"conversation\"><section class=\"support-queue\" aria-label=\"Tickets\"><button class=\"support-ticket\" type=\"button\" data-app-action=\"select-ticket\" data-id=\"2081\" aria-current=\"true\"><span class=\"portrait\" data-face=\"0\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Maya Chen\" width=\"320\" height=\"180\" loading=\"lazy\"></span><strong>Maya Chen</strong><p>Cannot invite a teammate</p><small>Open</small></button><button class=\"support-ticket\" type=\"button\" data-app-action=\"select-ticket\" data-id=\"2080\" aria-current=\"false\"><span class=\"portrait\" data-face=\"1\"><img src=\"dashboards/assets/portraits.jpg\" alt=\"Alex Rivera\" width=\"320\" height=\"180\" loading=\"lazy\"></span><strong>Alex Rivera</strong><p>Update our invoice address</p><small>Pending</small></button></section><article class=\"support-thread\"><h2 data-ticket-title=\"\">Cannot invite a teammate</h2><p data-ticket-customer=\"\">Maya Chen</p><label>Assigned to<select data-ticket-assignee=\"\" aria-label=\"Assign ticket\"><option value=\"Unassigned\" selected>Unassigned</option><option value=\"Jordan Lee\">Jordan Lee</option><option value=\"Maya Chen\">Maya Chen</option></select></label><label>Status<select data-ticket-status=\"\" aria-label=\"Ticket status\"><option value=\"Open\" selected>Open</option><option value=\"Pending\">Pending</option><option value=\"Resolved\">Resolved</option></select></label><div data-ticket-messages=\"\"><div class=\"support-message\"><p>Could you check our workspace member limit?</p></div></div><form class=\"app-form\" data-app-form=\"reply\"><label>Reply<textarea name=\"reply\" required maxlength=\"2000\"></textarea></label><button type=\"submit\" class=\"btn\">Save demo reply</button><p role=\"status\"></p></form></article></div>"
+  },
+  {
+    "id": "application-form",
+    "title": "Application form",
+    "description": "Labeled native inputs and a submit action.",
+    "layout": "account",
+    "html": "<form class=\"app-form\" data-app-form=\"profile\" method=\"post\" action=\"#profile\" data-application-component=\"form\"><h3>Edit profile</h3><label>Full name<input name=\"name\" type=\"text\" value=\"Jordan Lee\" required maxlength=\"100\"></label><label>Email<input name=\"email\" type=\"email\" value=\"jordan@example.com\" required maxlength=\"100\"></label><button class=\"btn\" type=\"submit\">Save profile</button><p role=\"status\"></p></form>"
+  },
+  {
+    "id": "application-photo",
+    "title": "Photographic feature",
+    "description": "Image, introductory copy and a destination link.",
+    "layout": "workspace",
+    "html": "<section class=\"workspace-lead\" data-application-component=\"photo\"><div class=\"workspace-story\"><span class=\"eyebrow\">Team workspace</span><h2>Meet your project team</h2><p>See the people working on your next release.</p><a class=\"btn\" href=\"dashboards/workspace.html?view=members\">View team</a></div><img src=\"dashboards/assets/studio-office.jpg\" alt=\"A bright shared workspace\" width=\"320\" height=\"180\" loading=\"lazy\"></section>"
+  },
+  {
+    "id": "application-article",
+    "title": "Knowledge article",
+    "description": "Article title, author, instructions and a related destination.",
+    "layout": "support",
+    "html": "<article class=\"app-card\" data-application-component=\"article\"><h2>Invite a teammate</h2><p class=\"article-byline\">Jordan Lee \u00b7 Updated November 2</p><p>Add people to your workspace and choose their access.</p><ol class=\"article-steps\"><li><h3>Open Members</h3><p>Choose Members from workspace settings.</p></li><li><h3>Send an invitation</h3><p>Enter the email address and select a role.</p></li></ol><a href=\"dashboards/account.html?view=members\">Open member settings</a></article>"
+  }
+]

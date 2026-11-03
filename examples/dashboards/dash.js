@@ -9,18 +9,8 @@ initScheme(document.getElementById("scheme"));
 initHue(document.getElementById("hue"), document.getElementById("hue-out"));
 import { initDashboard } from "./demo.js?v=separate-2";
 initDashboard();
-// Range changes select the same underlying sample series, never invent new data.
-for (const seg of document.querySelectorAll(".seg[data-target]")) {
-  const el = document.getElementById(seg.dataset.target), source = JSON.parse(el.dataset.values);
-  seg.addEventListener("click", (e) => {
-    const b = e.target.closest("button"); if (!b) return;
-    seg.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
-    const n = Number(b.dataset.n);
-    el.dataset.values = JSON.stringify(Array.isArray(source[0]) ? source.map(s => s.slice(-n)) : source.slice(-n));
-    mount(el.parentElement);
-    el.dispatchEvent(new Event("chartchange"));
-  });
-}
+import { createChartRanges } from "../../src/core/charts.js";
+createChartRanges();
 // HTML | FreeMarker | React tabs
 for (const [index, box] of [...document.querySelectorAll(".code-tabs")].entries()) {
   const tabs = [...box.querySelectorAll("[role=tab]")], panels = [...box.querySelectorAll("[role=tabpanel]")];

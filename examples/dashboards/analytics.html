@@ -1,20 +1,20 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Analytics — Colibri Kit dashboard</title>
-<script src="theme-init.js?v=1"></script><link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js"></script><script src="theme-init.js?v=consistent-2"></script><link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
 <link rel="stylesheet" href="../../themes/packs/index.css">
-<link rel="stylesheet" href="dash.css?v=separate-2">
 
-<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto="" data-studio="/kitchen-sink/examples/playground/"></script>
-<link rel="stylesheet" href="visuals.css?v=2"><link rel="stylesheet" href="experience.css?v=separate-2"><link rel="stylesheet" href="designs.css?v=redesign-1"></head><body data-domain="analytics" data-demo="analytics"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
+
+
+<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri-applications.css"><script type="module" blocking="render" src="dash.js?v=separate-2"></script><script type="module" blocking="render" src="shell.js?v=separate-2"></script></head><body class="colibri-application" data-layout="analytics" data-domain="analytics" data-demo="analytics"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
 <div class="dash-brand"><i></i>Colibri Insights</div>
 <nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html" aria-current="page"><span>◫</span>Analytics</a><a href="crm.html"><span>☺</span>CRM · Sales pipeline</a><h6>Workspace</h6><a href="analytics-audience.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="analytics-reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="analytics-settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
 <footer>Plain HTML + Colibri CSS. No Tailwind, no chart library.</footer></aside>
 <div class="dash-main"><header class="dash-top"><button class="btn menu-btn" data-variant="ghost" data-size="s" aria-label="Menu" aria-controls="dashboard-navigation" aria-expanded="false">☰</button>
 <a class="dashboard-back" href="index.html">← All dashboards</a><div class="search"><input type="search" placeholder="Search…" aria-label="Search"></div>
-<label class="cluster">Theme pack <select id="pack" aria-label="Theme pack"></select></label>
+<label class="cluster">Theme <select id="pack" aria-label="Theme pack"></select></label>
 <label title="Colour (separate from the theme pack). Double-click to reset">Hue <input id="hue" type="range" min="0" max="360" aria-label="Accent hue"><output id="hue-out"></output></label>
 <button class="btn" id="scheme" data-variant="ghost" data-size="s" aria-label="Toggle light/dark">◐</button>
-<span class="av" style="--av:var(--chart-2)">LD</span></header><main class="dash-body"><p class="demo-note">Interactive demo · Sample data. Changes stay in this browser; no messages are sent.</p><p id="demo-status" role="status" aria-live="polite"></p>
+<span class="av" style="--av:var(--chart-2)">LD</span></header><main class="dash-body"><p class="app-note">Interactive demo · Sample data. Changes stay in this browser; no messages are sent.</p><p id="demo-status" role="status" aria-live="polite"></p>
 <div class="dash-head"><div><p class="dash-breadcrumb">INSIGHTS / OCTOBER 2026</p><h1>Analytics overview</h1></div><div class="cluster"><button class="btn" data-variant="outline" data-size="s" data-action="export">Export CSV</button><button class="btn" data-size="s" data-action="report">+ New report</button></div></div><div class="insight-intro"><span class="period-tag">01–30 OCT 2026 <span>Historical sample</span></span><p>See where your audience comes from, what brings them back, and where they convert.</p></div>
 <div class="insight-lead"><section class="card panel chart-box"><header><div><h3>Audience growth</h3><p>Daily visitors and signups · October sample</p></div><div class="seg" role="group" aria-label="Range" data-target="traffic"><button data-n="7" aria-pressed="false">7d</button><button data-n="14" aria-pressed="false">14d</button><button data-n="30" aria-pressed="true">30d</button></div></header>
 <div id="traffic" data-chart="area" data-values="[[420, 518, 578, 581, 533, 464, 410, 402, 446, 521, 593, 624, 597, 521, 426, 353, 330, 364, 436, 509, 547, 534, 477, 406, 360, 366, 430, 529, 625, 682], [258, 212, 190, 207, 262, 336, 397, 423, 404, 351, 290, 249, 247, 281, 334, 376, 384, 351, 288, 223, 184, 188, 233, 300, 358, 385, 372, 330, 286, 266]]" aria-label="Traffic, visitors vs signups"></div>
@@ -154,4 +154,4 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
       &lt;td colspan="3"&gt;No customers yet&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js?v=separate-2"></script><script type="module" src="shell.js?v=separate-2"></script></body></html>
+&lt;/table&gt;</code></pre></div></div></details></main></div></div></body></html>

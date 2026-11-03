@@ -1,0 +1,1692 @@
+[
+  {
+    "name": "accordion",
+    "title": "Accordion",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "alert",
+    "title": "Alert banner",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "alert-dialog",
+    "title": "Confirmation dialog",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "aspect-ratio",
+    "title": "Aspect-ratio box",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "avatar",
+    "title": "Avatar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "badge",
+    "title": "Badge / tag",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "button",
+    "title": "Button",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "button-group",
+    "title": "Button group",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "card",
+    "title": "Card",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "carousel",
+    "title": "Carousel / slider of slides",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "code-block",
+    "title": "Copy to clipboard",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "collapsible",
+    "title": "Show more / collapsible",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "datatable",
+    "title": "Data table",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "dialog",
+    "title": "Dialog / modal window",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "drawer",
+    "title": "Side panel (sheet / drawer)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "dropdown-menu",
+    "title": "Dropdown menu",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "context-menu",
+    "title": "Right-click menu",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "empty",
+    "title": "Empty state",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "hover-card",
+    "title": "Hover card (preview on hover)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "item",
+    "title": "List row (item with actions)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "kbd",
+    "title": "Keyboard key",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "label",
+    "title": "Form label",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "link",
+    "title": "Link",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "popover",
+    "title": "Popover",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "progress",
+    "title": "Progress bar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "rating",
+    "title": "Star rating",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "reparent",
+    "title": "Responsive move",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "resizable",
+    "title": "Resizable panels",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "scroll-area",
+    "title": "Scrolling box",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "separator",
+    "title": "Divider line",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "skeleton",
+    "title": "Loading placeholders",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "table",
+    "title": "Plain table",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "theme-switch",
+    "title": "Light / dark switch",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "toast",
+    "title": "Toast notifications",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "toggle",
+    "title": "Toggle button",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "tooltip",
+    "title": "Tooltip",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "typography",
+    "title": "Text styles",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "message-scroller",
+    "title": "Chat messages",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "direction",
+    "title": "Right-to-left support",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "spinner",
+    "title": "Spinner",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "breadcrumb",
+    "title": "Breadcrumb",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "menu",
+    "title": "Menu bar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "navigation-menu",
+    "title": "Site navigation menu",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "pagination",
+    "title": "Pagination",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "scrollspy",
+    "title": "Scrollspy (active section highlight)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "scrollto",
+    "title": "Smooth scroll link",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar",
+    "title": "App sidebar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "stepper",
+    "title": "Stepper / wizard",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sticky",
+    "title": "Sticky header",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "tabs",
+    "title": "Tabs",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "command",
+    "title": "Command palette (search box)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "input",
+    "title": "Text input",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "input-group",
+    "title": "Input with add-ons",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "field",
+    "title": "Form field (label + help + error)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "checkbox",
+    "title": "Checkbox",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "radio-group",
+    "title": "Radio choice",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "switch",
+    "title": "Toggle switch (on/off)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "select",
+    "title": "Select dropdown",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "combobox",
+    "title": "Searchable select (autocomplete)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "slider",
+    "title": "Range slider",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "pin-input",
+    "title": "One-time code input",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "toggle-password",
+    "title": "Password with show/hide",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "textarea",
+    "title": "Multi-line text",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "file-input",
+    "title": "File upload",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "image-input",
+    "title": "Image upload with preview",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "repeater",
+    "title": "Repeating form rows",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "color-picker",
+    "title": "Color picker",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sortable",
+    "title": "Drag-to-reorder list",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "toggle-group",
+    "title": "Toggle button group",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "calendar",
+    "title": "Calendar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "date-picker",
+    "title": "Date picker",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "motion",
+    "title": "Animation presets (enter / exit)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "motion-states",
+    "title": "Hover, focus and loop animations",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "motion-play",
+    "title": "One-shot animations",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "motion-wired",
+    "title": "Animated components",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "theme-tokens",
+    "title": "Theme tokens",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "theme-scoped",
+    "title": "Scoped theme",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "bubble",
+    "title": "Chat bubble",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "message",
+    "title": "Chat message row",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "marker",
+    "title": "Inline status / note",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "trace",
+    "title": "Activity trace",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "attachment",
+    "title": "File attachment",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "questionnaire",
+    "title": "Step-by-step questions",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "native-select",
+    "title": "Native dropdown",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "chart",
+    "title": "Chart (bar / line)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "chain-of-thought",
+    "title": "Thinking steps",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "chat",
+    "title": "Chat (full thread)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "checkpoint",
+    "title": "Checkpoint",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "confirmation",
+    "title": "Approval request",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "context",
+    "title": "Context window meter",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "file-tree",
+    "title": "File tree",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "inline-citation",
+    "title": "Inline citation",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "ai-message",
+    "title": "AI reply (composed)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "model-selector",
+    "title": "Model picker",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "plan",
+    "title": "Plan with progress",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "prompt-input",
+    "title": "Message box (prompt)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "queue",
+    "title": "To-do queue",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "reasoning",
+    "title": "Reasoning (live)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sources",
+    "title": "Sources list",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "stack-trace",
+    "title": "Error stack trace",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "subagent",
+    "title": "Sub-agent run",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "suggestion",
+    "title": "Suggested prompts",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "task",
+    "title": "Live task",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "terminal",
+    "title": "Command output",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "test-results",
+    "title": "Test results",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "tool",
+    "title": "Tool call",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-01",
+    "title": "Sidebar \u00b7 Simple, grouped",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-02",
+    "title": "Sidebar \u00b7 Collapsible sections",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-03",
+    "title": "Sidebar \u00b7 With submenus",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-04",
+    "title": "Sidebar \u00b7 Floating with submenus",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-05",
+    "title": "Sidebar \u00b7 Collapsible submenus",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-06",
+    "title": "Sidebar \u00b7 Submenus as dropdowns",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-07",
+    "title": "Sidebar \u00b7 Collapses to icons",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-08",
+    "title": "Sidebar \u00b7 Inset with secondary nav",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-09",
+    "title": "Sidebar \u00b7 Nested sidebars",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-10",
+    "title": "Sidebar \u00b7 Sidebar with popover",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-11",
+    "title": "Sidebar \u00b7 Collapsible file tree",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-12",
+    "title": "Sidebar \u00b7 With a calendar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-13",
+    "title": "Sidebar \u00b7 Sidebar in a dialog",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-14",
+    "title": "Sidebar \u00b7 Sidebar on the right",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-15",
+    "title": "Sidebar \u00b7 Left and right sidebars",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "sidebar-16",
+    "title": "Sidebar \u00b7 Sticky site header",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "login-01",
+    "title": "Login \u00b7 Simple login card",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "login-02",
+    "title": "Login \u00b7 Two columns with cover",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "login-03",
+    "title": "Login \u00b7 Muted background",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "login-04",
+    "title": "Login \u00b7 Form and image in a card",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "login-05",
+    "title": "Login \u00b7 Email only (magic link)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "signup-01",
+    "title": "Signup \u00b7 Simple signup card",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "signup-02",
+    "title": "Signup \u00b7 Two columns with cover",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "signup-03",
+    "title": "Signup \u00b7 Muted background",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "signup-04",
+    "title": "Signup \u00b7 Form and image in a card",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "signup-05",
+    "title": "Signup \u00b7 Social providers",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "native",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-start",
+    "title": "Getting started",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-tokens",
+    "title": "Design tokens",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-layers",
+    "title": "Cascade layers",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-layout",
+    "title": "Layout primitives",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-container",
+    "title": "Container queries",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-has",
+    "title": ":has() patterns",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-nesting",
+    "title": "Native nesting",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-fluid",
+    "title": "Fluid type & spacing",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-dark",
+    "title": "Dark mode",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-motion",
+    "title": "Motion",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-forms",
+    "title": "Forms & typography baseline",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "css-bridge",
+    "title": "Colibri UI bridge",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "toolbar",
+    "title": "Toolbar",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "segmented-control",
+    "title": "Segmented control",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "radio-cards",
+    "title": "Radio cards",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "checkbox-cards",
+    "title": "Checkbox cards",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "checkbox-group",
+    "title": "Checkbox group",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "tab-nav",
+    "title": "Tab nav (link tabs)",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "data-list",
+    "title": "Data list",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "callout",
+    "title": "Callout",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "inset",
+    "title": "Inset",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "icon-button",
+    "title": "Icon button",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "accessible-icon",
+    "title": "Accessible icon",
+    "support": {
+      "html": "markup",
+      "react": "markup-adapter",
+      "freemarker": "static-html",
+      "thymeleaf": "static-html"
+    }
+  },
+  {
+    "name": "application-shell",
+    "title": "Application shell",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-metrics",
+    "title": "Metric rail",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-chart",
+    "title": "Chart panel",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-table",
+    "title": "Record table",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-board",
+    "title": "Opportunity board",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-projects",
+    "title": "Project cards",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-planner",
+    "title": "Day planner",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-identity",
+    "title": "Identity and settings",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-products",
+    "title": "Product collection",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-receipt",
+    "title": "Store summary",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-conversation",
+    "title": "Conversation desk",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-form",
+    "title": "Application form",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-photo",
+    "title": "Photographic feature",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  },
+  {
+    "name": "application-article",
+    "title": "Knowledge article",
+    "support": {
+      "html": "markup",
+      "react": "native",
+      "freemarker": "native",
+      "thymeleaf": "native"
+    }
+  }
+]

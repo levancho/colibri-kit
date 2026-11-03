@@ -1,5 +1,6 @@
 // ---- open at the very top (no restored scroll) unless the URL names a section ----
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+const requestedSectionHash = location.hash;
 const sinkTop = () => { if (!location.hash) scrollTo({ top: 0, left: 0, behavior: "instant" }); };
 sinkTop(); addEventListener("load", sinkTop); addEventListener("pageshow", sinkTop);
 
@@ -85,7 +86,6 @@ on("t-promise", () => toast.promise(new Promise((r) => setTimeout(r, 2000)), { l
 on("loading-btn", (e) => { const b = e.currentTarget, api = b.__uiButton || b.colibri; if (api && "loading" in api) { api.loading = true; setTimeout(() => (api.loading = false), 2000); } else { b.disabled = true; b.setAttribute("aria-busy", "true"); b.dataset.state = "loading"; setTimeout(() => { b.disabled = false; b.removeAttribute("aria-busy"); delete b.dataset.state; }, 2000); } });
 let m = 9;
 on("msg-add", () => { const v = $("[data-ui=message-scroller] [data-ui-part=viewport]"); v.insertAdjacentHTML("beforeend", `<div data-ui-part="message" data-from="${m % 2 ? "me" : "them"}"><span data-ui-part="bubble">Message ${m++}</span></div>`); });
-window.__sinkReady = true;
 
 // ---- theming + motion controls (tokens only; no JS inside components) ----
 const H = document.documentElement, TS = "colibri.sink.tokens";
@@ -155,13 +155,19 @@ document.addEventListener("ui:provider", (e) => toast?.({ title: `Continue with 
   const activeGroup = () => document.querySelector('#sink-sidebar [data-ui-part=link][aria-current]')?.closest(".sink-group");
   // on open every group starts collapsed (saved state only feeds the filter reset)
   groups.forEach((g) => { const a = api(g); if (a) a.open = false; });
-  let userScrolled = false; addEventListener("scroll", () => { if (scrollY > 40) userScrolled = true; }, { passive: true });
+  // Component initialization and browser focus restoration may scroll the page.
+  // Only real navigation intent should auto-expand groups during scrollspy updates.
+  let userScrolled = false;
+  addEventListener("wheel",()=>{userScrolled=true;},{passive:true});
+  addEventListener("touchstart",()=>{userScrolled=true;},{passive:true});
+  addEventListener("keydown",event=>{if(["PageDown","PageUp","Home","End","ArrowDown","ArrowUp"," "].includes(event.key)&&!event.target.closest?.('input,textarea,select,#sink-sidebar'))userScrolled=true;});
+  addEventListener("pointerdown",event=>{if(event.clientX>=document.documentElement.clientWidth-20)userScrolled=true;});
   let filtering = false;
   document.querySelector("#sink-sidebar").addEventListener("ui:open", (e) => { if (!filtering && groups.includes(e.target)) save(); });
   document.querySelector("#sink-sidebar").addEventListener("ui:close", (e) => { if (!filtering && groups.includes(e.target)) save(); });
   // keep the group of the section in view open (without persisting it)
   document.querySelector("#sink-sidebar [data-ui=scrollspy]").addEventListener("ui:change", (e) => { const id = e.detail?.id, g = id ? document.querySelector(`#sink-sidebar [data-ui-part=link][href="#${CSS.escape(id)}"]`)?.closest(".sink-group") : null; if (g && userScrolled && !api(g).open && !filtering) { filtering = true; api(g).open = true; filtering = false; } });
-  if (location.hash) { const g0 = activeGroup(); if (g0 && !api(g0).open) { filtering = true; api(g0).open = true; filtering = false; } }
+  if (requestedSectionHash) { const g0 = activeGroup(); if (g0 && !api(g0).open) { filtering = true; api(g0).open = true; filtering = false; } }
   document.getElementById("nav-expand").onclick = () => { groups.forEach((g) => (api(g).open = true)); save(); };
   document.getElementById("nav-collapse").onclick = () => { groups.forEach((g) => (api(g).open = false)); save(); };
   // filter: show matching links, open groups that match, restore saved state when cleared
@@ -173,7 +179,7 @@ document.addEventListener("ui:provider", (e) => toast?.({ title: `Continue with 
       g.hidden = !!q && !n; g.querySelector(".sink-count").textContent = q ? n : g.querySelectorAll("[data-ui-part=link]").length;
       if (q) api(g).open = n > 0;
     });
-    if (!q) { let s = []; try { s = JSON.parse(localStorage.getItem(NK) || "[]"); } catch {} groups.forEach((g, i) => (api(g).open = s.length ? s.includes(g.dataset.group) : i === 0)); }
+    if (!q) { let s = []; try { s = JSON.parse(localStorage.getItem(NK) || "[]"); } catch {} groups.forEach((g, i) => (api(g).open = s.includes(g.dataset.group))); }
     filtering = false;
   });
   f.addEventListener("keydown", (e) => { if (e.key === "Escape" && f.value) { e.stopPropagation(); f.value = ""; f.dispatchEvent(new Event("input")); } if (e.key === "Enter") { const l = document.querySelector("#sink-sidebar [data-ui-part=link]:not([hidden])"); if (l) { l.click(); } } });
@@ -208,3 +214,6 @@ document.addEventListener("click", (e) => {
     b.addEventListener("click", () => { scrollTo({ top: 0, behavior: reduce.matches ? "auto" : "smooth" }); (document.querySelector(".sink-skip") || document.body).focus?.({ preventScroll: true }); });
   }
 }
+
+// Signal readiness only after awaited imports and navigation setup have completed.
+window.__sinkReady = true;

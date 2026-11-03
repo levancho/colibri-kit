@@ -1,0 +1,326 @@
+{
+  "shell": {
+    "name": "ApplicationShell",
+    "model": {
+      "brand": "Northstar",
+      "title": "Overview",
+      "description": "Three projects are on track. One needs your review.",
+      "pages": [
+        {
+          "id": "overview",
+          "title": "Overview",
+          "description": "Three projects are on track. One needs your review."
+        },
+        {
+          "id": "records",
+          "title": "Records",
+          "description": "Project Atlas \u00b7 Active. Website refresh \u00b7 In review. Mobile release \u00b7 Planned."
+        }
+      ]
+    }
+  },
+  "metrics": {
+    "name": "MetricRail",
+    "model": {
+      "title": "Key metrics",
+      "items": [
+        {
+          "label": "Revenue",
+          "value": "$48,250",
+          "change": "+12% from last month"
+        },
+        {
+          "label": "Active customers",
+          "value": "1,240",
+          "change": "+84 this month"
+        },
+        {
+          "label": "Churn",
+          "value": "2.4%",
+          "change": "\u22120.3 percentage points"
+        }
+      ]
+    }
+  },
+  "table": {
+    "name": "RecordTable",
+    "model": {
+      "title": "Customers",
+      "description": "Search and inspect customer records.",
+      "columns": [
+        "Name",
+        "Plan",
+        "Revenue"
+      ],
+      "rows": [
+        {
+          "id": "maya",
+          "cells": [
+            "Maya Chen",
+            "Pro",
+            "$240"
+          ]
+        },
+        {
+          "id": "alex",
+          "cells": [
+            "Alex Rivera",
+            "Team",
+            "$1,100"
+          ]
+        },
+        {
+          "id": "sam",
+          "cells": [
+            "Sam Patel",
+            "Starter",
+            "$79"
+          ]
+        }
+      ]
+    }
+  },
+  "board": {
+    "name": "OpportunityBoard",
+    "model": {
+      "title": "Sales pipeline",
+      "description": "Select an opportunity to update its stage.",
+      "lanes": [
+        {
+          "id": "new",
+          "title": "New",
+          "deals": [
+            {
+              "id": "atlas",
+              "company": "Atlas Studio",
+              "value": "$12,000",
+              "owner": "Maya Chen"
+            }
+          ]
+        },
+        {
+          "id": "proposal",
+          "title": "Proposal",
+          "deals": [
+            {
+              "id": "north",
+              "company": "North & Co",
+              "value": "$24,000",
+              "owner": "Alex Rivera"
+            }
+          ]
+        },
+        {
+          "id": "won",
+          "title": "Won",
+          "deals": []
+        }
+      ]
+    }
+  },
+  "projects": {
+    "name": "ProjectCards",
+    "model": {
+      "title": "Projects",
+      "description": "Track current work.",
+      "projects": [
+        {
+          "id": "atlas",
+          "name": "Project Atlas",
+          "description": "Customer portal launch \u00b7 8 tasks remaining",
+          "progress": 65,
+          "image": "dashboards/assets/studio-office.jpg"
+        },
+        {
+          "id": "mobile",
+          "name": "Mobile release",
+          "description": "Version 2.4 \u00b7 QA in progress",
+          "progress": 85,
+          "image": "dashboards/assets/meeting-space.jpg"
+        }
+      ]
+    }
+  },
+  "planner": {
+    "name": "DayPlanner",
+    "model": {
+      "title": "Today\u2019s agenda",
+      "description": "Monday, November 2",
+      "events": [
+        {
+          "id": "standup",
+          "datetime": "2026-11-02T09:00",
+          "time": "9:00 AM",
+          "title": "Product standup",
+          "location": "Meeting room A"
+        },
+        {
+          "id": "review",
+          "datetime": "2026-11-02T14:00",
+          "time": "2:00 PM",
+          "title": "Design review",
+          "location": "Studio \u00b7 45 minutes"
+        }
+      ]
+    }
+  },
+  "identity": {
+    "name": "IdentityCard",
+    "model": {
+      "name": "Jordan Lee",
+      "role": "Workspace administrator",
+      "image": "dashboards/assets/portraits.jpg",
+      "details": [
+        {
+          "label": "Email",
+          "value": "jordan@example.com"
+        },
+        {
+          "label": "Team",
+          "value": "Product"
+        }
+      ]
+    }
+  },
+  "products": {
+    "name": "ProductCollection",
+    "model": {
+      "title": "Products",
+      "description": "Create a sample order.",
+      "products": [
+        {
+          "id": "desk",
+          "name": "Studio headphones",
+          "price": "$320",
+          "amount": 320,
+          "stock": "12 available",
+          "sprite": "0",
+          "image": "dashboards/assets/products.jpg"
+        },
+        {
+          "id": "chair",
+          "name": "Canvas daypack",
+          "price": "$180",
+          "amount": 180,
+          "stock": "8 available",
+          "sprite": "1",
+          "image": "dashboards/assets/products.jpg"
+        }
+      ]
+    }
+  },
+  "receipt": {
+    "name": "OrderReceipt",
+    "model": {
+      "title": "Order #1048",
+      "description": "November 2 \u00b7 Paid",
+      "items": [
+        {
+          "label": "Studio desk \u00d7 1",
+          "amount": "$320"
+        },
+        {
+          "label": "Shipping",
+          "amount": "$20"
+        }
+      ],
+      "total": "$340"
+    }
+  },
+  "form": {
+    "name": "ApplicationForm",
+    "model": {
+      "title": "Edit profile",
+      "action": "#profile",
+      "submitLabel": "Save profile",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Full name",
+          "type": "text",
+          "value": "Jordan Lee"
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "email",
+          "value": "jordan@example.com"
+        }
+      ]
+    }
+  },
+  "photo": {
+    "name": "PhotoFeature",
+    "model": {
+      "eyebrow": "Team workspace",
+      "title": "Meet your project team",
+      "description": "See the people working on your next release.",
+      "href": "dashboards/workspace.html?view=members",
+      "linkLabel": "View team",
+      "image": "dashboards/assets/studio-office.jpg",
+      "imageAlt": "A bright shared workspace"
+    }
+  },
+  "article": {
+    "name": "KnowledgeArticle",
+    "model": {
+      "title": "Invite a teammate",
+      "author": "Jordan Lee \u00b7 Updated November 2",
+      "summary": "Add people to your workspace and choose their access.",
+      "steps": [
+        {
+          "title": "Open Members",
+          "text": "Choose Members from workspace settings."
+        },
+        {
+          "title": "Send an invitation",
+          "text": "Enter the email address and select a role."
+        }
+      ],
+      "href": "dashboards/account.html?view=members",
+      "linkLabel": "Open member settings"
+    }
+  },
+  "conversation": {
+    "name": "ConversationDesk",
+    "model": {
+      "tickets": [
+        {
+          "id": "2081",
+          "face": "0",
+          "image": "dashboards/assets/portraits.jpg",
+          "customer": "Maya Chen",
+          "title": "Cannot invite a teammate",
+          "status": "Open",
+          "message": "Could you check our workspace member limit?"
+        },
+        {
+          "id": "2080",
+          "face": "1",
+          "image": "dashboards/assets/portraits.jpg",
+          "customer": "Alex Rivera",
+          "title": "Update our invoice address",
+          "status": "Pending",
+          "message": "Please add 12 Market Street to invoice #1048."
+        }
+      ],
+      "selected": {
+        "assigned": "Unassigned",
+        "id": "2081",
+        "customer": "Maya Chen",
+        "title": "Cannot invite a teammate",
+        "status": "Open",
+        "message": "Could you check our workspace member limit?"
+      },
+      "agents": [
+        "Jordan Lee",
+        "Maya Chen"
+      ],
+      "statuses": [
+        "Open",
+        "Pending",
+        "Resolved"
+      ]
+    }
+  }
+}

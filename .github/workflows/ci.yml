@@ -22,6 +22,9 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: npm run test:java
       - run: npm test
+      - run: npm run test:react-compat
+        env:
+          REACT_VERSION: 18.3.1
       - run: npm run build
       - run: npm run check:architecture
       - run: npm run test:consumer
@@ -67,7 +70,8 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4.156.0'
           command: deploy --config site/wrangler.jsonc
-      - name: Verify public assets
-        run: |
-          curl --fail --silent --show-error --retry 5 --retry-all-errors --retry-delay 3 https://colibri.l3v.ai/ui/themes/colibri.css -o /tmp/colibri-live.css
-          cmp site/dist/ui/themes/colibri.css /tmp/colibri-live.css
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify deployed release and application assets
+        run: node tools/site-manifest.mjs verify site/dist https://colibri.l3v.ai/

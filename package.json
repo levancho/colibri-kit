@@ -13,12 +13,13 @@
     "./core/*": "./src/core/*.js",
     "./elements/*": "./src/elements/*.js",
     "./react": "./src/react/index.js",
-    "./themes/*": "./themes/*"
+    "./themes/*": "./themes/*",
+    "./core/*.js": "./src/core/*.js"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
     "serve": "python3 -m http.server 8395",
-    "test:e2e": "node test/e2e/run.mjs && node test/e2e/foundations.e2e.mjs && node test/e2e/navigation-styles.e2e.mjs && node test/e2e/dashboards.e2e.mjs && node test/e2e/architecture.e2e.mjs && node test/e2e/source-tabs.e2e.mjs && node test/e2e/java-templates.e2e.mjs && node test/e2e/motion-exit.e2e.mjs && node test/e2e/studio-bridge.e2e.mjs && node test/e2e/demo-apps.e2e.mjs && node test/e2e/dashboard-domains.e2e.mjs && node test/e2e/dashboard-devices.e2e.mjs && node test/e2e/dashboard-designs.e2e.mjs",
+    "test:e2e": "node test/e2e/run.mjs && node test/e2e/foundations.e2e.mjs && node test/e2e/navigation-styles.e2e.mjs && node test/e2e/dashboards.e2e.mjs && node test/e2e/architecture.e2e.mjs && node test/e2e/source-tabs.e2e.mjs && node test/e2e/java-templates.e2e.mjs && node test/e2e/motion-exit.e2e.mjs && node test/e2e/studio-bridge.e2e.mjs && node test/e2e/demo-apps.e2e.mjs && node test/e2e/dashboard-domains.e2e.mjs && node test/e2e/dashboard-devices.e2e.mjs && node test/e2e/dashboard-designs.e2e.mjs && node test/e2e/application-components.e2e.mjs && node test/e2e/dashboard-theme-preview.e2e.mjs && node test/e2e/audit-host.e2e.mjs",
     "sink": "python3 tools/kitchen-sink.py && python3 tools/readme-catalog.py && python3 tools/registry.py",
     "registry": "python3 tools/registry.py",
     "build": "sh site/build.sh",
@@ -26,7 +27,9 @@
     "test:foundations": "node test/e2e/foundations.e2e.mjs",
     "test:cross-browser": "node test/e2e/cross-browser.mjs",
     "test:java": "mvn -f java/colibri-templates/pom.xml verify",
-    "test:consumer": "node test/e2e/consumer.e2e.mjs"
+    "test:consumer": "node test/e2e/consumer.e2e.mjs",
+    "test:react-compat": "node test/e2e/react-compat.e2e.mjs",
+    "test:cross-browser:linux": "node tools/test-linux-browser.mjs"
   },
   "license": "MIT",
   "devDependencies": {
@@ -42,7 +45,7 @@
     "colibri-mcp": "bin/colibri-mcp.mjs"
   },
   "peerDependencies": {
-    "react": ">=17"
+    "react": ">=18"
   },
   "peerDependenciesMeta": {
     "react": {

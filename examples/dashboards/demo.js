@@ -1,3 +1,4 @@
+import {createApplicationShell} from '../../src/core/application-shell.js';
 import {readDomainState} from './domain-state.js';
 import {CRM_SEED} from './crm-data.js';
 import {ANALYTICS_SEED,SOURCES} from './analytics-data.js';
@@ -44,7 +45,7 @@ export function initDashboard() {
   const say = text => { status.textContent = text; };
   const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); return true; } catch { storageWarning = 'Changes could not be saved; keep this page open or export a backup.'; } if (storageWarning) say(storageWarning); return false; };
   say(storageWarning);
-  const dialog = node('dialog', undefined, { class: 'demo-dialog', 'aria-labelledby': 'demo-dialog-title' });
+  const dialog = node('dialog', undefined, { class: 'app-dialog', 'aria-labelledby': 'app-dialog-title' });
   document.body.append(dialog);
   dialog.addEventListener('close', () => {
     const side = document.querySelector('.dash-side');
@@ -53,7 +54,7 @@ export function initDashboard() {
   });
   function open(title, build) {
     dialog.replaceChildren();
-    const header = node('header'); header.append(node('h2', title, { id: 'demo-dialog-title' }), button('Close', () => dialog.close())); dialog.append(header);
+    const header = node('header'); header.append(node('h2', title, { id: 'app-dialog-title' }), button('Close', () => dialog.close())); dialog.append(header);
     build(dialog); if (!dialog.open) dialog.showModal(); else dialog.querySelector('button, input, select')?.focus();
   }
   const workspace = document.body.dataset.page;
@@ -93,7 +94,7 @@ export function initDashboard() {
   }
   function editDeal(deal) {
     open(deal ? 'Edit deal' : 'New deal', box => {
-      const form = node('form', undefined, { class: 'demo-form' });
+      const form = node('form', undefined, { class: 'app-form' });
       const fields = {};
       for (const [key, title, type] of [['name', 'Company', 'text'], ['value', 'Value (USD)', 'number'], ['owner', 'Owner', 'text'], ['stage', 'Stage', 'select'], ['nextStep', 'Next action', 'text']]) {
         const label = node('label', title);
@@ -121,7 +122,7 @@ export function initDashboard() {
   const rows = table ? [...table.tBodies[0].rows] : [];
   let statusFilter;
   if (table) {
-    const label = node('label', 'Customer status ', { class: 'demo-filter' }); statusFilter = node('select', undefined, { 'aria-label': 'Customer status' });
+    const label = node('label', 'Customer status ', { class: 'app-filter' }); statusFilter = node('select', undefined, { 'aria-label': 'Customer status' });
     statusFilter.append(...['All', 'Active', 'Trial', 'Past due'].map(s => node('option', s))); label.append(statusFilter); table.parentElement.before(label);
     statusFilter.addEventListener('change', filterCustomers);
     for (const [index, th] of [...table.tHead.rows[0].cells].entries()) {
@@ -155,7 +156,7 @@ export function initDashboard() {
       const matches=state.reports.map((report,index)=>({report,index})).filter(({report})=>workspace!=='reports'||report.name.toLowerCase().includes(search.value.toLowerCase()));
       if(state.reports.length && !matches.length)box.append(node('p','No reports match your search.'));
       matches.forEach(({report,index})=>{
-        const card=node('article',undefined,{class:'card panel'}), actions=node('div',undefined,{class:'demo-actions'});
+        const card=node('article',undefined,{class:'card panel'}), actions=node('div',undefined,{class:'app-dialog-actions'});
         card.append(node('h2',report.name),node('p',`${Math.max(0,report.csv.split('\r\n').length-1)} records · CSV snapshot${report.created ? ' · '+new Date(report.created).toLocaleDateString('en-US',{timeZone:['America/New_York','Europe/London','Asia/Tbilisi','UTC'].includes(state.settings?.timezone)?state.settings.timezone:'UTC'}) : ''}`));
         actions.append(button('Preview report',()=>open(report.name,detail=>{detail.append(node('p','Saved data snapshot'),reportTable(report.csv),button('Download CSV',()=>download('colibri-report.csv',report.csv,'text/csv')));})),button('Download CSV',()=>download('colibri-report.csv',report.csv,'text/csv')),button('Delete report',()=>open('Delete report?',detail=>{detail.append(node('p',`Remove “${report.name}” from this browser?`),button('Cancel',()=>dialog.close()),button('Confirm delete',()=>{state.reports.splice(index,1);save();dialog.close();reports();}));})));
         card.append(actions);box.append(card);
@@ -165,7 +166,7 @@ export function initDashboard() {
   document.querySelector('[data-action="deal"]')?.addEventListener('click', () => editDeal());
   document.querySelector('[data-action="export"]')?.addEventListener('click', () => { download(pipeline ? 'colibri-deals.json' : 'customers.csv', pipeline ? JSON.stringify(state.deals, null, 2) : csv(), pipeline ? 'application/json' : 'text/csv'); say('Export downloaded.'); });
   document.querySelector('[data-action="report"]')?.addEventListener('click', () => open('New customer report', box => {
-    const form = node('form', undefined, { class: 'demo-form' }), label = node('label', 'Report name'), input = node('input', undefined, { required: '', maxlength: '100', name: 'reportName' });
+    const form = node('form', undefined, { class: 'app-form' }), label = node('label', 'Report name'), input = node('input', undefined, { required: '', maxlength: '100', name: 'reportName' });
     label.append(input); form.append(node('p', table ? 'Saves a snapshot of the currently filtered customers.' : 'Saves a snapshot of traffic sources, sessions and conversions.'), label, node('button', 'Save report', { class: 'btn', type: 'submit' }));
     form.addEventListener('submit', e => { e.preventDefault(); if (!input.value.trim()) return; state.reports.push({ name: input.value.trim(), csv: csv(), created: new Date().toISOString() }); say('Report saved.'); save(); if(workspace==='reports')dialog.close(); reports(); }); box.append(form);
   }));
@@ -203,9 +204,9 @@ export function initDashboard() {
       const i=Number.isInteger(selected)&&selected>=0&&selected<messages.length?selected:0, message=messages[i];
       const detail=node('article',undefined,{class:'card panel message-detail'});
       detail.append(node('h2',message.subject),node('p',message.sender,{class:'muted'}),node('p',message.date,{class:'muted'}),node('p',message.body));
-      const actions=node('div',undefined,{class:'demo-actions'});
+      const actions=node('div',undefined,{class:'app-dialog-actions'});
       actions.append(node('a',message.action+' →',{href:message.link,class:'btn','data-size':'s'}),button(state.read.includes(i)?'Mark unread':'Mark read',()=>{state.read=state.read.includes(i)?state.read.filter(x=>x!==i):[...state.read,i];save();updateBadge();inbox();}));detail.append(actions);
-      const form=node('form',undefined,{class:'demo-form'}),label=node('label','Reply draft'),input=node('textarea',undefined,{name:'reply',rows:'5',maxlength:'2000'});
+      const form=node('form',undefined,{class:'app-form'}),label=node('label','Reply draft'),input=node('textarea',undefined,{name:'reply',rows:'5',maxlength:'2000'});
       input.value=typeof state.drafts?.[i]==='string'?state.drafts[i]:'';label.append(input);form.append(label,node('p','Drafts stay in this browser. This demo does not send messages.'),node('button','Save draft',{type:'submit',class:'btn'}));
       form.addEventListener('submit',e=>{e.preventDefault();state.drafts={...state.drafts,[i]:input.value};if(save())say('Draft saved locally.');});detail.append(form);layout.append(list,detail);box.append(layout);
     });
@@ -214,7 +215,7 @@ export function initDashboard() {
   function updateBadge() { const badge = document.querySelector('[data-workspace="inbox"] .badge'); if (badge) { badge.textContent = String(messages.length - state.read.length); badge.hidden=state.settings?.notifications===false; } }
   function settings() {
     surface('settings','Settings',box=>{
-      const form=node('form',undefined,{class:'card panel demo-form'});form.append(node('h2','Workspace and profile'));
+      const form=node('form',undefined,{class:'card panel app-form'});form.append(node('h2','Workspace and profile'));
       const defaults={workspace:'Northwind',name:'Jordan Lee',email:'jordan@example.com',timezone:'America/New_York'},fields={};
       for(const [key,title,type] of [['workspace','Workspace name','text'],['name','Your name','text'],['email','Email address','email'],['timezone','Timezone','select']]){
         const label=node('label',title), input=node(type==='select'?'select':'input',undefined,{name:key,required:'',...(type==='select'?{}:{type,maxlength:'100'})});
@@ -236,17 +237,10 @@ export function initDashboard() {
   setWorkspaceName(DOMAIN==='crm'?(state.salesSettings?.team||'Sales workspace'):(state.property?.name||'Analytics property'));
   // Modal navigation on small screens: hidden links cannot receive keyboard focus.
   const shell = document.querySelector('.dash'), side = document.querySelector('.dash-side'), toggle = document.querySelector('.menu-btn'), media = matchMedia('(max-width: 900px)');
-  const backdrop = button('Close navigation', () => setMenu(false)); backdrop.className = 'nav-backdrop'; backdrop.tabIndex = -1; shell.append(backdrop);
-  const closeNav = button('Close menu', () => { setMenu(false); toggle.focus(); }); closeNav.className = 'btn nav-close'; side.prepend(closeNav);
-  function setMenu(open) { shell.toggleAttribute('data-open', open); toggle.setAttribute('aria-expanded', String(open)); side.inert = media.matches && !open; backdrop.hidden = !media.matches || !open; }
-  toggle.addEventListener('click', () => { const open = !shell.hasAttribute('data-open'); setMenu(open); if (open) closeNav.focus(); });
-  side.addEventListener('click', e => { if (e.target.closest('a')) setMenu(false); });
-  document.addEventListener('keydown', e => {
-    if (!media.matches || !shell.hasAttribute('data-open') || dialog.open) return;
-    if (e.key === 'Escape') { setMenu(false); toggle.focus(); }
-    if (e.key === 'Tab') { const links = [...side.querySelectorAll('button,a[href]')], first = links[0], last = links.at(-1); if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } }
-  });
-  media.addEventListener('change', () => setMenu(false)); setMenu(false);
+  const backdrop = button('Close navigation', () => {}); backdrop.className = 'nav-backdrop'; backdrop.tabIndex = -1; shell.append(backdrop);
+  const closeNav = button('Close menu', () => {}); closeNav.className = 'btn nav-close'; side.prepend(closeNav);
+  const navController=createApplicationShell(shell,{sidebar:side,trigger:toggle,close:closeNav,backdrop});
+  function setMenu(open){open?navController.open():navController.close();}
   // A readable data alternative also makes range changes inspectable without colour/hover.
   for (const chart of document.querySelectorAll('#traffic, #rev')) {
     const details = node('details', undefined, { class: 'chart-data' }), summary = node('summary', 'View chart data'), output = node('pre'); details.append(summary, output); chart.after(details);

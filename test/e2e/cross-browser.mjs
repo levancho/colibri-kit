@@ -7,11 +7,16 @@ const axe = fs.readFileSync('node_modules/axe-core/axe.min.js','utf8');
 const engines = { chromium, firefox, webkit };
 try {
   for (const name of (process.env.BROWSERS || 'chromium,firefox,webkit').split(',')) {
-    const browser = await engines[name].launch({ headless:true });
+    const browser = await engines[name].launch({ headless:true, ...(name==='firefox'?{firefoxUserPrefs:{'network.proxy.type':0}}:{}) });
     try {
-      const page = await browser.newPage(); const errors=[];page.on('pageerror',e=>errors.push(e.message));
+      const page = await browser.newPage();
+      // Cold container Firefox can take longer to start its first content process.
+      page.setDefaultNavigationTimeout(60000);
+      await page.goto('data:text/html,<title>Browser ready</title>');
+      const errors=[];page.on('pageerror',e=>errors.push(e.message));
       for (const scheme of ['light','dark']) for (const width of [390,1280]) for (const path of ['/getting-started.html', '/java-templates.html', '/', '/kitchen-sink/examples/dashboards/analytics.html', '/kitchen-sink/examples/dashboards/crm.html', '/kitchen-sink/examples/dashboards/analytics-audience.html', '/kitchen-sink/examples/dashboards/analytics-reports.html', '/kitchen-sink/examples/dashboards/analytics-traffic.html', '/kitchen-sink/examples/dashboards/analytics-events.html', '/kitchen-sink/examples/dashboards/analytics-settings.html', '/kitchen-sink/examples/dashboards/crm-contacts.html', '/kitchen-sink/examples/dashboards/crm-companies.html', '/kitchen-sink/examples/dashboards/crm-activity.html', '/kitchen-sink/examples/dashboards/crm-reports.html', '/kitchen-sink/examples/dashboards/crm-settings.html', '/kitchen-sink/examples/dashboards/index.html', '/kitchen-sink/examples/dashboards/workspace.html', '/kitchen-sink/examples/dashboards/account.html', '/kitchen-sink/examples/dashboards/commerce.html', '/kitchen-sink/examples/dashboards/support.html']) {
-        await page.emulateMedia({colorScheme:scheme}); await page.setViewportSize({width,height:900}); await page.goto(server.origin+path); await page.waitForLoadState('networkidle');
+        await page.emulateMedia({colorScheme:scheme}); await page.setViewportSize({width,height:900}); await page.goto(server.origin+path); await page.waitForLoadState('load'); await page.evaluate(()=>document.fonts.ready);
+        if(process.env.PROGRESS)console.log(`checking ${name} ${scheme} ${width} ${path}`);
         assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth), `${name} ${path} ${width}: overflow`);
         await page.addScriptTag({content:axe});
         const violations = await page.evaluate(async()=> (await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}})).violations.map(v=>({id:v.id,impact:v.impact,nodes:v.nodes.map(n=>({target:n.target,summary:n.failureSummary}))})));
@@ -22,8 +27,13 @@ try {
           assert.equal(await page.locator('.live dialog').evaluate(e=>e.open),false);
         } else if (path.endsWith('/crm.html') || path.endsWith('/analytics.html')) {
           await page.locator(path.includes('crm')?'[data-action=deal]':'[data-action=report]').click();
-          assert.equal(await page.locator('.demo-dialog').evaluate(e=>e.open),true);await page.keyboard.press('Escape');
+          assert.equal(await page.locator('.app-dialog').evaluate(e=>e.open),true);await page.keyboard.press('Escape');
           if(width<900){await page.locator('.menu-btn').click();await page.keyboard.press('Escape');assert.equal(await page.locator('.dash-side').evaluate(e=>e.inert),true);}
+        } else if(width<900 && /\/(workspace|account|commerce|support)\.html$/.test(path)) {
+          await page.locator('.suite-menu').click();
+          assert.ok(await page.locator('.suite-sidebar').evaluate(el=>el.getBoundingClientRect().left>=0),name+' mobile drawer visibility');
+          assert.equal(await page.locator('.app-stage').evaluate(el=>el.inert),true);
+          await page.keyboard.press('Escape');assert.equal(await page.locator('.suite-sidebar').evaluate(el=>el.inert),true);
         }
       }
       // Exercise real modules and the new cascade under each rendering engine.

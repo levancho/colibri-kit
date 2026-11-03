@@ -72,7 +72,7 @@ export function Help() {
 }
 ```
 
-The host supplies React and JSX tooling. For a small non-React page you can import a single controller (`@colibri-kit/ui/core/dialog` exports `createDialog`) instead of the full automatic registry. Keep its returned API and call `destroy()` when removing it.
+React 18 or newer is required; the packed consumer test exercises React 18.3.1. The host supplies React and JSX tooling. For a small non-React page you can import a single controller (`@colibri-kit/ui/core/dialog` exports `createDialog`) instead of the full automatic registry. Keep its returned API and call `destroy()` when removing it.
 
 ## Customize without editing vendor files
 
@@ -109,3 +109,19 @@ Run `colibri diff` (or `node path/to/bin/colibri.mjs diff`) from the folder cont
 | Assets 404 below an application prefix | Match URLs to the host's static-resource mount, not a filesystem path. |
 
 The modern CSS requires browsers supporting cascade layers, `:has()`, OKLCH and `light-dark()`. Test your supported browser versions; this is not a legacy-browser stylesheet. Repository CI exercises Chromium, Firefox and WebKit, plus a consumer test that installs packed archives and runs the standalone starter. Accessibility also depends on the labels, content and application behavior you supply.
+
+## Application integration contracts
+
+The optional application stylesheet is scoped to `.colibri-application`. It must be loaded in addition to the CSS core. Refer to `css/bundle-sizes.json` in a built site for separate uncompressed and gzip sizes; a core-only size does not include the application components.
+
+Application forms provide `{ formData, values, submitter }` to submission handlers. `formData` retains native multi-value/file semantics. In the convenience `values` object, one value remains a scalar and repeated names become arrays. The clicked submitter is included. Use `formData.getAll(name)` when your API needs a specific collection shape.
+
+React `ApplicationForm` is uncontrolled by default to retain edits during unrelated rerenders. Pass a `recordKey` (or a model `id`) when changing records and `resetKey` when deliberately resetting the current draft. For controlled inputs, supply `values` and `onValuesChange`. Fields use stable IDs or names as React keys.
+
+`createApplicationComponent`, chart helpers and the application shell share tracked, idempotent cleanup. Keep their cleanup API for manual ownership; `dispose(container)` also tears down tracked descendants. The mobile shell uses modal dialog semantics and makes the covered application stage inert, restoring its previous state when closed.
+
+Public charts accept finite numeric values, not numeric strings. Bar and area charts support negatives and zero values. A donut requires nonnegative values and renders its empty track for a zero total. Pure renderers reject malformed data; the markup enhancer displays an explicit unavailable state.
+
+Framework support is per example: native component/macro/fragment, generated markup adapter, static HTML, or unavailable. See the website's framework-support page or the registry `support` object. `colibri view NAME --language react|ftl|thymeleaf|html|js` returns the same source as the gallery.
+
+For a reproducible Linux browser matrix (for example, if native Firefox cannot open its profile on macOS), install Docker and run `npm run test:cross-browser:linux`. The command uses the official image matching the pinned Playwright version and mounts the project read-only. `BROWSERS=firefox` restricts that optional command to Firefox. Normal Linux CI uses the native browser matrix.

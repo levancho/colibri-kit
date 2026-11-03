@@ -24,7 +24,7 @@ const paths={
  laptop:'<rect x="4" y="3" width="16" height="13" rx="2"/><path d="m4 16-2 5h20l-2-5"/>',
  arrow:'<path d="M4 12h16m-6-6 6 6-6 6"/>',
 };
-export function icon(name,cls=''){return `<svg class="demo-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.overview}</svg>`;}
+export function icon(name,cls=''){return `<svg class="app-icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name]||paths.overview}</svg>`;}
 const faces={'Maya Chen':0,'Alex Rivera':1,'Sam Patel':2,'Jordan Lee':3,'Taylor Brooks':4,'Jamie Park':5,'Nino K.':0,'Nino Kapanadze':0,'Levan D.':1,'Ana M.':2,'Ana Meladze':2,'Giorgi B.':3,'Giorgi Beridze':3,'Salome L.':4,'Salome Lomidze':4,'Dato T.':5,'Dato Tsiklauri':5};
 export function avatar(name,large=false){const face=faces[name];return `<span class="portrait${large?' portrait-large':''}" ${face===undefined?'':`data-face="${face}"`} aria-hidden="true">${face===undefined?escape(String(name).split(/\s+/).slice(0,2).map(s=>s[0]).join('')):'<img src="assets/portraits.jpg" alt="" loading="lazy" width="1536" height="1024">'}</span>`;}
 export function person(name,subtitle=''){return `<span class="person">${avatar(name)}<span><strong>${escape(name)}</strong>${subtitle?`<small>${escape(subtitle)}</small>`:''}</span></span>`;}

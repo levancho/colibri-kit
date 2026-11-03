@@ -17,7 +17,7 @@ python3 -m http.server 8080</code></pre>
 &lt;script type=&quot;module&quot; src=&quot;./colibri/core/auto.js&quot;&gt;&lt;/script&gt;
 &lt;body class=&quot;ui-root&quot;&gt;</code></pre>
 <p>Use the public URL where your server mounts these assets. Never expose <code>node_modules</code> as your application&#x27;s static root. Java template files belong in the server&#x27;s template resources; the copied versions are convenience sources, not browser dependencies.</p>
-<h2>Install into a bundler / React project</h2>
+<h2>Application components</h2><p>The six dashboard examples use the public application component stylesheet. <a href="application-components.html">Installation, markup and customization →</a></p><h2>Install into a bundler / React project</h2>
 <p>The source package names are <code>@colibri-kit/ui</code> and <code>@colibri-kit/css</code>. These instructions do not depend on a public npm release. From an existing application, install a pinned checkout:</p>
 <pre class="code"><code>git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
 # Record the revision used by your application:

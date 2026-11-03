@@ -1,3 +1,4 @@
+import {createApplicationShell} from '../../src/core/application-shell.js';
 import {mountDevicePreview} from '../device-preview.js?v=individual-2';
 import {icon} from './visuals.js';
 
@@ -26,9 +27,6 @@ if(side){
     side.id='dashboard-navigation';const toggle=document.createElement('button');toggle.type='button';toggle.className='btn suite-menu';toggle.setAttribute('data-variant','outline');toggle.setAttribute('aria-label','Menu');toggle.setAttribute('aria-controls',side.id);toggle.setAttribute('aria-expanded','false');toggle.innerHTML=icon('overview');top.prepend(toggle);
     const close=document.createElement('button');close.type='button';close.className='btn suite-close';close.textContent='Close menu';side.prepend(close);
     const backdrop=document.createElement('button');backdrop.type='button';backdrop.className='suite-backdrop';backdrop.setAttribute('aria-label','Close navigation');backdrop.hidden=true;document.body.append(backdrop);
-    const media=matchMedia('(max-width:900px)');
-    const setOpen=open=>{document.body.toggleAttribute('data-nav-open',open);toggle.setAttribute('aria-expanded',String(open));side.inert=media.matches&&!open;backdrop.hidden=!media.matches||!open;};
-    toggle.onclick=()=>{setOpen(toggle.getAttribute('aria-expanded')!=='true');if(toggle.getAttribute('aria-expanded')==='true')close.focus();};close.onclick=backdrop.onclick=()=>{setOpen(false);toggle.focus();};
-    document.addEventListener('keydown',e=>{if(toggle.getAttribute('aria-expanded')!=='true'||document.querySelector('dialog[open]'))return;if(e.key==='Escape'){setOpen(false);toggle.focus();}if(e.key==='Tab'){const links=[...side.querySelectorAll('button,a[href]')],first=links[0],last=links.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}});media.addEventListener('change',()=>setOpen(false));setOpen(false);
+    createApplicationShell(document.body,{sidebar:side,trigger:toggle,close,backdrop});
   }
 }

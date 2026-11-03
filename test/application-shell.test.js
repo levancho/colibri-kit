@@ -1,0 +1,6 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import {JSDOM} from 'jsdom';import {createApplicationShell} from '../src/core/application-shell.js';import {dispose} from '../src/core/util.js';
+test('modal shell isolates background branches and restores prior inert state',()=>{
+ const d=new JSDOM('<body><button id="host">Host</button><aside id="prior"></aside><section id="app"><div id="shell"><aside data-app-part="sidebar"><button data-app-part="close">Close</button></aside><main><button data-app-part="trigger">Open</button></main><button data-app-part="backdrop"></button></div></section></body>',{pretendToBeVisual:true});
+ d.window.matchMedia=()=>({matches:true,addEventListener(){},removeEventListener(){}});const doc=d.window.document;doc.querySelector('#prior').inert=true;
+ const api=createApplicationShell(doc.querySelector('#shell'));api.open();assert.equal(doc.querySelector('#host').inert,true);assert.equal(doc.querySelector('main').inert,true);assert.equal(doc.querySelector('[data-app-part=sidebar]').getAttribute('aria-modal'),'true');api.close();assert.ok(!doc.querySelector('#host').inert);assert.equal(doc.querySelector('#prior').inert,true);api.open();dispose(doc.querySelector('#app'));assert.ok(!doc.querySelector('#host').inert);assert.equal(doc.querySelector('#prior').inert,true);
+});

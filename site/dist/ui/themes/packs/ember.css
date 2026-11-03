@@ -43,3 +43,5 @@ html[data-kit-theme=ember] .card{border-color:transparent;box-shadow:var(--c-sha
 html[data-kit-theme=ember] .badge{border-radius:999px;padding-inline:.8em;font-weight:700}
 html[data-kit-theme=ember] :is(h1,h2,h3){letter-spacing:-.02em;font-weight:800}
 }
+
+@layer colibri.packs { html[data-kit-theme=ember]:has(.colibri-application){--c-accent:light-dark(oklch(43% .11 var(--c-hue)),oklch(78% .10 var(--c-hue)));--c-brand-fg:light-dark(#fff,#17251e)} }

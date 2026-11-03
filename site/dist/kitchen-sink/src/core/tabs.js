@@ -136,7 +136,7 @@ export function createTabs(root, options = {}) {
 
   const api = {
     get value() { return value; },
-    select: (v) => select(v),
+    select: (v, options) => select(v, options),
     refresh() {
       wire();
       if (!enabled().some((t) => t.dataset.value === value)) {
