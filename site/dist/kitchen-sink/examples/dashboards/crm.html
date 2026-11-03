@@ -1,13 +1,13 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>CRM — Colibri Kit dashboard</title>
-<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<script src="theme-init.js?v=1"></script><link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
 <link rel="stylesheet" href="../../themes/packs/index.css">
 <link rel="stylesheet" href="dash.css?v=separate-2">
-<script>try{const p=new URLSearchParams(location.search).get("theme")??localStorage.getItem("colibri-kit-theme");if(p)document.documentElement.dataset.kitTheme=p;const s=localStorage.getItem("colibri-scheme");if(s)document.documentElement.dataset.theme=s}catch{}</script>
-<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto data-studio="/kitchen-sink/examples/playground/"></script>
-<link rel="stylesheet" href="visuals.css?v=2"><link rel="stylesheet" href="experience.css?v=separate-2"></head><body data-domain="crm" data-demo="crm"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
+
+<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto="" data-studio="/kitchen-sink/examples/playground/"></script>
+<link rel="stylesheet" href="visuals.css?v=2"><link rel="stylesheet" href="experience.css?v=separate-2"><link rel="stylesheet" href="designs.css?v=redesign-1"></head><body data-domain="crm" data-demo="crm"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
 <div class="dash-brand"><i></i>Colibri Sales</div>
-<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html"><span>◫</span>Analytics</a><a href="crm.html" aria-current=page><span>☺</span>CRM · Sales pipeline</a><h6>Workspace</h6><a href="customers.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
+<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html"><span>◫</span>Analytics</a><a href="crm.html" aria-current="page"><span>☺</span>CRM · Sales pipeline</a><h6>Workspace</h6><a href="customers.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
 <footer>Plain HTML + Colibri CSS. No Tailwind, no chart library.</footer></aside>
 <div class="dash-main"><header class="dash-top"><button class="btn menu-btn" data-variant="ghost" data-size="s" aria-label="Menu" aria-controls="dashboard-navigation" aria-expanded="false">☰</button>
 <a class="dashboard-back" href="index.html">← All dashboards</a><div class="search"><input type="search" placeholder="Search…" aria-label="Search"></div>
@@ -15,15 +15,15 @@
 <label title="Colour (separate from the theme pack). Double-click to reset">Hue <input id="hue" type="range" min="0" max="360" aria-label="Accent hue"><output id="hue-out"></output></label>
 <button class="btn" id="scheme" data-variant="ghost" data-size="s" aria-label="Toggle light/dark">◐</button>
 <span class="av" style="--av:var(--chart-2)">LD</span></header><main class="dash-body"><p class="demo-note">Interactive demo · Sample data. Changes stay in this browser; no messages are sent.</p><p id="demo-status" role="status" aria-live="polite"></p>
-<div class="dash-head"><div><p class="dash-breadcrumb">Sales workspace / Pipeline</p><h1>Sales pipeline</h1><p>Manage opportunities by stage, value and owner.</p></div><div class="cluster"><button class="btn" data-variant="outline" data-size="s" data-action="import">Import JSON</button><button class="btn" data-variant="outline" data-size="s" data-action="export">Export JSON</button><button class="btn" data-size="s" data-action="deal">+ New deal</button></div></div>
+<div class="dash-head"><div><p class="dash-breadcrumb">SALES WORKSPACE / PIPELINE</p><h1>Sales pipeline</h1><p>Manage opportunities by stage, value and owner.</p></div><div class="cluster"><button class="btn" data-variant="outline" data-size="s" data-action="import">Import JSON</button><button class="btn" data-variant="outline" data-size="s" data-action="export">Export JSON</button><button class="btn" data-size="s" data-action="deal">+ New deal</button></div></div>
 
-<section class="kpis" aria-label="Pipeline metrics"><article class="card kpi"><small>Pipeline value</small><b>$116,500</b><span data-chart="sparkline" data-values="[60, 72, 70, 85, 92, 101, 116]" aria-label="Pipeline value trend"></span><span class="delta"><span class="up">▲ 18.2%</span> vs last month</span></article><article class="card kpi"><small>Deals won</small><b>23</b><span data-chart="sparkline" data-values="[14, 16, 15, 19, 18, 21, 23]" aria-label="Deals won trend"></span><span class="delta"><span class="up">▲ 4 deals</span> vs last month</span></article><article class="card kpi"><small>Win rate</small><b>34%</b><span data-chart="sparkline" data-values="[38, 37, 36, 35, 36, 34, 34]" aria-label="Win rate trend"></span><span class="delta"><span class="down">▼ 2 pts</span> vs last month</span></article><article class="card kpi"><small>Avg. cycle</small><b>21 days</b><span data-chart="sparkline" data-values="[28, 27, 25, 24, 22, 22, 21]" aria-label="Avg. cycle trend"></span><span class="delta"><span class="up">▲ faster</span> vs last month</span></article></section><section class="card panel"><header><div><h3>Opportunity board</h3><p>Select a deal to update its owner, stage or next action.</p></div></header><div class="pipeline"><div class="lane"><h4>Lead<span class="badge">3</span></h4><div class="deal"><span>Tbilisi Bank</span><b>$12k</b><small class="muted">Nino K.</small></div><div class="deal"><span>Despani</span><b>$4.5k</b><small class="muted">Levan D.</small></div><div class="deal"><span>Kutaisi Labs</span><b>$2k</b><small class="muted">Ana M.</small></div></div><div class="lane"><h4>Qualified<span class="badge">2</span></h4><div class="deal"><span>Batumi Ports</span><b>$28k</b><small class="muted">Giorgi B.</small></div><div class="deal"><span>Rustavi Steel</span><b>$9k</b><small class="muted">Dato T.</small></div></div><div class="lane"><h4>Proposal<span class="badge">2</span></h4><div class="deal"><span>GeoCell</span><b>$40k</b><small class="muted">Salome L.</small></div><div class="deal"><span>Mtskheta Wines</span><b>$6k</b><small class="muted">Nino K.</small></div></div><div class="lane"><h4>Won<span class="badge">1</span></h4><div class="deal"><span>Svaneti Tours</span><b>$15k</b><small class="muted">Levan D.</small></div></div></div></section>
-<div class="panels">
+<div class="sales-command"><div class="sales-brief"><span class="eyebrow">YOUR SALES DESK</span><h2>Relationships first.<br>Results follow.</h2><p>Move an opportunity forward or pick up a follow-up with your team.</p><div><a href="crm-activity.html">Tasks &amp; follow-ups →</a><a href="crm-contacts.html">Contact directory →</a></div></div><section class="kpis" aria-label="Pipeline metrics"><article class="card kpi"><small>Pipeline value</small><b>$116,500</b><span role="img" data-chart="sparkline" data-values="[60, 72, 70, 85, 92, 101, 116]" aria-label="Pipeline value trend"></span><span class="delta"><span class="up">▲ 18.2%</span> vs last month</span></article><article class="card kpi"><small>Deals won</small><b>23</b><span role="img" data-chart="sparkline" data-values="[14, 16, 15, 19, 18, 21, 23]" aria-label="Deals won trend"></span><span class="delta"><span class="up">▲ 4 deals</span> vs last month</span></article><article class="card kpi"><small>Win rate</small><b>34%</b><span role="img" data-chart="sparkline" data-values="[38, 37, 36, 35, 36, 34, 34]" aria-label="Win rate trend"></span><span class="delta"><span class="down">▼ 2 pts</span> vs last month</span></article><article class="card kpi"><small>Avg. cycle</small><b>21 days</b><span role="img" data-chart="sparkline" data-values="[28, 27, 25, 24, 22, 22, 21]" aria-label="Avg. cycle trend"></span><span class="delta"><span class="up">▲ faster</span> vs last month</span></article></section></div><section class="card panel sales-board"><header><div><h3>Opportunity board</h3><p>Select a deal to update its owner, stage or next action.</p></div></header><div class="board-toolbar"><div><span class="board-view">Pipeline board</span><a href="crm-companies.html">Companies</a><a href="crm-reports.html">Sales reports</a></div><span>Click any deal to edit</span></div><div class="pipeline"><div class="lane"><h4>Lead<span class="badge">3</span></h4><div class="deal"><span>Tbilisi Bank</span><b>$12k</b><small class="muted">Nino K.</small></div><div class="deal"><span>Despani</span><b>$4.5k</b><small class="muted">Levan D.</small></div><div class="deal"><span>Kutaisi Labs</span><b>$2k</b><small class="muted">Ana M.</small></div></div><div class="lane"><h4>Qualified<span class="badge">2</span></h4><div class="deal"><span>Batumi Ports</span><b>$28k</b><small class="muted">Giorgi B.</small></div><div class="deal"><span>Rustavi Steel</span><b>$9k</b><small class="muted">Dato T.</small></div></div><div class="lane"><h4>Proposal<span class="badge">2</span></h4><div class="deal"><span>GeoCell</span><b>$40k</b><small class="muted">Salome L.</small></div><div class="deal"><span>Mtskheta Wines</span><b>$6k</b><small class="muted">Nino K.</small></div></div><div class="lane"><h4>Won<span class="badge">1</span></h4><div class="deal"><span>Svaneti Tours</span><b>$15k</b><small class="muted">Levan D.</small></div></div></div></section>
+<div class="sales-review">
 <section class="card panel chart-box"><header><div><h3>Revenue by month</h3><p>Historical sample · 2026 · USD thousands</p></div><div class="seg" role="group" aria-label="Range" data-target="rev"><button data-n="6" aria-pressed="false">6m</button><button data-n="12" aria-pressed="true">12m</button></div></header>
 <div id="rev" data-chart="bars" data-values="[18,22,19,27,31,29,35,38,34,41,46,52]" aria-label="Revenue by month"></div></section>
 <section class="card panel"><header><div><h3>Activity</h3><p>Team feed</p></div></header><ul class="feed"><li><span class="av" style="--av:var(--chart-1)">NK</span><span>Nino moved <b>GeoCell</b> to Proposal<time>12 min ago</time></span></li><li><span class="av" style="--av:var(--chart-2)">GB</span><span>Giorgi logged a call with <b>Batumi Ports</b><time>1 h ago</time></span></li><li><span class="av" style="--av:var(--chart-3)">LD</span><span>You won <b>Svaneti Tours</b> — $15k<time>3 h ago</time></span></li><li><span class="av" style="--av:var(--chart-4)">SL</span><span>Salome added 4 contacts<time>Yesterday</time></span></li></ul></section>
 </div>
-<div class="panels even">
+<div class="sales-review">
 <section class="card panel"><header><div><h3>Quota attainment</h3><p>Historical sample · This quarter</p></div></header><ul class="quota-list stack" data-gap="s"><li class="stack" data-gap="xs"><span class="cluster" data-justify="between"><span>Nino K.</span><b>82%</b></span><div class="meter"><i style="--v:82%"></i></div></li><li class="stack" data-gap="xs"><span class="cluster" data-justify="between"><span>Giorgi B.</span><b>64%</b></span><div class="meter"><i style="--v:64%"></i></div></li><li class="stack" data-gap="xs"><span class="cluster" data-justify="between"><span>Salome L.</span><b>57%</b></span><div class="meter"><i style="--v:57%"></i></div></li><li class="stack" data-gap="xs"><span class="cluster" data-justify="between"><span>Levan D.</span><b>91%</b></span><div class="meter"><i style="--v:91%"></i></div></li></ul></section>
 <section class="card panel"><header><div><h3>Deal sources</h3></div></header><div class="donut-wrap"><div data-chart="donut" data-values="[38,30,20,12]" aria-label="Deal sources"></div>
 <ul class="legend col"><li style="--dot:var(--chart-1)">Inbound 38%</li><li style="--dot:var(--chart-2)">Referral 30%</li><li style="--dot:var(--chart-3)">Outbound 20%</li><li style="--dot:var(--chart-4)">Events 12%</li></ul></div></section>
@@ -31,89 +31,89 @@
 <h2 class="source-heading">Build it yourself</h2>
 <details class="source"><summary>KPI card — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="KPI card source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
-<div role="tabpanel" data-lang="html"><pre><code>&lt;article class=&quot;card kpi&quot;&gt;
+<div role="tabpanel" data-lang="html"><pre><code>&lt;article class="card kpi"&gt;
   &lt;small&gt;Revenue&lt;/small&gt;
   &lt;b&gt;$48,290&lt;/b&gt;
-  &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[12,18,14,22,19,27,31]&quot; aria-label=&quot;Revenue trend&quot;&gt;&lt;/span&gt;
-  &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;up&quot;&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
-&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>import { Sparkline } from &quot;./charts-react&quot;;
+  &lt;span data-chart="sparkline" data-values="[12,18,14,22,19,27,31]" aria-label="Revenue trend"&gt;&lt;/span&gt;
+  &lt;span class="delta"&gt;&lt;span class="up"&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
+&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden=""><pre><code>import { Sparkline } from "./charts-react";
 export function Kpi({ label, value, trend, delta, up = true }) {
   return (
-    &lt;article className=&quot;card kpi&quot;&gt;
+    &lt;article className="card kpi"&gt;
       &lt;small&gt;{label}&lt;/small&gt;
       &lt;b&gt;{value}&lt;/b&gt;
       &lt;Sparkline values={trend} label={`${label} trend`} /&gt;
-      &lt;span className=&quot;delta&quot;&gt;&lt;span className={up ? &quot;up&quot; : &quot;down&quot;}&gt;{up ? &quot;▲&quot; : &quot;▼&quot;} {delta}&lt;/span&gt; vs last month&lt;/span&gt;
+      &lt;span className="delta"&gt;&lt;span className={up ? "up" : "down"}&gt;{up ? "▲" : "▼"} {delta}&lt;/span&gt; vs last month&lt;/span&gt;
     &lt;/article&gt;
   );
 }
-&lt;Kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend={[12,18,14,22,19,27,31]} delta=&quot;12.4%&quot; /&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
-  &lt;article class=&quot;card kpi&quot;&gt;
+&lt;Kpi label="Revenue" value="$48,290" trend={[12,18,14,22,19,27,31]} delta="12.4%" /&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden=""><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
+  &lt;article class="card kpi"&gt;
     &lt;small&gt;${label}&lt;/small&gt;
     &lt;b&gt;${value}&lt;/b&gt;
-    &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[${trend?join(&quot;,&quot;)}]&quot; aria-label=&quot;${label} trend&quot;&gt;&lt;/span&gt;
-    &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;${up?then(&#x27;up&#x27;,&#x27;down&#x27;)}&quot;&gt;${up?then(&#x27;▲&#x27;,&#x27;▼&#x27;)} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
+    &lt;span data-chart="sparkline" data-values="[${trend?join(",")}]" aria-label="${label} trend"&gt;&lt;/span&gt;
+    &lt;span class="delta"&gt;&lt;span class="${up?then('up','down')}"&gt;${up?then('▲','▼')} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
   &lt;/article&gt;
 &lt;/#macro&gt;
-&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+&lt;@kpi label="Revenue" value="$48,290" trend=[12,18,14,22,19,27,31] delta="12.4%"/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
-&lt;div th:replace=&quot;~{colibri/thymeleaf/kpi :: kpi(&#x27;Revenue&#x27;, ${revenue}, ${delta}, ${up})}&quot;&gt;&lt;/div&gt;
+&lt;div th:replace="~{colibri/thymeleaf/kpi :: kpi('Revenue', ${revenue}, ${delta}, ${up})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
-&lt;article xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;kpi(label, value, delta, up)&quot; class=&quot;card kpi&quot;&gt;
-  &lt;small th:text=&quot;${label}&quot;&gt;Revenue&lt;/small&gt;&lt;b th:text=&quot;${value}&quot;&gt;$0&lt;/b&gt;
-  &lt;p class=&quot;delta&quot;&gt;
-    &lt;span th:class=&quot;${up ? &#x27;up&#x27; : &#x27;down&#x27;}&quot; th:text=&quot;${delta}&quot;&gt;0%&lt;/span&gt;vs last month
+&lt;article xmlns:th="http://www.thymeleaf.org" th:fragment="kpi(label, value, delta, up)" class="card kpi"&gt;
+  &lt;small th:text="${label}"&gt;Revenue&lt;/small&gt;&lt;b th:text="${value}"&gt;$0&lt;/b&gt;
+  &lt;p class="delta"&gt;
+    &lt;span th:class="${up ? 'up' : 'down'}" th:text="${delta}"&gt;0%&lt;/span&gt;vs last month
   &lt;/p&gt;
 &lt;/article&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="Data table source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
-<div role="tabpanel" data-lang="html"><pre><code>&lt;table class=&quot;data&quot;&gt;
+<div role="tabpanel" data-lang="html"><pre><code>&lt;table class="data"&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;
-    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
-        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;ok&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;span class="who"&gt;&lt;span class="av"&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
+        &lt;td&gt;&lt;span class="badge" data-tone="ok"&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>export function CustomerTable({ rows }) {
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden=""><pre><code>export function CustomerTable({ rows }) {
   return (
-    &lt;table className=&quot;data&quot;&gt;
+    &lt;table className="data"&gt;
       &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
       &lt;tbody&gt;{rows.map((c) =&gt; (
-        &lt;tr key={c.id}&gt;&lt;td&gt;&lt;span className=&quot;who&quot;&gt;&lt;span className=&quot;av&quot;&gt;{c.initials}&lt;/span&gt;{c.name}&lt;/span&gt;&lt;/td&gt;
+        &lt;tr key={c.id}&gt;&lt;td&gt;&lt;span className="who"&gt;&lt;span className="av"&gt;{c.initials}&lt;/span&gt;{c.name}&lt;/span&gt;&lt;/td&gt;
           &lt;td&gt;{c.plan}&lt;/td&gt;&lt;td&gt;{c.mrr}&lt;/td&gt;
-          &lt;td&gt;&lt;span className=&quot;badge&quot; data-tone={c.active ? &quot;ok&quot; : &quot;warn&quot;}&gt;{c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;td&gt;&lt;span className="badge" data-tone={c.active ? "ok" : "warn"}&gt;{c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
       ))}&lt;/tbody&gt;
     &lt;/table&gt;
   );
-}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;table class=&quot;data&quot;&gt;
+}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden=""><pre><code>&lt;table class="data"&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;
   &lt;#list customers as c&gt;
-    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;span class="who"&gt;&lt;span class="av"&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
         &lt;td&gt;${c.plan}&lt;/td&gt;&lt;td&gt;${c.mrr?string.currency}&lt;/td&gt;
-        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;${c.active?then(&#x27;ok&#x27;,&#x27;warn&#x27;)}&quot;&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;td&gt;&lt;span class="badge" data-tone="${c.active?then('ok','warn')}"&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/#list&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
-&lt;div th:replace=&quot;~{colibri/thymeleaf/customer-table :: customer_table(${customers})}&quot;&gt;&lt;/div&gt;
+&lt;div th:replace="~{colibri/thymeleaf/customer-table :: customer_table(${customers})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
-&lt;table xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;customer_table(customers)&quot; class=&quot;data&quot;&gt;
+&lt;table xmlns:th="http://www.thymeleaf.org" th:fragment="customer_table(customers)" class="data"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th scope=&quot;col&quot;&gt;Customer&lt;/th&gt;
-      &lt;th scope=&quot;col&quot;&gt;Plan&lt;/th&gt;
-      &lt;th scope=&quot;col&quot;&gt;MRR&lt;/th&gt;
+      &lt;th scope="col"&gt;Customer&lt;/th&gt;
+      &lt;th scope="col"&gt;Plan&lt;/th&gt;
+      &lt;th scope="col"&gt;MRR&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
-    &lt;tr th:each=&quot;customer : ${customers}&quot;&gt;
-      &lt;td th:text=&quot;${customer.name}&quot;&gt;Name&lt;/td&gt;
-      &lt;td th:text=&quot;${customer.plan}&quot;&gt;Plan&lt;/td&gt;
-      &lt;td th:text=&quot;${customer.mrr}&quot;&gt;0&lt;/td&gt;
+    &lt;tr th:each="customer : ${customers}"&gt;
+      &lt;td th:text="${customer.name}"&gt;Name&lt;/td&gt;
+      &lt;td th:text="${customer.plan}"&gt;Plan&lt;/td&gt;
+      &lt;td th:text="${customer.mrr}"&gt;0&lt;/td&gt;
     &lt;/tr&gt;
-    &lt;tr th:if=&quot;${#lists.isEmpty(customers)}&quot;&gt;
-      &lt;td colspan=&quot;3&quot;&gt;No customers yet&lt;/td&gt;
+    &lt;tr th:if="${#lists.isEmpty(customers)}"&gt;
+      &lt;td colspan="3"&gt;No customers yet&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js?v=separate-2"></script><script type="module" src="shell.js?v=separate-2"></script></body></html>

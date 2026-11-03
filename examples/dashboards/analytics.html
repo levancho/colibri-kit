@@ -1,13 +1,13 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Analytics — Colibri Kit dashboard</title>
-<link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
+<script src="theme-init.js?v=1"></script><link rel="stylesheet" href="../../packages/colibri-css/dist/colibri.css">
 <link rel="stylesheet" href="../../themes/packs/index.css">
 <link rel="stylesheet" href="dash.css?v=separate-2">
-<script>try{const p=new URLSearchParams(location.search).get("theme")??localStorage.getItem("colibri-kit-theme");if(p)document.documentElement.dataset.kitTheme=p;const s=localStorage.getItem("colibri-scheme");if(s)document.documentElement.dataset.theme=s}catch{}</script>
-<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto data-studio="/kitchen-sink/examples/playground/"></script>
-<link rel="stylesheet" href="visuals.css?v=2"><link rel="stylesheet" href="experience.css?v=separate-2"></head><body data-domain="analytics" data-demo="analytics"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
+
+<script src="../colibri-theme-gen.js"></script><script src="../colibri-bridge.js" data-colibria="https://colibria.ai/?view=studio" data-auto="" data-studio="/kitchen-sink/examples/playground/"></script>
+<link rel="stylesheet" href="visuals.css?v=2"><link rel="stylesheet" href="experience.css?v=separate-2"><link rel="stylesheet" href="designs.css?v=redesign-1"></head><body data-domain="analytics" data-demo="analytics"><div class="dash"><aside id="dashboard-navigation" class="dash-side" aria-label="Main">
 <div class="dash-brand"><i></i>Colibri Insights</div>
-<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html" aria-current=page><span>◫</span>Analytics</a><a href="crm.html"><span>☺</span>CRM · Sales pipeline</a><h6>Workspace</h6><a href="analytics-audience.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="analytics-reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="analytics-settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
+<nav class="dash-nav"><h6>Dashboards</h6><a href="analytics.html" aria-current="page"><span>◫</span>Analytics</a><a href="crm.html"><span>☺</span>CRM · Sales pipeline</a><h6>Workspace</h6><a href="analytics-audience.html"><span>♙</span>Customers</a><a href="inbox.html" data-workspace="inbox"><span>✉</span>Inbox<span class="badge" data-tone="accent">3</span></a><a href="analytics-reports.html" data-workspace="reports"><span>▤</span>Reports</a><a href="analytics-settings.html" data-workspace="settings"><span>⚙</span>Settings</a><h6>Kit</h6><a href="index.html"><span>⌂</span>All dashboards</a><a href="../kitchen-sink.html"><span>◇</span>Kitchen sink</a><a href="https://github.com/levancho/colibri-kit"><span>↗</span>GitHub</a></nav>
 <footer>Plain HTML + Colibri CSS. No Tailwind, no chart library.</footer></aside>
 <div class="dash-main"><header class="dash-top"><button class="btn menu-btn" data-variant="ghost" data-size="s" aria-label="Menu" aria-controls="dashboard-navigation" aria-expanded="false">☰</button>
 <a class="dashboard-back" href="index.html">← All dashboards</a><div class="search"><input type="search" placeholder="Search…" aria-label="Search"></div>
@@ -15,16 +15,16 @@
 <label title="Colour (separate from the theme pack). Double-click to reset">Hue <input id="hue" type="range" min="0" max="360" aria-label="Accent hue"><output id="hue-out"></output></label>
 <button class="btn" id="scheme" data-variant="ghost" data-size="s" aria-label="Toggle light/dark">◐</button>
 <span class="av" style="--av:var(--chart-2)">LD</span></header><main class="dash-body"><p class="demo-note">Interactive demo · Sample data. Changes stay in this browser; no messages are sent.</p><p id="demo-status" role="status" aria-live="polite"></p>
-<div class="dash-head"><div><p class="dash-breadcrumb">Dashboards / Analytics</p><h1>Analytics overview</h1></div><div class="cluster"><button class="btn" data-variant="outline" data-size="s" data-action="export">Export CSV</button><button class="btn" data-size="s" data-action="report">+ New report</button></div></div>
-<section class="kpis" aria-label="Key metrics"><article class="card kpi"><small>Revenue</small><b>$48,290</b><span data-chart="sparkline" data-values="[12, 18, 14, 22, 19, 27, 31]" aria-label="Revenue trend"></span><span class="delta"><span class="up">▲ 12.4%</span> vs last month</span></article><article class="card kpi"><small>Active users</small><b>8,412</b><span data-chart="sparkline" data-values="[50, 48, 55, 61, 58, 66, 72]" aria-label="Active users trend"></span><span class="delta"><span class="up">▲ 6.1%</span> vs last month</span></article><article class="card kpi"><small>Conversion</small><b>3.8%</b><span data-chart="sparkline" data-values="[4.4, 4.1, 4.0, 3.9, 4.2, 3.7, 3.8]" aria-label="Conversion trend"></span><span class="delta"><span class="down">▼ 0.4 pts</span> vs last month</span></article><article class="card kpi"><small>Avg. session</small><b>4m 12s</b><span data-chart="sparkline" data-values="[3, 3.4, 3.2, 3.9, 4.1, 4, 4.2]" aria-label="Avg. session trend"></span><span class="delta"><span class="up">▲ 9.0%</span> vs last month</span></article></section>
-<div class="panels">
-<section class="card panel chart-box"><header><div><h3>Traffic</h3><p>Visitors vs signups</p></div><div class="seg" role="group" aria-label="Range" data-target="traffic"><button data-n="7" aria-pressed="false">7d</button><button data-n="14" aria-pressed="false">14d</button><button data-n="30" aria-pressed="true">30d</button></div></header>
-<div id="traffic" data-chart="area" data-values='[[420, 518, 578, 581, 533, 464, 410, 402, 446, 521, 593, 624, 597, 521, 426, 353, 330, 364, 436, 509, 547, 534, 477, 406, 360, 366, 430, 529, 625, 682], [258, 212, 190, 207, 262, 336, 397, 423, 404, 351, 290, 249, 247, 281, 334, 376, 384, 351, 288, 223, 184, 188, 233, 300, 358, 385, 372, 330, 286, 266]]' aria-label="Traffic, visitors vs signups"></div>
-<ul class="legend"><li style="--dot:var(--chart-1)">Visitors</li><li style="--dot:var(--chart-2)">Signups</li></ul></section>
+<div class="dash-head"><div><p class="dash-breadcrumb">INSIGHTS / OCTOBER 2026</p><h1>Analytics overview</h1></div><div class="cluster"><button class="btn" data-variant="outline" data-size="s" data-action="export">Export CSV</button><button class="btn" data-size="s" data-action="report">+ New report</button></div></div><div class="insight-intro"><span class="period-tag">01–30 OCT 2026 <span>Historical sample</span></span><p>See where your audience comes from, what brings them back, and where they convert.</p></div>
+<div class="insight-lead"><section class="card panel chart-box"><header><div><h3>Audience growth</h3><p>Daily visitors and signups · October sample</p></div><div class="seg" role="group" aria-label="Range" data-target="traffic"><button data-n="7" aria-pressed="false">7d</button><button data-n="14" aria-pressed="false">14d</button><button data-n="30" aria-pressed="true">30d</button></div></header>
+<div id="traffic" data-chart="area" data-values="[[420, 518, 578, 581, 533, 464, 410, 402, 446, 521, 593, 624, 597, 521, 426, 353, 330, 364, 436, 509, 547, 534, 477, 406, 360, 366, 430, 529, 625, 682], [258, 212, 190, 207, 262, 336, 397, 423, 404, 351, 290, 249, 247, 281, 334, 376, 384, 351, 288, 223, 184, 188, 233, 300, 358, 385, 372, 330, 286, 266]]" aria-label="Traffic, visitors vs signups"></div>
+<ul class="legend"><li style="--dot:var(--chart-1)">Visitors</li><li style="--dot:var(--chart-2)">Signups</li></ul><a href="analytics-traffic.html" class="panel-link">View acquisition report →</a></section><section class="kpis" aria-label="Key metrics"><article class="card kpi"><small>Revenue</small><b>$48,290</b><span role="img" data-chart="sparkline" data-values="[12, 18, 14, 22, 19, 27, 31]" aria-label="Revenue trend"></span><span class="delta"><span class="up">▲ 12.4%</span> vs last month</span></article><article class="card kpi"><small>Active users</small><b>8,412</b><span role="img" data-chart="sparkline" data-values="[50, 48, 55, 61, 58, 66, 72]" aria-label="Active users trend"></span><span class="delta"><span class="up">▲ 6.1%</span> vs last month</span></article><article class="card kpi"><small>Conversion</small><b>3.8%</b><span role="img" data-chart="sparkline" data-values="[4.4, 4.1, 4.0, 3.9, 4.2, 3.7, 3.8]" aria-label="Conversion trend"></span><span class="delta"><span class="down">▼ 0.4 pts</span> vs last month</span></article><article class="card kpi"><small>Avg. session</small><b>4m 12s</b><span role="img" data-chart="sparkline" data-values="[3, 3.4, 3.2, 3.9, 4.1, 4, 4.2]" aria-label="Avg. session trend"></span><span class="delta"><span class="up">▲ 9.0%</span> vs last month</span></article></section></div>
+<div class="insight-secondary">
+
 <section class="card panel"><header><div><h3>Traffic sources</h3><p>Last 30 days</p></div></header>
 <div class="donut-wrap"><div data-chart="donut" data-values="[44,26,18,12]" aria-label="Traffic sources"></div>
 <ul class="legend col"><li style="--dot:var(--chart-1)">Organic 44%</li><li style="--dot:var(--chart-2)">Direct 26%</li><li style="--dot:var(--chart-3)">Social 18%</li><li style="--dot:var(--chart-4)">Referral 12%</li></ul></div></section>
-</div>
+<div class="insight-story"><img src="assets/meeting-space.jpg" alt="Sunlit office meeting space" width="1400" height="933"><div><span class="eyebrow">THE BIGGER PICTURE</span><h2>Turn a visit into a relationship.</h2><p>Explore acquisition channels and the events behind your conversion goals.</p><a href="analytics-traffic.html">Explore traffic sources →</a><a href="analytics-events.html">Review events &amp; goals →</a></div></div></div>
 <div class="panels">
 <section class="card panel"><header><div><h3>Recent customers</h3><p>New and changed subscriptions</p></div><a href="analytics-audience.html" class="btn" data-variant="ghost" data-size="s">View all →</a></header>
 <div class="table-scroll"><table class="data"><thead><tr><th>Customer</th><th>Plan</th><th>MRR</th><th>Status</th></tr></thead><tbody><tr><td><span class="who"><span class="av" style="--av:var(--chart-1)">NK</span>Nino Kapanadze</span></td><td>Pro</td><td>$290</td><td><span class="badge" data-tone="ok">Active</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-2)">GB</span>Giorgi Beridze</span></td><td>Team</td><td>$1,140</td><td><span class="badge" data-tone="ok">Active</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-3)">AM</span>Ana Meladze</span></td><td>Starter</td><td>$29</td><td><span class="badge" data-tone="warn">Trial</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-4)">DT</span>Dato Tsiklauri</span></td><td>Pro</td><td>$290</td><td><span class="badge" data-tone="bad">Past due</span></td></tr><tr><td><span class="who"><span class="av" style="--av:var(--chart-1)">SL</span>Salome Lomidze</span></td><td>Team</td><td>$860</td><td><span class="badge" data-tone="ok">Active</span></td></tr></tbody></table></div></section>
@@ -35,123 +35,123 @@
 <h2 class="source-heading">Build it yourself</h2>
 <details class="source"><summary>KPI card — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="KPI card source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
-<div role="tabpanel" data-lang="html"><pre><code>&lt;article class=&quot;card kpi&quot;&gt;
+<div role="tabpanel" data-lang="html"><pre><code>&lt;article class="card kpi"&gt;
   &lt;small&gt;Revenue&lt;/small&gt;
   &lt;b&gt;$48,290&lt;/b&gt;
-  &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[12,18,14,22,19,27,31]&quot; aria-label=&quot;Revenue trend&quot;&gt;&lt;/span&gt;
-  &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;up&quot;&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
-&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>import { Sparkline } from &quot;./charts-react&quot;;
+  &lt;span data-chart="sparkline" data-values="[12,18,14,22,19,27,31]" aria-label="Revenue trend"&gt;&lt;/span&gt;
+  &lt;span class="delta"&gt;&lt;span class="up"&gt;▲ 12.4%&lt;/span&gt; vs last month&lt;/span&gt;
+&lt;/article&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden=""><pre><code>import { Sparkline } from "./charts-react";
 export function Kpi({ label, value, trend, delta, up = true }) {
   return (
-    &lt;article className=&quot;card kpi&quot;&gt;
+    &lt;article className="card kpi"&gt;
       &lt;small&gt;{label}&lt;/small&gt;
       &lt;b&gt;{value}&lt;/b&gt;
       &lt;Sparkline values={trend} label={`${label} trend`} /&gt;
-      &lt;span className=&quot;delta&quot;&gt;&lt;span className={up ? &quot;up&quot; : &quot;down&quot;}&gt;{up ? &quot;▲&quot; : &quot;▼&quot;} {delta}&lt;/span&gt; vs last month&lt;/span&gt;
+      &lt;span className="delta"&gt;&lt;span className={up ? "up" : "down"}&gt;{up ? "▲" : "▼"} {delta}&lt;/span&gt; vs last month&lt;/span&gt;
     &lt;/article&gt;
   );
 }
-&lt;Kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend={[12,18,14,22,19,27,31]} delta=&quot;12.4%&quot; /&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
-  &lt;article class=&quot;card kpi&quot;&gt;
+&lt;Kpi label="Revenue" value="$48,290" trend={[12,18,14,22,19,27,31]} delta="12.4%" /&gt;</code></pre></div><div role="tabpanel" data-lang="ftl" hidden=""><pre><code>&lt;#macro kpi label value trend delta up=true&gt;
+  &lt;article class="card kpi"&gt;
     &lt;small&gt;${label}&lt;/small&gt;
     &lt;b&gt;${value}&lt;/b&gt;
-    &lt;span data-chart=&quot;sparkline&quot; data-values=&quot;[${trend?join(&quot;,&quot;)}]&quot; aria-label=&quot;${label} trend&quot;&gt;&lt;/span&gt;
-    &lt;span class=&quot;delta&quot;&gt;&lt;span class=&quot;${up?then(&#x27;up&#x27;,&#x27;down&#x27;)}&quot;&gt;${up?then(&#x27;▲&#x27;,&#x27;▼&#x27;)} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
+    &lt;span data-chart="sparkline" data-values="[${trend?join(",")}]" aria-label="${label} trend"&gt;&lt;/span&gt;
+    &lt;span class="delta"&gt;&lt;span class="${up?then('up','down')}"&gt;${up?then('▲','▼')} ${delta}&lt;/span&gt; vs last month&lt;/span&gt;
   &lt;/article&gt;
 &lt;/#macro&gt;
-&lt;@kpi label=&quot;Revenue&quot; value=&quot;$48,290&quot; trend=[12,18,14,22,19,27,31] delta=&quot;12.4%&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+&lt;@kpi label="Revenue" value="$48,290" trend=[12,18,14,22,19,27,31] delta="12.4%"/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
-&lt;div th:replace=&quot;~{colibri/thymeleaf/kpi :: kpi(&#x27;Revenue&#x27;, ${revenue}, ${delta}, ${up})}&quot;&gt;&lt;/div&gt;
+&lt;div th:replace="~{colibri/thymeleaf/kpi :: kpi('Revenue', ${revenue}, ${delta}, ${up})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
-&lt;article xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;kpi(label, value, delta, up)&quot; class=&quot;card kpi&quot;&gt;
-  &lt;small th:text=&quot;${label}&quot;&gt;Revenue&lt;/small&gt;&lt;b th:text=&quot;${value}&quot;&gt;$0&lt;/b&gt;
-  &lt;p class=&quot;delta&quot;&gt;
-    &lt;span th:class=&quot;${up ? &#x27;up&#x27; : &#x27;down&#x27;}&quot; th:text=&quot;${delta}&quot;&gt;0%&lt;/span&gt;vs last month
+&lt;article xmlns:th="http://www.thymeleaf.org" th:fragment="kpi(label, value, delta, up)" class="card kpi"&gt;
+  &lt;small th:text="${label}"&gt;Revenue&lt;/small&gt;&lt;b th:text="${value}"&gt;$0&lt;/b&gt;
+  &lt;p class="delta"&gt;
+    &lt;span th:class="${up ? 'up' : 'down'}" th:text="${delta}"&gt;0%&lt;/span&gt;vs last month
   &lt;/p&gt;
 &lt;/article&gt;</code></pre></div></div></details><details class="source"><summary>Chart panel — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="Chart panel source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
-<div role="tabpanel" data-lang="html"><pre><code>&lt;section class=&quot;card panel chart-box&quot;&gt;
+<div role="tabpanel" data-lang="html"><pre><code>&lt;section class="card panel chart-box"&gt;
   &lt;header&gt;&lt;h3&gt;Traffic&lt;/h3&gt;&lt;p&gt;Visitors vs signups&lt;/p&gt;&lt;/header&gt;
-  &lt;div data-chart=&quot;area&quot; data-values=&quot;[[420,480,450,520],[260,300,280,340]]&quot; aria-label=&quot;Traffic&quot;&gt;&lt;/div&gt;
+  &lt;div data-chart="area" data-values="[[420,480,450,520],[260,300,280,340]]" aria-label="Traffic"&gt;&lt;/div&gt;
 &lt;/section&gt;
-&lt;script type=&quot;module&quot;&gt;import { mount } from &quot;./charts.js&quot;; mount();&lt;/script&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>import { useEffect, useRef } from &quot;react&quot;;
-import { area } from &quot;./charts.js&quot;;
+&lt;script type="module"&gt;import { mount } from "./charts.js"; mount();&lt;/script&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden=""><pre><code>import { useEffect, useRef } from "react";
+import { area } from "./charts.js";
 export function AreaChart({ series, title, sub }) {
   const ref = useRef(null);
   useEffect(() =&gt; { ref.current.innerHTML = area(series, { label: title }); }, [series, title]);
   return (
-    &lt;section className=&quot;card panel chart-box&quot;&gt;
+    &lt;section className="card panel chart-box"&gt;
       &lt;header&gt;&lt;h3&gt;{title}&lt;/h3&gt;{sub &amp;&amp; &lt;p&gt;{sub}&lt;/p&gt;}&lt;/header&gt;
       &lt;div ref={ref} /&gt;
     &lt;/section&gt;
   );
-}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;#macro chart kind title values sub=&quot;&quot;&gt;
-  &lt;section class=&quot;card panel chart-box&quot;&gt;
+}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden=""><pre><code>&lt;#macro chart kind title values sub=""&gt;
+  &lt;section class="card panel chart-box"&gt;
     &lt;header&gt;&lt;h3&gt;${title}&lt;/h3&gt;&lt;#if sub?has_content&gt;&lt;p&gt;${sub}&lt;/p&gt;&lt;/#if&gt;&lt;/header&gt;
-    &lt;div data-chart=&quot;${kind}&quot; data-values=&#x27;${values}&#x27; aria-label=&quot;${title}&quot;&gt;&lt;/div&gt;
+    &lt;div data-chart="${kind}" data-values='${values}' aria-label="${title}"&gt;&lt;/div&gt;
   &lt;/section&gt;
 &lt;/#macro&gt;
-&lt;@chart kind=&quot;area&quot; title=&quot;Traffic&quot; sub=&quot;Visitors vs signups&quot; values=&quot;[[420,480,450,520],[260,300,280,340]]&quot;/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+&lt;@chart kind="area" title="Traffic" sub="Visitors vs signups" values="[[420,480,450,520],[260,300,280,340]]"/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
-&lt;div th:replace=&quot;~{colibri/thymeleaf/chart-panel :: chart_panel(&#x27;Weekly sessions&#x27;, ${chartValuesJson})}&quot;&gt;&lt;/div&gt;
+&lt;div th:replace="~{colibri/thymeleaf/chart-panel :: chart_panel('Weekly sessions', ${chartValuesJson})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
-&lt;section xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;chart_panel(title, values)&quot; class=&quot;card panel chart-box&quot;&gt;
+&lt;section xmlns:th="http://www.thymeleaf.org" th:fragment="chart_panel(title, values)" class="card panel chart-box"&gt;
   &lt;header&gt;
-    &lt;h3 th:text=&quot;${title}&quot;&gt;Traffic&lt;/h3&gt;
+    &lt;h3 th:text="${title}"&gt;Traffic&lt;/h3&gt;
   &lt;/header&gt;
-  &lt;div data-chart=&quot;bars&quot; th:attr=&quot;data-values=${values},aria-label=${title}&quot;&gt;
+  &lt;div data-chart="bars" th:attr="data-values=${values},aria-label=${title}"&gt;
   &lt;/div&gt;
 &lt;/section&gt;</code></pre></div></div></details><details class="source"><summary>Data table — HTML · React · FreeMarker · Thymeleaf</summary>
 <div class="code-tabs"><div role="tablist" aria-label="Data table source"><button role="tab" aria-selected="true">HTML</button><button role="tab" aria-selected="false">React</button><button role="tab" aria-selected="false">FreeMarker</button><button role="tab" aria-selected="false">Thymeleaf</button></div>
-<div role="tabpanel" data-lang="html"><pre><code>&lt;table class=&quot;data&quot;&gt;
+<div role="tabpanel" data-lang="html"><pre><code>&lt;table class="data"&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;
-    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
-        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;ok&quot;&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;span class="who"&gt;&lt;span class="av"&gt;NK&lt;/span&gt;Nino K.&lt;/span&gt;&lt;/td&gt;&lt;td&gt;Pro&lt;/td&gt;&lt;td&gt;$290&lt;/td&gt;
+        &lt;td&gt;&lt;span class="badge" data-tone="ok"&gt;Active&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden><pre><code>export function CustomerTable({ rows }) {
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="react" hidden=""><pre><code>export function CustomerTable({ rows }) {
   return (
-    &lt;table className=&quot;data&quot;&gt;
+    &lt;table className="data"&gt;
       &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
       &lt;tbody&gt;{rows.map((c) =&gt; (
-        &lt;tr key={c.id}&gt;&lt;td&gt;&lt;span className=&quot;who&quot;&gt;&lt;span className=&quot;av&quot;&gt;{c.initials}&lt;/span&gt;{c.name}&lt;/span&gt;&lt;/td&gt;
+        &lt;tr key={c.id}&gt;&lt;td&gt;&lt;span className="who"&gt;&lt;span className="av"&gt;{c.initials}&lt;/span&gt;{c.name}&lt;/span&gt;&lt;/td&gt;
           &lt;td&gt;{c.plan}&lt;/td&gt;&lt;td&gt;{c.mrr}&lt;/td&gt;
-          &lt;td&gt;&lt;span className=&quot;badge&quot; data-tone={c.active ? &quot;ok&quot; : &quot;warn&quot;}&gt;{c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+          &lt;td&gt;&lt;span className="badge" data-tone={c.active ? "ok" : "warn"}&gt;{c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
       ))}&lt;/tbody&gt;
     &lt;/table&gt;
   );
-}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden><pre><code>&lt;table class=&quot;data&quot;&gt;
+}</code></pre></div><div role="tabpanel" data-lang="ftl" hidden=""><pre><code>&lt;table class="data"&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Customer&lt;/th&gt;&lt;th&gt;Plan&lt;/th&gt;&lt;th&gt;MRR&lt;/th&gt;&lt;th&gt;Status&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;
   &lt;#list customers as c&gt;
-    &lt;tr&gt;&lt;td&gt;&lt;span class=&quot;who&quot;&gt;&lt;span class=&quot;av&quot;&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
+    &lt;tr&gt;&lt;td&gt;&lt;span class="who"&gt;&lt;span class="av"&gt;${c.initials}&lt;/span&gt;${c.name}&lt;/span&gt;&lt;/td&gt;
         &lt;td&gt;${c.plan}&lt;/td&gt;&lt;td&gt;${c.mrr?string.currency}&lt;/td&gt;
-        &lt;td&gt;&lt;span class=&quot;badge&quot; data-tone=&quot;${c.active?then(&#x27;ok&#x27;,&#x27;warn&#x27;)}&quot;&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
+        &lt;td&gt;&lt;span class="badge" data-tone="${c.active?then('ok','warn')}"&gt;${c.status}&lt;/span&gt;&lt;/td&gt;&lt;/tr&gt;
   &lt;/#list&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden><pre><code>&lt;!-- Application template: values come from the controller model.
+&lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
-&lt;div th:replace=&quot;~{colibri/thymeleaf/customer-table :: customer_table(${customers})}&quot;&gt;&lt;/div&gt;
+&lt;div th:replace="~{colibri/thymeleaf/customer-table :: customer_table(${customers})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
-&lt;table xmlns:th=&quot;http://www.thymeleaf.org&quot; th:fragment=&quot;customer_table(customers)&quot; class=&quot;data&quot;&gt;
+&lt;table xmlns:th="http://www.thymeleaf.org" th:fragment="customer_table(customers)" class="data"&gt;
   &lt;thead&gt;
     &lt;tr&gt;
-      &lt;th scope=&quot;col&quot;&gt;Customer&lt;/th&gt;
-      &lt;th scope=&quot;col&quot;&gt;Plan&lt;/th&gt;
-      &lt;th scope=&quot;col&quot;&gt;MRR&lt;/th&gt;
+      &lt;th scope="col"&gt;Customer&lt;/th&gt;
+      &lt;th scope="col"&gt;Plan&lt;/th&gt;
+      &lt;th scope="col"&gt;MRR&lt;/th&gt;
     &lt;/tr&gt;
   &lt;/thead&gt;
   &lt;tbody&gt;
-    &lt;tr th:each=&quot;customer : ${customers}&quot;&gt;
-      &lt;td th:text=&quot;${customer.name}&quot;&gt;Name&lt;/td&gt;
-      &lt;td th:text=&quot;${customer.plan}&quot;&gt;Plan&lt;/td&gt;
-      &lt;td th:text=&quot;${customer.mrr}&quot;&gt;0&lt;/td&gt;
+    &lt;tr th:each="customer : ${customers}"&gt;
+      &lt;td th:text="${customer.name}"&gt;Name&lt;/td&gt;
+      &lt;td th:text="${customer.plan}"&gt;Plan&lt;/td&gt;
+      &lt;td th:text="${customer.mrr}"&gt;0&lt;/td&gt;
     &lt;/tr&gt;
-    &lt;tr th:if=&quot;${#lists.isEmpty(customers)}&quot;&gt;
-      &lt;td colspan=&quot;3&quot;&gt;No customers yet&lt;/td&gt;
+    &lt;tr th:if="${#lists.isEmpty(customers)}"&gt;
+      &lt;td colspan="3"&gt;No customers yet&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre></div></div></details></main></div></div><script type="module" src="dash.js?v=separate-2"></script><script type="module" src="shell.js?v=separate-2"></script></body></html>

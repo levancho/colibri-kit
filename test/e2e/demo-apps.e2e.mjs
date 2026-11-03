@@ -41,7 +41,7 @@ try {
  for(const name of ['analytics','crm']){await page.setViewport({width:1440,height:1000});await go(name+'.html');await page.screenshot({path:`/tmp/colibri-${name}-distinct.png`});}
  await go('index.html');assert.equal(await page.$$eval('.dashboard-preview',e=>e.length),6);
  for(const name of ['analytics','crm','workspace','account','commerce','support']){
-  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`.dashboard-preview .gallery-open[href="${name}.html"]`)]);
+  await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(`.dashboard-preview .gallery-link[href="${name}.html"]`)]);
   assert.equal(new URL(page.url()).pathname.split('/').pop(),name+'.html',name+': gallery destination');
   assert.equal(await page.$eval('body',e=>e.dataset.demo||e.dataset.app),name,name+': page identity');
   assert.ok(await page.$eval('.dash-side,.app-nav',e=>{const r=e.getBoundingClientRect();return r.x===0&&r.width<300&&r.height>=900;}),name+': consistent desktop left navigation');

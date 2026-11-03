@@ -5,5 +5,26 @@ try{const page=await browser.newPage();await page.setViewport({width:1440,height
  await page.focus(card('analytics')+' [data-device=phone]');await page.keyboard.press('Home');assert.equal(await page.$eval(card('analytics')+' iframe',f=>f.contentWindow.innerWidth),1440);
  await page.setViewport({width:390,height:1000});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));await page.setViewport({width:1440,height:1000});
  for(const name of ['analytics','crm','workspace','account','commerce','support']){await page.goto(base+name+'.html',{waitUntil:'networkidle0'});assert.equal(await page.$$eval('header .dp-bar',els=>els.length),1,name+' owns its device control');await page.click('header [data-device=phone]');await page.waitForSelector('.dp-stage iframe');await page.waitForFunction(()=>document.querySelector('.dp-stage iframe').contentWindow.innerWidth===390);await page.click('header [data-device=desktop]');assert.equal(await page.$('.dp-stage'),null);}
+
+ const accents = new Set();
+ for(const name of ['analytics','crm','workspace','account','commerce','support']){
+   await page.goto(base+'index.html',{waitUntil:'networkidle0'});
+   assert.equal(await page.$$eval('.preview-toolbar a',els=>els.length),0);
+   await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.click(card(name)+' .shot')]);
+   assert.equal(new URL(page.url()).pathname.split('/').pop(),name+'.html');
+   accents.add(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--c-accent')));
+ }
+ assert.equal(accents.size,6,'Each application has a distinct default accent');
+ await page.goto(base+'index.html',{waitUntil:'networkidle0'});
+ await page.focus(card('analytics')+' .gallery-link');
+ await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),page.keyboard.press('Enter')]);
+ assert.ok(page.url().endsWith('/analytics.html'));
+ await page.evaluate(()=>{const hue=document.querySelector('#hue');hue.value='110';hue.dispatchEvent(new Event('input',{bubbles:true}));});
+ const accent=await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--c-accent'));
+ for(const route of ['analytics-traffic','analytics-audience','analytics-events','analytics-reports','analytics-settings','analytics']){
+   await page.goto(base+route+'.html',{waitUntil:'networkidle0'});
+   assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).getPropertyValue('--c-accent')),accent,route+' preserves accent');
+ }
+ console.log('ok all six image links, keyboard navigation, distinct accents and Analytics theme persistence');
  console.log('ok six independent card controls, actual 390/768/1440 iframe widths, no gallery-wide preview, keyboard selection and standalone controls');
 }finally{await browser.close();await server.close();}
