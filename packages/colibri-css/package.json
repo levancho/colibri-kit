@@ -20,5 +20,8 @@
   "scripts": {
     "build": "node build.mjs"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "fflate": "0.8.2"
+  }
 }

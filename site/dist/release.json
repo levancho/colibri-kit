@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "release": "27b798733b48293e8683ad7ada60fe0be445110b5dd0e52201095cd25221ad7e",
+  "release": "206318869a9816a5a8c52de398f6d9e81c3caf4cff0775ea7741e3c3cd5edfa3",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
     "colibri-mark.svg": "e7dfd00667a19da890eb5b0f43429b61b249f5f23144cb7ac4416d503c44fdeb",
-    "css/bundle-sizes.json": "814ff3094226fc1eb4b485d7a84d041ce12397919c6fba311c7009a82efc8da7",
+    "css/bundle-sizes.json": "6accf1c70e2d3dfb4959a25adfda252c026222e9dcc6b1bad0b927afeb2b1074",
     "css/colibri-applications.css": "0cfbca24f233f1de1d9c065ebac64e87e1bf9d892d144fe63226f3c8637e4a29",
     "css/colibri-ui-bridge.css": "a857c8bb22bcbf49250176d4f9d4aa60718d98b192680ea4115d8f1fce81b7bb",
     "css/colibri.css": "11c13fd883d429e86738378124d85e5fd6d3727849f2706c4f6811c494ab08e0",
@@ -93,7 +93,7 @@
     "kitchen-sink/examples/playground/studio.js": "7eec0e777a5e88820fdbc93ef1c0782641ebf472d007ade432395e2b17071e6b",
     "kitchen-sink/examples/tabs.html": "fedec8a1ef7c841f07706f7dbf11ecf5000bad06892cb650de1de29ad6ebd054",
     "kitchen-sink/packages/colibri-css/README.md": "371efee64209d485dea5fc4b518dfe566456a824a2b50d5756ee63c40a90e9b3",
-    "kitchen-sink/packages/colibri-css/dist/bundle-sizes.json": "814ff3094226fc1eb4b485d7a84d041ce12397919c6fba311c7009a82efc8da7",
+    "kitchen-sink/packages/colibri-css/dist/bundle-sizes.json": "6accf1c70e2d3dfb4959a25adfda252c026222e9dcc6b1bad0b927afeb2b1074",
     "kitchen-sink/packages/colibri-css/dist/colibri-applications.css": "0cfbca24f233f1de1d9c065ebac64e87e1bf9d892d144fe63226f3c8637e4a29",
     "kitchen-sink/packages/colibri-css/dist/colibri-ui-bridge.css": "a857c8bb22bcbf49250176d4f9d4aa60718d98b192680ea4115d8f1fce81b7bb",
     "kitchen-sink/packages/colibri-css/dist/colibri.css": "11c13fd883d429e86738378124d85e5fd6d3727849f2706c4f6811c494ab08e0",

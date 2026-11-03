@@ -1,5 +1,5 @@
-import { gzipSync } from "node:zlib";
-// Concatenates src/*.css into dist/. No dependencies.
+import { gzipSync } from "fflate";
+// Maintainer build: concatenate CSS and measure gzip using a pinned, portable compressor.
 import fs from "node:fs"; import path from "node:path"; import url from "node:url";
 const here = path.dirname(url.fileURLToPath(import.meta.url)), src = path.join(here, "src"), dist = path.join(here, "dist");
 const files = fs.readdirSync(src).filter((f) => f.endsWith(".css")).sort();
@@ -17,5 +17,5 @@ console.log("built", files.length, "files ->", fs.readdirSync(dist).map((f) => f
 const applicationSources = ["records", "components", "shell", "identity", "compositions"];
 fs.writeFileSync(path.join(dist, "colibri-applications.css"), banner + fs.readFileSync(path.join(src,"00-layers.css"),"utf8") + applicationSources.map(name => fs.readFileSync(path.join(here,"applications",name+".css"),"utf8")).join("\n"));
 
-const sizes=Object.fromEntries(['colibri.css','colibri-applications.css','colibri-ui-bridge.css'].map(name=>{const bytes=fs.readFileSync(path.join(dist,name));return [name,{bytes:bytes.length,gzip:gzipSync(bytes).length}];}));
+const sizes=Object.fromEntries(['colibri.css','colibri-applications.css','colibri-ui-bridge.css'].map(name=>{const bytes=fs.readFileSync(path.join(dist,name));return [name,{bytes:bytes.length,gzip:gzipSync(bytes,{level:6,mtime:0}).length}];}));
 fs.writeFileSync(path.join(dist,'bundle-sizes.json'),JSON.stringify(sizes,null,2)+'\n');
