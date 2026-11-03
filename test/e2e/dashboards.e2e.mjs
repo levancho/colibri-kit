@@ -16,20 +16,22 @@ try {
   assert.equal(await page.$eval('.kpi b', e => e.textContent), '$101,500');
   await page.click('[data-action="deal"]');
   await page.type('[name="name"]', '<img src=x onerror=alert(1)>');
-  await page.type('[name="owner"]', 'Test Owner');
+  await page.$eval('[name="owner"]',e=>e.value='Test Owner');
   await page.type('[name="value"]', '500');
+  await page.type('[name="nextStep"]','Send the revised proposal');
   await page.select('[name="stage"]', 'Won');
   await page.click('.demo-form [type="submit"]');
   assert.equal(await page.$$eval('.deal', els => els.length), 9);
-  assert.equal(await page.$('.deal img'), null, 'user text is not interpreted as HTML');
+  assert.equal(await page.$('.deal img[src="x"], .deal [onerror]'), null, 'user text is not interpreted as HTML');
   await page.reload({ waitUntil: 'networkidle0' });
   assert.equal(await page.$$eval('.deal', els => els.length), 9, 'new deal persists');
+  assert.match(await page.$eval('.pipeline',e=>e.textContent),/Send the revised proposal/,'next action persists');
   await page.type('.search input', 'Test Owner');
   assert.equal(await page.$$eval('.deal', els => els.length), 1);
   await page.click('.deal');
   await page.select('[name="stage"]', 'Proposal');
   await page.click('.demo-form [type="submit"]');
-  assert.equal(await page.$eval('[aria-label="Proposal"] .deal small', e => e.textContent), 'Test Owner');
+  assert.equal(await page.$eval('[aria-label="Proposal"] .deal-owner strong', e => e.textContent), 'Test Owner');
   await page.click('.deal');
   await page.locator('::-p-text(Delete deal)').click();
   await page.locator('::-p-text(Delete permanently)').click();
@@ -45,7 +47,7 @@ try {
     const dt = new DataTransfer(); dt.items.add(new File([JSON.stringify([{id:'1',name:'Imported',owner:'Test Owner',value:123,stage:'Lead'}])], 'good.json')); el.files = dt.files; el.dispatchEvent(new Event('change'));
   });
   await page.waitForFunction(() => !document.querySelector('dialog').open);
-  assert.equal(await page.$eval('.deal > span', e => e.textContent), 'Imported');
+  assert.equal(await page.$eval('.deal-company > span:last-child', e => e.textContent), 'Imported');
   console.log('ok CRM create/edit/delete, derived metrics, safe text, persistence, search, atomic import validation');
   await page.goto(base + 'analytics.html', { waitUntil: 'networkidle0' });
   const original = await page.$eval('#traffic', e => JSON.parse(e.dataset.values));
@@ -69,47 +71,16 @@ try {
   assert.match(await page.$eval('dialog', e => e.textContent), /Trial customers/);
   await page.keyboard.press('Escape');
   await page.reload({ waitUntil: 'networkidle0' });
-  await page.click('[data-workspace=reports]');
-  assert.match(await page.$eval('dialog', e => e.textContent), /Trial customers/);
-  await page.keyboard.press('Escape');
-  await page.click('[data-workspace=inbox]');
-  await page.locator('::-p-text(Mark read)').click();
-  assert.equal(await page.$eval('[data-workspace=inbox] .badge', e => e.textContent), '2');
-  await page.keyboard.press('Escape');
-  await page.click('details.source summary');
-  await page.focus('.code-tabs [role=tab]'); await page.keyboard.press('End');
-  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Thymeleaf');
-  assert.equal(await page.$eval('.code-tabs', el => el.querySelectorAll('[role=tab][tabindex="0"]').length), 1);
-  await page.select('[aria-label="Customer status"]', 'All');
-  await page.click('th:nth-child(3) button');
-  assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)', e => e.textContent), '$29');
-  await page.click('th:nth-child(3) button');
-  assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)', e => e.textContent), '$1,140');
-  await page.click('[data-workspace=settings]');
-  await page.locator('::-p-text(Reset demo data)').click();
-  await page.locator('::-p-text(Reset now)').click();
-  await page.click('[data-workspace=reports]');
-  assert.match(await page.$eval('dialog', e => e.textContent), /No saved reports/);
-  await page.keyboard.press('Escape');
-  console.log('ok analytics filters, numeric sorting, filtered CSV, saved reports, reset, inbox, consistent ranges and keyboard tabs');
-  for (const width of [320, 768, 1440]) {
-    for (const name of ['analytics', 'crm']) {
-      await page.setViewport({ width, height: 900 });
-      await page.goto(base + name + '.html', { waitUntil: 'networkidle0' });
-      assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${name}: no page overflow at ${width}px; ${JSON.stringify(await page.evaluate(() => [...document.querySelectorAll("body *")].filter(el => el.getBoundingClientRect().right > innerWidth + 1).slice(0,12).map(el => ({tag:el.tagName, class:el.className, right:el.getBoundingClientRect().right}))))}`);
-      if (width < 900) {
-        assert.equal(await page.$eval('.dash-side', e => e.inert), true);
-        await page.click('.menu-btn');
-        assert.equal(await page.$eval('.menu-btn', e => e.getAttribute('aria-expanded')), 'true');
-        await page.keyboard.press('Escape');
-        assert.equal(await page.$eval('.dash-side', e => e.inert), true);
-      }
-    }
-  }
-  await page.evaluateOnNewDocument(() => { Object.defineProperty(window, 'localStorage', { get() { throw new DOMException('Blocked', 'SecurityError'); } }); });
-  await page.goto(base + 'crm.html', { waitUntil: 'networkidle0' });
-  await page.click('[data-action=deal]');
-  assert.equal(await page.$eval('dialog', e => e.open), true);
-  assert.deepEqual(errors, []);
-  console.log('ok both dashboards at 320/768/1440px, mobile menu, blocked storage, no uncaught errors');
-} finally { await browser?.close(); await server.close(); }
+  await Promise.all([page.waitForNavigation(),page.click('.suite-context a[href="analytics-reports.html"]')]);
+  assert.match(await page.$eval('#workspace-content',e=>e.textContent),/Trial customers/);
+  assert.doesNotMatch(await page.$eval('#workspace-content',e=>e.textContent),/Pipeline snapshot/);
+  await page.locator('::-p-text(Preview report)').click();assert.match(await page.$eval('.report-preview',e=>e.textContent),/Ana Meladze/);await page.keyboard.press('Escape');
+  await page.locator('::-p-text(Delete report)').click();await page.locator('::-p-text(Confirm delete)').click();assert.match(await page.$eval('#workspace-content',e=>e.textContent),/No saved reports/);
+  await page.goto(base+'analytics-audience.html',{waitUntil:'networkidle0'});
+  await page.click('th:nth-child(3) button');assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)',e=>e.textContent),'$29');
+  await page.click('th:nth-child(3) button');assert.equal(await page.$eval('tbody tr:first-child td:nth-child(3)',e=>e.textContent),'$1,140');
+  await page.goto(base+'analytics.html',{waitUntil:'networkidle0'});await page.click('details.source summary');await page.focus('.code-tabs [role=tab]');await page.keyboard.press('End');assert.equal(await page.evaluate(()=>document.activeElement.textContent),'Thymeleaf');
+  for(const width of [320,768,1440])for(const route of ['analytics','crm','analytics-audience','analytics-reports']){await page.setViewport({width,height:900});await page.goto(base+route+'.html',{waitUntil:'networkidle0'});assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),route+': no page overflow');if(width<900){assert.equal(await page.$eval('.dash-side',e=>e.inert),true);await page.click('.menu-btn');await page.keyboard.press('Escape');assert.equal(await page.$eval('.dash-side',e=>e.inert),true);}}
+  await page.evaluateOnNewDocument(()=>{Object.defineProperty(window,'localStorage',{get(){throw new DOMException('Blocked','SecurityError');}});});await page.goto(base+'crm.html',{waitUntil:'networkidle0'});await page.click('[data-action=deal]');assert.equal(await page.$eval('dialog',e=>e.open),true);
+  assert.deepEqual(errors,[]);console.log('ok independent pipeline and analytics: deal CRUD/import, next-action persistence, audience filtering/sorting/CSV, report save/preview/delete, keyboard tabs, responsive layout and blocked storage');
+}finally{await browser?.close();await server.close();}

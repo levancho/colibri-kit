@@ -1,7 +1,7 @@
 // Device preview: a segmented Desktop / Tablet / Phone switcher that re-renders THIS page inside a real iframe
 // of the chosen width, so media queries AND container queries respond exactly as on a device.
 //   import { mountDevicePreview } from "./device-preview.js"; mountDevicePreview(document.querySelector(".toolbar"));
-const DEVICES = [
+export const DEVICES = [
   { id: "desktop", label: "Desktop", w: 0, h: 0, icon: '<rect x="2" y="3" width="20" height="13" rx="2"/><path d="M8 21h8M12 16v5"/>' },
   { id: "tablet", label: "Tablet", w: 768, h: 1024, icon: '<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M11 18h2"/>' },
   { id: "phone", label: "Phone", w: 390, h: 844, icon: '<rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/>' },
@@ -18,7 +18,7 @@ const CSS = `.dp-bar{display:inline-flex;align-items:center;gap:2px;padding:3px;
 .dp-stage iframe{display:block;max-inline-size:100%;border:0;border-radius:18px;background:Canvas;box-shadow:0 0 0 10px #111,0 20px 50px #0006}
 html.dp-framed .dp-bar,html.dp-framed .dp-size{display:none!important}
 @media (width < 700px){.dp-bar{display:none}}`;
-export function mountDevicePreview(host, { top } = {}) {
+export function mountDevicePreview(host, { top, storageKey = KEY } = {}) {
   if (!host || framed) return null;
   if (!document.getElementById("dp-css")) { const s = document.createElement("style"); s.id = "dp-css"; s.textContent = CSS; document.head.append(s); }
   const bar = document.createElement("div"); bar.className = "dp-bar"; bar.setAttribute("role", "radiogroup"); bar.setAttribute("aria-label", "Preview width");
@@ -29,7 +29,7 @@ export function mountDevicePreview(host, { top } = {}) {
   const set = (id, focus) => {
     const d = DEVICES.find((x) => x.id === id) || DEVICES[0];
     bar.querySelectorAll("button").forEach((b) => { const on = b.dataset.device === d.id; b.setAttribute("aria-checked", String(on)); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
-    try { localStorage.setItem(KEY, d.id); } catch {}
+    try { localStorage.setItem(storageKey, d.id); } catch {}
     size.textContent = d.w ? `${d.w}×${d.h}` : "";
     if (!d.w) { stage?.remove(); stage = null; document.documentElement.style.overflow = ""; return; }
     if (!stage) { stage = document.createElement("div"); stage.className = "dp-stage"; stage.innerHTML = '<iframe title="Device preview"></iframe>'; document.body.append(stage);
@@ -43,7 +43,7 @@ export function mountDevicePreview(host, { top } = {}) {
   bar.addEventListener("keydown", (e) => { const ids = DEVICES.map((d) => d.id), cur = ids.indexOf(bar.querySelector("[aria-checked=true]")?.dataset.device);
     const k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]; if (k) { e.preventDefault(); set(ids[(cur + k + ids.length) % ids.length], true); } });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && stage) set("desktop"); });
-  let saved = "desktop"; try { saved = localStorage.getItem(KEY) || "desktop"; } catch {}
+  let saved = "desktop"; try { saved = localStorage.getItem(storageKey) || "desktop"; } catch {}
   set(saved);
   return { set };
 }
