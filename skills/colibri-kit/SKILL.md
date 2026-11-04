@@ -1,6 +1,8 @@
 ---
 name: colibri-kit
 description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, React, FreeMarker and Thymeleaf without adding Tailwind.
+version: 1.1.0
+license: MIT
 ---
 # Colibri Kit
 
