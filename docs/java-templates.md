@@ -12,13 +12,7 @@ The Thymeleaf tab shows a real fragment when one is supplied. Other examples sho
 
 ## Install the template resources
 
-Until `ai.l3v.colibri:colibri-templates` appears on Maven Central (the release setup is described in [publishing](publishing.md)), build and install it from this checkout:
-
-```sh
-mvn -f java/colibri-templates/pom.xml clean install
-```
-
-Then add this dependency to your application:
+The templates are published on Maven Central. Add the dependency to your application:
 
 ```xml
 <dependency>
@@ -28,11 +22,11 @@ Then add this dependency to your application:
 </dependency>
 ```
 
-If distributing the JAR within a team, publish it to your private Maven repository or install the supplied JAR with:
+Gradle: `implementation("ai.l3v.colibri:colibri-templates:0.1.0")`.
 
-```sh
-mvn install:install-file -Dfile=colibri-templates-0.1.0.jar -DgroupId=ai.l3v.colibri -DartifactId=colibri-templates -Dversion=0.1.0 -Dpackaging=jar
-```
+The artifact holds the FreeMarker macros and Thymeleaf fragments under `templates/colibri/` and no Java classes, so
+it brings no transitive dependencies; your application supplies the template engine. To use an unreleased revision,
+build and install it from a checkout with `mvn -f java/colibri-templates/pom.xml clean install`.
 
 Alternatively, copy `freemarker/` and/or `thymeleaf/` into `src/main/resources/templates/colibri/`. The template package includes no Java classes; extra processors are unnecessary for native fragments.
 

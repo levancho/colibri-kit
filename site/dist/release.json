@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "1afba0666e60c0b903e4adb7f30b86aacae9bc8f4a85b944a1c3e7efff30fa52",
+  "release": "f4cf68545adbe524a9b47b5913cdc270828ad1a3c98b8ea762cbac2f35b5f1d1",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -17,7 +17,7 @@
     "framework-support.json": "1a74e5230e2338c3075242a8b715e5d896fd9d2d54bda6701ebb7bb941b24a3b",
     "getting-started.html": "4658158fe57e2cf55bbc64cfa033b69a4a15fe16f8b83e22f9d7b16a64e5dddb",
     "index.html": "4357bac903662e029193c90becf32b851920cdff6e328e762be2222f371d21e3",
-    "java-templates.html": "c2225ace1d6f9bac65d22e5dbe701ba29a8a1994bce65cbed9106b76edd88ffb",
+    "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
     "kitchen-sink/examples/application-preview-entry.js": "83a464cbe300c0313d93d365d38301d5091b9cfe832283920b246579aecba481",
     "kitchen-sink/examples/application-preview.js": "f5ccb13da323bd401cdfe19d1cc0383193f1b7806297424ebbaa0e7444728adb",

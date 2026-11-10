@@ -85,11 +85,9 @@ found by reading.
 
 ## Java / templates
 
-- [ ] **Publish to Maven Central.** The POM is ready (release version 0.1.0, project metadata, sources and
-      javadoc archives, signing, Central Portal upload in the `release` profile; `publish-maven.yml` workflow).
-      Still needed from the owner: Central Portal account, `ai.l3v` namespace verification, user token and a
-      signing key. See `docs/publishing.md`. Then update `docs/java-templates.md` and the site page to drop the
-      manual install steps.
+- [x] **Publish to Maven Central.** `ai.l3v.colibri:colibri-templates:0.1.0` was released on 10 Nov 2026
+      (signing key fingerprint `104A84AB9E85EF59BB03834B670F6062120D3510`). See `docs/publishing.md`.
+- [ ] Add the four repository secrets so `publish-maven.yml` can make later releases, or keep releasing by hand.
 - [ ] **`javascript:` URLs pass through `href`/`src`/`action` parameters** in both engines (verified). Now
       documented; consider a scheme allow-list helper.
 - [ ] **Thymeleaf slot parameters** (`card`, `dialog`, `collapsible`, `application-shell`) treat a String as a

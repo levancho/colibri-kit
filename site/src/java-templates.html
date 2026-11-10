@@ -9,20 +9,15 @@
 &lt;!-- OR: spring-boot-starter-thymeleaf --&gt;</code></pre>
 <p>Maven downloads FreeMarker or Thymeleaf and its dependencies. Colibri’s resource JAR does not bundle either engine.</p>
 <h2>2. Add Colibri’s templates</h2>
-<p><a class="btn" href="/downloads/colibri-templates-0.1.0.jar" download>Download the template JAR</a></p>
-<p><a href="https://github.com/levancho/colibri-kit/tree/main/java/colibri-templates">Source and Java tests on GitHub</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/thymeleaf">Thymeleaf fragments</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/freemarker">FreeMarker macros</a></p>
-<p>Install the downloaded JAR in your local Maven repository:</p>
-<pre class="code"><code>mvn install:install-file \
-  -Dfile=colibri-templates-0.1.0.jar \
-  -DgroupId=ai.l3v.colibri \
-  -DartifactId=colibri-templates \
-  -Dversion=0.1.0 -Dpackaging=jar</code></pre>
-<p>From the Colibri checkout, build the supplemental JAR:</p><pre class="code"><code>mvn -f java/colibri-templates/pom.xml clean install</code></pre>
+<p>The templates are published on Maven Central. Add the dependency to your application:</p>
 <pre class="code"><code>&lt;dependency&gt;
   &lt;groupId&gt;ai.l3v.colibri&lt;/groupId&gt;
   &lt;artifactId&gt;colibri-templates&lt;/artifactId&gt;
   &lt;version&gt;0.1.0&lt;/version&gt;
-&lt;/dependency&gt;</code></pre><p>This artifact is installed locally by the command above; it is not published to Maven Central. You can also copy the <code>freemarker/</code> or <code>thymeleaf/</code> directory into your application’s <code>src/main/resources/templates/colibri/</code> directory.</p>
+&lt;/dependency&gt;</code></pre>
+<p>Gradle: <code>implementation("ai.l3v.colibri:colibri-templates:0.1.0")</code>. The artifact holds the FreeMarker macros and Thymeleaf fragments and no Java classes, so it brings no transitive dependencies; your application supplies the template engine.</p>
+<p><a href="https://central.sonatype.com/artifact/ai.l3v.colibri/colibri-templates">colibri-templates on Maven Central</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/java/colibri-templates">Source and Java tests on GitHub</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/thymeleaf">Thymeleaf fragments</a> · <a href="https://github.com/levancho/colibri-kit/tree/main/freemarker">FreeMarker macros</a></p>
+<p>Without a build tool, <a href="/downloads/colibri-templates-0.1.0.jar" download>download the same JAR</a>. You can also copy the <code>freemarker/</code> or <code>thymeleaf/</code> directory into your application’s <code>src/main/resources/templates/colibri/</code> directory.</p>
 <h2>3. Render components with model data</h2><h3>FreeMarker</h3><pre class="code"><code>[#ftl output_format="HTML"]
 [#import "/colibri/freemarker/ui.ftl" as ui]
 [@ui.button disabled=saving]${buttonLabel}[/@ui.button]</code></pre><p>Use <code>.ftlh</code> for Spring Boot’s default HTML template suffix, or configure your application’s suffix. HTML auto-escaping stays enabled.</p>
