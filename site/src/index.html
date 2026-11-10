@@ -237,12 +237,14 @@ createTabs(document.querySelector("#settings"));</code></pre>
     <p class="section-intro"><a href="/getting-started.html">Install a working starter, customize it and connect your application →</a></p>
     <h3>1. Add it to your project</h3>
     <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;https://colibri.l3v.ai/css/colibri.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri.css&quot;&gt;
 &lt;!-- 2. component styling + shared tokens --&gt;
-&lt;link rel="stylesheet" href="https://colibri.l3v.ai/ui/themes/colibri.css"&gt;
-&lt;link rel="stylesheet" href="https://colibri.l3v.ai/css/colibri-ui-bridge.css"&gt;
-&lt;!-- 3. behaviour: every data-ui element wires itself --&gt;
-&lt;script type=&quot;module&quot; src=&quot;https://colibri.l3v.ai/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Maven: choose the engine for your application. --&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/themes/colibri.css"&gt;
+&lt;link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri-ui-bridge.css"&gt;
+&lt;!-- 3. behaviour: every data-ui element wires itself; only the controllers in use are downloaded --&gt;
+&lt;script type=&quot;module&quot; src=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/dist/lazy/auto-lazy.js&quot;&gt;&lt;/script&gt;
+&lt;!-- 4. on your page --&gt;
+&lt;body class=&quot;ui-root&quot;&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Maven: choose the engine for your application. --&gt;
 &lt;dependency&gt;
   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
   &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
@@ -256,9 +258,7 @@ createTabs(document.querySelector("#settings"));</code></pre>
 &lt;script type=&quot;module&quot; src=&quot;${base}/ui/src/core/auto.js&quot;&gt;&lt;/script&gt;
 
 [#-- then use macros anywhere --]
-[@ui.button variant=&quot;outline&quot;]Save[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// Install from source (npm registry releases are not published yet):
-// git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
-// npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css
+[@ui.button variant=&quot;outline&quot;]Save[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="react"><button type="button" class="copy" data-copy aria-label="Copy React code">Copy</button><pre class="code"><code>// npm install @colibri-kit/ui @colibri-kit/css
 import &quot;@colibri-kit/ui/themes/colibri.css&quot;;
 import &quot;@colibri-kit/css&quot;;
 import &quot;@colibri-kit/css/bridge&quot;;

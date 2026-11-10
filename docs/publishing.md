@@ -54,13 +54,8 @@ npm stage approve <stage-id>
 
 A published version cannot be replaced. If something is wrong, fix it and release the next patch version.
 
-## After the first release
+## After each release
 
-Consumers can then install from the registry instead of a checkout:
-
-```sh
-npm install @colibri-kit/ui @colibri-kit/css
-npx -p @colibri-kit/ui colibri init --starter
-```
+The version number appears in pinned CDN links in `README.md`-adjacent guides: `docs/getting-started.md`, `site/src/getting-started.html` and the homepage snippet in `site/src/index.html`. Update them to the new version, then run `npm run build`.
 
 Always name the package with `npx -p`: the unscoped names `colibri` and `colibri-ui` on npm belong to unrelated projects.

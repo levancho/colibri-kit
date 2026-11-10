@@ -140,5 +140,5 @@ found by reading.
 - [ ] `docs/colibri-ui.md` still says the React wrapper is "later" and uses an old folder name.
 - [ ] `package.json` homepage is `colibri-kit.io` while docs use `colibri.l3v.ai`; pick one.
 - [ ] "Colibri Bridge" (palette transport) and "the bridge stylesheet" are two things with one name.
-- [ ] The homepage HTML snippet hot-links an unversioned demo host and omits `class="ui-root"`; point it at the
-      npm packages once published.
+- [x] The homepage HTML snippet now links pinned files from npm via a CDN and shows `class="ui-root"`.
+- [ ] Pinned CDN versions in the guides and homepage are written by hand; inject the version at build time.

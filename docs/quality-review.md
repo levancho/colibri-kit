@@ -28,7 +28,7 @@ The implementation did not consistently fulfill that direction. The optional UI 
 | Storage exceptions can break landing-page controls | Optional storage; validated language/theme values |
 | Gallery `content-visibility` changes floating-layer positioning | Disable containment while an owned layer is open |
 | Package metadata disagrees with documented names; themes are not exported | Align source package name, export optional themes, retain auto/CSS side effects and restrict package contents |
-| Installation examples reference unpublished npm releases | Source-checkout installation instructions; no registry publication performed |
+| Installation examples reference unpublished npm releases | `@colibri-kit/ui` and `@colibri-kit/css` 0.1.0 are published; guides lead with npm, `npx` and pinned CDN links, with the checkout as the alternative |
 | Catalog/size metrics drift from shipped files | Generate public metrics and README catalog from the build |
 | Tests lack reproducible install/CI and built-site coverage | Lockfile, patched browser-test dependency, self-contained browser servers and CI |
 

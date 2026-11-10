@@ -88,7 +88,7 @@ Tones accept both vocabularies: `data-tone="ok|warn|bad"` is canonical here, and
 
 ## React
 
-The npm names describe the source packages; registry releases are not published yet. Clone the repository and install its root and `packages/colibri-css` directories as local dependencies (see the root README).
+Install both packages from npm: `npm install @colibri-kit/ui @colibri-kit/css`. They are released together at the same version.
 
 ```jsx
 import { Dialog, Tabs, Part, cx } from "@colibri-kit/ui/react";

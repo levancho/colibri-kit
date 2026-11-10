@@ -30,17 +30,16 @@ import "@colibri-kit/ui/lazy";                // wires every data-ui element, lo
 
 Put `class="ui-root"` on `<body>`. No bundler? Copy the files into your project instead: `npx -p @colibri-kit/ui colibri init --starter` writes a `colibri/` folder plus a working starter page that needs no build step.
 
-Or start from a checkout, without installing anything:
+Or try the starter without installing anything into a project:
 
 ```sh
-git clone https://github.com/levancho/colibri-kit.git colibri-kit
 mkdir my-app
 cd my-app
-node ../colibri-kit/bin/colibri.mjs init --starter
+npx -p @colibri-kit/ui colibri init --starter
 python3 -m http.server 8080
 ```
 
-Open http://localhost:8080/. The starter includes a settings form, local saving, a dialog, dark mode and your own `app.css`. The installer requires Node 22.12+; Python is only the example local server. The deployed page uses CSS and browser modules.
+Open http://localhost:8080/. The starter includes a settings form, local saving, a dialog, dark mode and your own `app.css`. The installer requires Node 22.12+; Python is only the example local server. To work from a checkout instead, clone this repository and run `node ../colibri-kit/bin/colibri.mjs init --starter`. The deployed page uses CSS and browser modules.
 
 **[Installation, React, customization, upgrades and troubleshooting](docs/getting-started.md)** · [Java / FreeMarker / Thymeleaf](docs/java-templates.md)
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "1bcf2eaf9a28e08e8734bbb24d1066e8ec2bc0aaeb8dc57e83707b5f075e0b21",
+  "release": "c84abee20df77e6bfaadf608988bf0339dac9e943fe29c48d7f3eb2f34092e69",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -15,8 +15,8 @@
     "downloads/colibri-templates-0.1.0-SNAPSHOT.jar": "24341dc66ba6df2acd55495aed47abdf795b29f7252d9ca4ebd9191bdeab8a8d",
     "framework-support.html": "8ac00034145235483768411fa7c28dd21a5b5c218a2b70542ed73650ede5efb5",
     "framework-support.json": "1a74e5230e2338c3075242a8b715e5d896fd9d2d54bda6701ebb7bb941b24a3b",
-    "getting-started.html": "fae3758f658b0361acf60793040383d88b3870131288b267143c8ec6993cc0ac",
-    "index.html": "1940f9bc138c5122a084748546ef81f8aa050d080eccea5f78daf83e4dfada2c",
+    "getting-started.html": "4658158fe57e2cf55bbc64cfa033b69a4a15fe16f8b83e22f9d7b16a64e5dddb",
+    "index.html": "4357bac903662e029193c90becf32b851920cdff6e328e762be2222f371d21e3",
     "java-templates.html": "c0c991a64611babef65b1d53e6af132c2255b2a5d6fad4c660037e8812983dd3",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
     "kitchen-sink/examples/application-preview-entry.js": "83a464cbe300c0313d93d365d38301d5091b9cfe832283920b246579aecba481",
@@ -93,7 +93,7 @@
     "kitchen-sink/examples/playground/studio.css": "a2bb1b000cbd6880ae3ffa01afe1c7c873931fc41925571b55296cf31256037d",
     "kitchen-sink/examples/playground/studio.js": "c712e1a1664513db92d6f27d00de6c7eaedc1d1914c466e2551ecf694e92abf7",
     "kitchen-sink/examples/tabs.html": "fedec8a1ef7c841f07706f7dbf11ecf5000bad06892cb650de1de29ad6ebd054",
-    "kitchen-sink/packages/colibri-css/README.md": "23dbefb72d12adb35a52a03d938020f8a3a00b289795f6cf710112646fa25beb",
+    "kitchen-sink/packages/colibri-css/README.md": "ebd2931506a4838fbd4dbcc3481b7caeb2104de4ac96725765adcde50c67ddc7",
     "kitchen-sink/packages/colibri-css/dist/bundle-sizes.json": "fb602573ff8833ebc4c6e7ee08ca91e9111686d486090e66111053449a97596a",
     "kitchen-sink/packages/colibri-css/dist/colibri-applications.css": "0cfbca24f233f1de1d9c065ebac64e87e1bf9d892d144fe63226f3c8637e4a29",
     "kitchen-sink/packages/colibri-css/dist/colibri-classes.json": "dc88f4f0d19353eeae452b16fe5ab39061e3cc0c20fc327d01b18f6fc2147ddc",

@@ -4,7 +4,7 @@
 - CSS and UI accept each other's status words: `ok|warn|bad` and `success|warning|danger`; `danger` and `destructive`.
 - Generated "Events and controller API" table in components.md, read from the controllers; `colibri docs <name>` prints the same; `controllers(el)[0]` reaches a live controller.
 - `dist/lazy/auto-lazy.js` (loads only the controllers a page uses) and `dist/colibri-ui.min.js` as alternatives to `src/core/auto.js`; `ui:ready` / `ui:error` semantics.
-- Package names and CLI invocation: `@colibri-kit/ui`, `@colibri-kit/css`, `npx -p @colibri-kit/ui colibri`; never the unrelated `colibri` / `colibri-ui` packages. Side-effect-free root import.
+- Packages are published on npm (0.1.0): `npm install @colibri-kit/ui @colibri-kit/css`, `npx -p @colibri-kit/ui colibri init --starter`, pinned CDN links; never the unrelated `colibri` / `colibri-ui` packages. Side-effect-free root import.
 - FreeMarker rules: host must output HTML, URLs are not vetted, numbers are locale-independent, calendar follows the page language; import path is `/colibri/freemarker/ui.ftl`.
 - Sheet/drawer drag behaviour and handle; `item-group` `data-href` is http(s) only; React refresh and remote datatable behaviour.
 - `.btn` versus themed `<button>` vocabularies inside `.ui-root`; scope of the prefixed stylesheet; `colibri collisions` matches compound selectors.

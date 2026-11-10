@@ -1,13 +1,18 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Install and use Colibri</title><link rel="stylesheet" href="/css/colibri.css"><link rel="stylesheet" href="/site.css"></head><body><main class="center stack prose"><p><a href="/">← Colibri Kit</a></p><h1>Install and use Colibri</h1>
 <h2>Start without a bundler</h2>
-<p>Prerequisites: Git and Node.js 22.12+ to run the installer. Python 3 is used below only as a local HTTP server; any static web server works. Your deployed application needs only the copied CSS and JavaScript, not Node, Python or Maven.</p>
-<p>From the directory where you keep projects:</p>
-<pre class="code"><code>git clone https://github.com/levancho/colibri-kit.git colibri-kit
-mkdir my-app
+<p>Prerequisite: Node.js 22.12+ to run the installer. Python 3 is used below only as a local HTTP server; any static web server works. Your deployed application needs only the copied CSS and JavaScript, not Node, Python or Maven.</p>
+<pre class="code"><code>mkdir my-app
 cd my-app
-node ../colibri-kit/bin/colibri.mjs init --starter
+npx -p @colibri-kit/ui colibri init --starter
 python3 -m http.server 8080</code></pre>
-<p>Open http://localhost:8080/. You get a settings form with local persistence, a keyboard-operable dialog, a dark-mode switch, and application-owned CSS. No npm install or library build is needed for this route. The form uses browser storage, not a backend; replace its save handler with your authenticated API request for shared data.</p>
+<p><code>npx</code> downloads <code>@colibri-kit/ui</code> from npm, runs its <code>colibri</code> command once and leaves nothing installed. (Always write <code>-p @colibri-kit/ui</code>: the unscoped name <code>colibri</code> on npm is an unrelated package.) To work from a checkout instead, clone <a href="https://github.com/levancho/colibri-kit">the repository</a> and run <code>node ../colibri-kit/bin/colibri.mjs init --starter</code>.</p>
+<p>No installer at all? Link the published files from a CDN, pinned to a version:</p>
+<pre class="code"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/themes/colibri.css&quot;&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri-ui-bridge.css&quot;&gt;
+&lt;script type=&quot;module&quot; src=&quot;https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/dist/lazy/auto-lazy.js&quot;&gt;&lt;/script&gt;
+&lt;body class=&quot;ui-root&quot;&gt;</code></pre>
+<p>Open http://localhost:8080/. You get a settings form with local persistence, a keyboard-operable dialog, a dark-mode switch, and application-owned CSS. No <code>npm install</code> into your project and no library build is needed for this route. The form uses browser storage, not a backend; replace its save handler with your authenticated API request for shared data.</p>
 <p><code>init</code> copies the CSS distribution, core controllers, custom elements, themes, FreeMarker macros and Thymeleaf fragments into <code>colibri/</code>. <code>--dir assets/colibri</code> changes the destination and the starter&#x27;s links. Run it from the directory your server exposes as its static root. URLs in the starter are relative, so it can run below an application path as well as at <code>/</code>.</p>
 <p>For an existing application omit <code>--starter</code> to avoid creating page files. Include these in order:</p>
 <pre class="code"><code>&lt;link rel=&quot;stylesheet&quot; href=&quot;./colibri/css/colibri.css&quot;&gt;
