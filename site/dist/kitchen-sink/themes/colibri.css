@@ -63,11 +63,12 @@ html[data-theme=dark][data-ui-theme=violet]{--ui-primary:#8b5cf6}
 :where(.ui-root) label{display:inline-flex;align-items:center;gap:.5rem;font-weight:500}
 :where(.ui-root) fieldset{border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:.75rem 1rem;display:flex;gap:1rem;flex-wrap:wrap}:where(.ui-root) legend{padding:0 .3rem}
 /* generic button look (zero-specificity via :where so variants win) */
-:where(.ui-root) :where(:is(button,[data-ui=button]):not([data-ui-part]):not([data-ui=switch],[data-ui=checkbox],[data-ui=toggle],[data-ui=theme-switch],.sink-info),:is([data-ui-part=trigger],[data-ui-part=close],[data-ui-part=prev],[data-ui-part=next],[data-ui-part=finish],[data-ui-part=add],[data-ui-part=change],[data-ui-part=remove]):is(button):not(:is([data-ui=chain-of-thought],[data-ui=task],[data-ui=plan],[data-ui=tool],[data-ui=reasoning],[data-ui=sources],[data-ui=subagent],[data-ui=stack-trace],[data-ui=test-results],[data-ui=terminal],[data-ui=trace],[data-ui=sidebar],[data-ui-part=icon-rail],[data-ui-part=inset-header],[data-ui-part=site-header],[data-ui=prompt-input],[data-ui=attachment],[data-ui=questionnaire] [data-ui-part=choices],.ai-ctx-btn) *,.ai-ctx-btn,[data-ui=menubar] *,[data-ui=tabs] *,[data-ui=navigation-menu] *,[data-ui=calendar] *,[data-ui=combobox] *,[data-ui=badge] *,[data-ui=carousel] *),[data-ui=theme-switch]){
+/* .btn / .c-btn are Colibri CSS components with their own variants and sizes; the generic look must not repaint them */
+:where(.ui-root) :where(:is(button,[data-ui=button]):not([data-ui-part]):not([data-ui=switch],[data-ui=checkbox],[data-ui=toggle],[data-ui=theme-switch],.sink-info,.btn,.c-btn),:is([data-ui-part=trigger],[data-ui-part=close],[data-ui-part=prev],[data-ui-part=next],[data-ui-part=finish],[data-ui-part=add],[data-ui-part=change],[data-ui-part=remove]):is(button):not(:is([data-ui=chain-of-thought],[data-ui=task],[data-ui=plan],[data-ui=tool],[data-ui=reasoning],[data-ui=sources],[data-ui=subagent],[data-ui=stack-trace],[data-ui=test-results],[data-ui=terminal],[data-ui=trace],[data-ui=sidebar],[data-ui-part=icon-rail],[data-ui-part=inset-header],[data-ui-part=site-header],[data-ui=prompt-input],[data-ui=attachment],[data-ui=questionnaire] [data-ui-part=choices],.ai-ctx-btn) *,.ai-ctx-btn,[data-ui=menubar] *,[data-ui=tabs] *,[data-ui=navigation-menu] *,[data-ui=calendar] *,[data-ui=combobox] *,[data-ui=badge] *,[data-ui=carousel] *),[data-ui=theme-switch]){
   display:inline-flex;align-items:center;justify-content:center;gap:.4rem;height:var(--ui-control-h);padding:0 1rem;border-radius:var(--ui-radius);border:1px solid var(--ui-primary);background:var(--ui-primary);color:var(--ui-primary-foreground);font:500 var(--ui-text-sm)/1 var(--ui-font);cursor:pointer;white-space:nowrap;transition:opacity .15s,background .15s}
 :where(.ui-root) :is(button,a)[data-variant=outline],:where(.ui-root) [data-ui-part=close][data-ui-return=cancel],:where(.ui-root) button[value=cancel],:where(.ui-root) [data-ui-part=prev]:not([data-ui=calendar] *,[data-ui=carousel] *),:where(.ui-root) [data-ui-part=change],:where(.ui-root) [data-ui-part=add],:where(.ui-root) [data-ui=theme-switch],:where(.ui-root) [data-ui=clipboard]{background:var(--ui-background);color:var(--ui-foreground);border-color:var(--ui-input)}
 :where(.ui-root) button[data-variant=ghost]{background:transparent;color:var(--ui-foreground);border-color:transparent}
-:where(.ui-root) button[data-variant=destructive],:where(.ui-root) [data-ui-part=remove]:not([data-ui=badge] *,[data-ui=file-input] *,[data-ui=repeater] *,[data-variant=outline]){background:var(--ui-destructive);border-color:var(--ui-destructive);color:var(--ui-destructive-foreground)}
+:where(.ui-root) button:is([data-variant=destructive],[data-variant=danger]),:where(.ui-root) [data-ui-part=remove]:not([data-ui=badge] *,[data-ui=file-input] *,[data-ui=repeater] *,[data-variant=outline]){background:var(--ui-destructive);border-color:var(--ui-destructive);color:var(--ui-destructive-foreground)}
 :where(.ui-root) button[data-variant=secondary]{background:var(--ui-muted);border-color:var(--ui-muted);color:var(--ui-foreground)}
 :where(.ui-root) button[data-size=sm]{height:30px;padding:0 .65rem;font-size:13px}
 :where(.ui-root) button:is([data-variant=outline],[data-variant=ghost],[data-variant=secondary],[data-ui=theme-switch],[data-ui=clipboard]):hover:not(:disabled){background:var(--ui-accent)}
@@ -75,7 +76,7 @@ html[data-theme=dark][data-ui-theme=violet]{--ui-primary:#8b5cf6}
 :where(.ui-root) button:disabled,:where(.ui-root) [aria-disabled=true]{opacity:.5;cursor:not-allowed}
 :where(.ui-root) button:focus-visible,:where(.ui-root) a:focus-visible,:where(.ui-root) [tabindex]:focus-visible{outline:var(--ui-ring-width) solid var(--ui-ring);outline-offset:2px}
 :where(.ui-root) [data-ui=button][data-loading]::before{content:"";width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:ui-spin .7s linear infinite}
-:where(.ui-root) a{color:var(--ui-foreground);text-underline-offset:3px}:where(.ui-root) a[aria-current=page]{font-weight:600;text-decoration:none}
+:where(.ui-root) a:not(.btn,.c-btn){color:var(--ui-foreground);text-underline-offset:3px}:where(.ui-root) a[aria-current=page]{font-weight:600;text-decoration:none}
 :where(.ui-root) kbd{display:inline-flex;align-items:center;height:22px;min-width:22px;justify-content:center;padding:0 .35rem;font:500 12px/1 ui-monospace,monospace;border:1px solid var(--ui-border);border-bottom-width:2px;border-radius:var(--ui-radius-sm);background:var(--ui-muted);color:var(--ui-foreground)}
 :where(.ui-root) .row{display:flex;gap:.5rem;justify-content:flex-end;margin-top:1rem}
 :where(.ui-root) .muted{color:var(--ui-muted-foreground)}
@@ -97,7 +98,7 @@ html[data-theme=dark][data-ui-theme=violet]{--ui-primary:#8b5cf6}
 :is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=item] kbd{margin-left:auto;background:none;border:0;color:var(--ui-muted-foreground);font-size:11px}
 :is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=item][aria-checked=true]::before{content:"✓";position:absolute;left:.55rem}
 :is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=item][data-type=radio][aria-checked=true]::before{content:"●";font-size:9px;left:.65rem}
-:is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=item][data-variant=destructive]{color:var(--ui-destructive);background:none}
+:is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar]) [data-ui-part=item]:is([data-variant=destructive],[data-variant=danger]){color:var(--ui-destructive);background:none}
 :is([data-ui=dropdown-menu],[data-ui=context-menu],[data-ui=menubar],[data-ui=command]) [data-ui-part=separator]{border:0;border-top:1px solid var(--ui-border);margin:4px -4px}
 :is([data-ui=dropdown-menu],[data-ui=menubar],[data-ui=select],[data-ui=command]) [data-ui-part=label]{padding:.35rem .5rem;font-size:12px;font-weight:600;color:var(--ui-muted-foreground)}
 [data-ui=context-menu] [data-ui-part=area]{display:grid;place-items:center;width:min(100%,360px);height:140px;border:1.5px dashed var(--ui-input);border-radius:var(--ui-radius);color:var(--ui-muted-foreground);text-align:center;padding:1rem}
@@ -213,7 +214,7 @@ dialog form{display:grid;gap:.75rem}dialog form label{display:grid;gap:.35rem}
 [data-ui=switch]:is([data-state=checked],[aria-checked=true],:checked){background:var(--ui-primary)}
 [data-ui=switch]:is([data-state=checked],[aria-checked=true],:checked)::after{transform:translateX(16px)}
 input[data-ui=switch]{width:var(--ui-control-h);height:20px}
-button[data-ui=checkbox]{display:inline-grid;place-items:center;width:16px;height:16px;padding:0;border:1px solid var(--ui-primary);border-radius:4px;background:var(--ui-background);color:var(--ui-primary-foreground);font:700 11px/1 inherit;cursor:pointer;vertical-align:-3px}
+button[data-ui=checkbox]{display:inline-grid;place-items:center;width:16px;height:16px;padding:0;border:1px solid var(--ui-primary);border-radius:4px;background:var(--ui-background);color:var(--ui-primary-foreground);font:700 11px/1 var(--ui-font);cursor:pointer;vertical-align:-3px}
 button[data-ui=checkbox]:is([aria-checked=true],[aria-checked=mixed]){background:var(--ui-primary)}
 button[data-ui=checkbox][aria-checked=true]::after{content:"✓"}button[data-ui=checkbox][aria-checked=mixed]::after{content:"–"}
 [data-ui=radio-group]{display:grid;gap:.6rem}
@@ -364,9 +365,9 @@ dialog [data-ui=command]{border:0;width:100%}
 [data-ui=avatar]{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:50%;overflow:hidden;background:var(--ui-muted);flex:none;font-weight:600;font-size:14px;vertical-align:middle}
 [data-ui=avatar] [data-ui-part=image]{width:100%;height:100%;object-fit:cover;grid-area:1/1}[data-ui=avatar] [data-ui-part=fallback]{grid-area:1/1}
 [data-ui=avatar] [hidden]{display:none}
-[data-ui-part=badge]{display:inline-flex;align-items:center;gap:.25rem;height:22px;padding:0 .6rem;border-radius:99px;border:1px solid transparent;background:var(--ui-primary);color:var(--ui-primary-foreground);font:600 12px/1 inherit;vertical-align:middle}
+[data-ui-part=badge]{display:inline-flex;align-items:center;gap:.25rem;height:22px;padding:0 .6rem;border-radius:99px;border:1px solid transparent;background:var(--ui-primary);color:var(--ui-primary-foreground);font:600 12px/1 var(--ui-font);vertical-align:middle}
 [data-ui-part=badge][data-variant=secondary]{background:var(--ui-muted);color:var(--ui-foreground)}
-[data-ui-part=badge][data-variant=destructive]{background:var(--ui-destructive);color:var(--ui-destructive-foreground)}
+[data-ui-part=badge]:is([data-variant=destructive],[data-variant=danger]){background:var(--ui-destructive);color:var(--ui-destructive-foreground)}
 [data-ui-part=badge][data-variant=outline]{background:none;color:var(--ui-foreground);border-color:var(--ui-input);padding-right:.2rem}
 [data-ui=badge] [data-ui-part=remove]{width:18px;height:18px;border-radius:50%;font-size:13px;line-height:1}[data-ui=badge] [data-ui-part=remove]:hover{background:var(--ui-muted)}
 [data-ui-part=card]{width:min(100%,360px);border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);background:var(--ui-card);box-shadow:var(--ui-shadow-sm);overflow:hidden}
@@ -374,7 +375,7 @@ dialog [data-ui=command]{border:0;width:100%}
 [data-ui-part=card] [data-ui-part=description]{margin:.25rem 0 0;color:var(--ui-muted-foreground);font-size:13px}
 [data-ui-part=card]>[data-ui-part=content]{padding:.5rem 1.25rem 1rem}[data-ui-part=card]>footer{display:flex;justify-content:flex-end;gap:.5rem;padding:1rem 1.25rem;border-top:1px solid var(--ui-border)}
 [data-ui=dismiss]{display:flex;align-items:flex-start;gap:.75rem;width:min(100%,480px);padding:.85rem 1rem;border:1px solid var(--ui-border);border-radius:var(--ui-radius);background:var(--ui-card)}
-[data-ui=dismiss]>span{flex:1}[data-ui=dismiss][data-variant=destructive]{border-color:var(--ui-destructive);color:var(--ui-destructive)}
+[data-ui=dismiss]>span{flex:1}[data-ui=dismiss]:is([data-variant=destructive],[data-variant=danger]){border-color:var(--ui-destructive);color:var(--ui-destructive)}
 [data-ui=dismiss] [data-ui-part=close]{border:0;background:none;color:inherit;opacity:.6;cursor:pointer;width:24px;height:24px;padding:0;border-radius:var(--ui-radius-sm);font-size:16px}
 [data-ui=dismiss] [data-ui-part=close]:hover{opacity:1;background:var(--ui-muted)}
 [data-ui=dismiss][hidden]{display:none}
@@ -449,7 +450,7 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 [data-ui=toaster] [data-ui-part=toast]{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:.25rem .75rem;padding:.9rem 1rem;border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);background:var(--ui-card);color:var(--ui-foreground);box-shadow:var(--ui-shadow)}
 [data-ui=toaster] [data-ui-part=title]{grid-column:1;font-weight:600;font-size:14px}
 [data-ui=toaster] [data-ui-part=description]{grid-column:1;color:var(--ui-muted-foreground);font-size:13px}
-[data-ui=toaster] [data-ui-part=action]{grid-column:2;grid-row:1/span 2;height:28px;padding:0 .7rem;border-radius:var(--ui-radius-sm);border:1px solid var(--ui-input);background:var(--ui-background);color:var(--ui-foreground);font:500 12.5px inherit;cursor:pointer}
+[data-ui=toaster] [data-ui-part=action]{grid-column:2;grid-row:1/span 2;height:28px;padding:0 .7rem;border-radius:var(--ui-radius-sm);border:1px solid var(--ui-input);background:var(--ui-background);color:var(--ui-foreground);font:500 12.5px var(--ui-font);cursor:pointer}
 [data-ui=toaster] [data-ui-part=close]{grid-column:3;grid-row:1/span 2;border:0;background:none;color:var(--ui-muted-foreground);cursor:pointer;font-size:16px}
 [data-ui=toaster] [data-variant=success] [data-ui-part=title]::before{content:"✓ ";color:var(--ui-success)}
 [data-ui=toaster] [data-variant=error] [data-ui-part=title]::before{content:"✕ ";color:var(--ui-destructive)}
@@ -521,7 +522,7 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 :where(.ui-root) [data-ui=bubble][data-variant=secondary]{background:color-mix(in srgb,var(--ui-primary) 12%,var(--ui-background))}
 :where(.ui-root) [data-ui=bubble][data-variant=outline]{background:var(--ui-background);border-color:var(--ui-border)}
 :where(.ui-root) [data-ui=bubble][data-variant=accent]{background:var(--ui-accent);color:var(--ui-accent-foreground)}
-:where(.ui-root) [data-ui=bubble][data-variant=destructive]{background:color-mix(in srgb,var(--ui-destructive) 12%,var(--ui-background));color:var(--ui-destructive);border-color:color-mix(in srgb,var(--ui-destructive) 30%,transparent)}
+:where(.ui-root) [data-ui=bubble]:is([data-variant=destructive],[data-variant=danger]){background:color-mix(in srgb,var(--ui-destructive) 12%,var(--ui-background));color:var(--ui-destructive);border-color:color-mix(in srgb,var(--ui-destructive) 30%,transparent)}
 :where(.ui-root) [data-ui=bubble][data-variant=ghost]{background:none;padding-inline:0;max-width:100%}
 :where(.ui-root) [data-ui-part=bubble-group][data-align=start] [data-ui=bubble]:not(:first-child){border-top-left-radius:6px}
 :where(.ui-root) [data-ui-part=bubble-group][data-align=start] [data-ui=bubble]:not(:last-child){border-bottom-left-radius:6px}
@@ -1054,7 +1055,8 @@ html[data-theme=dark][data-ui-gray=mauve]{--ui-muted:#26212a;--ui-muted-foregrou
 [data-ui=callout]{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;padding:12px 14px;border-radius:var(--ui-radius);font-size:var(--ui-text-sm);--co:var(--ui-primary);background:var(--ui-callout-background,color-mix(in srgb,var(--co) 9%,var(--ui-background)));border:var(--ui-callout-border,0);color:color-mix(in srgb,var(--co) 70%,var(--ui-foreground))}
 [data-ui=callout][data-variant=surface]:not([data-look]){--ui-callout-border:1px solid color-mix(in srgb,var(--co) 30%,transparent)}
 [data-ui=callout][data-variant=outline]:not([data-look]){--ui-callout-background:transparent;--ui-callout-border:1px solid color-mix(in srgb,var(--co) 45%,transparent)}
-[data-ui=callout][data-tone=warning]{--co:var(--ui-warning)}[data-ui=callout][data-tone=danger]{--co:var(--ui-destructive)}[data-ui=callout][data-tone=success]{--co:var(--ui-success)}[data-ui=callout][data-tone=neutral]{--co:var(--ui-muted-foreground)}
+/* canonical: success | warning | danger. The Colibri CSS words ok | warn | bad are accepted as aliases. */
+[data-ui=callout]:is([data-tone=warning],[data-tone=warn]){--co:var(--ui-warning)}[data-ui=callout]:is([data-tone=danger],[data-tone=bad]){--co:var(--ui-destructive)}[data-ui=callout]:is([data-tone=success],[data-tone=ok]){--co:var(--ui-success)}[data-ui=callout][data-tone=neutral]{--co:var(--ui-muted-foreground)}
 [data-ui=callout]>[data-ui-part=icon]{display:inline-grid;place-items:center;width:18px;height:18px}
 [data-ui=callout]>[data-ui-part=icon] svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2}
 [data-ui=callout]>:not([data-ui-part=icon]){grid-column:2;margin:0}

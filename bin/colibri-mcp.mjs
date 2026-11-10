@@ -26,11 +26,14 @@ function call(name, a = {}) {
 }
 const send = (m) => process.stdout.write(JSON.stringify(m) + "\n");
 readline.createInterface({ input: process.stdin }).on("line", (line) => {
-  let m; try { m = JSON.parse(line); } catch { return; }
+  let m; try { m = JSON.parse(line); } catch { send({ jsonrpc: "2.0", id: null, error: { code: -32700, message: "parse error" } }); return; }
+  // a line holding null, a number, a string or a batch array is not a request this server handles
+  if (!m || typeof m !== "object" || Array.isArray(m)) { send({ jsonrpc: "2.0", id: null, error: { code: -32600, message: "invalid request" } }); return; }
   const ok = (result) => m.id !== undefined && send({ jsonrpc: "2.0", id: m.id, result });
   try {
-    if (m.method === "initialize") ok({ protocolVersion: "2024-11-05", capabilities: { tools: {} }, serverInfo: { name: "colibri-ui", version: reg().version } });
+    if (m.method === "initialize") ok({ protocolVersion: "2024-11-05", capabilities: { tools: {} }, serverInfo: { name: "@colibri-kit/ui", version: reg().version } });
     else if (m.method === "tools/list") ok({ tools: TOOLS });
+    else if (m.method === "tools/call" && (!m.params || typeof m.params.name !== "string")) send({ jsonrpc: "2.0", id: m.id ?? null, error: { code: -32602, message: "tools/call needs params.name" } });
     else if (m.method === "tools/call") ok({ content: [{ type: "text", text: JSON.stringify(call(m.params.name, m.params.arguments), null, 1) }] });
     else if (m.method === "ping") ok({});
     else if (m.id !== undefined && !m.method?.startsWith("notifications/")) send({ jsonrpc: "2.0", id: m.id, error: { code: -32601, message: `method not found: ${m.method}` } });

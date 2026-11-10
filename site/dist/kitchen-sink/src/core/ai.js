@@ -349,17 +349,49 @@ export function createChart(root) {
 
 // ---------- drawer: dialog + drag-to-dismiss (vaul-like) ----------
 export function withDragDismiss(createDialog) {
-  return (root) => {
-    const api = createDialog(root), c = root.querySelector(":scope > [data-ui-part=content], [data-ui-part=content]"), side = root.dataset.side || "bottom";
-    if (!c || root.dataset.drag === "false") return api;
-    const h = c.querySelector("[data-ui-part=handle]") || c; let sy = null, d = 0;
-    const axis = side === "bottom" || side === "top" ? "Y" : "X", sign = side === "bottom" || side === "right" ? 1 : -1;
-    const down = (e) => { if (e.target.closest("button,a,input,select,textarea,[contenteditable]") || e.button) return; sy = axis === "Y" ? e.clientY : e.clientX; d = 0; c.style.transition = "none"; h.setPointerCapture?.(e.pointerId); };
-    const move = (e) => { if (sy == null) return; d = Math.max(0, ((axis === "Y" ? e.clientY : e.clientX) - sy) * sign); c.style.transform = `translate${axis}(${d * sign}px)`; c.dataset.dragging = ""; };
-    const up = () => { if (sy == null) return; sy = null; c.style.transition = ""; delete c.dataset.dragging; const size = axis === "Y" ? c.offsetHeight : c.offsetWidth;
-      c.style.transform = ""; if (d > Math.min(120, size * 0.3)) { (api.close || (() => c.close?.()))(); emit(root, "dragdismiss", {}); } };
-    h.addEventListener("pointerdown", down); h.addEventListener("pointermove", move); h.addEventListener("pointerup", up); h.addEventListener("pointercancel", up);
-    const d0 = api.destroy; api.destroy = () => { h.removeEventListener("pointerdown", down); h.removeEventListener("pointermove", move); h.removeEventListener("pointerup", up); d0?.(); };
+  // Presses on these never start a drag, so controls inside the panel keep working.
+  const INTERACTIVE = "button,a,input,select,textarea,label,summary,[contenteditable],[role],[tabindex],[data-ui],[data-ui-part=option],[data-ui-part=trigger],[data-ui-part=item]";
+  const THRESHOLD = 6; // px of travel in the dismiss direction before a press becomes a drag
+  return (root, options) => {
+    const api = createDialog(root, options);
+    const c = root.querySelector(":scope > [data-ui-part=content], [data-ui-part=content]");
+    // once per root: auto-init may call this again on every ui:refresh and must not stack listeners
+    if (!c || root.dataset.drag === "false" || root.__uiDragDismiss) return api;
+    root.__uiDragDismiss = true;
+    const h = c.querySelector("[data-ui-part=handle]") || c;
+    let start = null, d = 0, dragging = false, axis = "Y", sign = 1;
+    const pos = (e) => (axis === "Y" ? e.clientY : e.clientX);
+    const doc = root.ownerDocument;
+    // While a press is pending, movement is followed on the document: before the pointer is captured, a quick
+    // drag leaves a small handle after the first few pixels and the handle itself would see no more events.
+    const track = (on) => { for (const [type, fn] of [["pointermove", move], ["pointerup", up], ["pointercancel", reset]]) doc[on ? "addEventListener" : "removeEventListener"](type, fn); };
+    function reset() { if (start == null) return; track(false); start = null; dragging = false; c.style.transition = ""; c.style.transform = ""; delete c.dataset.dragging; }
+    function down(e) {
+      if (start != null || e.button || root.dataset.dismissible === "false") return;
+      const hit = e.target.closest?.(INTERACTIVE);
+      // a control inside the panel keeps its press; anything inside an explicit handle is part of the grip
+      if (hit && hit !== c && c.contains(hit) && (h === c || !h.contains(hit))) return;
+      // data-side on the root positions the panel (CSS reads it there). Without it a drawer sits at the bottom
+      // edge and a sheet where the dialog core put it (right), so the drag direction always matches the panel.
+      const side = root.dataset.side || (root.dataset.ui === "drawer" ? "bottom" : c.dataset.side || "right");
+      axis = side === "bottom" || side === "top" ? "Y" : "X"; sign = side === "bottom" || side === "right" ? 1 : -1;
+      start = pos(e); d = 0; dragging = false; track(true);
+    }
+    function move(e) {
+      if (start == null) return;
+      d = Math.max(0, (pos(e) - start) * sign);
+      // Capture only once the press has become a drag: capturing on pointerdown retargets the click to the
+      // panel, which made options, labels and tabs inside a drawer unclickable.
+      if (!dragging) { if (d < THRESHOLD) return; dragging = true; c.style.transition = "none"; c.dataset.dragging = ""; h.setPointerCapture?.(e.pointerId); }
+      c.style.transform = `translate${axis}(${d * sign}px)`;
+    }
+    function up() {
+      if (start == null) return;
+      const was = dragging, size = axis === "Y" ? c.offsetHeight : c.offsetWidth; reset();
+      if (was && d > Math.min(120, size * 0.3)) { (api.close || (() => c.close?.()))(); emit(root, "dragdismiss", {}); }
+    }
+    h.addEventListener("pointerdown", down);
+    const d0 = api.destroy; api.destroy = () => { h.removeEventListener("pointerdown", down); reset(); delete root.__uiDragDismiss; d0?.(); };
     return api;
   };
 }

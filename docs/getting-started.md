@@ -2,19 +2,28 @@
 
 ## Start without a bundler
 
-Prerequisites: Git and Node.js 22.12+ to run the installer. Python 3 is used below only as a local HTTP server; any static web server works. Your deployed application needs only the copied CSS and JavaScript, not Node, Python or Maven.
-
-From the directory where you keep projects:
+Prerequisite: Node.js 22.12+ to run the installer. Python 3 is used below only as a local HTTP server; any static web server works. Your deployed application needs only the copied CSS and JavaScript, not Node, Python or Maven.
 
 ```sh
-git clone https://github.com/levancho/colibri-kit.git colibri-kit
 mkdir my-app
 cd my-app
-node ../colibri-kit/bin/colibri.mjs init --starter
+npx -p @colibri-kit/ui colibri init --starter
 python3 -m http.server 8080
 ```
 
-Open http://localhost:8080/. You get a settings form with local persistence, a keyboard-operable dialog, a dark-mode switch, and application-owned CSS. No npm install or library build is needed for this route. The form uses browser storage, not a backend; replace its save handler with your authenticated API request for shared data.
+`npx` downloads `@colibri-kit/ui` from npm, runs its `colibri` command once and leaves nothing installed. (Always write `-p @colibri-kit/ui`: the unscoped name `colibri` on npm is an unrelated package.) To work from a checkout instead, clone https://github.com/levancho/colibri-kit and run `node ../colibri-kit/bin/colibri.mjs init --starter`.
+
+No installer at all? Link the published files from a CDN, pinned to a version:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/themes/colibri.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@colibri-kit/css@0.1.0/dist/colibri-ui-bridge.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@colibri-kit/ui@0.1.0/dist/lazy/auto-lazy.js"></script>
+<body class="ui-root">
+```
+
+Open http://localhost:8080/. You get a settings form with local persistence, a keyboard-operable dialog, a dark-mode switch, and application-owned CSS. No `npm install` into your project and no library build is needed for this route. The form uses browser storage, not a backend; replace its save handler with your authenticated API request for shared data.
 
 `init` copies the CSS distribution, core controllers, custom elements, themes, FreeMarker macros and Thymeleaf fragments into `colibri/`. `--dir assets/colibri` changes the destination and the starter's links. Run it from the directory your server exposes as its static root. URLs in the starter are relative, so it can run below an application path as well as at `/`.
 
@@ -33,16 +42,13 @@ Use the public URL where your server mounts these assets. Never expose `node_mod
 
 ## Install into a bundler / React project
 
-The source package names are `@colibri-kit/ui` and `@colibri-kit/css`. These instructions do not depend on a public npm release. From an existing application, install a pinned checkout:
-
 ```sh
-git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
-# Record the revision used by your application:
-git -C vendor/colibri-kit rev-parse HEAD
-npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css
+npm install @colibri-kit/ui @colibri-kit/css
 ```
 
-Commit or otherwise retain that vendor revision for your deployment. To distribute immutable archives internally, run `npm pack` in each package directory and install the resulting tarballs instead. The package has no install scripts or required React dependency for plain HTML consumers.
+Both packages are published at the same version; keep them in step. `@colibri-kit/ui` has no install scripts and React is an optional peer dependency, needed only for `@colibri-kit/ui/react`. To pin an unreleased revision instead, clone the repository and install from the checkout: `npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css`.
+
+The command-line tool ships in `@colibri-kit/ui`. Its binary is called `colibri`, which is also the name of an unrelated package on npm, so always name the package when using `npx`: `npx -p @colibri-kit/ui colibri <command>`. Inside a project that has `@colibri-kit/ui` installed, `npx colibri <command>` resolves to the local binary.
 
 In the application's entry module:
 
@@ -93,6 +99,59 @@ Set `<html data-theme="dark">` or `data-theme="light"`; omit the attribute to us
 Listen to documented `ui:*` events on the component root; for example tabs dispatch `ui:change` with `event.detail.value`. Component behavior does not provide API endpoints, authentication, authorization or server validation. Use normal form `name` attributes and server-side validation. Render untrusted text with `textContent` or your template engine's escaping.
 
 Java setup, engine dependencies, resource JAR and bindings: [Java template integration](java-templates.md), also available at https://colibri.l3v.ai/java-templates.html.
+
+## Load less JavaScript
+
+`core/auto.js` imports every controller. Two alternatives ship in `dist/` (copied by `init` to `colibri/dist/`):
+
+| Script | What loads | Use it when |
+|---|---|---|
+| `core/auto.js` | all controllers, unminified source modules | developing, or reading the source in DevTools |
+| `dist/colibri-ui.min.js` | all controllers, one minified file | you want one request and use many components |
+| `dist/lazy/auto-lazy.js` | a small loader, then one minified chunk per component family on first use | a page uses a handful of components |
+
+```html
+<link rel="stylesheet" href="./colibri/dist/colibri-ui.min.css">
+<script type="module" src="./colibri/dist/lazy/auto-lazy.js"></script>
+```
+
+Use one of the three on a page; mixing them (or one of them with `core/*` imports) loads two copies of the controller state. The lazy loader initialises asynchronously: `init(container)` returns a promise, and the document dispatches `ui:ready` after the first pass. A pass waits for every chunk it needs, so components appear together. If a chunk fails to load, the rest still initialise, a bubbling `ui:error` event carries `{ name, error }`, and `ui:ready`'s `detail.failed` lists the names; browsers cache a failed module, so recovery needs a reload. `ui:refresh` works the same in all three. Measured sizes are in `dist/bundle-sizes.json`.
+
+## Class names Colibri owns
+
+Colibri CSS uses short, unprefixed class names (`.card`, `.stack`, `.center`, `.badge`…). An application class with the same name inherits the kit's styles, which is easy to miss. List the reserved names and check your stylesheets:
+
+```sh
+node path/to/bin/colibri.mjs classes
+node path/to/bin/colibri.mjs collisions app.css --strict
+```
+
+`collisions` prints each rule whose selector mentions a Colibri class (including compound selectors such as `div.card`), with its line; `--strict` exits non-zero for CI. Extending a kit class on purpose (`.btn.icon { … }`) is reported too, and is fine. The list is also published as `colibri-classes.json`. It covers the core stylesheet; the application-components stylesheet has further class names of its own.
+
+If an existing project already uses these names, link `colibri.prefixed.css` instead of `colibri.css`: every class becomes `.c-*` (`.c-card`, `.c-stack`) while tokens, layers and `data-*` attributes stay the same. The prefixed build renames the core stylesheet only. The theme packs, the application components, the React adapter and the FreeMarker/Thymeleaf templates still emit the unprefixed names (`btn`, `card`, `stack`), so use it for hand-written markup with Colibri UI components, not together with those parts.
+
+## One vocabulary for tones and variants
+
+Colibri CSS and Colibri UI each accept the other's words, so markup does not depend on which layer styles an element:
+
+| Meaning | Colibri CSS (canonical) | Colibri UI (canonical) | Accepted by both |
+|---|---|---|---|
+| success | `data-tone="ok"` | `data-tone="success"` | yes |
+| warning | `data-tone="warn"` | `data-tone="warning"` | yes |
+| error | `data-tone="bad"` | `data-tone="danger"` | yes |
+| destructive action | `data-variant="danger"` | `data-variant="destructive"` | yes |
+
+## Events and controller API
+
+`node path/to/bin/colibri.mjs docs <name>` lists every event a component dispatches, the keys of `event.detail`, whether it is cancelable, and the members of its controller. These are read from the controllers at build time, so they match the code. The same table is in the registry (`events`, `api`) and in the agent skill reference.
+
+```js
+import { controllers } from "./colibri/core/util.js";   // also exported by auto.js and auto-lazy.js
+
+const range = document.querySelector("#range");          // <div data-ui="segmented-control">
+range.addEventListener("ui:change", (e) => console.log(e.detail.value));
+controllers(range)[0].value = "week";                    // set it from code
+```
 
 ## Upgrade and diagnose
 

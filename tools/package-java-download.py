@@ -4,7 +4,10 @@ from zipfile import ZipFile
 import shutil
 import subprocess
 root=Path(__file__).resolve().parents[1]
-jar=root/'java/colibri-templates/target/colibri-templates-0.1.0-SNAPSHOT.jar'
+import re
+# The file name follows the POM, so a version bump cannot ship a stale JAR under the old name.
+version=re.search(r'<artifactId>colibri-templates</artifactId><version>([^<]+)</version>',(root/'java/colibri-templates/pom.xml').read_text()).group(1)
+jar=root/f'java/colibri-templates/target/colibri-templates-{version}.jar'
 def current():
     if not jar.exists(): return False
     try:

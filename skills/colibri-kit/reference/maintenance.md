@@ -24,9 +24,9 @@ In the source repository, `npm run check:architecture` checks the layer contract
 
 ## Match initialization with teardown
 
-Plain HTML/HTMX: `auto.js` initializes components and disposes removed subtrees; DOM moves preserve live controllers. Call `init(insertedRoot)` after manual insertion, or dispatch `ui:refresh`. For a framework that manages its own lifecycle, use the component factory and call `api.destroy()` on cleanup. `dispose(root)` from `core/util.js` tears down tracked controllers in a subtree.
+Plain HTML/HTMX: `auto.js` initializes components and disposes removed subtrees; DOM moves preserve live controllers. Call `init(insertedRoot)` after manual insertion, or dispatch `ui:refresh`. `auto-lazy.js` has the same contract but is asynchronous: its `init()` returns a promise resolving to the names that failed to load, and the document fires `ui:ready` after the first pass. A controller is built once per root even if its factory dispatches `ui:refresh` while running (repeater does). For a framework that manages its own lifecycle, use the component factory and call `api.destroy()` on cleanup. `dispose(root)` from `core/util.js` tears down tracked controllers in a subtree.
 
-React: use the React wrappers/hook, without global auto-init. Ordinary rerenders preserve the controller, event handlers read current props, and unmount destroys owned controllers. If passing hook `options`, keep the object stable unless reinitialization is intended. Give dynamic parts stable React keys and use `apiRef` for the controller API. Custom elements initialize when connected and dispose when disconnected; moves within the document preserve their API.
+React: use the React wrappers/hook, without global auto-init. Ordinary rerenders preserve the controller, event handlers read current props, and unmount destroys owned controllers. The adapter subscribes to events before it builds the controller and calls `refresh()` only when the DOM under the root changed, so a handler that sets state cannot cause a refresh loop. If passing hook `options`, keep the object stable unless reinitialization is intended. Give dynamic parts stable React keys and use `apiRef` for the controller API. Custom elements initialize when connected and dispose when disconnected; moves within the document preserve their API.
 
 ## Make demos honest and functional
 

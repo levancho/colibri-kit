@@ -8,7 +8,7 @@ A small, modern, token-first stylesheet. No build step and no utility-class expl
 
 ## Why Colibri CSS
 
-**What it is.** Colibri CSS (`@colibri-kit/css`) is one small stylesheet (15 KB, 11 KB minified, zero dependencies, no build step) that gives a page finished defaults, a themable token system, a handful of layout primitives and a few opt-in components. It is the styling half of Colibri: Colibri UI provides headless behaviour (`data-ui`), Colibri CSS provides the look.
+**What it is.** Colibri CSS (`@colibri-kit/css`) is one small stylesheet (18 kB, 13 kB minified, zero dependencies, no build step) that gives a page finished defaults, a themable token system, a handful of layout primitives and a few opt-in components. It is the styling half of Colibri: Colibri UI provides headless behaviour (`data-ui`), Colibri CSS provides the look.
 
 **Why we built it.** We wanted pages that look right with plain, semantic HTML, the kind FreeMarker templates and CMS content produce, without two bad options:
 - **Utility frameworks** (Tailwind-style) turn every element into 20 classes, need a compiler, and spread the design across thousands of lines of markup. Changing the design means editing templates.
@@ -78,9 +78,17 @@ The markup is identical in HTML, FreeMarker and React. React just says `classNam
 </section>
 ```
 
+## Class names and the prefixed build
+
+Colibri CSS owns these class names: `.badge .bleed .btn .callout .card .center .cluster .container .cover .enter .field .flow .frame .grid .hint .muted .prose .reel .split .stack .switcher .truncate .visually-hidden`. They are published in `dist/colibri-classes.json` (`@colibri-kit/css/classes`).
+
+Do not define unrelated classes with those names in application CSS; they would inherit the kit's rules. `colibri collisions app.css` reports any that do. If a project already uses some of them, link the prefixed build instead: `dist/colibri.prefixed.css` (`@colibri-kit/css/prefixed`) is the same stylesheet with every class renamed to `.c-*`, for example `class="c-card c-stack"`. Tokens (`--c-*`), cascade layers and `data-*` variants are unchanged. It renames this stylesheet only: theme packs, application components, the React adapter and the server templates still use the unprefixed names.
+
+Tones accept both vocabularies: `data-tone="ok|warn|bad"` is canonical here, and `success|warning|danger` (the Colibri UI words) work too. `data-variant="danger"` and `destructive` are equivalent on `.btn`.
+
 ## React
 
-The npm names describe the source packages; registry releases are not published yet. Clone the repository and install its root and `packages/colibri-css` directories as local dependencies (see the root README).
+Install both packages from npm: `npm install @colibri-kit/ui @colibri-kit/css`. They are released together at the same version.
 
 ```jsx
 import { Dialog, Tabs, Part, cx } from "@colibri-kit/ui/react";

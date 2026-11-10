@@ -213,7 +213,8 @@
     &[data-variant=soft] { background: var(--c-accent-soft); color: var(--c-accent); }
     &[data-variant=outline] { background: transparent; color: var(--c-fg); border-color: var(--c-line); &:hover { background: var(--c-sunken); } }
     &[data-variant=ghost] { background: transparent; color: var(--c-fg); &:hover { background: var(--c-sunken); } }
-    &[data-variant=danger] { background: var(--c-bad); }
+    /* canonical: danger. `destructive` (the Colibri UI word) is accepted so the two layers share one vocabulary. */
+    &:is([data-variant=danger], [data-variant=destructive]) { background: var(--c-bad); }
     &[data-size=s] { min-block-size: 2rem; padding-inline: 0.75em; }
     &[data-size=l] { min-block-size: 3rem; padding-inline: 1.4em; font-size: var(--c-text-md); } }
 
@@ -229,9 +230,10 @@
   .badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
     background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));
     &[data-tone=accent] { --tone: var(--c-accent); --tone-soft: var(--c-accent-soft); }
-    &[data-tone=ok] { --tone: var(--c-ok); --tone-soft: color-mix(in oklch, var(--c-ok) 15%, transparent); }
-    &[data-tone=warn] { --tone: var(--c-warn); --tone-soft: color-mix(in oklch, var(--c-warn) 18%, transparent); }
-    &[data-tone=bad] { --tone: var(--c-bad); --tone-soft: color-mix(in oklch, var(--c-bad) 15%, transparent); } }
+    /* canonical: ok | warn | bad. The Colibri UI words success | warning | danger are accepted as aliases. */
+    &:is([data-tone=ok], [data-tone=success]) { --tone: var(--c-ok); --tone-soft: color-mix(in oklch, var(--c-ok) 15%, transparent); }
+    &:is([data-tone=warn], [data-tone=warning]) { --tone: var(--c-warn); --tone-soft: color-mix(in oklch, var(--c-warn) 18%, transparent); }
+    &:is([data-tone=bad], [data-tone=danger]) { --tone: var(--c-bad); --tone-soft: color-mix(in oklch, var(--c-bad) 15%, transparent); } }
 
   .field { display: grid; gap: var(--c-space-3xs);
     & .hint { font-size: var(--c-text-xs); color: var(--c-muted); }
@@ -239,8 +241,8 @@
     &:has(:user-invalid) :is(label, .hint) { color: var(--c-bad); }
     &:has(:required) label::after { content: " *"; color: var(--c-bad); } }
 
-  .callout { padding: var(--c-space-s) var(--c-space-m); border-inline-start: 4px solid var(--tone, var(--c-accent)); border-radius: var(--c-radius-s); background: color-mix(in oklch, var(--tone, var(--c-accent)) 9%, var(--c-surface));
-    &[data-tone=warn] { --tone: var(--c-warn); } &[data-tone=bad] { --tone: var(--c-bad); } &[data-tone=ok] { --tone: var(--c-ok); } }
+  .callout { padding: var(--c-space-s) var(--c-space-m); border-inline-start: 4px solid var(--tone, var(--c-accent)); border-radius: var(--c-radius-s); background: color-mix(in oklab, var(--tone, var(--c-accent)) 9%, var(--c-surface)); /* oklab: mixing in oklch would take the hue of white (0), tinting every tone pink */
+    &:is([data-tone=warn], [data-tone=warning]) { --tone: var(--c-warn); } &:is([data-tone=bad], [data-tone=danger]) { --tone: var(--c-bad); } &:is([data-tone=ok], [data-tone=success]) { --tone: var(--c-ok); } }
 
   /* motion primitive: elements fade/slide in when they appear (honours reduced motion via tokens) */
   .enter { animation: c-enter var(--c-dur-slow) var(--c-ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }

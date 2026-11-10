@@ -208,7 +208,10 @@ export function createDataTable(root, o = {}) {
     pager && b.on(pager, "ui:change", (e) => { page = e.detail.page; apply(); });
     apply();
     return { get selected() { return selected().map((r) => r.dataset.id); }, filter(fn) { pred = fn; page = 1; apply(); }, setPageSize(n) { size = n; page = 1; apply(); },
-      setColumnVisible(i, on) { table.querySelectorAll("tr").forEach((tr) => { if (tr.cells[i]) tr.cells[i].hidden = !on; }); }, refresh: apply, destroy: b.off };
+      setColumnVisible(i, on) { table.querySelectorAll("tr").forEach((tr) => { if (tr.cells[i]) tr.cells[i].hidden = !on; }); },
+      // refresh re-applies client-side sort/filter/paging to new rows. A remote table's rows come from the server
+      // in answer to ui:query, so refreshing must not ask again (that made every data update fetch twice).
+      refresh() { if (!remote) apply(); }, destroy: b.off };
   });
 }
 
@@ -343,7 +346,9 @@ export function createItemGroup(root, o = {}) {
       if (isDisabled(i)) return;
       if (!emit(i, "activate", { item: i, value: i.dataset.value }, true)) return;
       const link = i.querySelector('[data-ui-part="title-link"]');
-      if (link) link.click(); else if (i.dataset.href) location.assign(i.dataset.href);
+      if (link) link.click();
+      // only http(s): a javascript: or data: URL in data-href must never reach navigation
+      else if (i.dataset.href) { try { const u = new URL(i.dataset.href, root.ownerDocument.baseURI); if (u.protocol === "http:" || u.protocol === "https:") location.assign(u.href); } catch {} }
     };
     const focusRow = (i) => { rowsOf().forEach((x) => (x.tabIndex = x === i ? 0 : -1)); i.focus(); };
     b.on(root, "keydown", (e) => {

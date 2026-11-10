@@ -40,7 +40,12 @@ export function dispose(root) {
 /** register on root once; returns cached api */
 export function once(root, key, factory) {
   if (root[key]) return root[key];
-  const api = factory(); root[key] = api;
+  // Mark the root while its controller is being built. A factory may dispatch ui:refresh (repeater does when it
+  // adds its minimum rows); without the mark, the resulting init pass would build a second controller here.
+  const building = {}; root[key] = building;
+  let api;
+  try { api = factory(); } finally { if (root[key] === building) delete root[key]; }
+  root[key] = api;
   const destroy = api.destroy;
   api.destroy = () => { try { destroy?.call(api); } finally { if (root[key] === api) delete root[key]; } };
   return trackController(root, api);
@@ -131,4 +136,20 @@ export function cleanupController(root,key,teardown) {
  const cleanup=()=>cleanup.destroy();
  cleanup.destroy=()=>{try{teardown();}finally{delete root[key];}};
  root[key]=cleanup;trackController(root,cleanup);return cleanup;
+}
+
+const observers = new WeakMap();
+/** Match initialization with teardown when framework swaps remove nodes. Moves keep their API. */
+export function observeRemovals(root = document) {
+  if (observers.has(root)) return observers.get(root);
+  const doc = root.ownerDocument || root, MO = doc.defaultView?.MutationObserver;
+  if (!MO) return null;
+  const observer = new MO(records => {
+    for (const record of records) for (const node of record.removedNodes) {
+      if (node.nodeType === 1 && !node.isConnected) dispose(node);
+    }
+  });
+  observer.observe(root, { childList: true, subtree: true });
+  const api = { disconnect() { observer.disconnect(); observers.delete(root); } };
+  observers.set(root, api); return api;
 }

@@ -322,7 +322,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-accordion-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-accordion-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.accordion default=&quot;a&quot; items=[
   {&quot;value&quot;:&quot;a&quot;, &quot;title&quot;:&quot;What is Despani?&quot;, &quot;content&quot;:&quot;Portal.&quot;},
   {&quot;value&quot;:&quot;b&quot;, &quot;title&quot;:&quot;Colibri UI?&quot;, &quot;content&quot;:&quot;Headless UI.&quot;}
@@ -372,7 +372,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-alert-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-alert-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.alert role=&quot;status&quot;]&lt;strong&gt;Information:&lt;/strong&gt; Changes saved.[/@ui.alert]
 [@ui.alert role=&quot;alert&quot; variant=&quot;destructive&quot;]Something went wrong.[/@ui.alert]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-alert-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-alert-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
@@ -399,7 +399,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-aspect-ratio-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-aspect-ratio-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.c ui=&quot;aspect-ratio&quot; attrs={&quot;style&quot;:&quot;aspect-ratio:16/9&quot;}]&lt;img src=&quot;${cover}&quot; alt=&quot;&quot;&gt;[/@ui.c]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-aspect-ratio-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-aspect-ratio-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -431,7 +431,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-avatar-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-avatar-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.avatar src=user.avatarUrl! alt=user.name fallback=&quot;LD&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-avatar-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-avatar-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/avatar :: avatar(${avatarUrl}, ${displayName}, ${initials})}&quot;&gt;&lt;/div&gt;
@@ -462,7 +462,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-badge-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-badge-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.badge]Default[/@ui.badge]
 [@ui.badge variant=&quot;secondary&quot;]Secondary[/@ui.badge]
 [@ui.badge variant=&quot;outline&quot; removable=true]Tag[/@ui.badge]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-badge-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-badge-thymeleaf">&lt;!-- Application template: values come from the controller model.
@@ -491,7 +491,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-button-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-button-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.button]Save[/@ui.button]
 [@ui.button variant=&quot;outline&quot;]Cancel[/@ui.button]
 [@ui.button variant=&quot;destructive&quot;]Delete[/@ui.button]
@@ -594,7 +594,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-button-group-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-button-group-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.buttonGroup label=&quot;Text align&quot; type=&quot;single&quot; value=&quot;center&quot; name=&quot;align&quot; required=true]
   &lt;button data-value=&quot;left&quot;&gt;Left&lt;/button&gt;&lt;button data-value=&quot;center&quot;&gt;Center&lt;/button&gt;&lt;button data-value=&quot;right&quot;&gt;Right&lt;/button&gt;
 [/@ui.buttonGroup]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-button-group-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-button-group-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -733,7 +733,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
     &lt;/article&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-card-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-card-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.card title=article.title description=article.date]
   ${article.intro}
 [/@ui.card]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-card-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-card-thymeleaf">&lt;!-- Application template: values come from the controller model.
@@ -781,7 +781,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-carousel-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-carousel-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.c ui=&quot;carousel&quot; attrs={&quot;data-loop&quot;:true, &quot;aria-label&quot;:&quot;Featured&quot;}]
   [@ui.p part=&quot;viewport&quot;][#list slides as s][@ui.p part=&quot;slide&quot;]${s.title}[/@ui.p][/#list][/@ui.p]
   [@ui.p part=&quot;prev&quot; tag=&quot;button&quot; attrs={&quot;aria-label&quot;:&quot;Previous slide&quot;}][/@ui.p]
@@ -872,7 +872,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-message-scroller-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-message-scroller-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.c ui=&quot;message-scroller&quot;]
   [@ui.p part=&quot;viewport&quot;][#list messages as m]
     &lt;div data-ui-part=&quot;message&quot; data-from=&quot;${m.mine?then(&quot;me&quot;,&quot;them&quot;)}&quot;&gt;&lt;span data-ui-part=&quot;bubble&quot;&gt;${m.text}&lt;/span&gt;&lt;/div&gt;
@@ -943,7 +943,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-alert-dialog-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-alert-dialog-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dialog kind=&quot;alert-dialog&quot; trigger=&quot;Delete article…&quot; title=&quot;Are you sure?&quot;
            description=&quot;This action cannot be undone.&quot;]
   [@ui.close returnValue=&quot;cancel&quot; autofocus=true]Cancel[/@ui.close]
@@ -982,7 +982,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-code-block-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-code-block-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;pre data-ui-part=&quot;code-block&quot;&gt;&lt;code id=&quot;snippet&quot;&gt;${code}&lt;/code&gt;&lt;/pre&gt;
 [@ui.clipboard target=&quot;#snippet&quot;]Copy[/@ui.clipboard]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-code-block-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-code-block-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -1154,7 +1154,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-datatable-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-datatable-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.datatable pageSize=10]
 &lt;table&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th data-ui-part=&quot;select-all&quot;&gt;&lt;input type=&quot;checkbox&quot; aria-label=&quot;Select all&quot;&gt;&lt;/th&gt;
@@ -1286,7 +1286,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-dialog-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-dialog-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dialog trigger=&quot;Edit profile&quot; title=&quot;Profile&quot; description=&quot;Update your details.&quot;]
   &lt;form method=&quot;dialog&quot;&gt;
     &lt;label&gt;Name &lt;input name=&quot;name&quot; value=&quot;${user.name}&quot; autofocus&gt;&lt;/label&gt;
@@ -1326,7 +1326,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-separator-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-separator-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.separator/]
 [@ui.separator vertical=true/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-separator-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-separator-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -1394,7 +1394,7 @@ export function Demo() {
     &lt;/DropdownMenu&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-dropdown-menu-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-dropdown-menu-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dropdown trigger=&quot;Actions&quot; items=[
   {&quot;type&quot;:&quot;label&quot;, &quot;label&quot;:&quot;Article&quot;},
   {&quot;label&quot;:&quot;Edit&quot;, &quot;shortcut&quot;:&quot;⌘E&quot;},
@@ -1433,7 +1433,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-empty-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-empty-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;div data-ui-part=&quot;empty-state&quot;&gt;
   &lt;h3&gt;No articles yet&lt;/h3&gt;&lt;p&gt;Create your first article.&lt;/p&gt;
   [@ui.button]New article[/@ui.button]
@@ -1459,7 +1459,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-label-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-label-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt; &lt;input id=&quot;email&quot; name=&quot;email&quot; type=&quot;email&quot;&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-label-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-label-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -1495,7 +1495,7 @@ export function Demo() {
     &lt;/p&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-hover-card-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-hover-card-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.popover kind=&quot;hover-card&quot; triggerTag=&quot;a&quot; trigger=&quot;@levancho&quot;]
   [@ui.avatar fallback=&quot;LD&quot;/] &lt;strong&gt;Levan Dvalishvili&lt;/strong&gt;
 [/@ui.popover]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-hover-card-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-hover-card-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -1606,7 +1606,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-kbd-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-kbd-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 Press &lt;kbd&gt;Ctrl&lt;/kbd&gt; + &lt;kbd&gt;K&lt;/kbd&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-kbd-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-kbd-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -1626,7 +1626,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-theme-switch-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-theme-switch-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.themeSwitch key=&quot;colibri.theme&quot;]Theme[/@ui.themeSwitch]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-theme-switch-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-theme-switch-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -1645,7 +1645,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-link-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-link-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;a href=&quot;/articles&quot;[#if current==&quot;articles&quot;] aria-current=&quot;page&quot;[/#if]&gt;Articles&lt;/a&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-link-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-link-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -1745,7 +1745,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-item-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-item-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.itemGroup label=&quot;Notification settings&quot;]
   [@ui.item title=&quot;Notifications&quot; description=&quot;Email and push&quot; media=&quot;🔔&quot;]
     [@ui.switch name=&quot;notify&quot; checked=user.notify/]
@@ -1838,7 +1838,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-skeleton-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-skeleton-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.skeleton w=&quot;220px&quot; h=&quot;14px&quot;/]
 [@ui.skeleton w=&quot;160px&quot; h=&quot;14px&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-skeleton-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-skeleton-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -1899,7 +1899,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/table&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-table-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-table-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;table&gt;&lt;caption&gt;Recent articles&lt;/caption&gt;
   &lt;thead&gt;&lt;tr&gt;&lt;th scope=&quot;col&quot;&gt;Title&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
   &lt;tbody&gt;[#list articles as a]&lt;tr&gt;&lt;td&gt;${a.title}&lt;/td&gt;&lt;/tr&gt;[/#list]&lt;/tbody&gt;
@@ -1953,7 +1953,7 @@ export function Demo() {
     &lt;/Popover&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-popover-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-popover-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.popover trigger=&quot;Sizes&quot;]
   &lt;label&gt;Width &lt;input name=&quot;w&quot; value=&quot;100%&quot; autofocus&gt;&lt;/label&gt;
   [@ui.close]Done[/@ui.close]
@@ -1992,7 +1992,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-progress-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-progress-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.progress value=upload.percent label=&quot;Upload&quot;/]
 [@ui.progress label=&quot;Loading&quot;/]  [#-- no value = indeterminate --]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-progress-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-progress-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
@@ -2024,7 +2024,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-resizable-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-resizable-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.c ui=&quot;resizable&quot;]
   [@ui.p part=&quot;panel&quot; attrs={&quot;data-size&quot;:&quot;30&quot;, &quot;data-min&quot;:&quot;15&quot;}]Sidebar[/@ui.p]
   [@ui.p part=&quot;handle&quot; attrs={&quot;aria-label&quot;:&quot;Resize&quot;}][/@ui.p]
@@ -2071,7 +2071,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-reparent-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-reparent-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;span data-ui=&quot;reparent&quot; data-target=&quot;#desktop-slot&quot; data-target-mobile=&quot;#mobile-slot&quot;
       data-media=&quot;(max-width: 699px)&quot;&gt;…&lt;/span&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-reparent-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-reparent-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -2111,7 +2111,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-context-menu-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-context-menu-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dropdown kind=&quot;context-menu&quot; trigger=&quot;Right-click here&quot; items=[
   {&quot;label&quot;:&quot;Back&quot;}, {&quot;label&quot;:&quot;Reload&quot;}, {&quot;type&quot;:&quot;separator&quot;},
   {&quot;label&quot;:&quot;Show bookmarks&quot;, &quot;type&quot;:&quot;checkbox&quot;}
@@ -2159,7 +2159,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-direction-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-direction-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;div dir=&quot;rtl&quot; lang=&quot;ar&quot;&gt;
   [@ui.alert]مرحبا[/@ui.alert]
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-direction-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-direction-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -2217,7 +2217,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-scroll-area-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-scroll-area-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.scrollArea maxHeight=&quot;120px&quot; label=&quot;Tags&quot;]
   [#list tags as t]&lt;p&gt;${t}&lt;/p&gt;[/#list]
 [/@ui.scrollArea]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-scroll-area-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-scroll-area-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -2266,7 +2266,7 @@ export function Demo() {
     &lt;/Collapsible&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-collapsible-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-collapsible-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.collapsible trigger=&quot;Show 3 more&quot;]
   &lt;p&gt;One&lt;/p&gt;&lt;p&gt;Two&lt;/p&gt;&lt;p&gt;Three&lt;/p&gt;
 [/@ui.collapsible]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-collapsible-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-collapsible-thymeleaf">&lt;!-- Application template: values come from the controller model.
@@ -2328,7 +2328,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-drawer-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-drawer-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dialog kind=&quot;sheet&quot; side=&quot;right&quot; trigger=&quot;Filters&quot; title=&quot;Filters&quot;]
   …filters…
   [@ui.close]Close[/@ui.close]
@@ -2424,7 +2424,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-spinner-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-spinner-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.spinner /]
 [@ui.spinner size=&quot;lg&quot; variant=&quot;dots&quot; label=&quot;Loading messages…&quot; /]
 [@ui.button disabled=true][@ui.spinner size=&quot;sm&quot; label=&quot;Saving…&quot; /] Saving…[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-spinner-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-spinner-thymeleaf">&lt;!-- Application template: values come from the controller model.
@@ -2451,7 +2451,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-rating-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-rating-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.rating name=&quot;stars&quot; value=review.stars!0/]
 [@ui.rating name=&quot;avg&quot; value=4 readonly=true/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-rating-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-rating-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -2481,7 +2481,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-typography-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-typography-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;h1&gt;${title}&lt;/h1&gt;&lt;p&gt;${body}&lt;/p&gt;&lt;blockquote&gt;${quote}&lt;/blockquote&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-typography-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-typography-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -2504,7 +2504,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-toast-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toast-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [#-- once per layout --]
 [@ui.toaster position=&quot;bottom-right&quot; max=3/]
 &lt;script type=&quot;module&quot;&gt;
@@ -2536,7 +2536,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.toggle label=&quot;Bold&quot; pressed=false]&lt;b&gt;B&lt;/b&gt;[/@ui.toggle]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -2633,7 +2633,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-tooltip-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tooltip-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.tooltip text=&quot;This is a tooltip&quot;]
   &lt;button type=&quot;button&quot; data-ui-part=&quot;trigger&quot;&gt;Hover / focus me&lt;/button&gt;
 [/@ui.tooltip]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-tooltip-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tooltip-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -2657,7 +2657,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;button data-ui-sidebar-toggle=&quot;#sink-sidebar&quot;&gt;Toggle page sidebar (Ctrl/Cmd+B)&lt;/button&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebar id=&quot;app-sidebar&quot; key=&quot;app.sidebar&quot; label=&quot;Main navigation&quot;]
   …links…
 [/@ui.sidebar]
@@ -2699,7 +2699,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/nav&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-breadcrumb-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-breadcrumb-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.breadcrumb crumbs=[
   {&quot;label&quot;:&quot;Home&quot;, &quot;href&quot;:&quot;/&quot;},
   {&quot;label&quot;:&quot;Articles&quot;, &quot;href&quot;:&quot;/articles&quot;},
@@ -2776,7 +2776,7 @@ export function Demo() {
     &lt;/Dialog&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-command-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-command-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.dialog trigger=&quot;Command palette&quot; title=&quot;Command&quot;]
   [@ui.command hotkey=&quot;k&quot; groups=[
     {&quot;label&quot;:&quot;Pages&quot;, &quot;options&quot;:[{&quot;value&quot;:&quot;home&quot;,&quot;label&quot;:&quot;Home&quot;,&quot;keywords&quot;:&quot;main&quot;}, {&quot;value&quot;:&quot;articles&quot;,&quot;label&quot;:&quot;Articles&quot;}]}
@@ -2864,7 +2864,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-menu-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-menu-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.menubar label=&quot;App&quot; menus=[
   {&quot;label&quot;:&quot;File&quot;, &quot;items&quot;:[{&quot;label&quot;:&quot;New&quot;}, {&quot;label&quot;:&quot;Open…&quot;}, {&quot;type&quot;:&quot;separator&quot;}, {&quot;label&quot;:&quot;Print&quot;}]},
   {&quot;label&quot;:&quot;Edit&quot;, &quot;items&quot;:[{&quot;label&quot;:&quot;Undo&quot;}, {&quot;label&quot;:&quot;Redo&quot;}]}
@@ -2910,7 +2910,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-pagination-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-pagination-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.pagination total=pages page=currentPage/]
 [#-- server-side links instead of buttons: --]
 [@ui.pagination total=pages page=currentPage href=&quot;?page={page}&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-pagination-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-pagination-thymeleaf">&lt;!-- Application template: values come from the controller model.
@@ -2930,7 +2930,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
     &lt;p&gt;See the left sidebar: the active section is highlighted while you scroll.&lt;/p&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-scrollspy-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-scrollspy-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.scrollspy offset=80]
   [@ui.spyLink href=&quot;#intro&quot;]Intro[/@ui.spyLink]
   [@ui.spyLink href=&quot;#usage&quot;]Usage[/@ui.spyLink]
@@ -2993,7 +2993,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-navigation-menu-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-navigation-menu-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.navigationMenu label=&quot;Main&quot;]
   [@ui.navMenu trigger=&quot;Products&quot;]&lt;a href=&quot;/cms&quot;&gt;Colibri CMS&lt;/a&gt;&lt;a href=&quot;/ui&quot;&gt;Colibri UI&lt;/a&gt;[/@ui.navMenu]
   &lt;li&gt;&lt;a href=&quot;/contact&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
@@ -3031,7 +3031,7 @@ export function Demo() {
     &lt;UI kind=&quot;scrollto&quot; as=&quot;a&quot; href=&quot;#top&quot; data-offset=&quot;0&quot;&gt;↑ Back to top&lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-scrollto-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-scrollto-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;a data-ui=&quot;scrollto&quot; href=&quot;#top&quot; data-offset=&quot;64&quot;&gt;↑ Back to top&lt;/a&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-scrollto-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-scrollto-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3090,7 +3090,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-stepper-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-stepper-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [#assign account]&lt;label&gt;Email &lt;input type=&quot;email&quot; name=&quot;email&quot; required&gt;&lt;/label&gt;[/#assign]
 [#assign profile]&lt;label&gt;Name &lt;input name=&quot;name&quot;&gt;&lt;/label&gt;[/#assign]
 [@ui.stepper linear=true steps=[{&quot;label&quot;:&quot;Account&quot;, &quot;content&quot;:account}, {&quot;label&quot;:&quot;Profile&quot;, &quot;content&quot;:profile}, {&quot;label&quot;:&quot;Finish&quot;, &quot;content&quot;:&quot;Ready!&quot;}]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-stepper-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-stepper-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -3127,7 +3127,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/p&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sticky-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sticky-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;header data-ui=&quot;sticky&quot; style=&quot;position:sticky;top:0&quot;&gt;…&lt;/header&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-sticky-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sticky-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3213,7 +3213,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-tabs-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tabs-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.tabs default=&quot;news&quot; tabs=[{&quot;value&quot;:&quot;news&quot;,&quot;label&quot;:&quot;News&quot;}, {&quot;value&quot;:&quot;sport&quot;,&quot;label&quot;:&quot;Sports&quot;}]]
   [@ui.panel value=&quot;news&quot;]News panel[/@ui.panel]
   [@ui.panel value=&quot;sport&quot;]Sports panel[/@ui.panel]
@@ -3248,7 +3248,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-calendar-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-calendar-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.calendar mode=&quot;single&quot; value=&quot;2026-10-30&quot;/]
 [@ui.calendar mode=&quot;range&quot; months=2/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-calendar-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-calendar-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
@@ -3302,7 +3302,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-checkbox-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-checkbox-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.checkbox name=&quot;remember&quot; checked=form.remember label=&quot;Remember me&quot;/]
 [@ui.checkbox name=&quot;all&quot; label=&quot;All&quot; controls=&quot;#list .row-check&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-checkbox-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-checkbox-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
@@ -3402,7 +3402,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-color-picker-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-color-picker-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.colorPicker name=&quot;brand&quot; value=site.brandColor swatches=[&quot;#e11d48&quot;, &quot;#16a34a&quot;]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-color-picker-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-color-picker-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3433,7 +3433,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-date-picker-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-date-picker-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.datePicker name=&quot;published&quot; value=(article.published?string(&quot;yyyy-MM-dd&quot;))! label=&quot;Published&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-date-picker-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-date-picker-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3464,7 +3464,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sortable-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sortable-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sortable name=&quot;order&quot; label=&quot;Order&quot; items=[
   {&quot;value&quot;:&quot;a&quot;,&quot;label&quot;:&quot;One&quot;}, {&quot;value&quot;:&quot;b&quot;,&quot;label&quot;:&quot;Two&quot;}, {&quot;value&quot;:&quot;c&quot;,&quot;label&quot;:&quot;Three&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-sortable-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sortable-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -3496,7 +3496,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-file-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-file-input-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.fileInput name=&quot;files&quot; maxSize=&quot;2MB&quot; drop=&quot;Drop files here&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-file-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-file-input-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3540,7 +3540,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-field-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-field-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.field label=&quot;Email&quot; id=&quot;email&quot; description=&quot;We will never share your email.&quot;
           error=(errors.email)!&quot;&quot;]
   [@ui.input name=&quot;email&quot; id=&quot;email&quot; type=&quot;email&quot; value=(form.email)! required=true/]
@@ -3584,7 +3584,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-image-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-image-input-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.imageInput name=&quot;avatar&quot; src=(user.avatarUrl)! change=&quot;Change&quot; remove=&quot;Delete&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-image-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-image-input-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3607,7 +3607,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-group-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-group-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;div data-ui-part=&quot;input-group&quot;&gt;
   &lt;span data-ui-part=&quot;addon&quot;&gt;https://&lt;/span&gt;&lt;input name=&quot;site&quot; aria-label=&quot;Site&quot;&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-group-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-group-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -3636,7 +3636,7 @@ export function Demo() {
     /&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-textarea-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-textarea-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.textarea name=&quot;comment&quot; maxRows=8 maxlength=&quot;200&quot; label=&quot;Comment&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-textarea-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-textarea-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3659,7 +3659,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-pin-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-pin-input-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.pinInput name=&quot;otp&quot; length=6/]
 [@ui.pinInput name=&quot;pin&quot; length=4 mask=true label=&quot;PIN&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-pin-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-pin-input-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -3685,7 +3685,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-password-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-password-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.togglePassword name=&quot;password&quot; label=&quot;Password&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-password-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-password-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -3748,7 +3748,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-radio-group-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-radio-group-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.radioGroup name=&quot;lang&quot; value=form.lang label=&quot;Language&quot; options=[
   {&quot;value&quot;:&quot;ka&quot;, &quot;label&quot;:&quot;Georgian&quot;}, {&quot;value&quot;:&quot;en&quot;, &quot;label&quot;:&quot;English&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-radio-group-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-radio-group-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -3797,7 +3797,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-slider-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-slider-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.slider name=&quot;vol&quot; value=40/]
 [@ui.slider name=&quot;price&quot; value=&quot;200,800&quot; min=0 max=1000 step=10 labels=[&quot;Min&quot;,&quot;Max&quot;]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-slider-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-slider-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -3846,7 +3846,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-repeater-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-repeater-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.repeater min=1 max=5 add=&quot;+ Add&quot;]
   &lt;input name=&quot;items[__i__].name&quot; placeholder=&quot;Name&quot;&gt;
 [/@ui.repeater]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-repeater-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-repeater-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -3914,7 +3914,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-combobox-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-combobox-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.combobox name=&quot;city&quot; placeholder=&quot;City…&quot; label=&quot;City&quot; options=[
   {&quot;value&quot;:&quot;tbilisi&quot;,&quot;label&quot;:&quot;Tbilisi&quot;}, {&quot;value&quot;:&quot;batumi&quot;,&quot;label&quot;:&quot;Batumi&quot;}
 ]/]
@@ -4024,7 +4024,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-select-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-select-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.select name=&quot;lang&quot; value=form.lang placeholder=&quot;Choose a language&quot; groups=[
   {&quot;label&quot;:&quot;Europe&quot;, &quot;options&quot;:[{&quot;value&quot;:&quot;ka&quot;,&quot;label&quot;:&quot;Georgian&quot;}, {&quot;value&quot;:&quot;en&quot;,&quot;label&quot;:&quot;English&quot;}]}
 ]/]
@@ -4055,7 +4055,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;input name=&quot;title&quot; value=&quot;${(article.title)!}&quot; placeholder=&quot;Text&quot;&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/input :: input(&#x27;name&#x27;, &#x27;Name&#x27;, ${name}, true)}&quot;&gt;&lt;/div&gt;
@@ -4099,7 +4099,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-group-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-group-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.toggleGroup type=&quot;single&quot; value=&quot;c&quot; label=&quot;Align&quot; items=[
   {&quot;value&quot;:&quot;l&quot;,&quot;label&quot;:&quot;L&quot;}, {&quot;value&quot;:&quot;c&quot;,&quot;label&quot;:&quot;C&quot;}, {&quot;value&quot;:&quot;r&quot;,&quot;label&quot;:&quot;R&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-toggle-group-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-toggle-group-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -4133,7 +4133,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-switch-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-switch-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.switch name=&quot;airplane&quot; checked=settings.airplane label=&quot;Airplane mode&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-switch-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-switch-thymeleaf">&lt;!-- Application template: values come from the controller model.
 Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/switch :: switch(&#x27;notifications&#x27;, &#x27;Notifications&#x27;, ${notifications})}&quot;&gt;&lt;/div&gt;
@@ -4237,7 +4237,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-trace-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-trace-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.trace]
   [@ui.traceLine icon=&quot;search&quot; title=&quot;Searched for X&quot; /]
 [/@ui.trace]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-trace-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-trace-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -4422,7 +4422,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-chart-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-chart-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.chart type=&quot;bar&quot; caption=&quot;Visitors&quot; columns=[&quot;Month&quot;,&quot;Desktop&quot;] rows=[[&quot;Jan&quot;,186],[&quot;Feb&quot;,305]] /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-chart-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-chart-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -4611,7 +4611,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-bubble-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-bubble-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.bubble variant=&quot;muted&quot; reactions=[&quot;👍&quot;]]I checked the registry output.[/@ui.bubble]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-bubble-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-bubble-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -4810,7 +4810,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-message-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-message-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.message from=&quot;assistant&quot; avatar=&quot;AI&quot; name=&quot;Colibri&quot; actions=[&quot;copy&quot;,&quot;like&quot;,&quot;dislike&quot;,&quot;retry&quot;]]…[/@ui.message]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-message-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-message-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5001,7 +5001,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-attachment-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-attachment-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.attachment title=&quot;sales-dashboard.pdf&quot; description=&quot;PDF · 2.4 MB&quot; progress=35 /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-attachment-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-attachment-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5086,7 +5086,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-marker-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-marker-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.marker icon=&quot;check&quot;]Explored 4 files[/@ui.marker]
 [@ui.marker variant=&quot;separator&quot;]Yesterday[/@ui.marker]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-marker-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-marker-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -5131,7 +5131,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-native-select-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-native-select-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;select data-ui=&quot;native-select&quot; name=&quot;city&quot;&gt;…&lt;/select&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-native-select-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-native-select-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5249,7 +5249,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-questionnaire-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-questionnaire-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.questionnaire items=items /]  [#-- items=[{&quot;name&quot;,&quot;type&quot;:&quot;single|multiple|text&quot;,&quot;title&quot;,&quot;required&quot;,&quot;choices&quot;:[…]}] --]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-questionnaire-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-questionnaire-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5445,7 +5445,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-ai-message-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-ai-message-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.message from=&quot;assistant&quot;]
   [@ui.agent kind=&quot;reasoning&quot; title=&quot;Thought for 3s&quot;]…[/@ui.agent]
   [@ui.agent kind=&quot;tool&quot; status=&quot;completed&quot; title=&quot;query_database&quot;]…[/@ui.agent]
@@ -5527,7 +5527,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-confirmation-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-confirmation-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.confirmation title=&quot;Run DELETE FROM desp_session?&quot;]This tool needs your approval.[/@ui.confirmation]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-confirmation-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-confirmation-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5637,7 +5637,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-chat-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-chat-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;div class=&quot;chat&quot;&gt;
   &lt;div data-ui=&quot;message-scroller&quot;&gt;…&lt;/div&gt;
   [@ui.suggestion target=&quot;#prompt&quot; items=[&quot;What is headless?&quot;] /]
@@ -5702,7 +5702,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-checkpoint-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-checkpoint-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.checkpoint id=&quot;cp-3&quot; label=&quot;Checkpoint · 3 files changed&quot; /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-checkpoint-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-checkpoint-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5780,7 +5780,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-terminal-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-terminal-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;terminal&quot; status=&quot;running&quot; title=&quot;npm test&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-terminal-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-terminal-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5844,7 +5844,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-context-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-context-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.context used=124000 max=200000 /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-context-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-context-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5929,7 +5929,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-stack-trace-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-stack-trace-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;stack-trace&quot; status=&quot;error&quot; title=&quot;TypeError: …&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-stack-trace-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-stack-trace-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -5996,7 +5996,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-file-tree-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-file-tree-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.fileTree label=&quot;Changed files&quot; nodes=tree /]  [#-- nodes=[{&quot;name&quot;,&quot;path&quot;,&quot;children&quot;:[…]}] --]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-file-tree-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-file-tree-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6049,7 +6049,7 @@ export function Demo() {
     &lt;/p&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-inline-citation-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-inline-citation-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 …the tree pattern[@ui.citation n=1 href=url title=&quot;Tree View Pattern&quot; source=&quot;w3.org&quot;]A tree view widget…[/@ui.citation].</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-inline-citation-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-inline-citation-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6114,7 +6114,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-task-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-task-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;task&quot; status=&quot;running&quot; title=&quot;…&quot; open=true]
   [@ui.agentStep status=&quot;done&quot;]First step[/@ui.agentStep]
 [/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-task-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-task-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -6190,7 +6190,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-prompt-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-prompt-input-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.promptInput id=&quot;prompt&quot; placeholder=&quot;Ask anything…&quot; attach=true /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-prompt-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-prompt-input-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6256,7 +6256,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-model-selector-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-model-selector-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.select name=&quot;model&quot; value=&quot;fast&quot; options=[{&quot;value&quot;:&quot;fast&quot;,&quot;label&quot;:&quot;Fast&quot;},{&quot;value&quot;:&quot;smart&quot;,&quot;label&quot;:&quot;Smart&quot;}] /]
 [@ui.select name=&quot;effort&quot; value=&quot;medium&quot; options=efforts /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-model-selector-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-model-selector-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
@@ -6319,7 +6319,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-plan-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-plan-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;plan&quot; status=&quot;running&quot; title=&quot;…&quot; open=true]
   [@ui.agentStep status=&quot;done&quot;]First step[/@ui.agentStep]
 [/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-plan-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-plan-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -6381,7 +6381,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-reasoning-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-reasoning-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;reasoning&quot; status=&quot;streaming&quot; title=&quot;Thinking…&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-reasoning-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-reasoning-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6516,7 +6516,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sources-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sources-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;sources&quot; status=&quot;done&quot; title=&quot;Used 3 sources&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-sources-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sources-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6632,7 +6632,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-subagent-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-subagent-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;subagent&quot; status=&quot;completed&quot; title=&quot;Researcher&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-subagent-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-subagent-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6670,7 +6670,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-suggestion-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-suggestion-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.suggestion target=&quot;#prompt&quot; items=[&quot;Summarise this page&quot;,&quot;Write tests&quot;] /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-suggestion-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-suggestion-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6750,7 +6750,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-test-results-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-test-results-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;test-results&quot; status=&quot;done&quot; title=&quot;Test run&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-test-results-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-test-results-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -6835,7 +6835,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-chain-of-thought-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-chain-of-thought-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;chain-of-thought&quot; status=&quot;running&quot; title=&quot;…&quot; open=true]
   [@ui.agentStep status=&quot;done&quot;]First step[/@ui.agentStep]
 [/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-chain-of-thought-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-chain-of-thought-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
@@ -6922,7 +6922,7 @@ export function Demo() {
     &lt;/UI&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-queue-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-queue-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.queue pending=[{&quot;id&quot;:1,&quot;label&quot;:&quot;Write the README&quot;}] completed=[{&quot;id&quot;:0,&quot;label&quot;:&quot;Design tokens&quot;}] /]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-queue-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-queue-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -7122,7 +7122,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-tool-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tool-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.agent kind=&quot;tool&quot; status=&quot;completed&quot; title=&quot;read_file&quot;]…[/@ui.agent]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-tool-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tool-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.
 Use the markup directly, or author a fragment for your application model.
 Load Colibri CSS and core/auto.js in the page layout. --&gt;
@@ -9883,7 +9883,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-01-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-01-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -10266,7 +10266,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-02-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-02-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -10642,7 +10642,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-03-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-03-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -11013,7 +11013,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-04-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-04-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;floating&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -11448,7 +11448,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-05-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-05-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -11883,7 +11883,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-06-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-06-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -12481,7 +12481,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-07-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-07-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;icon&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -13194,7 +13194,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-08-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-08-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;inset&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -13612,7 +13612,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-09-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-09-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -14186,7 +14186,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-10-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-10-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -14583,7 +14583,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-11-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-11-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -14939,7 +14939,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-12-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-12-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -15351,7 +15351,7 @@ export function Demo() {
     &lt;/Dialog&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-13-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-13-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -15637,7 +15637,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-14-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-14-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;right&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -16274,7 +16274,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-15-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-15-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;sidebar&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -17048,7 +17048,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-sidebar-16-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-sidebar-16-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.sidebarShell id=&quot;app-sidebar&quot; variant=&quot;inset&quot; collapsible=&quot;offcanvas&quot; side=&quot;left&quot;]
   [@ui.sidebarGroup label=&quot;Platform&quot;]
     [@ui.sidebarItem href=&quot;/&quot; label=&quot;Home&quot; icon=&quot;home&quot; current=true /]
@@ -17486,7 +17486,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-login-01-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-login-01-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;login-01&quot; action=&quot;/login&quot; view=&quot;password&quot;]
   [@ui.authView name=&quot;password&quot; next=&quot;otp&quot; title=&quot;Login to your account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Login with&quot; /]
@@ -17844,7 +17844,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-login-02-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-login-02-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;login-02&quot; action=&quot;/login&quot; view=&quot;password&quot;]
   [@ui.authView name=&quot;password&quot; next=&quot;otp&quot; title=&quot;Login to your account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Login with&quot; /]
@@ -18261,7 +18261,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-login-03-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-login-03-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;login-03&quot; action=&quot;/login&quot; view=&quot;password&quot;]
   [@ui.authView name=&quot;password&quot; next=&quot;otp&quot; title=&quot;Login to your account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Login with&quot; /]
@@ -18676,7 +18676,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-login-04-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-login-04-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;login-04&quot; action=&quot;/login&quot; view=&quot;password&quot;]
   [@ui.authView name=&quot;password&quot; next=&quot;otp&quot; title=&quot;Login to your account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Login with&quot; /]
@@ -18979,7 +18979,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-login-05-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-login-05-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;login-05&quot; action=&quot;/login&quot; view=&quot;magic-link&quot;]
   [@ui.authView name=&quot;password&quot; next=&quot;otp&quot; title=&quot;Login to your account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Login with&quot; /]
@@ -19269,7 +19269,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-signup-01-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-signup-01-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;signup-01&quot; action=&quot;/register&quot; view=&quot;signup&quot;]
   [@ui.authView name=&quot;signup&quot; next=&quot;otp&quot; title=&quot;Create an account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Sign up with&quot; /]
@@ -19589,7 +19589,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-signup-02-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-signup-02-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;signup-02&quot; action=&quot;/register&quot; view=&quot;signup&quot;]
   [@ui.authView name=&quot;signup&quot; next=&quot;otp&quot; title=&quot;Create an account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Sign up with&quot; /]
@@ -19969,7 +19969,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-signup-03-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-signup-03-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;signup-03&quot; action=&quot;/register&quot; view=&quot;signup&quot;]
   [@ui.authView name=&quot;signup&quot; next=&quot;otp&quot; title=&quot;Create an account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Sign up with&quot; /]
@@ -20267,7 +20267,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-signup-04-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-signup-04-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;signup-04&quot; action=&quot;/register&quot; view=&quot;signup&quot;]
   [@ui.authView name=&quot;signup&quot; next=&quot;otp&quot; title=&quot;Create an account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Sign up with&quot; /]
@@ -20646,7 +20646,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-signup-05-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-signup-05-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.authForm id=&quot;signup-05&quot; action=&quot;/register&quot; view=&quot;signup&quot;]
   [@ui.authView name=&quot;signup&quot; next=&quot;otp&quot; title=&quot;Create an account&quot;]
     [@ui.authProviders list=[&quot;google&quot;] verb=&quot;Sign up with&quot; /]
@@ -21078,7 +21078,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/ui/themes/motion.css&quot;&gt;
 &lt;div data-ui-motion=&quot;slide-up&quot;&gt;…appears with slide-up, exits the same way…&lt;/div&gt;
 &lt;div data-ui-motion=&quot;fade&quot; data-ui-motion-exit=&quot;collapse&quot; data-ui-motion-speed=&quot;slow&quot;&gt;…&lt;/div&gt;
@@ -21264,7 +21264,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-states-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-states-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;article data-ui-motion-hover=&quot;lift&quot;&gt;card&lt;/article&gt;
 &lt;input data-ui-motion-focus=&quot;ring&quot;&gt;
 &lt;span data-ui-motion-loop=&quot;spin&quot; aria-hidden=&quot;true&quot;&gt;⟳&lt;/span&gt;
@@ -21394,7 +21394,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-play-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-play-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;script type=&quot;module&quot;&gt;
   import { play } from &quot;@colibri-kit/ui/core/motion&quot;;
   form.addEventListener(&quot;submit&quot;, (e) =&gt; { if (!form.checkValidity()) { e.preventDefault(); play(form, &quot;shake&quot;); } });
@@ -21506,7 +21506,7 @@ export function Demo() {
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-motion-wired-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-motion-wired-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [#-- default animations come from themes/motion.css; override any part: --]
 [@ui.dropdown trigger=&quot;Actions&quot; items=items attrs={}/]
 &lt;div data-ui=&quot;dropdown-menu&quot;&gt;
@@ -21765,7 +21765,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
     &lt;/&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-theme-tokens-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-theme-tokens-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;link rel=&quot;stylesheet&quot; href=&quot;/ui/themes/colibri.css&quot;&gt;
 &lt;style&gt;
   :root {
@@ -21935,7 +21935,7 @@ export function Demo() {
     &lt;/div&gt;
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-theme-scoped-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-theme-scoped-ftl">[#ftl output_format=&quot;HTML&quot;]
-[#import &quot;/ui/ui.ftl&quot; as ui]
+[#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;section class=&quot;admin-dense&quot; style=&quot;--ui-control-h:30px; --ui-text-sm:13px; --ui-radius:4px&quot;&gt;
   [@ui.button]Save[/@ui.button]
 &lt;/section&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-theme-scoped-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-theme-scoped-thymeleaf">&lt;!-- Static HTML example; a parameterized Thymeleaf fragment is not supplied.

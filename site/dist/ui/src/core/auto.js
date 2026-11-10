@@ -2,8 +2,10 @@
 // React apps should NOT use this; they call createX(ref.current) themselves.
 import { registry } from "./registry.js";
 import { initMotion } from "./motion.js";
-import { dispose } from "./util.js";
-export { registry, dispose };
+import { dispose, observeRemovals, controllers } from "./util.js";
+// `controllers(el)` returns the live controller APIs of an auto-initialised element, e.g.
+//   controllers(document.querySelector("#range"))[0].value = "week";
+export { registry, dispose, observeRemovals, controllers };
 
 
 /** Initialise components inside `scope`. Inner components first, so outer ones (e.g. a calendar inside
@@ -12,28 +14,12 @@ export function init(scope = document) {
   const els = [...scope.querySelectorAll("[data-ui]")];
   if (scope.matches?.("[data-ui]")) els.unshift(scope);
   for (const el of els.reverse()) {
-    const f = registry[el.dataset.ui];
-    if (!f || el.closest("template")) continue;
+    const f = Object.hasOwn(registry, el.dataset.ui) ? registry[el.dataset.ui] : null;
+    if (!f || el.closest("template,[data-motion-ghost]")) continue;
     // date-picker owns its calendar; repeater rows initialise after insertion
     if (el.dataset.ui === "calendar" && el.closest('[data-ui="date-picker"]')) continue;
     try { f(el); } catch (e) { console.error(`[colibri-ui] ${el.dataset.ui}:`, e, el); }
   }
-}
-
-const observers = new WeakMap();
-/** Match initialization with teardown when framework swaps remove nodes. Moves keep their API. */
-export function observeRemovals(root = document) {
-  if (observers.has(root)) return observers.get(root);
-  const doc = root.ownerDocument || root, MO = doc.defaultView?.MutationObserver;
-  if (!MO) return null;
-  const observer = new MO(records => {
-    for (const record of records) for (const node of record.removedNodes) {
-      if (node.nodeType === 1 && !node.isConnected) dispose(node);
-    }
-  });
-  observer.observe(root, { childList: true, subtree: true });
-  const api = { disconnect() { observer.disconnect(); observers.delete(root); } };
-  observers.set(root, api); return api;
 }
 
 if (typeof document !== "undefined" && !globalThis.__COLIBRI_UI_NO_AUTO__) {

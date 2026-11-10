@@ -1,0 +1,60 @@
+name: Publish to npm
+# Publishes @colibri-kit/css and @colibri-kit/ui when a GitHub release is published, or on demand.
+# Requires the repository secret NPM_TOKEN: a granular npm token with read/write access to the @colibri-kit scope.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Build and pack only; do not publish"
+        type: boolean
+        default: true
+permissions:
+  contents: read
+  id-token: write # npm provenance
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && '--dry-run' || '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          registry-url: https://registry.npmjs.org
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: npm ci --ignore-scripts
+      - run: npm test
+      # Generated files are committed; a release must not ship anything that differs from a fresh build.
+      - run: (cd packages/colibri-css && node build.mjs) && npm run build:ui && python3 tools/registry.py
+      - run: git diff --exit-code -- packages/colibri-css/dist dist src/core/lazy-registry.js registry/colibri.json skills/colibri-kit/reference/components.md
+      - name: Both packages carry the same version; a release tag matches it
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          ui=$(node -p "require('./package.json').version")
+          css=$(node -p "require('./packages/colibri-css/package.json').version")
+          test "$ui" = "$css" || { echo "@colibri-kit/css $css does not match @colibri-kit/ui $ui"; exit 1; }
+          if [ "${{ github.event_name }}" = "release" ]; then
+            test "v$ui" = "$TAG" || { echo "tag $TAG does not match version $ui"; exit 1; }
+          fi
+      # A version that is already on the registry is skipped, so the workflow can be re-run after one
+      # package published and the other failed (npm refuses to publish the same version twice).
+      - name: Publish @colibri-kit/css
+        working-directory: packages/colibri-css
+        run: |
+          v=$(node -p "require('./package.json').version")
+          if npm view "@colibri-kit/css@$v" version >/dev/null 2>&1; then echo "@colibri-kit/css@$v is already published"; else npm publish --access public --provenance $DRY_RUN; fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish @colibri-kit/ui
+        run: |
+          v=$(node -p "require('./package.json').version")
+          if npm view "@colibri-kit/ui@$v" version >/dev/null 2>&1; then echo "@colibri-kit/ui@$v is already published"; else npm publish --access public --provenance $DRY_RUN; fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

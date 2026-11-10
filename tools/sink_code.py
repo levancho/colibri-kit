@@ -1,5 +1,5 @@
 """FreeMarker usage per component (macros from freemarker/ui.ftl). The HTML tab shows each demo's own markup."""
-IMP = '[#ftl output_format="HTML"]\n[#import "/ui/ui.ftl" as ui]\n'
+IMP = '[#ftl output_format="HTML"]\n[#import "/colibri/freemarker/ui.ftl" as ui]\n'
 FTL = {
 "accordion": '[@ui.accordion default="a" items=[\n  {"value":"a", "title":"What is Despani?", "content":"Portal."},\n  {"value":"b", "title":"Colibri UI?", "content":"Headless UI."}\n]/]',
 "alert": '[@ui.alert role="status"]<strong>Information:</strong> Changes saved.[/@ui.alert]\n[@ui.alert role="alert" variant="destructive"]Something went wrong.[/@ui.alert]',
