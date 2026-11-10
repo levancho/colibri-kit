@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "786d3ff9df3c68ca0554a7e0a9783945e2a0482bd14595f1459a9b819f253283",
+  "release": "a928faba269a55e6da2342f3d08c2443d3646f8754b235e82142414bbee39c39",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -128,7 +128,7 @@
     "kitchen-sink/src/react/application-components.js": "ff2bb83d92e183991ec9ba47828be382d8b7b02b811490e49dd48931b39bd388",
     "kitchen-sink/src/react/chart-panel.js": "8c8c52c17305455edcef76d47beec7bc0a9604d14561648954ffdcd0c09dc8eb",
     "kitchen-sink/src/react/index.js": "d894f9d3716e77e968c1b8c78489f847c0ff371728bab6a2e2d41ed7020e24c1",
-    "kitchen-sink/themes/colibri.css": "a5536e3e30d7dcb60455f578573e6c6569241cd0e4f1a7717c43baffd1f7529c",
+    "kitchen-sink/themes/colibri.css": "645dde1927f4b07f70f065e282b48b78e9e55bb8355ddbcac540d5481ecaf687",
     "kitchen-sink/themes/knobs.css": "f1ef6b802a56047b3cb5bbdf69c48d261258e8f70bfa2742ebfd7f3732beaf72",
     "kitchen-sink/themes/motion.css": "465311094002c47cf442464920d24589a14b49041b5d2740c49bb40521b2d32b",
     "kitchen-sink/themes/packs/README.md": "2f7f36378e261e026b0ad40964b42fd6b4766081b3527d9a330e37b3c0713d3e",
@@ -186,7 +186,7 @@
     "ui/src/react/application-components.js": "ff2bb83d92e183991ec9ba47828be382d8b7b02b811490e49dd48931b39bd388",
     "ui/src/react/chart-panel.js": "8c8c52c17305455edcef76d47beec7bc0a9604d14561648954ffdcd0c09dc8eb",
     "ui/src/react/index.js": "d894f9d3716e77e968c1b8c78489f847c0ff371728bab6a2e2d41ed7020e24c1",
-    "ui/themes/colibri.css": "a5536e3e30d7dcb60455f578573e6c6569241cd0e4f1a7717c43baffd1f7529c",
+    "ui/themes/colibri.css": "645dde1927f4b07f70f065e282b48b78e9e55bb8355ddbcac540d5481ecaf687",
     "ui/themes/knobs.css": "f1ef6b802a56047b3cb5bbdf69c48d261258e8f70bfa2742ebfd7f3732beaf72",
     "ui/themes/motion.css": "465311094002c47cf442464920d24589a14b49041b5d2740c49bb40521b2d32b",
     "ui/themes/packs/README.md": "2f7f36378e261e026b0ad40964b42fd6b4766081b3527d9a330e37b3c0713d3e",

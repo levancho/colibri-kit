@@ -144,6 +144,19 @@ await t("Stepper: Finish hidden on step 1, linear validation blocks Next", async
 await t("Toast: shows and auto-dismisses", async () => { await go("toast"); await p.click("#t-success"); await wait(150); eq(await p.$$eval("[data-ui=toaster] [data-ui-part=toast]", (x) => x.length), 1, "1 toast"); await shot("toast"); });
 await t("Pagination: click changes page", async () => { await go("pagination"); await p.click('#pagination nav [data-page="8"]'); eq(await q('#pagination nav [aria-current=page]', (e) => e.dataset.page), "8", "page 8"); });
 await t("Pagination: compact example stays in the gallery", async () => { await go("pagination"); const before=p.url(); await p.click('#pagination nav[aria-label="Compact pagination demo"] [data-page="2"]'); eq(p.url(), before, "same URL"); eq(await q('#pagination nav[aria-label="Compact pagination demo"] [aria-current=page]', (e) => e.dataset.page), "2", "page 2"); });
+await t("Resizable handle spans the panel instead of inheriting drawer geometry", async () => {
+  await go("resizable");
+  const geometry = await q("#resizable .sink-preview [data-ui=resizable]", (root) => {
+    const handle = root.querySelector(':scope > [data-ui-part="handle"]');
+    const r = root.getBoundingClientRect(), h = handle.getBoundingClientRect(), s = getComputedStyle(handle);
+    return { rootHeight:r.height, handleHeight:h.height, handleWidth:h.width, marginBottom:s.marginBottom, cursor:s.cursor };
+  });
+  yes(geometry.handleHeight >= geometry.rootHeight - 2, `full-height divider: ${geometry.handleHeight}/${geometry.rootHeight}`);
+  yes(geometry.handleWidth <= 2, `thin divider: ${geometry.handleWidth}`);
+  eq(geometry.marginBottom, "0px", "no drawer margin");
+  eq(geometry.cursor, "col-resize", "resize cursor");
+  await shot("resizable-handle", "#resizable .sink-preview");
+});
 await t("Badge remove deletes badge", async () => { await go("badge"); const n = await p.$$eval("#badge [data-ui=badge]", (x) => x.length); await p.click("#badge [data-ui=badge] [data-ui-part=remove]"); eq(await p.$$eval("#badge [data-ui=badge]", (x) => x.length), n - 1, "removed"); });
 await t("Command palette opens with Ctrl+K", async () => { await p.keyboard.down("Control"); await p.keyboard.press("k"); await p.keyboard.up("Control"); await wait(120); eq(await q("#cmd-dialog dialog", (d) => d.open), true, "open"); await shot("command-open"); await p.keyboard.press("Escape"); });
 await t("Demo styling off = raw headless", async () => { await tool("#css-toggle"); eq(await q("#demo-css", (s) => s.disabled), true, "disabled"); await go("dropdown-menu"); await shot("raw", "#dropdown-menu"); await tool("#css-toggle"); });

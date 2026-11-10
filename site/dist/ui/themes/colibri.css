@@ -623,8 +623,9 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 :where(.ui-root) [data-ui=chart] [data-ui-part=table-toggle]{justify-self:start;height:28px;padding:0 .6rem;font-size:12px;background:var(--ui-background);color:var(--ui-foreground);border-color:var(--ui-input)}
 :where(.ui-root) [data-ui=chart] table{font-size:12px}
 
-/* drawer handle (drag to dismiss) */
-:where(.ui-root) [data-ui-part=handle]{width:48px;height:5px;margin:0 auto .75rem;border-radius:9px;background:var(--ui-border);cursor:grab}
+/* drawer handle (drag to dismiss) — keep this scoped so component handles such
+   as resizable separators retain their own geometry. */
+:where(.ui-root) [data-ui=drawer] [data-ui-part=content]>[data-ui-part=handle]{width:48px;height:5px;margin:0 auto .75rem;border-radius:9px;background:var(--ui-border);cursor:grab}
 :where(.ui-root) dialog[data-dragging]{transition:none!important;user-select:none}
 
 /* ---- AI disclosures: chain-of-thought, task, plan, tool, reasoning, sources, subagent, stack-trace, test-results, terminal ---- */
