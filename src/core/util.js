@@ -40,7 +40,12 @@ export function dispose(root) {
 /** register on root once; returns cached api */
 export function once(root, key, factory) {
   if (root[key]) return root[key];
-  const api = factory(); root[key] = api;
+  // Mark the root while its controller is being built. A factory may dispatch ui:refresh (repeater does when it
+  // adds its minimum rows); without the mark, the resulting init pass would build a second controller here.
+  const building = {}; root[key] = building;
+  let api;
+  try { api = factory(); } finally { if (root[key] === building) delete root[key]; }
+  root[key] = api;
   const destroy = api.destroy;
   api.destroy = () => { try { destroy?.call(api); } finally { if (root[key] === api) delete root[key]; } };
   return trackController(root, api);

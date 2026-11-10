@@ -1,26 +1,26 @@
 {
   "src/core (unminified, all modules)": {
-    "bytes": 232586
+    "bytes": 238009
   },
   "colibri-ui.min.js": {
-    "bytes": 116110,
-    "gzip": 37645
+    "bytes": 116872,
+    "gzip": 38004
   },
   "lazy/auto-lazy.js": {
-    "bytes": 10349,
-    "gzip": 2792
+    "bytes": 10689,
+    "gzip": 2931
   },
   "lazy/chunks": {
     "files": 18,
-    "bytes": 117233,
-    "gzip": 46859
+    "bytes": 117832,
+    "gzip": 47148
   },
   "themes/colibri.css": {
-    "bytes": 130205,
-    "gzip": 23479
+    "bytes": 130376,
+    "gzip": 23538
   },
   "colibri-ui.min.css": {
-    "bytes": 122999,
-    "gzip": 20350
+    "bytes": 123049,
+    "gzip": 20357
   }
 }

@@ -90,7 +90,7 @@ Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`
 
 ## 6. FreeMarker (Spring)
 
-`[#import "/ui/ui.ftl" as ui]` then e.g. `[@ui.field label="Email"][@ui.input name="email" type="email" required=true/][/@ui.field]`, `[@ui.dialog trigger="Edit" title="Profile"]…[/@ui.dialog]`, `[@ui.button variant="ghost"]Cancel[/@ui.button]`. Always use named arguments; `name=` attributes stay yours for Spring binding.
+`[#import "/colibri/freemarker/ui.ftl" as ui]` then e.g. `[@ui.field label="Email"][@ui.input name="email" type="email" required=true/][/@ui.field]`, `[@ui.dialog trigger="Edit" title="Profile"]…[/@ui.dialog]`, `[@ui.button variant="ghost"]Cancel[/@ui.button]`. Always use named arguments; `name=` attributes stay yours for Spring binding.
 
 ## 7. Recipes
 

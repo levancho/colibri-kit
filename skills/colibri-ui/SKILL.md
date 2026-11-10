@@ -44,7 +44,7 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 FreeMarker and Thymeleaf are server dependencies, not browser scripts. Require the host engine or its Spring Boot starter. Colibri ships `.ftl` macros and native Thymeleaf fragments; `java/colibri-templates` builds a resource JAR, not an embedded engine. FreeMarker HTML auto-escaping stays enabled; use nested bodies/captured markup for structured content. Thymeleaf Spring fields use `th:field`/`th:errors` against the host form object. See `docs/java-templates.md` in a full checkout for dependencies and setup.
 
 ### Spring + FreeMarker
-`[#import "/ui/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments.
+`[#import "/colibri/freemarker/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments.
 Keep Spring binding: macros only emit markup; `name=` attributes are yours.
 
 ## 6. Before you finish

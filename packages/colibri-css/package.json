@@ -35,18 +35,22 @@
     "./classes": "./dist/colibri-classes.json",
     "./bridge": "./dist/colibri-ui-bridge.css",
     "./src/*": "./src/*",
-    "./applications": "./dist/colibri-applications.css"
+    "./applications": "./dist/colibri-applications.css",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
     "src",
-    "applications"
+    "applications",
+    "LICENSE"
   ],
   "scripts": {
     "build": "node build.mjs"
   },
   "license": "MIT",
   "devDependencies": {
-    "fflate": "0.8.2"
-  }
+    "fflate": "0.8.3",
+    "esbuild": "0.25.10"
+  },
+  "author": "Levan Dvalishvili"
 }

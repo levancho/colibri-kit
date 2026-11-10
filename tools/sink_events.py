@@ -100,7 +100,7 @@ def _events(raw, clean):
     def note(name, detail_at, tail):
         entry = events.setdefault(name, {"name": name, "detail": [], "cancelable": False})
         if detail_at is not None and detail_at < len(clean) and clean[detail_at] == "{":
-            for key in _keys(raw[detail_at + 1:_close(clean, detail_at)]):
+            for key in _keys(clean[detail_at + 1:_close(clean, detail_at)]):
                 if key not in entry["detail"]: entry["detail"].append(key)
         if re.search(r"cancelable\s*:\s*true|,\s*true\s*\)\s*$", tail): entry["cancelable"] = True
     # emit(el, "name", detail?, cancelable?)
@@ -142,7 +142,8 @@ def _api(raw, clean):
     spots += [m.end() - 1 for m in re.finditer(r"\bapi\s*=\s*Object\.assign\(\s*[\w$]+\s*,\s*\{", clean)]
     members = []
     for at in sorted(spots)[-1:] if not re.search(r"\b(?:const|let)\s+api\s*=", clean) else sorted(s for s in spots if re.search(r"api\s*=\s*(?:Object\.assign\(\s*[\w$]+\s*,\s*)?$", clean[max(0, s - 60):s])):
-        for key in _keys(raw[at + 1:_close(clean, at)]):
+        # comment-free text: a trailing // note must not swallow the next member
+        for key in _keys(clean[at + 1:_close(clean, at)]):
             if key not in members: members.append(key)
     return members
 

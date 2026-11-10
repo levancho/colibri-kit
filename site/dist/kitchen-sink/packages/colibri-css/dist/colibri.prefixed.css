@@ -226,7 +226,7 @@
     &:has(a:hover, button:hover) { box-shadow: var(--c-shadow); } }
 
   /* A dialog card stays within the viewport; native dialog supplies modality. */
-  dialog.card { inline-size: min(32rem, calc(100% - 2rem)); max-block-size: calc(100% - 2rem); overflow: auto; }
+  dialog.c-card { inline-size: min(32rem, calc(100% - 2rem)); max-block-size: calc(100% - 2rem); overflow: auto; }
 
   .c-badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
     background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));
@@ -242,7 +242,7 @@
     &:has(:user-invalid) :is(label, .c-hint) { color: var(--c-bad); }
     &:has(:required) label::after { content: " *"; color: var(--c-bad); } }
 
-  .c-callout { padding: var(--c-space-s) var(--c-space-m); border-inline-start: 4px solid var(--tone, var(--c-accent)); border-radius: var(--c-radius-s); background: color-mix(in oklch, var(--tone, var(--c-accent)) 9%, var(--c-surface));
+  .c-callout { padding: var(--c-space-s) var(--c-space-m); border-inline-start: 4px solid var(--tone, var(--c-accent)); border-radius: var(--c-radius-s); background: color-mix(in oklab, var(--tone, var(--c-accent)) 9%, var(--c-surface)); /* oklab: mixing in oklch would take the hue of white (0), tinting every tone pink */
     &:is([data-tone=warn], [data-tone=warning]) { --tone: var(--c-warn); } &:is([data-tone=bad], [data-tone=danger]) { --tone: var(--c-bad); } &:is([data-tone=ok], [data-tone=success]) { --tone: var(--c-ok); } }
 
   /* motion primitive: elements fade/slide in when they appear (honours reduced motion via tokens) */

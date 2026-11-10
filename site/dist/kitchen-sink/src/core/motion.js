@@ -15,6 +15,9 @@ function ghostExit(el) {
   const g = el.cloneNode(true);
   g.removeAttribute("hidden"); g.removeAttribute("id"); g.querySelectorAll("[id]").forEach((n) => n.removeAttribute("id"));
   g.setAttribute("aria-hidden", "true"); g.inert = true; g.dataset.motionState = "exit"; g.dataset.motionGhost = "";
+  // The ghost is a picture of the element, not a second copy of its controls: a cloned checked radio with the
+  // same name would uncheck the real one, and named clones would be submitted with the form.
+  for (const n of [g, ...g.querySelectorAll("[name],[form]")]) { n.removeAttribute("name"); n.removeAttribute("form"); }
   el.after(g);
   const done = () => g.remove();
   g.addEventListener("animationend", done, { once: true });

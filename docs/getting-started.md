@@ -33,16 +33,13 @@ Use the public URL where your server mounts these assets. Never expose `node_mod
 
 ## Install into a bundler / React project
 
-The source package names are `@colibri-kit/ui` and `@colibri-kit/css`. These instructions do not depend on a public npm release. From an existing application, install a pinned checkout:
-
 ```sh
-git clone https://github.com/levancho/colibri-kit.git vendor/colibri-kit
-# Record the revision used by your application:
-git -C vendor/colibri-kit rev-parse HEAD
-npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css
+npm install @colibri-kit/ui @colibri-kit/css
 ```
 
-Commit or otherwise retain that vendor revision for your deployment. To distribute immutable archives internally, run `npm pack` in each package directory and install the resulting tarballs instead. The package has no install scripts or required React dependency for plain HTML consumers.
+Both packages are published at the same version; keep them in step. `@colibri-kit/ui` has no install scripts and React is an optional peer dependency, needed only for `@colibri-kit/ui/react`. To pin an unreleased revision instead, clone the repository and install from the checkout: `npm install ./vendor/colibri-kit ./vendor/colibri-kit/packages/colibri-css`.
+
+The command-line tool ships in `@colibri-kit/ui`. Its binary is called `colibri`, which is also the name of an unrelated package on npm, so always name the package when using `npx`: `npx -p @colibri-kit/ui colibri <command>`. Inside a project that has `@colibri-kit/ui` installed, `npx colibri <command>` resolves to the local binary.
 
 In the application's entry module:
 
@@ -109,7 +106,7 @@ Java setup, engine dependencies, resource JAR and bindings: [Java template integ
 <script type="module" src="./colibri/dist/lazy/auto-lazy.js"></script>
 ```
 
-Use one of the three on a page. The lazy loader initialises asynchronously: `init(container)` returns a promise, and the document dispatches `ui:ready` after the first pass. `ui:refresh` works the same in all three. Measured sizes are in `dist/bundle-sizes.json`.
+Use one of the three on a page; mixing them (or one of them with `core/*` imports) loads two copies of the controller state. The lazy loader initialises asynchronously: `init(container)` returns a promise, and the document dispatches `ui:ready` after the first pass. A pass waits for every chunk it needs, so components appear together. If a chunk fails to load, the rest still initialise, a bubbling `ui:error` event carries `{ name, error }`, and `ui:ready`'s `detail.failed` lists the names; browsers cache a failed module, so recovery needs a reload. `ui:refresh` works the same in all three. Measured sizes are in `dist/bundle-sizes.json`.
 
 ## Class names Colibri owns
 
@@ -120,7 +117,9 @@ node path/to/bin/colibri.mjs classes
 node path/to/bin/colibri.mjs collisions app.css --strict
 ```
 
-`collisions` prints each rule that mentions a Colibri class, with its line; `--strict` exits non-zero for CI. Extending a kit class on purpose (`.btn.icon { … }`) is fine. If an existing project already uses these names, link `colibri.prefixed.css` instead of `colibri.css`: every class becomes `.c-*` (`.c-card`, `.c-stack`) while tokens, layers and `data-*` attributes stay the same. The list is also published as `colibri-classes.json`.
+`collisions` prints each rule whose selector mentions a Colibri class (including compound selectors such as `div.card`), with its line; `--strict` exits non-zero for CI. Extending a kit class on purpose (`.btn.icon { … }`) is reported too, and is fine. The list is also published as `colibri-classes.json`. It covers the core stylesheet; the application-components stylesheet has further class names of its own.
+
+If an existing project already uses these names, link `colibri.prefixed.css` instead of `colibri.css`: every class becomes `.c-*` (`.c-card`, `.c-stack`) while tokens, layers and `data-*` attributes stay the same. The prefixed build renames the core stylesheet only. The theme packs, the application components, the React adapter and the FreeMarker/Thymeleaf templates still emit the unprefixed names (`btn`, `card`, `stack`), so use it for hand-written markup with Colibri UI components, not together with those parts.
 
 ## One vocabulary for tones and variants
 

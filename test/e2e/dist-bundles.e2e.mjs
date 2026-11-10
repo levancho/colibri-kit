@@ -55,4 +55,22 @@ try {
     console.log(`ok ${name} distribution: ${scripts.length} script request(s)${name === 'lazy' ? ` of ${totalChunks + 1} available` : ''}`);
     await tab.close();
   }
+  // The minified stylesheets must style a page exactly like the readable ones. (A regex minifier once turned
+  // `& :where(th, td)` into `&:where(th,td)`: with the .min file, table cells lost their padding and borders.)
+  fs.cpSync(path.join(repo, 'packages/colibri-css/dist'), path.join(temp, 'css'), {recursive: true});
+  const probe = (sheet, p = '') => `<!doctype html><html lang="en"><head><meta charset="utf-8"><title>css probe</title><link rel="stylesheet" href="./css/${sheet}"></head><body>
+<table><tbody><tr><td id="cell">cell</td></tr></tbody></table><div class="${p}prose"><p>intro</p><h2 id="h">Heading</h2><ul id="list"><li>item</li></ul></div>
+<div class="${p}field"><label id="label" for="i">Email</label><input id="i" type="email" required></div><button class="${p}btn" data-size="l" id="btn">Go</button></body></html>`;
+  const measure = async file => { const tab = await browser.newPage(); await tab.goto(`${server.origin}/${file}`);
+    const values = await tab.evaluate(() => { const cs = (id, ...props) => { const c = getComputedStyle(document.getElementById(id)); return props.map(p => c.getPropertyValue(p)); };
+      return [cs('cell', 'padding-top', 'padding-left', 'border-bottom-width'), cs('h', 'margin-top'), cs('list', 'padding-inline-start'), cs('btn', 'min-block-size', 'font-size', 'background-color'), cs('label', 'color')]; });
+    await tab.close(); return JSON.stringify(values); };
+  for (const [plain, min, p] of [['colibri.css', 'colibri.min.css', ''], ['colibri.prefixed.css', 'colibri.prefixed.min.css', 'c-']]) {
+    fs.writeFileSync(path.join(temp, 'plain.html'), probe(plain, p)); fs.writeFileSync(path.join(temp, 'min.html'), probe(min, p));
+    const a = await measure('plain.html'), b = await measure('min.html');
+    assert.equal(b, a, `${min} renders differently from ${plain}`);
+    assert.notEqual(JSON.parse(a)[0][0], '0px', `${plain}: table cells have padding`);
+  }
+  assert.equal(await (async () => { fs.writeFileSync(path.join(temp, 'p1.html'), probe('colibri.css')); fs.writeFileSync(path.join(temp, 'p2.html'), probe('colibri.prefixed.css', 'c-')); return (await measure('p1.html')) === (await measure('p2.html')); })(), true, 'prefixed build renders like the plain one');
+  console.log('ok minified and prefixed stylesheets render identically to colibri.css');
 } finally { await browser.close(); await server.close(); fs.rmSync(temp, {recursive: true, force: true}); }

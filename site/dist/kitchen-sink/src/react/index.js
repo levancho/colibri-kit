@@ -42,6 +42,16 @@ export function useColibri(kind, { on = {}, options, apiRef } = {}) {
       if (childApi) owned.current.set(child, childApi);
     }
   }, [node]);
+  // Subscribe first: controllers such as a remote datatable emit their initial event while they are being built.
+  const eventNames = JSON.stringify(Object.keys(on).sort());
+  useEffect(() => {
+    if (!node) return;
+    const subs = JSON.parse(eventNames).map(name => {
+      const handler = event => handlers.current[name]?.(event);
+      node.addEventListener("ui:" + name, handler); return [name, handler];
+    });
+    return () => subs.forEach(([name, handler]) => node.removeEventListener("ui:" + name, handler));
+  }, [node, eventNames]);
   useEffect(() => {
     if (!node) return;
     const factory = registry[kind];
@@ -54,17 +64,26 @@ export function useColibri(kind, { on = {}, options, apiRef } = {}) {
       owned.current.clear(); api.current?.destroy?.(); api.current = null; setRef(apiRef, null);
     };
   }, [node, kind, options, apiRef, syncChildren]);
-  // Dynamic React children update the existing controller rather than rebuilding it.
-  useEffect(() => { syncChildren(); api.current?.refresh?.(); });
-  const eventNames = JSON.stringify(Object.keys(on).sort());
+  // Dynamic React children update the existing controller rather than rebuilding it. Refresh only when the
+  // DOM under the root actually changed: refreshing after every render made controllers re-emit their events
+  // (datatable ui:query / ui:select), and a handler that sets state then re-rendered without end.
+  const changes = useRef(null), dirty = useRef(false);
   useEffect(() => {
-    if (!node) return;
-    const subs = JSON.parse(eventNames).map(name => {
-      const handler = event => handlers.current[name]?.(event);
-      node.addEventListener("ui:" + name, handler); return [name, handler];
-    });
-    return () => subs.forEach(([name, handler]) => node.removeEventListener("ui:" + name, handler));
-  }, [node, eventNames]);
+    const MO = node?.ownerDocument.defaultView?.MutationObserver;
+    if (!MO) return;
+    changes.current = new MO(() => { dirty.current = true; });
+    changes.current.observe(node, { childList: true, subtree: true });
+    return () => { changes.current?.disconnect(); changes.current = null; };
+  }, [node]);
+  useEffect(() => {
+    const observer = changes.current;
+    if (!observer) { syncChildren(); return; }
+    const changed = observer.takeRecords().length > 0 || dirty.current;
+    dirty.current = false;
+    if (!changed) return;
+    syncChildren(); api.current?.refresh?.();
+    observer.takeRecords(); // the controller's own DOM work during refresh is not a reason to refresh again
+  });
   return [ref, api];
 }
 

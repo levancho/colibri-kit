@@ -756,7 +756,7 @@ Get a live controller with `controllers(el)[0]` (exported by `core/auto.js`, `co
 - `suggestion` · events: `ui:suggest` detail `text` (cancelable) · controller: none
 - `switch` · events: `ui:change` detail `checked` · controller: `checked`, `destroy`
 - `tab-nav` · events: `ui:change` detail `href` · controller: `select`, `destroy`
-- `tabs` · events: `ui:change` detail `value, previous` · controller: `value`, `select`, `refresh`
+- `tabs` · events: `ui:change` detail `value, previous` · controller: `value`, `select`, `refresh`, `destroy`
 - `task` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`
 - `terminal` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`
 - `test-results` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`

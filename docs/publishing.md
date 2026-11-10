@@ -10,7 +10,7 @@ Two packages are published from this repository, always at the same version:
 ## One-time setup
 
 1. Create the `colibri-kit` organisation on npmjs.com (the `@colibri-kit` scope). Scoped names are free for public packages.
-2. Create an npm **automation** access token that may publish to that scope.
+2. Create a granular npm access token with read and write access limited to the `@colibri-kit` scope, with a short expiry.
 3. Add it to this repository as the secret `NPM_TOKEN` (Settings → Secrets and variables → Actions).
 
 ## Releasing
@@ -44,7 +44,7 @@ Consumers can then install from the registry instead of a checkout:
 
 ```sh
 npm install @colibri-kit/ui @colibri-kit/css
-npx colibri init --starter
+npx -p @colibri-kit/ui colibri init --starter
 ```
 
-Until a release exists, the guides deliberately describe the checkout-based installation only.
+Always name the package with `npx -p`: the unscoped names `colibri` and `colibri-ui` on npm belong to unrelated projects.

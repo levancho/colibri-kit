@@ -53,7 +53,7 @@ test("prefixed stylesheet renames every Colibri class and nothing else", () => {
   const { prefix, classes } = JSON.parse(fs.readFileSync("packages/colibri-css/dist/colibri-classes.json", "utf8"));
   const strip = (s) => s.replace(/\/\*[\s\S]*?\*\//g, "");
   const plain = strip(fs.readFileSync("packages/colibri-css/dist/colibri.css", "utf8")), prefixed = strip(fs.readFileSync("packages/colibri-css/dist/colibri.prefixed.css", "utf8"));
-  const own = new RegExp(`(?<![\\w.-])\\.(${classes.join("|")})(?![\\w-])`, "g");
+  const own = new RegExp(`\\.(${classes.join("|")})(?![\\w-])`, "g");
   assert.equal((prefixed.match(own) || []).length, 0, "no unprefixed Colibri class remains");
   assert.equal((prefixed.match(new RegExp(`\\.${prefix}(${classes.join("|")})(?![\\w-])`, "g")) || []).length, (plain.match(own) || []).length);
   const lines = (s) => s.split("\n").filter((l) => l.trim()).join("\n");
@@ -63,4 +63,25 @@ test("colibri collisions reports application rules that reuse a Colibri class", 
   const { collisions } = await import("../bin/colibri.mjs");
   const hits = collisions("/* .card in a comment */\n.card { color: red }\n.my-card, .center > p { margin: 0 }\n@media (width > 1px) { .btn.icon { width: 2rem } }\n.x { margin: .5rem }");
   assert.deepEqual(hits.map((h) => [h.line, h.class]), [[2, "card"], [3, "center"], [4, "btn"]]);
+  // compound selectors are the common collision shape; text inside strings is not a selector
+  const more = collisions('div.card { color: red }\n.sidebar.badge:hover { margin: 0 }\na::after { content: "{ .card {"; }\n.cardinal { color: blue }');
+  assert.deepEqual(more.map((h) => [h.line, h.class]), [[1, "card"], [2, "badge"]]);
+});
+test("prefixed stylesheet renames classes in compound selectors", () => {
+  const prefixed = fs.readFileSync("packages/colibri-css/dist/colibri.prefixed.css", "utf8");
+  assert.ok(prefixed.includes("dialog.c-card"), "dialog.card is renamed");
+  assert.ok(!/dialog\.card\b/.test(prefixed));
+});
+test("minified stylesheets keep descendant selectors", () => {
+  // the old regex minifier turned `& :where(th, td)` into `&:where(th,td)`; cells then lost padding and borders
+  for (const file of ["colibri.min.css", "colibri.prefixed.min.css"]) {
+    const css = fs.readFileSync(`packages/colibri-css/dist/${file}`, "utf8");
+    assert.ok(!/&:where\(th,td\)|&:is\(h2,h3\)|\):is\(label/.test(css), file);
+    assert.ok(/:has\(:user-invalid\) :is\(label/.test(css), `${file}: invalid-field label rule is a descendant selector`);
+  }
+});
+test("the generic .ui-root button look does not repaint Colibri CSS buttons", () => {
+  const ui = fs.readFileSync("themes/colibri.css", "utf8");
+  assert.ok(ui.includes(".sink-info,.btn,.c-btn)"));
+  assert.ok(ui.includes(":where(.ui-root) a:not(.btn,.c-btn){color:"));
 });

@@ -1,7 +1,7 @@
 [#ftl output_format="HTML" auto_esc=true]
 [#-- Colibri UI (@colibri-kit/ui) Dialog for FreeMarker. Markup contract only; no classes, no styling.
      Usage:
-       [#import "ui/ui-dialog.ftl" as ui]
+       [#import "/colibri/freemarker/ui-dialog.ftl" as ui]
        [@ui.dialog id="confirm-delete" title="Delete article?" description="This cannot be undone." trigger="Delete"]
          <button data-ui-part="close" data-ui-return="cancel">Cancel</button>
          <button data-ui-part="close" data-ui-return="ok" autofocus>Delete</button>

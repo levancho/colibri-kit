@@ -34,3 +34,17 @@ test("init wires components and ignores unknown names", async () => {
   assert.equal(controllers(document.getElementById("x")).length, 0);
   assert.equal(await load("not-a-component"), null);
 });
+test("data-ui values that name Object.prototype members are ignored, not called", async () => {
+  for (const name of ["constructor", "toString", "hasOwnProperty", "__proto__"]) assert.equal(await load(name), null, name);
+  const host = document.createElement("div");
+  host.innerHTML = '<div data-ui="constructor"></div><div data-ui="tabs" id="t2"><div data-ui-part="list"><button data-ui-part="trigger" data-value="a">A</button></div><div data-ui-part="panel" data-value="a"></div></div>';
+  document.body.append(host);
+  assert.deepEqual(await init(host), []);
+  assert.equal(controllers(document.getElementById("t2")).length, 1, "the rest of the page still initialises");
+});
+test("a scope that is not attached yet is still initialised", async () => {
+  const detached = document.createElement("div");
+  detached.innerHTML = '<div data-ui="collapsible"><button data-ui-part="trigger">T</button><div data-ui-part="content">C</div></div>';
+  await init(detached);
+  assert.equal(controllers(detached.firstElementChild).length, 1);
+});

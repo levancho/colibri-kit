@@ -14,8 +14,8 @@ export function init(scope = document) {
   const els = [...scope.querySelectorAll("[data-ui]")];
   if (scope.matches?.("[data-ui]")) els.unshift(scope);
   for (const el of els.reverse()) {
-    const f = registry[el.dataset.ui];
-    if (!f || el.closest("template")) continue;
+    const f = Object.hasOwn(registry, el.dataset.ui) ? registry[el.dataset.ui] : null;
+    if (!f || el.closest("template,[data-motion-ghost]")) continue;
     // date-picker owns its calendar; repeater rows initialise after insertion
     if (el.dataset.ui === "calendar" && el.closest('[data-ui="date-picker"]')) continue;
     try { f(el); } catch (e) { console.error(`[colibri-ui] ${el.dataset.ui}:`, e, el); }

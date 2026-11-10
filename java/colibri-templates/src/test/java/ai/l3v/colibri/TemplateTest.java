@@ -49,6 +49,24 @@ class TemplateTest {
       assertTrue(out.toString().contains("&lt;script&gt;"));assertFalse(out.toString().contains("<script>"));assertTrue(out.toString().contains("disabled"));
     }
   }
+  @Test void freemarkerNumbersAreLocaleIndependent() throws Exception {
+    // German formatting would turn 1500 into "1.500" and 12.5 into "12,5"; the browser controllers parse these values.
+    var cfg=new Configuration(Configuration.VERSION_2_3_35);cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(),"templates");cfg.setLocale(Locale.GERMANY);
+    var host="[#ftl output_format='HTML'][#import '/colibri/freemarker/ui.ftl' as ui]"
+      +"[@ui.slider name='x' value=1500 max=5000/][@ui.progress value=12.5/][@ui.toaster max=1000/]"
+      +"[@ui.chart columns=['m','v'] rows=[['Jan',1234.5]]/][@ui.input name='n' attrs={'tabindex':1500}/]"
+      +"[@ui.queue pending=[{'id':'t-1','label':'a'},{'id':7,'label':'b'}]/]"
+      +"[@ui.radioGroup name='r' options=[{'value':1,'label':'One'},{'value':2,'label':'Two'}] value=2/]"
+      +"[@ui.radioGroup name='q' options=[{'value':1,'label':'One'}]/][@ui.calendar/]";
+    var out=new StringWriter();new Template("host",new StringReader(host),cfg).process(Map.of(),out);String html=out.toString();
+    assertTrue(html.contains("data-value=\"1500\""),html);assertTrue(html.contains("data-max=\"5000\""));
+    assertEquals(1,html.split("data-ui-part=\"thumb\"",-1).length-1,"one value, one thumb");
+    assertTrue(html.contains("data-value=\"12.5\""));assertTrue(html.contains("data-max=\"1000\""));assertTrue(html.contains("<td>1234.5</td>"));
+    assertTrue(html.contains("tabindex=\"1500\""));assertTrue(html.contains("data-id=\"t-1\""));assertTrue(html.contains("data-id=\"7\""));
+    assertTrue(html.contains("value=\"2\" checked"));assertFalse(html.contains("value=\"1\" checked"));
+    assertFalse(html.contains("data-locale"),"calendar follows the page language unless a locale is passed");
+    assertFalse(html.contains("1.500")||html.contains("12,5")||html.contains("1.234"),html);
+  }
   @Test void fullFreeMarkerCatalogMatchesEngineRenderedFixture() throws Exception {
     var cfg=new Configuration(Configuration.VERSION_2_3_31);cfg.setTagSyntax(Configuration.SQUARE_BRACKET_TAG_SYNTAX);cfg.setDefaultEncoding("UTF-8");
     cfg.setTemplateLoader(new freemarker.cache.MultiTemplateLoader(new freemarker.cache.TemplateLoader[]{new freemarker.cache.ClassTemplateLoader(getClass(),"/templates/colibri/freemarker"),new freemarker.cache.FileTemplateLoader(new File("../../test/ftl"))}));

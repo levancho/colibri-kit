@@ -29,7 +29,7 @@ for item in items:
     b = BEHAVIOUR.get(item["name"])
     item["events"] = b["events"] if b else []
     item["api"] = b["api"] if b else []
-out = {"$schema": "https://colibri-ui.local/schema/registry.json", "name": "colibri-ui", "version": pkg.get("version", "0.0.0"),
+out = {"name": pkg["name"], "version": pkg.get("version", "0.0.0"),
        "files": {"applications": "packages/colibri-css/dist/colibri-applications.css", "core": "src/core/", "auto": "src/core/auto.js", "elements": "src/elements/all.js", "theme": "themes/colibri.css", "motion": "themes/motion.css", "freemarker": "freemarker/ui.ftl", "thymeleaf": "thymeleaf/", "css": "packages/colibri-css/dist/colibri.css", "bridge": "packages/colibri-css/dist/colibri-ui-bridge.css"},
        "rules": ["Markup contract: data-ui=\"name\" roots, data-ui-part=\"part\" children; state in data-state / aria-* / hidden.",
                  "Never style by JS; theme only through --ui-* tokens in themes/colibri.css (or your own CSS).",

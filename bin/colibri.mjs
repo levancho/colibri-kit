@@ -1,15 +1,15 @@
 #!/usr/bin/env node
 // Colibri UI CLI (the shadcn CLI equivalent): info | list | search | view | docs | classes | collisions | init | add | diff | build
-//   npx colibri info --json        project context for AI assistants (like `shadcn info --json`)
-//   npx colibri search sidebar      find components/blocks
-//   npx colibri view login-01       print HTML + FreeMarker snippet
-//   npx colibri docs tool           description, when to use, accessibility notes
-//   npx colibri init [--dir ui]     copy CSS + core + themes + Java templates into your project, write colibri.json
-//   npx colibri add <name…>         print snippets for the named items (core is shared, copied by init) [--dry-run]
-//   npx colibri diff                show which copied files differ from this package
-//   npx colibri classes             class names Colibri CSS owns (avoid defining these in application CSS)
-//   npx colibri collisions app.css  report application CSS rules that reuse a Colibri class name [--strict]
-//   npx colibri build               regenerate registry/colibri.json (needs python3; maintainers only)
+//   npx -p @colibri-kit/ui colibri info --json        project context for AI assistants (like `shadcn info --json`)
+//   npx -p @colibri-kit/ui colibri search sidebar      find components/blocks
+//   npx -p @colibri-kit/ui colibri view login-01       print HTML + FreeMarker snippet
+//   npx -p @colibri-kit/ui colibri docs tool           description, when to use, accessibility notes
+//   npx -p @colibri-kit/ui colibri init [--dir ui]     copy CSS + core + themes + Java templates into your project, write colibri.json
+//   npx -p @colibri-kit/ui colibri add <name…>         print snippets for the named items (core is shared, copied by init) [--dry-run]
+//   npx -p @colibri-kit/ui colibri diff                show which copied files differ from this package
+//   npx -p @colibri-kit/ui colibri classes             class names Colibri CSS owns (avoid defining these in application CSS)
+//   npx -p @colibri-kit/ui colibri collisions app.css  report application CSS rules that reuse a Colibri class name [--strict]
+//   npx -p @colibri-kit/ui colibri build               regenerate registry/colibri.json (needs python3; maintainers only)
 import fs from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url"; import { execSync } from "node:child_process";
 const PKG = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 export const registry = () => JSON.parse(fs.readFileSync(path.join(PKG, "registry/colibri.json"), "utf8"));
@@ -26,7 +26,11 @@ const get = (n) => registry().items.find((i) => i.name === n) || (() => { consol
 export const reserved = () => JSON.parse(fs.readFileSync(path.join(PKG, "packages/colibri-css/dist/colibri-classes.json"), "utf8"));
 /** Selectors in `css` that mention a Colibri class name: [{ line, class, selector }]. Comments and declarations are ignored. */
 export function collisions(css, names = reserved().classes) {
-  const clean = css.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " ")), re = new RegExp(`(?<![\\w.-])\\.(${names.join("|")})(?![\\w-])`, "g"), hits = [];
+  // blank out comments and strings (keeping line numbers) so `content: "{ .card {"` is not read as a rule
+  const blank = (m) => m.replace(/[^\n]/g, " ");
+  const clean = css.replace(/\/\*[\s\S]*?(\*\/|$)/g, blank).replace(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'/g, blank);
+  // `.card`, `div.card`, `.sidebar.card` and `[class~="card"]` all target the class
+  const re = new RegExp(`\\.(${names.join("|")})(?![\\w-])`, "g"), hits = [];
   for (const m of clean.matchAll(/([^{}]+)\{/g)) { const selector = m[1].trim(); if (selector.startsWith("@")) continue;
     const line = clean.slice(0, m.index + m[1].length - m[1].trimStart().length).split("\n").length;
     for (const c of new Set([...selector.matchAll(re)].map((x) => x[1]))) hits.push({ line, class: c, selector: selector.replace(/\s+/g, " ").slice(0, 120) }); }
@@ -85,6 +89,7 @@ switch (cmd) {
     else { for (const h of hits) console.log(`${h.file}:${h.line}  .${h.class}  ${h.selector}`);
       console.log(`${hits.length} rule(s) reuse a Colibri class name. Extending a kit class on purpose is fine; an unrelated class with the same name will inherit the kit's styles. Rename it, or link colibri.prefixed.css.`); }
     if (hits.length && flags.has("--strict")) process.exit(1); break; }
-  case "build": execSync("python3 tools/registry.py", { cwd: PKG, stdio: "inherit" }); break;
+  case "build": { if (!fs.existsSync(path.join(PKG, "tools/registry.py"))) { console.error("colibri build regenerates the registry and only works in a checkout of the colibri-kit repository (the published package does not ship tools/)."); process.exit(1); }
+    execSync("python3 tools/registry.py", { cwd: PKG, stdio: "inherit" }); break; }
   default: console.log("usage: colibri <info|list|search|view|docs|classes|collisions|init|add|diff|build> [args] [--json] [--dry-run] [--dir path] [--starter] [--force] [--type component|block|motion]");
 }

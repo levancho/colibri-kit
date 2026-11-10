@@ -32,7 +32,9 @@ If distributing the JAR within a team, publish it to your private Maven reposito
 
 ```sh
 mvn install:install-file -Dfile=colibri-templates-0.1.0-SNAPSHOT.jar -DgroupId=ai.l3v.colibri -DartifactId=colibri-templates -Dversion=0.1.0-SNAPSHOT -Dpackaging=jar
-``` Alternatively, copy `freemarker/` and/or `thymeleaf/` into `src/main/resources/templates/colibri/`. The template package includes no Java classes; extra processors are unnecessary for native fragments.
+```
+
+Alternatively, copy `freemarker/` and/or `thymeleaf/` into `src/main/resources/templates/colibri/`. The template package includes no Java classes; extra processors are unnecessary for native fragments.
 
 ## Add the actual engine
 
@@ -55,7 +57,7 @@ Maven downloads the engine and its dependencies through the starter. Colibri doe
 
 ## FreeMarker
 
-Save the host view as `.ftlh` with Spring Boot's default suffix, or configure the suffix if your project uses `.ftl`. The header selects the square-bracket syntax used by the macros:
+Save the host view as `.ftlh` with Spring Boot's default suffix, or configure the suffix if your project uses `.ftl`. **The host template must produce HTML output**: use `.ftlh`, or keep `output_format="HTML"` in its `[#ftl]` header. The macros always escape their own parameters, but anything you write inside a macro body (`[@ui.button]${label}[/@ui.button]`) is evaluated by the host, and a host without an HTML output format emits it unescaped. The header selects the square-bracket syntax used by the macros:
 
 ```ftl
 [#ftl output_format="HTML"]
@@ -71,7 +73,13 @@ The controller supplies `initials`, `saving` and `buttonLabel`. HTML auto-escapi
 [@ui.accordion items=[{"value":"details", "title":"Details", "content":details}]/]
 ```
 
-Do not disable escaping or mark user-provided strings as trusted HTML. Attribute names, element names and component names are template-author configuration, not request values.
+Do not disable escaping or mark user-provided strings as trusted HTML. Attribute names, element names, component names and the skeleton `w`/`h` sizes are template-author configuration, not request values.
+
+**URLs are escaped, not vetted.** Parameters that become `href`, `src` or a form `action` (links in `menu`, `breadcrumb`, `item`, `sidebarItem` and `citation`; `avatar` and `imageInput` sources; `authForm` and application-form actions) are HTML-escaped, which stops markup injection but lets a `javascript:` URL through. Build these from your application's routes, or validate the scheme before passing a user-supplied URL. The same applies to the Thymeleaf fragments.
+
+**Numbers are written for the browser, not the reader.** Numeric arguments and attribute values are emitted with `?c` (`1500`, `12.5`) in every locale, because the controllers parse them. Format numbers for display yourself and pass them as strings.
+
+Minimum engine versions: FreeMarker 2.3.25 (the macros use `[#list map as key, value]`); Thymeleaf 3.x.
 
 ## Thymeleaf
 

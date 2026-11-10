@@ -40,15 +40,18 @@
     "./themes/packs/*.css"
   ],
   "exports": {
+    ".": "./src/core/index.js",
     "./core/*": "./src/core/*.js",
+    "./core/*.js": "./src/core/*.js",
     "./elements/*": "./src/elements/*.js",
+    "./elements/*.js": "./src/elements/*.js",
     "./react": "./src/react/index.js",
     "./themes/*": "./themes/*",
-    "./core/*.js": "./src/core/*.js",
     "./min": "./dist/colibri-ui.min.js",
     "./lazy": "./dist/lazy/auto-lazy.js",
     "./min.css": "./dist/colibri-ui.min.css",
-    "./registry": "./registry/colibri.json"
+    "./registry": "./registry/colibri.json",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
@@ -72,7 +75,7 @@
     "@playwright/test": "1.64.1",
     "axe-core": "4.14.0",
     "esbuild": "0.25.10",
-    "fflate": "0.8.2",
+    "fflate": "0.8.3",
     "jsdom": "^25.0.0",
     "puppeteer-core": "^25.16.0",
     "react": "19.3.1",
@@ -106,5 +109,9 @@
     "packages/colibri-css/dist",
     "starters",
     "docs/getting-started.md"
-  ]
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Levan Dvalishvili"
 }

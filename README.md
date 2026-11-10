@@ -15,7 +15,22 @@ Java setup: [FreeMarker / Thymeleaf dependencies and supplemental template JAR](
 
 ## Getting started
 
-Start a working application without installing the library's development dependencies:
+Install from npm:
+
+```sh
+npm install @colibri-kit/ui @colibri-kit/css
+```
+
+```js
+import "@colibri-kit/css";                    // tokens, layout, .btn .card .field …
+import "@colibri-kit/ui/themes/colibri.css";  // look of the interactive components
+import "@colibri-kit/css/bridge";             // one palette for both
+import "@colibri-kit/ui/lazy";                // wires every data-ui element, loading only the controllers in use
+```
+
+Put `class="ui-root"` on `<body>`. No bundler? Copy the files into your project instead: `npx -p @colibri-kit/ui colibri init --starter` writes a `colibri/` folder plus a working starter page that needs no build step.
+
+Or start from a checkout, without installing anything:
 
 ```sh
 git clone https://github.com/levancho/colibri-kit.git colibri-kit
@@ -29,7 +44,7 @@ Open http://localhost:8080/. The starter includes a settings form, local saving,
 
 **[Installation, React, customization, upgrades and troubleshooting](docs/getting-started.md)** · [Java / FreeMarker / Thymeleaf](docs/java-templates.md)
 
-The installer copies both Colibri CSS and UI, plus server template sources. Omit `--starter` for an existing application; use `--dir assets/colibri` for a different asset folder. Conflicting files are refused before anything is written. The guide also covers installing the source packages into an existing bundler project without relying on a public npm release.
+The installer copies both Colibri CSS and UI, plus server template sources. Omit `--starter` for an existing application; use `--dir assets/colibri` for a different asset folder. Conflicting files are refused before anything is written. The guide also covers bundler and React projects.
 
 Three things worth knowing early, all covered in the guide: Colibri CSS owns short class names such as `.card` and `.center` (`colibri classes` lists them, `colibri collisions app.css` checks yours, and `colibri.prefixed.css` renames them to `.c-*`); `dist/lazy/auto-lazy.js` loads only the controllers a page uses; and `colibri docs <name>` lists each component's events and controller members.
 
