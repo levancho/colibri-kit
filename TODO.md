@@ -6,8 +6,9 @@ found by reading.
 
 ## Release blockers
 
-- [ ] **Publish to npm.** `@colibri-kit/css` and `@colibri-kit/ui` 0.1.0 are ready and pass a dry run. The first
-      attempt was refused because the token lacked "Bypass two-factor authentication". See `docs/publishing.md`.
+- [x] **Publish to npm.** `@colibri-kit/css` and `@colibri-kit/ui` 0.1.0 were published on 10 Nov 2026 from
+      commit `0cc5074` with staged publishing (`npm stage publish`, approved with 2FA). See `docs/publishing.md`.
+- [ ] **Tag the release**: `v0.1.0` on the published commit, and add a root `CHANGELOG.md`.
 - [ ] **Merge `npm-and-dx` into `main`** once CI is green (merging deploys the site).
 
 ## Accessibility
