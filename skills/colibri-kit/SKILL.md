@@ -1,7 +1,7 @@
 ---
 name: colibri-kit
 description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, React, FreeMarker and Thymeleaf without adding Tailwind.
-version: 1.1.0
+version: 1.2.0
 license: MIT
 ---
 # Colibri Kit
@@ -63,6 +63,8 @@ Keep repeated product UI in named components or template partials. Do not replac
 - Expose semantic state through `data-state`, `aria-*` and `hidden`. Do not duplicate it with presentation classes. Library controllers may write custom properties for measured geometry; keep that distinct from application styling.
 - Events are bubbling, `ui:`-prefixed CustomEvents (`ui:change`, `ui:open`, `ui:close`, `ui:beforeclose`, `ui:submit`, `ui:select`…). Cancelable ones honour `preventDefault()`.
 - After inserting HTML yourself: `document.dispatchEvent(new Event("ui:refresh"))` (htmx swaps are handled automatically).
+- Each component's events, `event.detail` keys and controller members are listed by `colibri docs <name>` and in the generated table at the end of `reference/components.md`. Reach a live controller with `controllers(el)[0]` (exported by `core/util.js`, `core/auto.js`, `core/auto-lazy.js`), e.g. `controllers(seg)[0].value = "week"`.
+- To load less JavaScript, use `dist/lazy/auto-lazy.js` (fetches only the controllers a page uses) or `dist/colibri-ui.min.js` (everything, minified) in place of `src/core/auto.js`. One of the three per page.
 - Pick components from `reference/components.md`; do not invent `data-ui` names. Layout wrappers are classes.
 
 ## 4. Theming, light/dark
@@ -135,6 +137,7 @@ Define `.revenue-value { font-size: var(--c-text-2xl); }` in the application sty
 ## 8. Do / don't
 
 - Do: semantic elements, primitives + custom properties, `data-*` variants, tokens, one `data-ui` per behaviour.
+- Class names: Colibri CSS owns `.card`, `.stack`, `.center`, `.badge`, `.flow`, `.muted` and the rest of the list in `reference/tokens.md`. Never reuse them for unrelated application classes; run `colibri collisions app.css` after writing application CSS.
 - Avoid: long utility chains, repeated inline presentation, specificity escalation, raw brand colors in component rules, and invented `data-ui` names for layout. Fix the owning component instead of appending overrides. Do not remove deliberate hidden-state, touch-target or reduced-motion safeguards simply to reduce important-declaration counts.
 - Accessibility: every interactive element keyboard-reachable and labelled; keep `<label>`s, `aria-label` on icon buttons, use `dialog`/`alert-dialog` (focus trap + return built in). Verify reduced motion, visible focus, contrast and keyboard behavior. Existing ARIA wiring and browser tests are not screen-reader certification. Check `colibri docs <name>` for expected keys.
 - Before finishing: use checks appropriate to the change. In the Colibri repository, run `npm test`, `npm run build`, `npm run check:architecture` and relevant browser tests (`npm run test:e2e` for shared-style changes). Edit source/generators, not generated copies. Report what was tested and whether changes are local, committed, merged or deployed; skill updates do not themselves publish a marketplace release.

@@ -2,12 +2,37 @@
   "name": "@colibri-kit/css",
   "version": "0.1.0",
   "description": "Colibri CSS: a small, modern, token-first CSS library (layers, container queries, :has(), nesting, fluid type, light-dark).",
+  "homepage": "https://colibri-kit.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levancho/colibri-kit.git",
+    "directory": "packages/colibri-css"
+  },
+  "bugs": {
+    "url": "https://github.com/levancho/colibri-kit/issues"
+  },
+  "keywords": [
+    "css",
+    "design-tokens",
+    "cascade-layers",
+    "oklch",
+    "dark-mode",
+    "layout",
+    "no-build",
+    "design-system"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "main": "dist/colibri.css",
   "style": "dist/colibri.css",
   "exports": {
     ".": "./dist/colibri.css",
     "./min": "./dist/colibri.min.css",
+    "./prefixed": "./dist/colibri.prefixed.css",
+    "./prefixed/min": "./dist/colibri.prefixed.min.css",
+    "./classes": "./dist/colibri-classes.json",
     "./bridge": "./dist/colibri-ui-bridge.css",
     "./src/*": "./src/*",
     "./applications": "./dist/colibri-applications.css"

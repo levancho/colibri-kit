@@ -58,7 +58,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "alert",
@@ -94,7 +108,22 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:beforedismiss",
+     "detail": [],
+     "cancelable": true
+    },
+    {
+     "name": "ui:dismiss",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "alert-dialog",
@@ -132,7 +161,35 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:beforeclose",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": true
+    },
+    {
+     "name": "ui:close",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "close",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "aspect-ratio",
@@ -166,7 +223,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "avatar",
@@ -201,7 +260,11 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "badge",
@@ -236,7 +299,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:remove",
+     "detail": [
+      "text"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "button",
@@ -268,7 +343,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": [
+    "loading",
+    "destroy"
+   ]
   },
   {
    "name": "button-group",
@@ -300,7 +380,28 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:action",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "card",
@@ -337,7 +438,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "carousel",
@@ -375,7 +478,23 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "index"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "index",
+    "go",
+    "next",
+    "prev",
+    "destroy"
+   ]
   },
   {
    "name": "code-block",
@@ -411,7 +530,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "collapsible",
@@ -446,7 +567,28 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "open"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "open"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "datatable",
@@ -487,7 +629,41 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:query",
+     "detail": [
+      "sort",
+      "page",
+      "search",
+      "pageSize"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:select",
+     "detail": [
+      "ids"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:sort",
+     "detail": [
+      "sort"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "selected",
+    "filter",
+    "setPageSize",
+    "setColumnVisible",
+    "refresh",
+    "destroy"
+   ]
   },
   {
    "name": "dialog",
@@ -525,7 +701,35 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:beforeclose",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": true
+    },
+    {
+     "name": "ui:close",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "close",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "drawer",
@@ -565,7 +769,35 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:beforeclose",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": true
+    },
+    {
+     "name": "ui:close",
+     "detail": [
+      "returnValue"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "close",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "dropdown-menu",
@@ -607,7 +839,39 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:select",
+     "detail": [
+      "item",
+      "value",
+      "checked"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "hide",
+    "trigger",
+    "destroy"
+   ]
   },
   {
    "name": "context-menu",
@@ -644,7 +908,39 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:select",
+     "detail": [
+      "item",
+      "value",
+      "checked"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "hide",
+    "trigger",
+    "destroy"
+   ]
   },
   {
    "name": "empty",
@@ -678,7 +974,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "hover-card",
@@ -716,7 +1014,31 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "hide",
+    "toggle",
+    "reposition",
+    "destroy"
+   ]
   },
   {
    "name": "item",
@@ -760,7 +1082,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "kbd",
@@ -792,7 +1116,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "label",
@@ -824,7 +1150,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "link",
@@ -856,7 +1184,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "popover",
@@ -892,7 +1222,31 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "hide",
+    "toggle",
+    "reposition",
+    "destroy"
+   ]
   },
   {
    "name": "progress",
@@ -926,7 +1280,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "rating",
@@ -958,7 +1317,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "reparent",
@@ -992,7 +1364,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:reparent",
+     "detail": [
+      "mobile"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "resizable",
@@ -1027,7 +1411,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:resize",
+     "detail": [
+      "sizes"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "sizes",
+    "destroy"
+   ]
   },
   {
    "name": "scroll-area",
@@ -1059,7 +1456,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "update",
+    "destroy"
+   ]
   },
   {
    "name": "separator",
@@ -1091,7 +1493,11 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "skeleton",
@@ -1126,7 +1532,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "table",
@@ -1158,7 +1566,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "theme-switch",
@@ -1190,7 +1600,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "mode",
+      "theme"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "mode",
+    "destroy"
+   ]
   },
   {
    "name": "toast",
@@ -1222,7 +1646,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "toggle",
@@ -1254,7 +1680,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "pressed"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "pressed",
+    "destroy"
+   ]
   },
   {
    "name": "tooltip",
@@ -1289,7 +1728,31 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "reason"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "show",
+    "hide",
+    "toggle",
+    "reposition",
+    "destroy"
+   ]
   },
   {
    "name": "typography",
@@ -1321,7 +1784,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "message-scroller",
@@ -1358,7 +1823,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "scrollToBottom",
+    "destroy"
+   ]
   },
   {
    "name": "direction",
@@ -1396,7 +1866,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "spinner",
@@ -1430,7 +1902,14 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": [
+    "start",
+    "stop",
+    "label",
+    "destroy"
+   ]
   },
   {
    "name": "breadcrumb",
@@ -1464,7 +1943,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "menu",
@@ -1504,7 +1985,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "navigation-menu",
@@ -1541,7 +2024,27 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:close",
+     "detail": [
+      "index"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [
+      "index"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "close",
+    "destroy"
+   ]
   },
   {
    "name": "pagination",
@@ -1573,7 +2076,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "page"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "page",
+    "setTotal",
+    "destroy"
+   ]
   },
   {
    "name": "scrollspy",
@@ -1605,7 +2122,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "id"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "active",
+    "refresh",
+    "destroy"
+   ]
   },
   {
    "name": "scrollto",
@@ -1637,7 +2168,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:scroll",
+     "detail": [
+      "id"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "sidebar",
@@ -1669,7 +2212,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "state"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "toggle",
+    "state",
+    "destroy"
+   ]
   },
   {
    "name": "stepper",
@@ -1708,7 +2265,39 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:beforechange",
+     "detail": [
+      "from",
+      "to"
+     ],
+     "cancelable": true
+    },
+    {
+     "name": "ui:change",
+     "detail": [
+      "from",
+      "to"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:finish",
+     "detail": [
+      "step"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "step",
+    "next",
+    "prev",
+    "goTo",
+    "destroy"
+   ]
   },
   {
    "name": "sticky",
@@ -1740,7 +2329,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "stuck"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "tabs",
@@ -1776,7 +2377,22 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value",
+      "previous"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "select",
+    "refresh"
+   ]
   },
   {
    "name": "command",
@@ -1820,7 +2436,29 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:search",
+     "detail": [
+      "query"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:select",
+     "detail": [
+      "value",
+      "option"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "refresh",
+    "query",
+    "destroy"
+   ]
   },
   {
    "name": "input",
@@ -1852,7 +2490,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "input-group",
@@ -1887,7 +2527,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "field",
@@ -1924,7 +2566,22 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:validate",
+     "detail": [
+      "valid",
+      "message"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "setError",
+    "control",
+    "destroy"
+   ]
   },
   {
    "name": "checkbox",
@@ -1956,7 +2613,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "checked"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "checked",
+    "destroy"
+   ]
   },
   {
    "name": "radio-group",
@@ -1990,7 +2660,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "switch",
@@ -2022,7 +2705,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "checked"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "checked",
+    "destroy"
+   ]
   },
   {
    "name": "select",
@@ -2061,7 +2757,33 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:close",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "show",
+    "hide",
+    "refresh",
+    "destroy"
+   ]
   },
   {
    "name": "combobox",
@@ -2100,7 +2822,38 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:close",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:search",
+     "detail": [
+      "query"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "refresh",
+    "destroy"
+   ]
   },
   {
    "name": "slider",
@@ -2136,7 +2889,27 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:input",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "pin-input",
@@ -2168,7 +2941,28 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:complete",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "clear",
+    "destroy"
+   ]
   },
   {
    "name": "toggle-password",
@@ -2203,7 +2997,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "visible"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "textarea",
@@ -2235,7 +3041,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "fit",
+    "destroy"
+   ]
   },
   {
    "name": "file-input",
@@ -2271,7 +3082,28 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "files"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:reject",
+     "detail": [
+      "files"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "files",
+    "clear",
+    "destroy"
+   ]
   },
   {
    "name": "image-input",
@@ -2309,7 +3141,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "file"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:remove",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "repeater",
@@ -2347,7 +3196,34 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:add",
+     "detail": [
+      "row",
+      "index"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:refresh",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:remove",
+     "detail": [
+      "row"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "add",
+    "count",
+    "destroy"
+   ]
   },
   {
    "name": "color-picker",
@@ -2383,7 +3259,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "sortable",
@@ -2417,7 +3306,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:sort",
+     "detail": [
+      "order"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "order",
+    "destroy"
+   ]
   },
   {
    "name": "toggle-group",
@@ -2451,7 +3353,21 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "toggle",
+    "destroy"
+   ]
   },
   {
    "name": "calendar",
@@ -2483,7 +3399,22 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value",
+      "complete"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "focus",
+    "destroy"
+   ]
   },
   {
    "name": "date-picker",
@@ -2521,7 +3452,33 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value",
+      "complete"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:close",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:open",
+     "detail": [],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "show",
+    "hide",
+    "destroy"
+   ]
   },
   {
    "name": "motion",
@@ -2555,7 +3512,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "motion-states",
@@ -2589,7 +3548,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "motion-play",
@@ -2623,7 +3584,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "motion-wired",
@@ -2669,7 +3632,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "theme-tokens",
@@ -2701,7 +3666,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "theme-scoped",
@@ -2741,7 +3708,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "bubble",
@@ -2780,7 +3749,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:react",
+     "detail": [
+      "value",
+      "on"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "message",
@@ -2824,7 +3806,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:action",
+     "detail": [
+      "action"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "marker",
@@ -2861,7 +3855,11 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "trace",
@@ -2901,7 +3899,11 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "attachment",
@@ -2944,7 +3946,27 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:action",
+     "detail": [
+      "action"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:remove",
+     "detail": [
+      "name"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "setProgress",
+    "destroy"
+   ]
   },
   {
    "name": "questionnaire",
@@ -2994,7 +4016,25 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:step",
+     "detail": [
+      "index",
+      "total"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:submit",
+     "detail": [
+      "answers"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": []
   },
   {
    "name": "native-select",
@@ -3026,7 +4066,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "chart",
@@ -3058,7 +4100,11 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "chain-of-thought",
@@ -3099,7 +4145,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "chat",
@@ -3149,7 +4212,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "checkpoint",
@@ -3187,7 +4252,19 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:restore",
+     "detail": [
+      "id"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "confirmation",
@@ -3228,7 +4305,29 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:approve",
+     "detail": [],
+     "cancelable": true
+    },
+    {
+     "name": "ui:approved",
+     "detail": [],
+     "cancelable": true
+    },
+    {
+     "name": "ui:reject",
+     "detail": [],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "approve",
+    "reject",
+    "destroy"
+   ]
   },
   {
    "name": "context",
@@ -3268,7 +4367,12 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "set",
+    "destroy"
+   ]
   },
   {
    "name": "file-tree",
@@ -3305,7 +4409,30 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:select",
+     "detail": [
+      "path",
+      "type"
+     ],
+     "cancelable": false
+    },
+    {
+     "name": "ui:toggle",
+     "detail": [
+      "path",
+      "open"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "toggle",
+    "select",
+    "destroy"
+   ]
   },
   {
    "name": "inline-citation",
@@ -3343,7 +4470,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "ai-message",
@@ -3392,7 +4521,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "model-selector",
@@ -3433,7 +4564,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "plan",
@@ -3474,7 +4607,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "prompt-input",
@@ -3514,7 +4664,27 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:stop",
+     "detail": [],
+     "cancelable": false
+    },
+    {
+     "name": "ui:submit",
+     "detail": [
+      "text",
+      "files"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": [
+    "setValue",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "queue",
@@ -3552,7 +4722,20 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "id",
+      "done"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "reasoning",
@@ -3593,7 +4776,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "sources",
@@ -3634,7 +4834,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "stack-trace",
@@ -3677,7 +4894,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "subagent",
@@ -3720,7 +4954,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "suggestion",
@@ -3754,7 +5005,17 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:suggest",
+     "detail": [
+      "text"
+     ],
+     "cancelable": true
+    }
+   ],
+   "api": []
   },
   {
    "name": "task",
@@ -3796,7 +5057,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "terminal",
@@ -3839,7 +5117,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "test-results",
@@ -3882,7 +5177,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "tool",
@@ -3923,7 +5235,24 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:openchange",
+     "detail": [
+      "open",
+      "why"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "open",
+    "close",
+    "toggle",
+    "setStatus",
+    "destroy"
+   ]
   },
   {
    "name": "sidebar-01",
@@ -3973,7 +5302,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-02",
@@ -4024,7 +5355,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-03",
@@ -4074,7 +5407,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-04",
@@ -4124,7 +5459,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-05",
@@ -4177,7 +5514,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-06",
@@ -4226,7 +5565,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-07",
@@ -4285,7 +5626,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-08",
@@ -4344,7 +5687,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-09",
@@ -4391,7 +5736,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-10",
@@ -4444,7 +5791,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-11",
@@ -4494,7 +5843,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-12",
@@ -4550,7 +5901,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-13",
@@ -4599,7 +5952,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-14",
@@ -4643,7 +5998,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-15",
@@ -4703,7 +6060,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "sidebar-16",
@@ -4764,7 +6123,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "login-01",
@@ -4814,7 +6175,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "login-02",
@@ -4863,7 +6226,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "login-03",
@@ -4915,7 +6280,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "login-04",
@@ -4965,7 +6332,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "login-05",
@@ -5012,7 +6381,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "signup-01",
@@ -5062,7 +6433,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "signup-02",
@@ -5111,7 +6484,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "signup-03",
@@ -5163,7 +6538,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "signup-04",
@@ -5211,7 +6588,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "signup-05",
@@ -5263,7 +6642,9 @@
     "react": "markup-adapter",
     "freemarker": "native",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-start",
@@ -5295,7 +6676,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-tokens",
@@ -5328,7 +6711,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-layers",
@@ -5361,7 +6746,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-layout",
@@ -5394,7 +6781,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-container",
@@ -5427,7 +6816,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-has",
@@ -5460,7 +6851,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-nesting",
@@ -5493,7 +6886,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-fluid",
@@ -5525,7 +6920,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-dark",
@@ -5558,7 +6955,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-motion",
@@ -5591,7 +6990,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-forms",
@@ -5623,7 +7024,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "css-bridge",
@@ -5655,7 +7058,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "toolbar",
@@ -5694,7 +7099,12 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "refresh",
+    "destroy"
+   ]
   },
   {
    "name": "segmented-control",
@@ -5728,7 +7138,20 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "radio-cards",
@@ -5762,7 +7185,20 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "checkbox-cards",
@@ -5796,7 +7232,20 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "checkbox-group",
@@ -5830,7 +7279,20 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "value"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "value",
+    "destroy"
+   ]
   },
   {
    "name": "tab-nav",
@@ -5864,7 +7326,20 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [
+    {
+     "name": "ui:change",
+     "detail": [
+      "href"
+     ],
+     "cancelable": false
+    }
+   ],
+   "api": [
+    "select",
+    "destroy"
+   ]
   },
   {
    "name": "data-list",
@@ -5898,7 +7373,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "callout",
@@ -5932,7 +7409,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "inset",
@@ -5966,7 +7445,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "icon-button",
@@ -5998,7 +7479,9 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "accessible-icon",
@@ -6032,7 +7515,11 @@
     "react": "markup-adapter",
     "freemarker": "static-html",
     "thymeleaf": "static-html"
-   }
+   },
+   "events": [],
+   "api": [
+    "destroy"
+   ]
   },
   {
    "name": "application-shell",
@@ -6065,7 +7552,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-metrics",
@@ -6098,7 +7587,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-chart",
@@ -6131,7 +7622,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-table",
@@ -6164,7 +7657,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-board",
@@ -6197,7 +7692,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-projects",
@@ -6230,7 +7727,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-planner",
@@ -6263,7 +7762,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-identity",
@@ -6296,7 +7797,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-products",
@@ -6329,7 +7832,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-receipt",
@@ -6362,7 +7867,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-conversation",
@@ -6395,7 +7902,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-form",
@@ -6428,7 +7937,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-photo",
@@ -6461,7 +7972,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   },
   {
    "name": "application-article",
@@ -6494,7 +8007,9 @@
     "react": "native",
     "freemarker": "native",
     "thymeleaf": "native"
-   }
+   },
+   "events": [],
+   "api": []
   }
  ]
 }

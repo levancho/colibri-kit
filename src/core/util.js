@@ -132,3 +132,19 @@ export function cleanupController(root,key,teardown) {
  cleanup.destroy=()=>{try{teardown();}finally{delete root[key];}};
  root[key]=cleanup;trackController(root,cleanup);return cleanup;
 }
+
+const observers = new WeakMap();
+/** Match initialization with teardown when framework swaps remove nodes. Moves keep their API. */
+export function observeRemovals(root = document) {
+  if (observers.has(root)) return observers.get(root);
+  const doc = root.ownerDocument || root, MO = doc.defaultView?.MutationObserver;
+  if (!MO) return null;
+  const observer = new MO(records => {
+    for (const record of records) for (const node of record.removedNodes) {
+      if (node.nodeType === 1 && !node.isConnected) dispose(node);
+    }
+  });
+  observer.observe(root, { childList: true, subtree: true });
+  const api = { disconnect() { observer.disconnect(); observers.delete(root); } };
+  observers.set(root, api); return api;
+}

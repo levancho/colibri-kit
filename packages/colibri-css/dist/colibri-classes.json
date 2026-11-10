@@ -1,0 +1,28 @@
+{
+  "prefix": "c-",
+  "classes": [
+    "badge",
+    "bleed",
+    "btn",
+    "callout",
+    "card",
+    "center",
+    "cluster",
+    "container",
+    "cover",
+    "enter",
+    "field",
+    "flow",
+    "frame",
+    "grid",
+    "hint",
+    "muted",
+    "prose",
+    "reel",
+    "split",
+    "stack",
+    "switcher",
+    "truncate",
+    "visually-hidden"
+  ]
+}

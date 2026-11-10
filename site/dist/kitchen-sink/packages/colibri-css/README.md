@@ -78,6 +78,14 @@ The markup is identical in HTML, FreeMarker and React. React just says `classNam
 </section>
 ```
 
+## Class names and the prefixed build
+
+Colibri CSS owns these class names: `.badge .bleed .btn .callout .card .center .cluster .container .cover .enter .field .flow .frame .grid .hint .muted .prose .reel .split .stack .switcher .truncate .visually-hidden`. They are published in `dist/colibri-classes.json` (`@colibri-kit/css/classes`).
+
+Do not define unrelated classes with those names in application CSS; they would inherit the kit's rules. `colibri collisions app.css` reports any that do. If a project already uses some of them, link the prefixed build instead: `dist/colibri.prefixed.css` (`@colibri-kit/css/prefixed`) is the same stylesheet with every class renamed to `.c-*`, for example `class="c-card c-stack"`. Tokens (`--c-*`), cascade layers and `data-*` variants are unchanged.
+
+Tones accept both vocabularies: `data-tone="ok|warn|bad"` is canonical here, and `success|warning|danger` (the Colibri UI words) work too. `data-variant="danger"` and `destructive` are equivalent on `.btn`.
+
 ## React
 
 The npm names describe the source packages; registry releases are not published yet. Clone the repository and install its root and `packages/colibri-css` directories as local dependencies (see the root README).

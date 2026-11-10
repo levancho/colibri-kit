@@ -2,10 +2,40 @@
   "name": "@colibri-kit/ui",
   "version": "0.1.0",
   "description": "Colibri UI: headless, unstyled, framework-agnostic UI primitives",
+  "homepage": "https://colibri-kit.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levancho/colibri-kit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/levancho/colibri-kit/issues"
+  },
+  "keywords": [
+    "ui",
+    "components",
+    "headless",
+    "accessible",
+    "css",
+    "design-system",
+    "dialog",
+    "tooltip",
+    "tabs",
+    "no-build",
+    "freemarker",
+    "thymeleaf",
+    "react"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "type": "module",
   "sideEffects": [
     "./src/elements/*.js",
     "./src/core/auto.js",
+    "./src/core/auto-lazy.js",
+    "./dist/colibri-ui.min.js",
+    "./dist/lazy/auto-lazy.js",
+    "./dist/*.css",
     "./themes/*.css",
     "./themes/packs/*.css"
   ],
@@ -14,12 +44,16 @@
     "./elements/*": "./src/elements/*.js",
     "./react": "./src/react/index.js",
     "./themes/*": "./themes/*",
-    "./core/*.js": "./src/core/*.js"
+    "./core/*.js": "./src/core/*.js",
+    "./min": "./dist/colibri-ui.min.js",
+    "./lazy": "./dist/lazy/auto-lazy.js",
+    "./min.css": "./dist/colibri-ui.min.css",
+    "./registry": "./registry/colibri.json"
   },
   "scripts": {
     "test": "node --test test/*.test.js",
     "serve": "python3 -m http.server 8395",
-    "test:e2e": "node test/e2e/run.mjs && node test/e2e/foundations.e2e.mjs && node test/e2e/navigation-styles.e2e.mjs && node test/e2e/dashboards.e2e.mjs && node test/e2e/architecture.e2e.mjs && node test/e2e/source-tabs.e2e.mjs && node test/e2e/java-templates.e2e.mjs && node test/e2e/motion-exit.e2e.mjs && node test/e2e/studio-bridge.e2e.mjs && node test/e2e/demo-apps.e2e.mjs && node test/e2e/dashboard-domains.e2e.mjs && node test/e2e/dashboard-devices.e2e.mjs && node test/e2e/dashboard-designs.e2e.mjs && node test/e2e/application-components.e2e.mjs && node test/e2e/dashboard-theme-preview.e2e.mjs && node test/e2e/audit-host.e2e.mjs",
+    "test:e2e": "node test/e2e/run.mjs && node test/e2e/foundations.e2e.mjs && node test/e2e/navigation-styles.e2e.mjs && node test/e2e/dashboards.e2e.mjs && node test/e2e/architecture.e2e.mjs && node test/e2e/source-tabs.e2e.mjs && node test/e2e/java-templates.e2e.mjs && node test/e2e/motion-exit.e2e.mjs && node test/e2e/studio-bridge.e2e.mjs && node test/e2e/demo-apps.e2e.mjs && node test/e2e/dashboard-domains.e2e.mjs && node test/e2e/dashboard-devices.e2e.mjs && node test/e2e/dashboard-designs.e2e.mjs && node test/e2e/application-components.e2e.mjs && node test/e2e/dashboard-theme-preview.e2e.mjs && node test/e2e/audit-host.e2e.mjs && node test/e2e/dist-bundles.e2e.mjs",
     "sink": "python3 tools/kitchen-sink.py && python3 tools/readme-catalog.py && python3 tools/registry.py",
     "registry": "python3 tools/registry.py",
     "build": "sh site/build.sh",
@@ -29,12 +63,15 @@
     "test:java": "mvn -f java/colibri-templates/pom.xml verify",
     "test:consumer": "node test/e2e/consumer.e2e.mjs",
     "test:react-compat": "node test/e2e/react-compat.e2e.mjs",
-    "test:cross-browser:linux": "node tools/test-linux-browser.mjs"
+    "test:cross-browser:linux": "node tools/test-linux-browser.mjs",
+    "build:ui": "node tools/lazy-registry.mjs && node tools/build-ui.mjs",
+    "test:dist": "node test/e2e/dist-bundles.e2e.mjs"
   },
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "1.64.1",
     "axe-core": "4.14.0",
+    "esbuild": "0.25.10",
     "fflate": "0.8.2",
     "jsdom": "^25.0.0",
     "puppeteer-core": "^25.16.0",
@@ -56,6 +93,7 @@
   "files": [
     "src",
     "themes",
+    "dist",
     "freemarker",
     "bin",
     "registry",

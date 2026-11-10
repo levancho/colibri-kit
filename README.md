@@ -31,6 +31,8 @@ Open http://localhost:8080/. The starter includes a settings form, local saving,
 
 The installer copies both Colibri CSS and UI, plus server template sources. Omit `--starter` for an existing application; use `--dir assets/colibri` for a different asset folder. Conflicting files are refused before anything is written. The guide also covers installing the source packages into an existing bundler project without relying on a public npm release.
 
+Three things worth knowing early, all covered in the guide: Colibri CSS owns short class names such as `.card` and `.center` (`colibri classes` lists them, `colibri collisions app.css` checks yours, and `colibri.prefixed.css` renames them to `.c-*`); `dist/lazy/auto-lazy.js` loads only the controllers a page uses; and `colibri docs <name>` lists each component's events and controller members.
+
 Re-brand in your application stylesheet: `:root { --c-hue: 160; }`. The included bridge applies CSS tokens to UI controls. Force dark with `<html data-theme="dark">`. Use `data-colibri-theme` on a section for a locally recomputed palette.
 
 ## Explore
@@ -63,6 +65,7 @@ npm run build
 npm run check:architecture
 npm run test:e2e
 npm run test:consumer # packed installation + standalone application
+npm run build:ui # regenerate dist/ (minified and lazy bundles) and src/core/lazy-registry.js
 ```
 
 Browser tests start their own temporary servers. Set `CHROME=/path/to/chrome` if Chrome is not in a standard location. CI checks unit tests, the built site, component flows, responsive foundations, dashboard interactions, and navigation/callout styles across core and all packs. Architecture checks flag new important declarations, external core imports, utility-vocabulary growth and presentation styles in dashboard screens. See `docs/maintenance-audit.md` for scope and remaining debt. CSS visibility safeguards deliberately use `!important`; normal layered declarations remain overridable.

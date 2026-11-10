@@ -49,4 +49,6 @@ Shared layer order: `@layer colibri.reset, colibri.tokens, colibri.base, colibri
 
 For scoped palette changes, put `data-colibri-theme` on the container along with its `--c-hue` override. The bridge also binds at this boundary. Do not assume redefining a hue alone recomputes already-inherited derived colors.
 
-CSS and UI attributes are not interchangeable: CSS `.badge` uses `data-tone="ok|warn|bad|accent"`; UI callouts use `data-tone="success|warning|danger|neutral"`. Consult the component reference/source rather than applying one dialect everywhere.
+Tone and variant words are shared. Colibri CSS's canonical tones are `ok|warn|bad` (plus `accent`); Colibri UI's are `success|warning|danger` (plus `neutral`). Each layer accepts the other's three status words, and `data-variant="danger"` and `"destructive"` are equivalent, so either dialect is correct on any element. `accent` and `neutral` remain layer-specific.
+
+Reserved class names (do not define these in application CSS): `.badge .bleed .btn .callout .card .center .cluster .container .cover .enter .field .flow .frame .grid .hint .muted .prose .reel .split .stack .switcher .truncate .visually-hidden`. Run `colibri collisions <file.css>` to check a stylesheet. When a project already uses those names, link `colibri.prefixed.css` and write `.c-card`, `.c-stack`, … instead.

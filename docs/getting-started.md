@@ -94,6 +94,57 @@ Listen to documented `ui:*` events on the component root; for example tabs dispa
 
 Java setup, engine dependencies, resource JAR and bindings: [Java template integration](java-templates.md), also available at https://colibri.l3v.ai/java-templates.html.
 
+## Load less JavaScript
+
+`core/auto.js` imports every controller. Two alternatives ship in `dist/` (copied by `init` to `colibri/dist/`):
+
+| Script | What loads | Use it when |
+|---|---|---|
+| `core/auto.js` | all controllers, unminified source modules | developing, or reading the source in DevTools |
+| `dist/colibri-ui.min.js` | all controllers, one minified file | you want one request and use many components |
+| `dist/lazy/auto-lazy.js` | a small loader, then one minified chunk per component family on first use | a page uses a handful of components |
+
+```html
+<link rel="stylesheet" href="./colibri/dist/colibri-ui.min.css">
+<script type="module" src="./colibri/dist/lazy/auto-lazy.js"></script>
+```
+
+Use one of the three on a page. The lazy loader initialises asynchronously: `init(container)` returns a promise, and the document dispatches `ui:ready` after the first pass. `ui:refresh` works the same in all three. Measured sizes are in `dist/bundle-sizes.json`.
+
+## Class names Colibri owns
+
+Colibri CSS uses short, unprefixed class names (`.card`, `.stack`, `.center`, `.badge`…). An application class with the same name inherits the kit's styles, which is easy to miss. List the reserved names and check your stylesheets:
+
+```sh
+node path/to/bin/colibri.mjs classes
+node path/to/bin/colibri.mjs collisions app.css --strict
+```
+
+`collisions` prints each rule that mentions a Colibri class, with its line; `--strict` exits non-zero for CI. Extending a kit class on purpose (`.btn.icon { … }`) is fine. If an existing project already uses these names, link `colibri.prefixed.css` instead of `colibri.css`: every class becomes `.c-*` (`.c-card`, `.c-stack`) while tokens, layers and `data-*` attributes stay the same. The list is also published as `colibri-classes.json`.
+
+## One vocabulary for tones and variants
+
+Colibri CSS and Colibri UI each accept the other's words, so markup does not depend on which layer styles an element:
+
+| Meaning | Colibri CSS (canonical) | Colibri UI (canonical) | Accepted by both |
+|---|---|---|---|
+| success | `data-tone="ok"` | `data-tone="success"` | yes |
+| warning | `data-tone="warn"` | `data-tone="warning"` | yes |
+| error | `data-tone="bad"` | `data-tone="danger"` | yes |
+| destructive action | `data-variant="danger"` | `data-variant="destructive"` | yes |
+
+## Events and controller API
+
+`node path/to/bin/colibri.mjs docs <name>` lists every event a component dispatches, the keys of `event.detail`, whether it is cancelable, and the members of its controller. These are read from the controllers at build time, so they match the code. The same table is in the registry (`events`, `api`) and in the agent skill reference.
+
+```js
+import { controllers } from "./colibri/core/util.js";   // also exported by auto.js and auto-lazy.js
+
+const range = document.querySelector("#range");          // <div data-ui="segmented-control">
+range.addEventListener("ui:change", (e) => console.log(e.detail.value));
+controllers(range)[0].value = "week";                    // set it from code
+```
+
 ## Upgrade and diagnose
 
 Run `colibri diff` (or `node path/to/bin/colibri.mjs diff`) from the folder containing `colibri.json` using the new package revision. It reports changed or missing vendor files. Back up local changes before upgrading. `init` refuses conflicting files before writing anything; `--dry-run` previews the operation and `--force` explicitly replaces conflicts. Keep `app.css` and `app.js` outside the vendor directory. **Do not use `--starter --force` on an existing application** unless you intend to replace its starter files too.

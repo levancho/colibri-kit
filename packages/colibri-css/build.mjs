@@ -12,6 +12,20 @@ fs.writeFileSync(path.join(dist, "colibri-ui-bridge.css"), banner + read(files.f
 const min = (s) => s.replace(/\/\*(?!!)[\s\S]*?\*\//g, "").replace(/\s+/g, " ").replace(/\s*([{}:;,>])\s*/g, "$1").replace(/;}/g, "}");
 fs.writeFileSync(path.join(dist, "colibri.min.css"), min(fs.readFileSync(path.join(dist, "colibri.css"), "utf8")));
 fs.rmSync(path.join(dist, "colibri-classes.css"), { force: true });
+
+// Class names Colibri CSS owns. Published so applications (and agents) can avoid defining the same names,
+// and used to build the opt-in prefixed stylesheet for projects that already use names like .card or .center.
+const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, "");
+const classNames = [...new Set(["40-layout.css", "50-components.css", "60-utilities.css"].flatMap((f) =>
+  [...stripComments(fs.readFileSync(path.join(src, f), "utf8")).matchAll(/(?<![\w.-])\.([a-z][a-z0-9-]*)/g)].map((m) => m[1])))].sort();
+export const PREFIX = "c-";
+const classSelector = new RegExp(`(?<![\\w.-])\\.(${classNames.join("|")})(?![\\w-])`, "g");
+export const prefixClasses = (css) => css.replace(classSelector, `.${PREFIX}$1`);
+fs.writeFileSync(path.join(dist, "colibri-classes.json"), JSON.stringify({ prefix: PREFIX, classes: classNames }, null, 2) + "\n");
+const prefixed = prefixClasses(fs.readFileSync(path.join(dist, "colibri.css"), "utf8"))
+  .replace(banner, banner + `/* Prefixed build: every Colibri class is .${PREFIX}*, e.g. .${PREFIX}card, .${PREFIX}stack. Tokens, layers and data attributes are unchanged. */\n`);
+fs.writeFileSync(path.join(dist, "colibri.prefixed.css"), prefixed);
+fs.writeFileSync(path.join(dist, "colibri.prefixed.min.css"), min(prefixed));
 console.log("built", files.length, "files ->", fs.readdirSync(dist).map((f) => f + " " + fs.statSync(path.join(dist, f)).size + "b").join(", "));
 
 const applicationSources = ["records", "components", "shell", "identity", "compositions"];
