@@ -3,7 +3,11 @@
 - Reserved class names listed in tokens.md; `colibri classes`, `colibri collisions <file.css>` and the prefixed stylesheet (`colibri.prefixed.css`, `.c-*`) for projects that already use them.
 - CSS and UI accept each other's status words: `ok|warn|bad` and `success|warning|danger`; `danger` and `destructive`.
 - Generated "Events and controller API" table in components.md, read from the controllers; `colibri docs <name>` prints the same; `controllers(el)[0]` reaches a live controller.
-- `dist/lazy/auto-lazy.js` (loads only the controllers a page uses) and `dist/colibri-ui.min.js` as alternatives to `src/core/auto.js`.
+- `dist/lazy/auto-lazy.js` (loads only the controllers a page uses) and `dist/colibri-ui.min.js` as alternatives to `src/core/auto.js`; `ui:ready` / `ui:error` semantics.
+- Package names and CLI invocation: `@colibri-kit/ui`, `@colibri-kit/css`, `npx -p @colibri-kit/ui colibri`; never the unrelated `colibri` / `colibri-ui` packages. Side-effect-free root import.
+- FreeMarker rules: host must output HTML, URLs are not vetted, numbers are locale-independent, calendar follows the page language; import path is `/colibri/freemarker/ui.ftl`.
+- Sheet/drawer drag behaviour and handle; `item-group` `data-href` is http(s) only; React refresh and remote datatable behaviour.
+- `.btn` versus themed `<button>` vocabularies inside `.ui-root`; scope of the prefixed stylesheet; `colibri collisions` matches compound selectors.
 ## 1.1.0 (2026-11-04), from levancho/colibri-kit@9ab5248
 - New references: applications.md (application components/adapters, React 18+), maintenance.md (composition, overrides, maintainer checks).
 - Thymeleaf support (native fragments, java/colibri-templates module); description updated.

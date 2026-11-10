@@ -17,7 +17,7 @@ Read only the references needed for the task: [components](reference/components.
 
 ## 1. Install (no build step)
 
-Locate the project’s existing Colibri checkout or vendor folder first. For a new project, clone a pinned repository revision or vendor the required files. Do not assume the named npm packages are published; verify registry availability before recommending registry installation. Plain HTML consumers need no build step; maintaining generated distributions does require the repository build. Link local files:
+Locate the project’s existing Colibri checkout or vendor folder first. The packages are `@colibri-kit/ui` and `@colibri-kit/css`, always at the same version. Before recommending `npm install @colibri-kit/ui @colibri-kit/css`, confirm they are on the registry (`npm view @colibri-kit/ui version`); if they are not, clone a pinned repository revision or vendor the required files. Never install or run the unscoped names `colibri` or `colibri-ui`: they are unrelated packages. Run the CLI as `npx -p @colibri-kit/ui colibri <command>` (or `node <checkout>/bin/colibri.mjs <command>`). In a bundler, `import { init, registry, controllers, toast } from "@colibri-kit/ui"` has no side effects; `@colibri-kit/ui/core/auto` and `@colibri-kit/ui/lazy` initialise the page. Plain HTML consumers need no build step; maintaining generated distributions does require the repository build. Link local files:
 
 ```html
 <link rel="stylesheet" href="themes/colibri.css">                              <!-- Colibri UI tokens -->
@@ -64,7 +64,9 @@ Keep repeated product UI in named components or template partials. Do not replac
 - Events are bubbling, `ui:`-prefixed CustomEvents (`ui:change`, `ui:open`, `ui:close`, `ui:beforeclose`, `ui:submit`, `ui:select`…). Cancelable ones honour `preventDefault()`.
 - After inserting HTML yourself: `document.dispatchEvent(new Event("ui:refresh"))` (htmx swaps are handled automatically).
 - Each component's events, `event.detail` keys and controller members are listed by `colibri docs <name>` and in the generated table at the end of `reference/components.md`. Reach a live controller with `controllers(el)[0]` (exported by `core/util.js`, `core/auto.js`, `core/auto-lazy.js`), e.g. `controllers(seg)[0].value = "week"`.
-- To load less JavaScript, use `dist/lazy/auto-lazy.js` (fetches only the controllers a page uses) or `dist/colibri-ui.min.js` (everything, minified) in place of `src/core/auto.js`. One of the three per page.
+- To load less JavaScript, use `dist/lazy/auto-lazy.js` (fetches only the controllers a page uses) or `dist/colibri-ui.min.js` (everything, minified) in place of `src/core/auto.js`. One of the three per page; mixing them loads two copies of the controller state. The lazy loader is asynchronous: wait for the document's `ui:ready` event (or the promise from `init(scope)`) before calling `controllers(el)`. If a chunk cannot be loaded, `ui:error` bubbles with `{ name, error }` and `ui:ready`'s `detail.failed` lists the names.
+- Panels: `sheet` and `drawer` can be dragged away from their edge. Controls inside them (options, labels, tabs, links) keep working; add a `data-ui-part="handle"` element to give users an obvious grip, `data-drag="false"` to turn dragging off, and `data-dismissible="false"` for a panel that must not be dismissed.
+- `item-group` rows with `data-href` navigate only to `http(s)` URLs. Never rely on `data-href` (or any attribute) to carry a `javascript:` URL.
 - Pick components from `reference/components.md`; do not invent `data-ui` names. Layout wrappers are classes.
 
 ## 4. Theming, light/dark
@@ -86,11 +88,17 @@ import { Dialog, Tabs, Part, UI, useColibri, cx } from "@colibri-kit/ui/react";
 <UI kind="accordion" type="multiple" onChange={(e) => …}>…</UI>
 ```
 
-Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React is an optional peer dependency; JSX examples need the application’s JSX tooling. Do not also run `auto.js` on React-owned roots. The React adapter and automatic initializer import the full registry; explicit core-controller imports are the smaller integration for a few controls. Verify rerenders and teardown in the actual React integration.
+Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React is an optional peer dependency; JSX examples need the application’s JSX tooling. Do not also run `auto.js` on React-owned roots. The adapter refreshes a controller only when the DOM under its root changed, so event handlers may set state freely; a remote `datatable` emits `ui:query` once per user action and must be given new rows by rendering them, not by calling `refresh()`. The React adapter and automatic initializer import the full registry; explicit core-controller imports are the smaller integration for a few controls. Verify rerenders and teardown in the actual React integration.
 
 ## 6. FreeMarker (Spring)
 
 `[#import "/colibri/freemarker/ui.ftl" as ui]` then e.g. `[@ui.field label="Email"][@ui.input name="email" type="email" required=true/][/@ui.field]`, `[@ui.dialog trigger="Edit" title="Profile"]…[/@ui.dialog]`, `[@ui.button variant="ghost"]Cancel[/@ui.button]`. Always use named arguments; `name=` attributes stay yours for Spring binding.
+
+Rules that keep FreeMarker output safe and correct:
+- The host template must produce HTML: save it as `.ftlh` or keep `[#ftl output_format="HTML"]`. Macro parameters are always escaped, but text written inside a macro body is evaluated by the host and is unescaped without it.
+- URL parameters (`href`, `src`, form `action`) are escaped, not vetted. Build them from application routes; validate the scheme before passing a user-supplied URL. The same holds for the Thymeleaf fragments.
+- Pass numbers as numbers. The macros write them for the browser (`1500`, `12.5`) in every locale; format a number for display yourself and pass that as a string.
+- `calendar` and `datePicker` follow the page's `<html lang>` unless you pass `locale=`.
 
 ## 7. Recipes
 
@@ -137,7 +145,9 @@ Define `.revenue-value { font-size: var(--c-text-2xl); }` in the application sty
 ## 8. Do / don't
 
 - Do: semantic elements, primitives + custom properties, `data-*` variants, tokens, one `data-ui` per behaviour.
-- Class names: Colibri CSS owns `.card`, `.stack`, `.center`, `.badge`, `.flow`, `.muted` and the rest of the list in `reference/tokens.md`. Never reuse them for unrelated application classes; run `colibri collisions app.css` after writing application CSS.
+- Class names: Colibri CSS owns `.card`, `.stack`, `.center`, `.badge`, `.flow`, `.muted` and the rest of the list in `reference/tokens.md`. Never reuse them for unrelated application classes; run `colibri collisions app.css` after writing application CSS (it also catches compound selectors such as `div.card`). The prefixed stylesheet (`colibri.prefixed.css`, `.c-*`) renames the core stylesheet only: theme packs, application components, the React adapter and the server templates still emit `btn`, `card`, `stack`, so do not combine it with those.
+- `.btn` is a Colibri CSS component and keeps its own variants (`ghost|outline|soft|danger`) and sizes (`s|l`) inside `.ui-root`. A bare `<button>` or `data-ui="button"` gets the UI theme's look and its vocabulary (`outline|ghost|secondary|destructive`, `data-size="sm"`). Pick one per button; do not mix the two sets of attribute values.
+- Link `colibri.min.css` freely: it is produced by a real minifier and renders identically to `colibri.css`.
 - Avoid: long utility chains, repeated inline presentation, specificity escalation, raw brand colors in component rules, and invented `data-ui` names for layout. Fix the owning component instead of appending overrides. Do not remove deliberate hidden-state, touch-target or reduced-motion safeguards simply to reduce important-declaration counts.
 - Accessibility: every interactive element keyboard-reachable and labelled; keep `<label>`s, `aria-label` on icon buttons, use `dialog`/`alert-dialog` (focus trap + return built in). Verify reduced motion, visible focus, contrast and keyboard behavior. Existing ARIA wiring and browser tests are not screen-reader certification. Check `colibri docs <name>` for expected keys.
 - Before finishing: use checks appropriate to the change. In the Colibri repository, run `npm test`, `npm run build`, `npm run check:architecture` and relevant browser tests (`npm run test:e2e` for shared-style changes). Edit source/generators, not generated copies. Report what was tested and whether changes are local, committed, merged or deployed; skill updates do not themselves publish a marketplace release.

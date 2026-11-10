@@ -1,6 +1,6 @@
 ---
 name: colibri-ui
-description: Build UI with Colibri UI (headless data-ui components, FreeMarker macros, --ui-* theme tokens). Use when a project has colibri.json or imports colibri-ui, or the user asks to build or change components in an existing Colibri project.
+description: Build UI with Colibri UI (headless data-ui components, FreeMarker macros, --ui-* theme tokens). Use when a project has colibri.json or imports @colibri-kit/ui, or the user asks to build or change components in an existing Colibri project.
 ---
 # Colibri UI skill
 
@@ -12,7 +12,8 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 ## 2. Markup contract (never break these)
 - A component root has `data-ui="name"`; its pieces have `data-ui-part="part"`. Nested components stay isolated.
 - Semantic state lives in `data-state`, `aria-*` and `hidden`. Do not duplicate it with presentation classes; controller-owned custom properties for measured geometry are a separate concern.
-- Behaviour is automatic: `src/core/auto.js` initialises on load, on `ui:refresh` and after `htmx:afterSwap`.
+- Behaviour is automatic: `src/core/auto.js` initialises on load, on `ui:refresh` and after `htmx:afterSwap`. `dist/lazy/auto-lazy.js` does the same but imports only the controllers the page uses, asynchronously (`ui:ready` fires after the first pass). Use one of them, never both.
+- The npm package is `@colibri-kit/ui` (CLI: `npx -p @colibri-kit/ui colibri <command>`). The unscoped names `colibri` and `colibri-ui` on npm are unrelated packages: never install or run them.
   After inserting HTML yourself, dispatch `document.dispatchEvent(new Event("ui:refresh"))`.
 - Events are bubbling `ui:*` CustomEvents (`ui:change`, `ui:submit`, `ui:open`…); cancelable ones honour preventDefault().
 - Custom elements `<ui-NAME>` exist for every component (light DOM, same core); use them only if the project does.
@@ -20,7 +21,7 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 ## 3. Composition rules
 - Forms: each control in `data-ui="field"` (label, control, description, error). Passwords: `toggle-password`.
   Codes: `pin-input`. Option sets: `toggle-group` or `radio-group`. Native choice lists: `native-select`.
-- Overlays: `dialog`, `alert-dialog`, `sheet`/`drawer` (drag to dismiss), `popover`, `hover-card`, `tooltip`.
+- Overlays: `dialog`, `alert-dialog`, `sheet`/`drawer` (drag to dismiss; controls inside stay clickable, `data-ui-part="handle"` adds a grip), `popover`, `hover-card`, `tooltip`.
 - Menus: `dropdown-menu`, `context-menu`, `menubar`, `navigation-menu`, `command`.
 - App shells: copy a sidebar block (`sidebar-01`…`sidebar-16`); auth pages: `login-01…05`, `signup-01…05`
   (one `auth-form` with views password / magic-link / forgot / sent / otp / done).
@@ -44,7 +45,7 @@ markup rules, and every component/block name. Do not guess names: run `colibri s
 FreeMarker and Thymeleaf are server dependencies, not browser scripts. Require the host engine or its Spring Boot starter. Colibri ships `.ftl` macros and native Thymeleaf fragments; `java/colibri-templates` builds a resource JAR, not an embedded engine. FreeMarker HTML auto-escaping stays enabled; use nested bodies/captured markup for structured content. Thymeleaf Spring fields use `th:field`/`th:errors` against the host form object. See `docs/java-templates.md` in a full checkout for dependencies and setup.
 
 ### Spring + FreeMarker
-`[#import "/colibri/freemarker/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments.
+`[#import "/colibri/freemarker/ui.ftl" as ui]` then the macro from `colibri view <name>`. Always pass named arguments. The host template must be `.ftlh` or declare `output_format="HTML"`, otherwise text inside macro bodies is not escaped. URL parameters are escaped but not scheme-checked, so never pass an unvalidated user URL. Pass numbers as numbers: the macros emit them locale-independently.
 Keep Spring binding: macros only emit markup; `name=` attributes are yours.
 
 ## 6. Before you finish
