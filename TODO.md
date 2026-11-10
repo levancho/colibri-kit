@@ -85,9 +85,11 @@ found by reading.
 
 ## Java / templates
 
-- [ ] **Publish to Maven Central** (see `docs/java-templates.md` and the steps in the release notes): release
-      version instead of `-SNAPSHOT`, `<url>`, `<scm>`, `<developers>`, sources and javadoc jars, GPG signing,
-      Central publishing plugin.
+- [ ] **Publish to Maven Central.** The POM is ready (release version 0.1.0, project metadata, sources and
+      javadoc archives, signing, Central Portal upload in the `release` profile; `publish-maven.yml` workflow).
+      Still needed from the owner: Central Portal account, `ai.l3v` namespace verification, user token and a
+      signing key. See `docs/publishing.md`. Then update `docs/java-templates.md` and the site page to drop the
+      manual install steps.
 - [ ] **`javascript:` URLs pass through `href`/`src`/`action` parameters** in both engines (verified). Now
       documented; consider a scheme allow-list helper.
 - [ ] **Thymeleaf slot parameters** (`card`, `dialog`, `collapsible`, `application-shell`) treat a String as a

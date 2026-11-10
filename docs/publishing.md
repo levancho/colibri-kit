@@ -59,3 +59,42 @@ A published version cannot be replaced. If something is wrong, fix it and releas
 The version number appears in pinned CDN links in `README.md`-adjacent guides: `docs/getting-started.md`, `site/src/getting-started.html` and the homepage snippet in `site/src/index.html`. Update them to the new version, then run `npm run build`.
 
 Always name the package with `npx -p`: the unscoped names `colibri` and `colibri-ui` on npm belong to unrelated projects.
+
+# Publishing the Java templates to Maven Central
+
+`ai.l3v.colibri:colibri-templates` (in `java/colibri-templates`) contains the FreeMarker macros and Thymeleaf
+fragments and no Java classes. Its POM has a `release` profile that builds the three archives Central requires
+(main, `-sources`, `-javadoc`), signs them and uploads them to the Central Portal.
+
+## One-time setup
+
+1. Create an account at https://central.sonatype.com.
+2. Add the namespace `ai.l3v` there and verify it: the portal shows a code to publish as a DNS TXT record on
+   `l3v.ai`. Verification usually completes within minutes of the record appearing.
+3. Generate a portal **user token** (Account → Generate User Token). It is a username and password pair for Maven;
+   it is not your login.
+4. Create a signing key and publish its public half:
+
+```sh
+gpg --full-generate-key
+gpg --keyserver keys.openpgp.org --send-keys <KEY_ID>
+gpg --armor --export-secret-keys <KEY_ID>
+```
+
+5. Add four repository secrets (Settings → Secrets and variables → Actions): `MAVEN_CENTRAL_USERNAME`,
+   `MAVEN_CENTRAL_PASSWORD` (the user token), `MAVEN_GPG_PRIVATE_KEY` (the armoured export) and `MAVEN_GPG_PASSPHRASE`.
+
+## Releasing
+
+1. Set a release version (no `-SNAPSHOT`) in `java/colibri-templates/pom.xml`, run `npm run build`, commit.
+2. Run the **Publish to Maven Central** workflow, or publish a GitHub release.
+3. Open https://central.sonatype.com/publishing. When the deployment shows as validated, press **Publish**.
+   It appears on Maven Central shortly afterwards and can never be changed or removed.
+
+To release from a machine instead, put the user token in `~/.m2/settings.xml` under server id `central` and run:
+
+```sh
+mvn -f java/colibri-templates/pom.xml -P release deploy
+```
+
+The ordinary build (`npm run test:java`, CI) does not use the profile and needs no key or credentials.

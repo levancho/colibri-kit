@@ -12,7 +12,7 @@ The Thymeleaf tab shows a real fragment when one is supplied. Other examples sho
 
 ## Install the template resources
 
-The artifact is not published to Maven Central. Build and install it from this checkout:
+Until `ai.l3v.colibri:colibri-templates` appears on Maven Central (the release setup is described in [publishing](publishing.md)), build and install it from this checkout:
 
 ```sh
 mvn -f java/colibri-templates/pom.xml clean install
@@ -24,14 +24,14 @@ Then add this dependency to your application:
 <dependency>
   <groupId>ai.l3v.colibri</groupId>
   <artifactId>colibri-templates</artifactId>
-  <version>0.1.0-SNAPSHOT</version>
+  <version>0.1.0</version>
 </dependency>
 ```
 
 If distributing the JAR within a team, publish it to your private Maven repository or install the supplied JAR with:
 
 ```sh
-mvn install:install-file -Dfile=colibri-templates-0.1.0-SNAPSHOT.jar -DgroupId=ai.l3v.colibri -DartifactId=colibri-templates -Dversion=0.1.0-SNAPSHOT -Dpackaging=jar
+mvn install:install-file -Dfile=colibri-templates-0.1.0.jar -DgroupId=ai.l3v.colibri -DartifactId=colibri-templates -Dversion=0.1.0 -Dpackaging=jar
 ```
 
 Alternatively, copy `freemarker/` and/or `thymeleaf/` into `src/main/resources/templates/colibri/`. The template package includes no Java classes; extra processors are unnecessary for native fragments.

@@ -24,6 +24,6 @@ try {
  }
  await page.goto(server.origin+'/java-templates.html');
  const href=await page.$eval('a[download]',el=>el.href);
- const data=await fetch(href);assert.equal(data.status,200);assert.deepEqual(Buffer.from(await data.arrayBuffer()),fs.readFileSync('java/colibri-templates/target/colibri-templates-0.1.0-SNAPSHOT.jar'));
+ const data=await fetch(href);assert.equal(data.status,200);assert.deepEqual(Buffer.from(await data.arrayBuffer()),fs.readFileSync(`java/colibri-templates/target/${decodeURIComponent(new URL(href).pathname.split('/').pop())}`));
  console.log('ok dropdown exits preserve viewport coordinates at 2 widths for trigger/Escape/outside; Java setup serves the exact packaged JAR');
 } finally {await browser.close();await server.close();}

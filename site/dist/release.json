@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "c84abee20df77e6bfaadf608988bf0339dac9e943fe29c48d7f3eb2f34092e69",
+  "release": "1afba0666e60c0b903e4adb7f30b86aacae9bc8f4a85b944a1c3e7efff30fa52",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -12,12 +12,12 @@
     "css/colibri.min.css": "663b8939e65950e6c6d94341dafdabdd780b1404ca83394163b54107a1644914",
     "css/colibri.prefixed.css": "15baefda6b2e72dd8bc7a53d0950b88386a063510fbb0a4ecf4473c90bdaa2e5",
     "css/colibri.prefixed.min.css": "e799b18988185c6a2c805ae029b2e93e7ad88a4d268fd4fdb056723e1765fd86",
-    "downloads/colibri-templates-0.1.0-SNAPSHOT.jar": "24341dc66ba6df2acd55495aed47abdf795b29f7252d9ca4ebd9191bdeab8a8d",
+    "downloads/colibri-templates-0.1.0.jar": "0cb0a8558f2345e26c1c597fe5e2a3986e7fc84f0515c9e9ce154ffc2b8ae41d",
     "framework-support.html": "8ac00034145235483768411fa7c28dd21a5b5c218a2b70542ed73650ede5efb5",
     "framework-support.json": "1a74e5230e2338c3075242a8b715e5d896fd9d2d54bda6701ebb7bb941b24a3b",
     "getting-started.html": "4658158fe57e2cf55bbc64cfa033b69a4a15fe16f8b83e22f9d7b16a64e5dddb",
     "index.html": "4357bac903662e029193c90becf32b851920cdff6e328e762be2222f371d21e3",
-    "java-templates.html": "c0c991a64611babef65b1d53e6af132c2255b2a5d6fad4c660037e8812983dd3",
+    "java-templates.html": "c2225ace1d6f9bac65d22e5dbe701ba29a8a1994bce65cbed9106b76edd88ffb",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
     "kitchen-sink/examples/application-preview-entry.js": "83a464cbe300c0313d93d365d38301d5091b9cfe832283920b246579aecba481",
     "kitchen-sink/examples/application-preview.js": "f5ccb13da323bd401cdfe19d1cc0383193f1b7806297424ebbaa0e7444728adb",

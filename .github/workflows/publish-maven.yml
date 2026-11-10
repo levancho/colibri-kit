@@ -1,0 +1,39 @@
+name: Publish to Maven Central
+# Uploads ai.l3v.colibri:colibri-templates to the Central Portal. The deployment is validated there and waits
+# for a maintainer to press Publish (autoPublish is off in the POM's release profile).
+#
+# Repository secrets required (see docs/publishing.md):
+#   MAVEN_CENTRAL_USERNAME, MAVEN_CENTRAL_PASSWORD   the Central Portal user token (not the login password)
+#   MAVEN_GPG_PRIVATE_KEY, MAVEN_GPG_PASSPHRASE      ASCII-armoured signing key and its passphrase
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+          server-id: central
+          server-username: MAVEN_CENTRAL_USERNAME
+          server-password: MAVEN_CENTRAL_PASSWORD
+          gpg-private-key: ${{ secrets.MAVEN_GPG_PRIVATE_KEY }}
+          gpg-passphrase: MAVEN_GPG_PASSPHRASE
+      - name: Refuse snapshot versions
+        run: |
+          v=$(mvn -q -f java/colibri-templates/pom.xml help:evaluate -Dexpression=project.version -DforceStdout)
+          case "$v" in *-SNAPSHOT) echo "version $v is a snapshot; Central releases need a release version"; exit 1;; esac
+          echo "publishing colibri-templates $v"
+      - name: Test, sign and upload
+        run: mvn --batch-mode -f java/colibri-templates/pom.xml -P release deploy
+        env:
+          MAVEN_CENTRAL_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          MAVEN_CENTRAL_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
