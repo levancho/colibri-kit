@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "8dc3ce45ecf74e26d8f3949e986be0f1c3f9af8232d7fbe99840990f8eeec6c3",
+  "release": "0bdfd584d3f16178c003ee838ac59b032ff44a1df3a6615d5edb6a12d3a327b8",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -81,7 +81,7 @@
     "kitchen-sink/examples/ftl-output.html": "5fee774d739b35761f2d68b8e5902943d5b81621244d83a4bbcd426986cab9a4",
     "kitchen-sink/examples/index.html": "22f577dcd465aebf66c0f58252f53787bf06f18c8e801e66b6b20fbf795fedca",
     "kitchen-sink/examples/kit-bar.css": "4478573697c4c7697418742e02ef9073e57f6598f08fcabc23e18349b30e20df",
-    "kitchen-sink/examples/kit-bar.js": "6f5d5fdd256269ff1976e00fff2c9de0d1b3ec3275295a78a603bb5401514c48",
+    "kitchen-sink/examples/kit-bar.js": "5924878d5fa0565b14574ae5534533aedcc9714291de1179cfd2485056f6b861",
     "kitchen-sink/examples/kitchen-sink.html": "f2fbdd13136f6b1be742aaa374e3d305da711645d8582892eb9c5717b0712299",
     "kitchen-sink/examples/kitchen-sink.js": "ba9856a68e9f540797653f309f7fc42356260be684f8b468d40364fa5f541057",
     "kitchen-sink/examples/playground/index.html": "d50c9e66ba1f9ea502a6cd8b5f08be25c84fc41cb88755f05e96320f5eb1b459",

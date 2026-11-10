@@ -43,7 +43,7 @@ export function mountKitBar(h = document.querySelector("header.kbar")) {
 export function mountKitFoot() {
   if (document.querySelector(".kfoot") || document.querySelector("header.kbar")?.dataset.foot === "off") return;
   const f = document.createElement("footer"); f.className = "kfoot";
-  f.innerHTML = `<div><b style="color:var(--kb-fg)">Colibri Kit</b><span>Modern CSS + tiny behaviours for server-rendered apps · MIT</span><span class="sp"></span>${NAV.map(([, l, h]) => `<a href="${h}">${l}</a>`).join("")}<a href="https://github.com/levancho/colibri-kit">GitHub</a><div id="webrank-badge" aria-label="Colibri Kit statistics on WebRank"></div></div>`;
+  f.innerHTML = `<div><b style="color:var(--kb-fg)">Colibri Kit</b><span>Modern CSS + tiny behaviours for server-rendered apps · MIT</span><span class="sp"></span>${NAV.map(([, l, h]) => `<a href="${h}">${l}</a>`).join("")}<a href="https://github.com/levancho/colibri-kit">GitHub</a><div id="webrank-badge" role="group" aria-label="Colibri Kit statistics on WebRank"></div></div>`;
   (document.querySelector("footer:not(.kfoot)") || document.body.lastElementChild)?.after?.(f) ?? document.body.append(f);
   const productionHost = location.hostname === "colibri-kit.io" || location.hostname === "colibri.l3v.ai";
   if (productionHost && !document.querySelector(`script[src="${WEBRANK_COUNTER}"]`)) {
