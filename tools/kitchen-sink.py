@@ -15,7 +15,7 @@ from sink_react import render as react_src
 from sink_thymeleaf import render as thymeleaf_src
 from sink_adapters import adapters
 E = html.escape
-GROUPS = [("Application components", "Application components"), ("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
+GROUPS = [("Base", "Basics & feedback"), ("Navigation", "Navigation"), ("Forms", "Forms & inputs"), ("Conversation", "Chat & conversation"), ("AI Elements", "AI elements"), ("Application components", "Application components"), ("Sidebar blocks", "Sidebar blocks"), ("Login blocks", "Login blocks"), ("Signup blocks", "Signup blocks"), ("Motion", "Animation library"), ("Theming", "Theming"), ("Colibri CSS", "Colibri CSS")]
 ST = {"done": ("Ready", "Works and is tested in this page."), "partial": ("Partly ready", "Works, but some features are still missing."),
       "planned": ("Planned", "Not built yet."), "css": ("Markup only", "No JavaScript needed: just HTML structure plus your CSS.")}
 missing = [c["id"] for c in C if c["id"] not in INFO]
@@ -38,10 +38,12 @@ def section(c):
         controllers=list(dict.fromkeys(re.findall(r'data-ui="([a-z0-9-]+)"',c.get('public_html',c['demo']))))
         if controllers: technical=', '.join('data-ui="'+name+'"' for name in controllers)
     tip = (f'<span data-ui="tooltip" data-side="bottom" data-align="end"><button class="sink-info" data-ui-part="trigger" aria-label="More about {E(title)}">?</button>'
-           f'<span data-ui-part="content" class="sink-tip"><b>When to use:</b> {E(when)}<br><b>Status:</b> {st}, {st_help}<br>'
+           f'<span data-ui-part="content" class="sink-tip" data-position="none"><b>When to use:</b> {E(when)}<br><b>Status:</b> {st}, {st_help}<br>'
            f'<span class="sink-dim">Code name <code>{E(technical)}</code> · shadcn: {E(c["shadcn"])} · Metronic: {E(c["metronic"])}</span></span></span>')
     demo = c["demo"] or f'<p class="sink-dim">Not built yet. {E(c["notes"])}</p>'
-    return f'''<section id="{c["id"]}" class="sink-sec" tabindex="-1" aria-labelledby="h-{c["id"]}">
+    floating = any(f'data-ui="{kind}"' in demo for kind in ("popover", "tooltip", "hover-card", "dropdown-menu", "context-menu", "menubar", "select", "combobox", "date-picker", "navigation-menu"))
+    section_class = "sink-sec sink-sec--floating" if floating else "sink-sec"
+    return f'''<section id="{c["id"]}" class="{section_class}" tabindex="-1" aria-labelledby="h-{c["id"]}">
 <header class="sink-sec-h"><div><h3 id="h-{c["id"]}">{E(title)}</h3><p class="sink-what">{E(what)}</p></div>
 <div class="sink-sec-meta"><span class="sink-st" data-status="{c["status"]}" title="{E(st_help)}">{st}</span>{tip}</div></header>
 <div class="sink-preview ui-root">{demo}</div>
@@ -60,7 +62,7 @@ counts = {s: sum(1 for c in C if c["status"] == s) for s in ST}
 legend = "".join(f'<span class="sink-st" data-status="{s}" title="{E(ST[s][1])}">{ST[s][0]} · {n}</span>' for s, n in counts.items())
 chrome_css = (HERE / "sink_chrome.css").read_text()
 
-page = f'''<!doctype html><html lang="ka" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+page = f'''<!doctype html><html lang="en" data-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Colibri UI · Component gallery</title><script>/* apply saved light/dark + theme pack BEFORE first paint (no flash) */try{{var H=document.documentElement,m=localStorage.getItem("colibri.sink.theme")||"system",e=m==="system"?(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"):m;H.dataset.theme=e;H.style.colorScheme=e;var t=JSON.parse(localStorage.getItem("colibri.sink.tokens")||"{{}}"),q=new URLSearchParams(location.search).get("theme");if(q!==null)t.kit=q;if(t.kit)H.dataset.kitTheme=t.kit;if(t.accent)H.dataset.uiTheme=t.accent;if(t.radius)H.style.setProperty("--ui-radius",t.radius);if(t.motion===false)H.dataset.uiMotion="off"}}catch(_){{}}</script><link rel="icon" href="data:,">
 <style id="sink-chrome">{chrome_css}</style>
 <link id="demo-css" rel="stylesheet" href="../themes/colibri.css"><link id="motion-css" rel="stylesheet" href="../themes/motion.css"><link id="kit-themes" rel="stylesheet" href="../themes/packs/index.css"><link rel="stylesheet" href="kit-bar.css"></head>

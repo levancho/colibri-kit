@@ -3,7 +3,7 @@
 //              <button data-ui-part="trigger"><span data-ui-part="value"></span></button>
 //              <div data-ui-part="content" hidden>
 //                <div data-ui-part="group"><div data-ui-part="label">EU</div>
-//                  <div data-ui-part="option" data-value="ka">ქართული</div> …</div></div></div>
+//                  <div data-ui-part="option" data-value="en">English</div> …</div></div></div>
 //            → renders a hidden <input name=lang> so it posts with normal forms (FreeMarker/Spring).
 //  Combobox: <div data-ui="combobox" data-name="city" [data-allow-custom] [data-multiple]>
 //              <input data-ui-part="input"> <button data-ui-part="trigger">▾</button>(optional)

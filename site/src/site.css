@@ -80,6 +80,27 @@ body { background:
   mask-image: none; }
 .spec-card { position: relative; z-index: 1; box-shadow: var(--c-shadow-l); rotate: -1.2deg; transition: rotate var(--c-dur-slow) var(--c-ease); }
 .specimen:hover .spec-card { rotate: 0deg; }
+.java-ribbon { position: absolute; z-index: 4; inset-block-start: -1.3rem; inset-inline-end: -1.15rem; display: grid;
+  grid-template-columns: auto 1fr auto; align-items: center; gap: .72rem; min-inline-size: 17.5rem; padding: .72rem .82rem .72rem .72rem;
+  rotate: 4deg; overflow: hidden; border: 1px solid color-mix(in oklch, var(--c-accent) 72%, white); border-radius: .85rem;
+  background: linear-gradient(120deg,
+    color-mix(in oklch, var(--c-accent) 82%, #08090d) 0%,
+    color-mix(in oklch, oklch(65% .2 calc(var(--c-hue) + 42)) 82%, #0b0c10) 52%,
+    color-mix(in oklch, oklch(65% .2 calc(var(--c-hue) + 82)) 82%, #0b0c10) 100%); color: #fff;
+  box-shadow: 0 1rem 2rem color-mix(in oklch, var(--c-accent) 26%, transparent), inset 0 1px 0 rgb(255 255 255 / .2), inset 0 -1px 0 rgb(0 0 0 / .42);
+  text-align: start; text-decoration: none; transition: rotate var(--c-dur) var(--c-ease), translate var(--c-dur) var(--c-ease), box-shadow var(--c-dur) var(--c-ease); }
+.java-ribbon::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 0 62%, color-mix(in oklch, var(--c-accent) 54%, white) 62% 64%, transparent 64%); opacity: .2; }
+.java-mark { display: grid; place-items: center; inline-size: 2.55rem; block-size: 2.55rem; border: 1px solid color-mix(in oklch, var(--c-accent) 48%, white);
+  border-radius: .68rem; background: color-mix(in oklch, var(--c-accent) 18%, rgb(0 0 0 / .5)); box-shadow: inset 0 1px 0 rgb(255 255 255 / .14); font-size: 1.25rem; }
+.java-copy { display: grid; gap: .08rem; line-height: 1.1; }
+.java-copy strong { color: #fff; font-family: var(--c-font-display); font-size: 1.02rem; letter-spacing: -.01em; white-space: nowrap; }
+.java-copy small { color: rgb(255 255 255 / .78); font-size: .72rem; font-weight: 650; letter-spacing: .025em; white-space: nowrap; }
+.java-arrow { position: relative; z-index: 1; color: color-mix(in oklch, var(--c-accent) 48%, white); font-size: 1.05rem; transition: translate var(--c-dur) var(--c-ease); }
+.java-ribbon:hover { rotate: 2deg; translate: -.15rem .05rem; box-shadow: 0 1.15rem 2.3rem color-mix(in oklch, var(--c-accent) 36%, transparent), inset 0 1px 0 rgb(255 255 255 / .22), inset 0 -1px 0 rgb(0 0 0 / .48); }
+.java-ribbon:hover .java-arrow { translate: .12rem -.12rem; }
+.java-ribbon:focus-visible { outline: var(--c-ring); outline-offset: 4px; }
+.java-ribbon-mobile { display: none; }
 .spec-card input[type=range] { accent-color: var(--c-accent); inline-size: 100%; }
 .spec-card output { font-variant-numeric: tabular-nums; color: var(--c-accent); font-weight: 700; margin-inline-start: .4em; }
 .spec-chip { position: absolute; z-index: 2; padding: .25em .6em; border: 1px solid var(--c-line); border-radius: var(--c-radius-full); background: var(--c-surface);
@@ -87,6 +108,13 @@ body { background:
 .spec-chip code { background: none; padding: 0; }
 .spec-chip.c1 { inset-block-start: .2rem; inset-inline-start: 1.2rem; } .spec-chip.c2 { inset-block-end: .2rem; inset-inline-start: 22%; } .spec-chip.c3 { inset-block-start: 38%; inset-inline-end: -.6rem; }
 @media (prefers-reduced-motion: reduce) { .spec-card { rotate: 0deg; } }
+@media (width < 36rem) { .java-ribbon-desktop { display: none; }
+  .java-ribbon-mobile { position: relative; inset: auto; display: grid; align-self: start; inline-size: min(100%, 18rem); min-inline-size: 0; gap: .55rem;
+    margin-block: -.1rem .25rem; padding: .64rem .72rem .64rem .64rem; rotate: -1.5deg; }
+  .java-mark { inline-size: 2.2rem; block-size: 2.2rem; font-size: 1.05rem; }
+  .java-copy strong { font-size: .84rem; }
+  .java-copy small { font-size: .64rem; } }
+@media (prefers-reduced-motion: reduce) { .java-ribbon { transition: none; } }
 .pill { align-self: flex-start; }
 :is(header.site, footer) a.gh-btn, a.gh-btn:visited { color: var(--c-bg); text-decoration: none; }
 header.site a.gh-btn { padding-block: .3em; }

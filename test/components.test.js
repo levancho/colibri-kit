@@ -51,7 +51,7 @@ test("dropdown-menu keyboard, checkbox item, select event", () => {
   key(items[3], "Enter"); assert.equal(sel, "Delete"); assert.equal($(r, '[data-ui-part="content"]').hidden, true); assert.equal(document.activeElement, t);
 });
 test("select: keyboard, hidden input, value text", () => {
-  const r = mount(`<form><div data-ui="select" data-name="lang" data-placeholder="Pick"><button data-ui-part="trigger"><span data-ui-part="value"></span></button><div data-ui-part="content"><div data-ui-part="option" data-value="ka">ქართული</div><div data-ui-part="option" data-value="en">English</div></div></div></form>`);
+  const r = mount(`<form><div data-ui="select" data-name="lang" data-placeholder="Pick"><button data-ui-part="trigger"><span data-ui-part="value"></span></button><div data-ui-part="content"><div data-ui-part="option" data-value="es">Spanish</div><div data-ui-part="option" data-value="en">English</div></div></div></form>`);
   const t = $(r, "button"), root = $(r, '[data-ui="select"]');
   assert.equal($(r, '[data-ui-part="value"]').textContent, "Pick");
   key(t, "ArrowDown"); key(t, "ArrowDown"); key(t, "Enter");
@@ -104,22 +104,22 @@ test("stepper linear validation", () => {
 });
 test("datatable sort, search, select-all", () => {
   const r = mount(`<div data-ui="datatable" data-page-size="2"><input data-ui-part="search"><table><thead><tr><th data-ui-part="select-all"><input type="checkbox"></th><th data-sort="n">N</th><th data-sort="v" data-type="number">V</th></tr></thead><tbody>
-    <tr data-ui-part="row" data-id="1"><td><input type="checkbox" data-ui-part="row-select"></td><td>ბ</td><td>10</td></tr>
-    <tr data-ui-part="row" data-id="2"><td><input type="checkbox" data-ui-part="row-select"></td><td>ა</td><td>9</td></tr>
-    <tr data-ui-part="row" data-id="3"><td><input type="checkbox" data-ui-part="row-select"></td><td>გ</td><td>100</td></tr></tbody></table><div data-ui-part="info"></div></div>`);
+    <tr data-ui-part="row" data-id="1"><td><input type="checkbox" data-ui-part="row-select"></td><td>Beta</td><td>10</td></tr>
+    <tr data-ui-part="row" data-id="2"><td><input type="checkbox" data-ui-part="row-select"></td><td>Alpha</td><td>9</td></tr>
+    <tr data-ui-part="row" data-id="3"><td><input type="checkbox" data-ui-part="row-select"></td><td>Gamma</td><td>100</td></tr></tbody></table><div data-ui-part="info"></div></div>`);
   const ids = () => $$(r, "tbody tr").filter((t) => !t.hidden).map((t) => t.dataset.id);
   assert.deepEqual(ids(), ["1", "2"], "page size 2");
   $$(r, "th")[2].click(); assert.deepEqual(ids(), ["2", "1"]); assert.equal($$(r, "th")[2].getAttribute("aria-sort"), "ascending");
   $$(r, "th")[2].click(); assert.deepEqual(ids(), ["3", "1"], "desc numeric");
-  const q = $(r, '[data-ui-part="search"]'); q.value = "ა"; q.dispatchEvent(new Event("input", { bubbles: true })); assert.deepEqual(ids(), ["2"]);
+  const q = $(r, '[data-ui-part="search"]'); q.value = "Alpha"; q.dispatchEvent(new Event("input", { bubbles: true })); assert.deepEqual(ids(), ["2"]);
   const all = $(r, "thead input"); all.checked = true; all.dispatchEvent(new Event("change", { bubbles: true })); assert.deepEqual($(r, '[data-ui="datatable"]').__uiDataTable.selected, ["2"]);
 });
 test("calendar range + keyboard", () => {
-  const r = mount(`<div data-ui="calendar" data-mode="range" data-value="2026-10-10" data-locale="ka"></div>`); const c = $(r, '[data-ui="calendar"]');
+  const r = mount(`<div data-ui="calendar" data-mode="range" data-value="2026-10-10" data-locale="en"></div>`); const c = $(r, '[data-ui="calendar"]');
   c.querySelector('[data-date="2026-10-14"]').click(); assert.deepEqual(c.__uiCalendar.value, ["2026-10-10", "2026-10-14"]);
   assert.ok(c.querySelector('[data-date="2026-10-12"]').hasAttribute("data-range-middle"));
   const d = c.querySelector('[data-date="2026-10-14"]'); d.focus(); key(d, "ArrowDown"); assert.equal(document.activeElement.dataset.date, "2026-10-21");
-  assert.match(c.querySelector('[data-ui-part="title"]').textContent, /ოქტომბერი|October/);
+  assert.match(c.querySelector('[data-ui-part="title"]').textContent, /October/);
 });
 test("date-picker writes input", () => {
   const r = mount(`<div data-ui="date-picker" data-name="d"><input data-ui-part="input" value="2026-10-01"><button data-ui-part="trigger">📅</button><div data-ui-part="content"><div data-ui="calendar"></div></div></div>`);
@@ -129,7 +129,7 @@ test("dismiss + progress + separator + toast", async () => {
   const r = mount(`<div data-ui="dismiss" role="alert">x<button data-ui-part="close">x</button></div><div data-ui="progress" data-value="40"></div><div data-ui="progress"></div><hr data-ui="separator">`);
   $(r, '[data-ui="dismiss"] button').click(); assert.equal($(r, '[data-ui="dismiss"]'), null);
   const [p1, p2] = $$(r, '[data-ui="progress"]'); assert.equal(p1.getAttribute("aria-valuenow"), "40"); assert.equal(p2.dataset.state, "indeterminate");
-  const id = toast({ title: "შენახულია", variant: "success" }); assert.ok(document.querySelector(`[data-ui-part="toast"][data-id="${id}"]`)); toast.dismiss(id);
+  const id = toast({ title: "Saved", variant: "success" }); assert.ok(document.querySelector(`[data-ui-part="toast"][data-id="${id}"]`)); toast.dismiss(id);
   assert.equal(document.querySelector(`[data-id="${id}"]`), null);
 });
 test("alert-dialog is non-dismissible + role", () => {

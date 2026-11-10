@@ -81,8 +81,10 @@ export function typeahead() {
 export function place(floating, anchor, { side = "bottom", align = "start", offset = 6, point } = {}) {
   if (floating.dataset.position === "none") return;
   const view = floating.ownerDocument.defaultView;
-  const a = point ? { left: point.x, right: point.x, top: point.y, bottom: point.y, width: 0, height: 0 } : anchor.getBoundingClientRect();
   floating.style.position = "fixed"; floating.style.margin = "0";
+  // Remove a newly unhidden layer from flex/grid layout before measuring its
+  // anchor; otherwise the trigger moves again after the popup is positioned.
+  const a = point ? { left: point.x, right: point.x, top: point.y, bottom: point.y, width: 0, height: 0 } : anchor.getBoundingClientRect();
   const f = floating.getBoundingClientRect();
   const vw = view.innerWidth, vh = view.innerHeight;
   let s = side;

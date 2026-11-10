@@ -13,7 +13,7 @@ add(G, "navigation-menu", "Navigation Menu", "done", "Menu (mega)", "Navigation 
 <li data-ui-part="menu"><button data-ui-part="trigger">Resources</button><div data-ui-part="content"><a href="#">Documentation</a><br><a href="#">Blog</a></div></li>
 <li><a href="#">Contact</a></li></ul></nav>""")
 add(G, "pagination", "Pagination", "done", "Pagination", "Pagination", "Renders buttons (or links with data-href); aria-current=page; ellipsis; ui:change {page}.",
- """<nav data-ui="pagination" data-total="20" data-page="7" aria-label="Pages"></nav><nav data-ui="pagination" data-total="5" data-page="1" data-href="?page={page}" aria-label="Link pages"></nav>""")
+ """<nav data-ui="pagination" data-total="20" data-page="7" aria-label="Pages"></nav><nav data-ui="pagination" data-total="5" data-page="1" aria-label="Compact pagination demo"></nav>""")
 add(G, "scrollspy", "Scrollspy", "done", "Scrollspy", "-", "IntersectionObserver; sets aria-current + data-state=active on links. This page's sidebar uses it.",
  """<p>See the left sidebar: the active section is highlighted while you scroll.</p>""")
 add(G, "scrollto", "Scroll To", "done", "Scrollto", "-", "Smooth scroll + moves focus to target (tabindex=-1), respects prefers-reduced-motion.",

@@ -81,17 +81,31 @@ await t("Item list: roving focus + Enter activates clickable row", async () => {
 });
 await t("Hover card opens on hover and shows a profile card", async () => {
   await go("hover-card"); await p.hover("#hover-card .sink-preview [data-ui-part=trigger]"); await wait(700);
-  eq(await q("#hover-card .sink-preview [data-ui-part=content]", (e) => e.hidden), false, "open"); await shot("hover-card-open", "#hover-card");
+  eq(await q("#hover-card .sink-preview [data-ui-part=content]", (e) => e.hidden), false, "open");
+  eq(await q("#hover-card .sink-preview", (e) => { const t=e.querySelector('[data-ui-part=trigger]').getBoundingClientRect(), c=e.querySelector('[data-ui-part=content]').getBoundingClientRect(); return Math.abs(c.left-t.left)<8 && c.top>=t.bottom; }), true, "positioned next to trigger");
+  await shot("hover-card-open", "#hover-card");
   await p.mouse.move(5, 500); await wait(600); eq(await q("#hover-card .sink-preview [data-ui-part=content]", (e) => e.hidden), true, "closed after leave");
+});
+await t("Menu bar opens beside its trigger", async () => {
+  await go("menu"); await p.click('#menu .sink-preview [data-ui="menubar"] > [data-ui-part="menu"]:first-child > [data-ui-part="trigger"]');
+  eq(await q("#menu .sink-preview", (e) => { const t=e.querySelector('[data-ui="menubar"] > [data-ui-part="menu"]:first-child > [data-ui-part="trigger"]').getBoundingClientRect(), c=e.querySelector('[data-ui="menubar"] > [data-ui-part="menu"]:first-child > [data-ui-part="content"]').getBoundingClientRect(); return !c.height ? false : Math.abs(c.left-t.left)<8 && c.top>=t.bottom; }), true, "positioned next to trigger");
+  await p.keyboard.press("Escape");
 });
 await t("Dropdown: open, arrow nav, submenu, Esc returns focus", async () => {
   await go("dropdown-menu"); await p.click("#dropdown-menu .sink-preview [data-ui-part=trigger]"); await wait(80);
   eq(await q("#dropdown-menu .sink-preview [data-ui-part=trigger]", (e) => e.getAttribute("aria-expanded")), "true", "expanded");
   eq(await q("#dropdown-menu .sink-preview [data-ui-part=content]", (e) => e.getAttribute("role")), "menu", "role=menu");
+  eq(await q("#dropdown-menu .sink-preview", (e) => { const t=e.querySelector('[data-ui-part=trigger]').getBoundingClientRect(), c=e.querySelector('[data-ui-part=content]').getBoundingClientRect(); return Math.abs(c.left-t.left)<8 && c.top>=t.bottom; }), true, "positioned next to trigger");
   await shot("dropdown-open", "#dropdown-menu");
   await p.keyboard.press("ArrowDown"); yes(await p.evaluate(() => document.activeElement.getAttribute("role")?.startsWith("menuitem")), "focus in menu");
   await p.keyboard.press("Escape"); await wait(50);
   eq(await p.evaluate(() => document.activeElement.matches("#dropdown-menu .sink-preview [data-ui-part=trigger]")), true, "focus returned");
+});
+await t("Right-click menu opens at the pointer", async () => {
+  await go("context-menu"); const area=await p.$("#context-menu .sink-preview [data-ui-part=area]"); const b=await area.boundingBox(); const x=Math.round(b.x+b.width/2), y=Math.round(b.y+b.height/2);
+  await p.mouse.click(x,y,{button:"right"}); await wait(80);
+  eq(await q("#context-menu .sink-preview [data-ui-part=content]", (e) => { const c=e.getBoundingClientRect(), a=e.parentElement.querySelector('[data-ui-part=area]').getBoundingClientRect(); return !e.hidden && Math.abs(c.left-(a.left+a.width/2))<8 && Math.abs(c.top-(a.top+a.height/2))<8; }), true, "positioned at pointer");
+  await p.keyboard.press("Escape");
 });
 await t("Dialog: opens modal, Esc closes, focus returns", async () => {
   await go("dialog"); await p.click("#dialog [data-ui=dialog] [data-ui-part=trigger]"); await wait(100);
@@ -129,6 +143,7 @@ await t("Stepper: Finish hidden on step 1, linear validation blocks Next", async
 });
 await t("Toast: shows and auto-dismisses", async () => { await go("toast"); await p.click("#t-success"); await wait(150); eq(await p.$$eval("[data-ui=toaster] [data-ui-part=toast]", (x) => x.length), 1, "1 toast"); await shot("toast"); });
 await t("Pagination: click changes page", async () => { await go("pagination"); await p.click('#pagination nav [data-page="8"]'); eq(await q('#pagination nav [aria-current=page]', (e) => e.dataset.page), "8", "page 8"); });
+await t("Pagination: compact example stays in the gallery", async () => { await go("pagination"); const before=p.url(); await p.click('#pagination nav[aria-label="Compact pagination demo"] [data-page="2"]'); eq(p.url(), before, "same URL"); eq(await q('#pagination nav[aria-label="Compact pagination demo"] [aria-current=page]', (e) => e.dataset.page), "2", "page 2"); });
 await t("Badge remove deletes badge", async () => { await go("badge"); const n = await p.$$eval("#badge [data-ui=badge]", (x) => x.length); await p.click("#badge [data-ui=badge] [data-ui-part=remove]"); eq(await p.$$eval("#badge [data-ui=badge]", (x) => x.length), n - 1, "removed"); });
 await t("Command palette opens with Ctrl+K", async () => { await p.keyboard.down("Control"); await p.keyboard.press("k"); await p.keyboard.up("Control"); await wait(120); eq(await q("#cmd-dialog dialog", (d) => d.open), true, "open"); await shot("command-open"); await p.keyboard.press("Escape"); });
 await t("Demo styling off = raw headless", async () => { await tool("#css-toggle"); eq(await q("#demo-css", (s) => s.disabled), true, "disabled"); await go("dropdown-menu"); await shot("raw", "#dropdown-menu"); await tool("#css-toggle"); });
