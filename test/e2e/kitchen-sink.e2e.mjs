@@ -62,7 +62,10 @@ await t("event log: open, collapse, dock, drag, close", async () => {
 });
 await t("event log records ui:* events with plain section name", async () => {
   await go("toggle"); await p.click("#toggle [data-ui=toggle]");
-  const last = await q("#sink-log-list", (l) => l.lastElementChild?.textContent || ""); yes(/ui:change/.test(last) && /Toggle button/.test(last), last);
+  // The log is one stream for the whole page: a demo that finishes on a timer (the live Reasoning block folds itself
+  // away) can append its own event right after the click, so look for the toggle's entry among the newest few.
+  const recent = await q("#sink-log-list", (l) => [...l.children].slice(-5).map((c) => c.textContent || ""));
+  yes(recent.some((entry) => /ui:change/.test(entry) && /Toggle button/.test(entry)), recent.join(" || "));
   await p.click("#log-close");
 });
 await t("info tooltip (?) shows technical names on hover", async () => {
