@@ -8,6 +8,7 @@ let browser;
 try {
   browser = await puppeteer.launch({ executablePath: process.env.CHROME || ["/usr/bin/google-chrome", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"].find(fs.existsSync), args: ["--no-sandbox"] });
   const page = await browser.newPage();
+  const midnightSchemes = {};
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
   for (const width of [320, 1100]) for (const mode of ["light", "dark"]) for (const pack of ["", "glacier", "ember", "midnight"]) {
     await page.setViewport({ width, height: 850 });
@@ -31,6 +32,12 @@ try {
         <div data-ui-part="panel">A clear selected state, readable labels, and content aligned to the same grid.</div></div></section>
       </main></body></html>`);
     await page.waitForFunction(() => getComputedStyle(document.querySelector("#accordion")).display === "grid");
+    if (pack === "midnight" && width === 1100) midnightSchemes[mode] = await page.evaluate(() => ({
+      background: getComputedStyle(document.documentElement).getPropertyValue("--ui-background").trim(),
+      card: getComputedStyle(document.documentElement).getPropertyValue("--ui-card").trim(),
+      foreground: getComputedStyle(document.documentElement).getPropertyValue("--ui-foreground").trim(),
+      colorScheme: getComputedStyle(document.documentElement).colorScheme
+    }));
     const check = async () => {
       const result = await page.evaluate(() => {
         const a = document.querySelector('#accordion > [data-ui-part=item] > h3 > button');
@@ -66,6 +73,11 @@ try {
       await page.screenshot({ path: path.join(process.env.COLIBRI_SHOTS, `${pack || "core"}-${mode}.png`), fullPage: true });
     }
   }
+  assert.notEqual(midnightSchemes.light.background, midnightSchemes.dark.background, "Midnight page surface changes with light/dark mode");
+  assert.notEqual(midnightSchemes.light.card, midnightSchemes.dark.card, "Midnight component surface changes with light/dark mode");
+  assert.notEqual(midnightSchemes.light.foreground, midnightSchemes.dark.foreground, "Midnight component text changes with light/dark mode");
+  assert.equal(midnightSchemes.light.colorScheme, "light", "Midnight respects explicit light mode");
+  assert.equal(midnightSchemes.dark.colorScheme, "dark", "Midnight respects explicit dark mode");
   if (process.env.COLIBRI_SHOTS) {
     await page.setViewport({ width: 1100, height: 850 });
     await page.goto(`${server.origin}/kitchen-sink/examples/kitchen-sink.html#accordion`, { waitUntil: "networkidle0" });

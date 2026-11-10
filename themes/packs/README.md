@@ -6,7 +6,7 @@ Three complete looks that restyle **both** Colibri CSS (`--c-*`) and Colibri UI 
 |---|---|---|---|---|
 | `glacier` | cool, neutral, professional (slate + teal) | teal | 6px | light & dark |
 | `ember` | warm, bold, friendly (terracotta + amber on cream) | burnt orange | 16px | light & dark |
-| `midnight` | dark-first, electric (ink navy + violet, mint glow) | violet | 12px | dark only |
+| `midnight` | dark-first, electric (ink navy/lavender + violet glow) | violet | 12px | light + dark |
 
 ```html
 <link rel="stylesheet" href="themes/colibri.css">          <!-- Colibri UI default -->

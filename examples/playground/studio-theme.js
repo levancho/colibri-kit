@@ -5,7 +5,7 @@
     font: "pack", hfont: "pack", tscale: 100, hweight: "pack", shadow: "pack", focus: "pack", motion: "pack",
     btn: "pack", acc: "pack", tabs: "pack", card: "pack", input: "pack", bridge: null, gen: null };
   const KEY = "colibri-studio-v2";
-  const DARK_ONLY = { midnight: true };
+  const DARK_ONLY = {};
   const HUES = [["Indigo", 268], ["Iris", 280], ["Violet", 295], ["Plum", 320], ["Pink", 350], ["Crimson", 10], ["Ruby", 20], ["Red", 27],
     ["Tomato", 35], ["Orange", 50], ["Amber", 75], ["Gold", 88], ["Lime", 125], ["Grass", 145], ["Green", 155], ["Jade", 165], ["Teal", 182], ["Cyan", 210], ["Sky", 228], ["Blue", 252]];
   const FONTS = { sys: 'ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif', inter: '"Inter","Geist",ui-sans-serif,system-ui,sans-serif',

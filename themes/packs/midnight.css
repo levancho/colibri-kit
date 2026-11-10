@@ -1,29 +1,45 @@
 @layer colibri.reset, colibri.tokens, colibri.base, colibri.layout, colibri.components, colibri.utilities, colibri.ui, colibri.packs, colibri.bridge, colibri.looks, colibri.motion;
 @layer colibri.packs {
-/* Colibri Kit theme pack: MIDNIGHT — dark-first, technical, luminous. Always dark (forces color-scheme).
-   Deep ink-blue neutrals (not brown), electric violet accent with glow. Shape: 10px radii, 1px luminous borders.
+/* Colibri Kit theme pack: MIDNIGHT — dark-first, technical, luminous, with a finished daylight palette.
+   Ink-blue/lavender neutrals (not brown), electric violet accent with glow. Shape: 10px radii, 1px luminous borders.
    Tabs: segmented with glow. Accordion: joined panel, raised header vs recessed body, indented with a glowing rail.
    Type: Space Grotesk / mono headings, small-caps buttons. Motion: smooth ease-out. */
 html[data-kit-theme=midnight]{
-  color-scheme:dark;
   --c-hue:275; --c-chroma:.2;
-  --c-bg:oklch(14.5% .025 275); --c-surface:oklch(19% .03 275); --c-sunken:oklch(12% .022 275);
-  --c-fg:oklch(95% .012 280); --c-muted:oklch(72% .03 280); --c-line:oklch(30% .04 278);
-  --c-accent:oklch(74% .17 calc(var(--c-hue))); --c-brand:var(--c-accent); --c-brand-fg:oklch(16% .05 275);
+  --c-bg:oklch(98.5% .008 280); --c-surface:#fff; --c-sunken:oklch(95.5% .018 280);
+  --c-fg:oklch(23% .035 278); --c-muted:oklch(49% .04 278); --c-line:oklch(88% .025 278);
+  --c-accent:oklch(57% .2 calc(var(--c-hue))); --c-brand:var(--c-accent); --c-brand-fg:#fff;
   --c-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif;
   --c-font-mono:"JetBrains Mono","IBM Plex Mono",ui-monospace,monospace;
   --c-radius-s:6px; --c-radius:10px; --c-radius-l:14px;
+  --c-shadow-color:oklch(35% .07 278 / .16);
+  --c-shadow-s:0 0 0 1px oklch(42% .08 278 / .05),0 2px 8px var(--c-shadow-color);
+  --c-shadow:0 0 0 1px oklch(42% .08 278 / .06),0 12px 32px -12px var(--c-shadow-color);
+  --c-shadow-l:0 0 0 1px oklch(42% .08 278 / .07),0 30px 60px -24px var(--c-shadow-color),0 0 50px -20px oklch(62% .17 285 / .18);
+  --c-dur:220ms; --c-ease:cubic-bezier(.16,1,.3,1);
+  --ui-background:#f8f7ff; --ui-foreground:#17132b; --ui-card:#fff; --ui-popover:#fff;
+  --ui-muted:#efecfb; --ui-muted-foreground:#665f82; --ui-accent:#eee8ff; --ui-accent-foreground:#17132b;
+  --ui-primary:#6d46d9; --ui-primary-foreground:#fff; --ui-ring:#8b5cf6; --ui-border:#ded8ef; --ui-input:#cec5e5;
+  --ui-success:#138a63; --ui-warning:#b66a08; --ui-destructive:#d43155;
+  --ui-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif; --ui-font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --ui-radius:10px; --ui-radius-sm:6px; --ui-radius-lg:14px; --ui-control-h:38px;
+  --ui-shadow-sm:0 0 0 1px #5d3aa80b,0 2px 8px #2f23521f; --ui-shadow:0 0 0 1px #5d3aa812,0 18px 40px -16px #2f235238,0 0 40px -18px #8b5cf64a;
+  --s-bg:#faf9ff; --s-fg:#17132b; --s-muted:#665f82; --s-line:#ded8ef; --s-soft:#f0edfa; --s-acc:#6d46d9; --s-ring:#8b5cf6;
+}
+html[data-kit-theme=midnight][data-theme=light]{color-scheme:light}
+html[data-kit-theme=midnight][data-theme=dark]{
+  color-scheme:dark;
+  --c-bg:oklch(14.5% .025 275); --c-surface:oklch(19% .03 275); --c-sunken:oklch(12% .022 275);
+  --c-fg:oklch(95% .012 280); --c-muted:oklch(72% .03 280); --c-line:oklch(30% .04 278);
+  --c-accent:oklch(74% .17 calc(var(--c-hue))); --c-brand:var(--c-accent); --c-brand-fg:oklch(16% .05 275);
   --c-shadow-color:oklch(0% 0 0 / .6);
   --c-shadow-s:0 0 0 1px oklch(100% 0 0 / .04),0 2px 8px var(--c-shadow-color);
   --c-shadow:0 0 0 1px oklch(100% 0 0 / .05),0 12px 32px -12px var(--c-shadow-color);
   --c-shadow-l:0 0 0 1px oklch(100% 0 0 / .06),0 30px 60px -24px var(--c-shadow-color),0 0 50px -20px oklch(70% .2 285 / .45);
-  --c-dur:220ms; --c-ease:cubic-bezier(.16,1,.3,1);
   --ui-background:#0b0c1a; --ui-foreground:#eceefe; --ui-card:#121429; --ui-popover:#15183a;
   --ui-muted:#171a33; --ui-muted-foreground:#9ca1c9; --ui-accent:#1f1d45; --ui-accent-foreground:#eceefe;
   --ui-primary:#a78bfa; --ui-primary-foreground:#120a2e; --ui-ring:#c4b5fd; --ui-border:#262a4d; --ui-input:#30355e;
   --ui-success:#34d399; --ui-warning:#fbbf24; --ui-destructive:#fb7185;
-  --ui-font:"Space Grotesk","Inter",ui-sans-serif,system-ui,sans-serif; --ui-font-mono:"JetBrains Mono",ui-monospace,monospace;
-  --ui-radius:10px; --ui-radius-sm:6px; --ui-radius-lg:14px; --ui-control-h:38px;
   --ui-shadow-sm:0 0 0 1px #ffffff08,0 2px 8px #0009; --ui-shadow:0 0 0 1px #ffffff0a,0 18px 40px -16px #000e,0 0 40px -18px #8b5cf680;
   --s-bg:#080914; --s-fg:#eceefe; --s-muted:#9ca1c9; --s-line:#20234a; --s-soft:#0f1128; --s-acc:#c4b5fd; --s-ring:#7c3aed;
 }
@@ -33,10 +49,11 @@ html[data-kit-theme=midnight] [data-ui=accordion]{--ui-acc-border:1px solid var(
 /* Colibri CSS chrome */
 html[data-kit-theme=midnight] .btn{border-radius:var(--c-radius-s);text-transform:uppercase;letter-spacing:.06em;font:600 .8rem var(--c-font-mono)}
 html[data-kit-theme=midnight] .btn[data-variant=primary]{box-shadow:0 0 24px -6px var(--c-accent)}
-html[data-kit-theme=midnight] .card{background:linear-gradient(180deg,oklch(21% .035 275),oklch(18% .03 275));border:1px solid var(--c-line);box-shadow:var(--c-shadow)}
+html[data-kit-theme=midnight] .card{background:linear-gradient(180deg,#fff,oklch(97% .016 280));border:1px solid var(--c-line);box-shadow:var(--c-shadow)}
+html[data-kit-theme=midnight][data-theme=dark] .card{background:linear-gradient(180deg,oklch(21% .035 275),oklch(18% .03 275))}
 html[data-kit-theme=midnight] .badge{font-family:var(--c-font-mono);border-radius:4px}
 html[data-kit-theme=midnight] :is(h1,h2,h3){font-family:var(--c-font-mono);letter-spacing:-.03em}
-html[data-kit-theme=midnight] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}
+html[data-kit-theme=midnight][data-theme=dark] :is(pre,code,.hl,.sink-code-tabs,.ui-root){color-scheme:dark}
 }
 
 @layer colibri.packs { html[data-kit-theme=midnight]:has(.colibri-application){--c-accent:light-dark(oklch(43% .11 var(--c-hue)),oklch(78% .10 var(--c-hue)));--c-brand-fg:light-dark(#fff,#17251e)} }

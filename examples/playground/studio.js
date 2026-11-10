@@ -9,7 +9,7 @@ const PACKS = [
     L: ["#eef3fb", "#fff", "#2563eb", "#dfe6f0", "#0f172a", "3px", "0 1px 1px #0f172a22"], D: ["#0f1520", "#151c28", "#60a5fa", "#263042", "#e5ecf5", "3px", "0 1px 2px #0008"] },
   { id: "ember", name: "Ember", note: "warm · soft · round", what: "14px+ radius · humanist type · warm neutrals · pill tabs · cushioned shadows · springy motion",
     L: ["#fbf1e7", "#fffaf5", "#ea580c", "#f0dcc8", "#3b2416", "11px", "0 4px 10px -4px #9a341266"], D: ["#1c1410", "#261b15", "#fb923c", "#3d2c22", "#f6e7da", "11px", "0 4px 12px -4px #000a"] },
-  { id: "midnight", name: "Midnight", note: "dark-first · neon · glass", dark: true, what: "10px radius · Space Grotesk + mono headings · luminous borders · glow · dark only",
+  { id: "midnight", name: "Midnight", note: "dark-first · neon · glass", what: "10px radius · Space Grotesk + mono headings · luminous borders · glow · light + dark",
     L: ["#0b0c1a", "#121429", "#a78bfa", "#262a4d", "#eceefe", "7px", "0 0 0 1px #8b5cf655,0 6px 16px -6px #8b5cf6aa"] },
 ];
 PACKS[3].D = PACKS[3].L;
