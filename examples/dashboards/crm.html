@@ -56,7 +56,7 @@ export function Kpi({ label, value, trend, delta, up = true }) {
   &lt;/article&gt;
 &lt;/#macro&gt;
 &lt;@kpi label="Revenue" value="$48,290" trend=[12,18,14,22,19,27,31] delta="12.4%"/&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace="~{colibri/thymeleaf/kpi :: kpi('Revenue', ${revenue}, ${delta}, ${up})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -94,7 +94,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
   &lt;/#list&gt;
   &lt;/tbody&gt;
 &lt;/table&gt;</code></pre></div><div role="tabpanel" data-lang="thymeleaf" hidden=""><pre><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace="~{colibri/thymeleaf/customer-table :: customer_table(${customers})}"&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;

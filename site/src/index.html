@@ -104,7 +104,7 @@
       &lt;button class="btn" data-variant="ghost" <b>data-ui-part="close"</b>&gt;Cancel&lt;/button&gt;&lt;/div&gt;
   &lt;/dialog&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;dialogBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/dialog :: dialog(&#x27;edit-profile&#x27;, &#x27;Edit profile&#x27;, ${title}, ${description}, ~{::dialogBody})}&quot;&gt;&lt;/div&gt;
 
@@ -233,7 +233,7 @@ createTabs(document.querySelector("#settings"));</code></pre>
     <div class="stack" style="--gap:var(--c-space-2xs)"><h2>Use it your way</h2>
     <p class="muted section-intro">Same components, four ways to write them. Pick a tab once; every example on the page follows.</p></div>
     <p class="section-intro"><strong>A natural fit for Java applications.</strong> Native FreeMarker macros render Colibri components directly from your server-side templates, with the same styling, keyboard controls and interactions as the HTML examples.</p>
-    <p class="section-intro">Java templates run on the server. Add <code>spring-boot-starter-freemarker</code> or <code>spring-boot-starter-thymeleaf</code> to your application, then install Colibri’s macros or fragments. <a href="/java-templates.html">Java setup, JAR download and source →</a></p>
+    <p class="section-intro">Java templates run on the server. Add <code>spring-boot-starter-freemarker</code> or <code>spring-boot-starter-thymeleaf</code> to your application, then add Colibri’s macros and fragments as a Maven dependency. <a href="/java-templates.html">Java setup, JAR download and source →</a></p>
     <p class="section-intro"><a href="/getting-started.html">Install a working starter, customize it and connect your application →</a></p>
     <h3>1. Add it to your project</h3>
     <div data-ui="tabs" class="codetabs" data-default-value="html" data-sync="lang" id="ct-install"><div data-ui-part="list" aria-label="Install: choose a language"><button type="button" data-ui-part="trigger" data-value="html">HTML</button><button type="button" data-ui-part="trigger" data-value="react">React</button><button type="button" data-ui-part="trigger" data-value="ftl">FreeMarker</button><button type="button" data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button></div><div data-ui-part="panel" data-value="html"><button type="button" class="copy" data-copy aria-label="Copy HTML code">Copy</button><pre class="code"><code>&lt;!-- 1. the look --&gt;
@@ -249,7 +249,11 @@ createTabs(document.querySelector("#settings"));</code></pre>
   &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
   &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
 &lt;/dependency&gt;
-&lt;!-- Add the locally built Colibri template JAR; see Java setup below. --&gt;
+&lt;dependency&gt;
+  &lt;groupId&gt;ai.l3v.colibri&lt;/groupId&gt;
+  &lt;artifactId&gt;colibri-templates&lt;/artifactId&gt;
+  &lt;version&gt;0.1.0&lt;/version&gt;
+&lt;/dependency&gt;
 &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/css/colibri.css}&quot;&gt;
 &lt;link rel=&quot;stylesheet&quot; th:href=&quot;@{/ui/themes/colibri.css}&quot;&gt;
 &lt;script type=&quot;module&quot; th:src=&quot;@{/ui/src/core/auto.js}&quot;&gt;&lt;/script&gt;</code></pre></div><div data-ui-part="panel" data-value="ftl"><button type="button" class="copy" data-copy aria-label="Copy FreeMarker code">Copy</button><pre class="code"><code>[#-- layout.ftl --]
@@ -288,7 +292,7 @@ import { Dialog, Tabs, Part, cx } from &quot;@colibri-kit/ui/react&quot;;
     &lt;/div&gt;
   &lt;/dialog&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;dialogBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/dialog :: dialog(&#x27;edit-profile&#x27;, &#x27;Edit profile&#x27;, ${title}, ${description}, ~{::dialogBody})}&quot;&gt;&lt;/div&gt;
 
@@ -338,7 +342,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
   &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;look&quot;&gt;Colibri CSS&lt;/div&gt;
   &lt;div data-ui-part=&quot;panel&quot; data-value=&quot;behaviour&quot;&gt;Colibri UI&lt;/div&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/tabs :: tabs(&#x27;sections&#x27;, &#x27;Sections&#x27;, ${items}, &#x27;first&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -391,7 +395,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
 
 /* your CSS: one meaningful rule, not ten classes */
 .team-card { border-inline-start: 3px solid var(--c-accent); }</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button type="button" class="copy" data-copy aria-label="Copy Thymeleaf code">Copy</button><pre class="code"><code>&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;cardBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/card :: card(${title}, ${description}, ~{::cardBody})}&quot;&gt;&lt;/div&gt;
 

@@ -51,5 +51,5 @@ def render(markup, name='component'):
     if name in slots:
         use=f'<section th:fragment="{slots[name]}"><p th:text="${{bodyText}}">Content</p></section>\n'+use
     return (f'<!-- Application template: values come from the controller model.\n'
-            f'Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. -->\n'
+            f'Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. -->\n'
             + use + '\n\n<!-- Library fragment (already supplied; shown for reference): -->\n' + pretty(source))
