@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "fa0575810230cd13bb2e3520672047564fb843c1f613128f97d818cd31e1a6be",
+  "release": "8c0473c64368ea9eee2bd7170e83dbe2afe532ae2f5bb51aa8070e4c264e6136",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -16,7 +16,7 @@
     "framework-support.html": "8ac00034145235483768411fa7c28dd21a5b5c218a2b70542ed73650ede5efb5",
     "framework-support.json": "1a74e5230e2338c3075242a8b715e5d896fd9d2d54bda6701ebb7bb941b24a3b",
     "getting-started.html": "4658158fe57e2cf55bbc64cfa033b69a4a15fe16f8b83e22f9d7b16a64e5dddb",
-    "index.html": "a8b68e994db8aee45fc47c63c0fe259fdbe8ce74c88fc3e272846689f159f9f3",
+    "index.html": "fec656248eb67e47b814c59b6f17be46cc3023e04b924bf85bcc2d90721c5821",
     "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
     "kitchen-sink/examples/application-preview-entry.js": "83a464cbe300c0313d93d365d38301d5091b9cfe832283920b246579aecba481",
@@ -143,7 +143,7 @@
     "kitchen-sink/themes/packs/glacier.css": "c2d03180458184be7240562b26d0714286aeb1bbc291ab54203590c94b7dbc50",
     "kitchen-sink/themes/packs/index.css": "fa7e6500754944ed85c847c65779893cdcc41f764a64535ec0600d60fea2a539",
     "kitchen-sink/themes/packs/midnight.css": "043af822a279c73f136dda55ac58f93ef0c508abdd8c5b6feb0d07fbe4bf0d92",
-    "site.css": "d8846abc62ddbd6f8c559807e839c020485724a602f28a59f8d8e258b6052b97",
+    "site.css": "a62248c8aa9c8523efbe564e43aa766abd75a24b53f406fdd2fe77a3917e7ebd",
     "site.js": "411160b78f4f362aa1fd52723377c90db3d0a3399076787b6ab320249f0b9bcf",
     "studio/index.html": "69847f6a5c5e9bae48dd5c85a56d438ed8e86710363910970eb30ce7d3290e0f",
     "ui/dist/bundle-sizes.json": "e1385d78ef89c688c24549f71fcdccdb7014aac98705393899ca1f590d94ebfe",
@@ -266,10 +266,10 @@
     "ui/thymeleaf/spring-field.html": "6fd6652454312db09cf1f96589e631bd2ab7714d7f7482d57ce758c835414eed",
     "ui/thymeleaf/switch.html": "ec8537dcf4f25ec17730bb6c8c98bf06b03b91631f63f6361a86d94178f295ef",
     "ui/thymeleaf/tabs.html": "7bb0890f01dfe152461986e2378cce0b2db0774be148f7d564e6dc05571b94aa",
-    "widgets/builder.js": "7bcc2c2cfcd532ca41997e1043800ed1c12a7cda2d8e414284db007b600d7313",
-    "widgets/embed.js": "08867a38f21e94fec521c4311ac60ee4a1a0dd5c93ce5570f376e999bace1333",
+    "widgets/builder.js": "3bcda78ae39bd77d0cff2efd31280757a62404c37293ab6028403f40edc83fdf",
+    "widgets/embed.js": "34aa9efa07caa9e830c0edab70874e3b79935698d6b73b677abb5aa402d8dbcc",
     "widgets/index.html": "5e41320f683b59be891a863a8df1585ad05a3e0b3d48cc357d11ad83a58069ea",
-    "widgets/render.js": "8f86dd6ad39cfd7001d3a1621b52458a86dd0a814b2a7b62eef8c55f6b1e3809",
-    "widgets/widgets.css": "3a316ca3d58ed37d571248788e3ebc80cd980e8a6df6263cd24ee7a154b1bcc2"
+    "widgets/render.js": "6ac9a7e2b85c55de307e2b310e97a238d85bbf96bf0b66b9d0caf92c8875c2ad",
+    "widgets/widgets.css": "b413af400e633b461cb819b6945eb13403d404510bb737ee832835fa4e7de08e"
   }
 }

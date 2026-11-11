@@ -51,7 +51,8 @@
 .wb-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-xs); padding: var(--c-space-2xs) var(--c-space-s); border-block-end: 1px solid var(--c-line); background: var(--c-sunken); }
 .wb-dots { display: inline-flex; gap: 5px; & i { inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--c-line); } & i:nth-child(1) { background: #ff5f57; } & i:nth-child(2) { background: #febc2e; } & i:nth-child(3) { background: #28c840; } }
 .wb-url { flex: 1 1 8rem; min-inline-size: 0; padding: .25em .9em; border-radius: var(--c-radius-full); background: var(--c-surface); border: 1px solid var(--c-line); font-size: var(--c-text-xs); color: var(--c-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.wb-canvas { display: grid; place-items: center; min-block-size: clamp(18rem, 44vh, 28rem); padding: var(--c-space-l) var(--c-space-m); transition: background-color var(--c-dur) var(--c-ease);
+/* contain: a badge pinned to the screen corner stays inside the preview instead of the real page */
+.wb-canvas { contain: layout; display: grid; place-items: center; min-block-size: clamp(18rem, 44vh, 28rem); padding: var(--c-space-l) var(--c-space-m); transition: background-color var(--c-dur) var(--c-ease);
   background-color: #f7f7fb; background-image: radial-gradient(rgb(20 20 50 / .09) 1px, transparent 1px); background-size: 18px 18px; }
 .wb-stage[data-bg=dark] .wb-canvas { background-color: #12111a; background-image: radial-gradient(rgb(255 255 255 / .08) 1px, transparent 1px); }
 .wb-device { inline-size: 100%; transition: inline-size var(--c-dur-slow) var(--c-ease-out); }

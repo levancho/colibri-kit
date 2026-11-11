@@ -26,10 +26,11 @@ const f = (key, label, type, def, extra = {}) => ({ key, label, type, def, ...ex
 const opts = (...pairs) => ({ options: pairs });
 
 export const WIDGETS = {
-  badge: { label: "Badge", blurb: "A small mark for your footer or README.", fields: [
-    f("text", "Label", "select", "Built with Colibri", opts(["Built with Colibri", "Built with Colibri"], ["Made with Colibri", "Made with Colibri"], ["Powered by Colibri", "Powered by Colibri"])),
+  badge: { label: "Badge", blurb: "A small “Built with Colibri Kit” mark for the bottom of your website.", fields: [
+    f("text", "Label", "select", "Built with Colibri Kit", opts(["Built with Colibri Kit", "Built with Colibri Kit"], ["Built with Colibri", "Built with Colibri"], ["Made with Colibri", "Made with Colibri"], ["Powered by Colibri", "Powered by Colibri"])),
     f("style", "Style", "select", "dark", opts(["dark", "Dark"], ["solid", "Accent"], ["soft", "Soft"], ["outline", "Outline"])),
-    f("size", "Size", "select", "m", opts(["s", "Small"], ["m", "Medium"], ["l", "Large"])) ] },
+    f("size", "Size", "select", "m", opts(["s", "Small"], ["m", "Medium"], ["l", "Large"])),
+    f("pin", "Where it sits", "select", "inline", opts(["inline", "Where I paste it (for example in the footer)"], ["br", "Pinned to the bottom right of the screen"], ["bl", "Pinned to the bottom left of the screen"], ["bc", "Pinned to the bottom centre of the screen"]), { hint: "A pinned badge stays in the corner while visitors scroll." }) ] },
   cta: { label: "Call to action", blurb: "A headline, a line of text and a button.", fields: [
     f("eyebrow", "Small label", "text", "New"),
     f("title", "Headline", "text", "Ship your next page faster"),
@@ -146,7 +147,8 @@ export function renderWidget(input) {
   const radius = RADII[config.radius];
   if (radius) style.push(`--c-radius-s:${radius[0]}`, `--c-radius:${radius[1]}`, `--c-radius-l:${radius[2]}`);
   if (config.t !== "badge" && WIDTHS[config.width]) style.push(`--cw-w:${WIDTHS[config.width]}`);
-  return `<div class="cw" data-colibri-theme data-cw="${config.t}" data-align="${config.align}" style="${style.join(";")}">${RENDER[config.t](config.d)}</div>`;
+  const pin = config.t === "badge" && config.d.pin !== "inline" ? ` data-pin="${config.d.pin}"` : "";
+  return `<div class="cw" data-colibri-theme data-cw="${config.t}" data-align="${config.align}"${pin} style="${style.join(";")}">${RENDER[config.t](config.d)}</div>`;
 }
 
 // Widget styles. Every rule is scoped under .cw and built on Colibri tokens.
@@ -176,6 +178,11 @@ export const WIDGET_CSS = `
 .cw-badge[data-style=solid]{background:var(--c-accent);color:var(--c-brand-fg)}
 .cw-badge[data-style=soft]{background:var(--c-accent-soft);color:var(--c-accent)}
 .cw-badge[data-style=outline]{background:var(--c-surface);color:var(--c-fg);border-color:var(--c-line)}
+.cw[data-pin]{position:fixed;inset-block-end:16px;z-index:2147483000}
+.cw[data-pin=br]{inset-inline-end:16px}
+.cw[data-pin=bl]{inset-inline-start:16px}
+.cw[data-pin=bc]{inset-inline:0;text-align:center;pointer-events:none}
+.cw[data-pin] .cw-badge{pointer-events:auto;box-shadow:var(--c-shadow-l)}
 .cw-announce{--gap:var(--c-space-s);font-size:var(--c-text-sm)}
 .cw-announce[data-tone=accent]{--tone:var(--c-accent)}
 .cw-form input{flex:1 1 11rem;min-inline-size:0;min-block-size:2.5rem;padding:.4em .75em;border:1px solid var(--c-line);border-radius:var(--c-radius-s);background:var(--c-surface);color:inherit;font:inherit;font-size:var(--c-text-sm)}
