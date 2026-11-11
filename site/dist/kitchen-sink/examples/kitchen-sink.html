@@ -327,7 +327,7 @@ export function Demo() {
   {&quot;value&quot;:&quot;a&quot;, &quot;title&quot;:&quot;What is Despani?&quot;, &quot;content&quot;:&quot;Portal.&quot;},
   {&quot;value&quot;:&quot;b&quot;, &quot;title&quot;:&quot;Colibri UI?&quot;, &quot;content&quot;:&quot;Headless UI.&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-accordion-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-accordion-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/accordion :: accordion(&#x27;faq&#x27;, ${items}, &#x27;first&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -375,7 +375,7 @@ export function Demo() {
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.alert role=&quot;status&quot;]&lt;strong&gt;Information:&lt;/strong&gt; Changes saved.[/@ui.alert]
 [@ui.alert role=&quot;alert&quot; variant=&quot;destructive&quot;]Something went wrong.[/@ui.alert]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-alert-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-alert-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/alert :: alert(${message}, &#x27;success&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -433,7 +433,7 @@ export function Demo() {
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-avatar-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-avatar-ftl">[#ftl output_format=&quot;HTML&quot;]
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.avatar src=user.avatarUrl! alt=user.name fallback=&quot;LD&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-avatar-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-avatar-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/avatar :: avatar(${avatarUrl}, ${displayName}, ${initials})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -466,7 +466,7 @@ export function Demo() {
 [@ui.badge]Default[/@ui.badge]
 [@ui.badge variant=&quot;secondary&quot;]Secondary[/@ui.badge]
 [@ui.badge variant=&quot;outline&quot; removable=true]Tag[/@ui.badge]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-badge-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-badge-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/badge :: badge(${statusLabel}, &#x27;secondary&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -496,7 +496,7 @@ export function Demo() {
 [@ui.button variant=&quot;outline&quot;]Cancel[/@ui.button]
 [@ui.button variant=&quot;destructive&quot;]Delete[/@ui.button]
 [@ui.button type=&quot;submit&quot; loading=saving]Submit[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-button-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-button-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/button :: button(${buttonLabel}, &#x27;outline&#x27;, ${saving})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -695,7 +695,7 @@ export function Demo() {
   &lt;span data-ui-part=&quot;icon&quot;&gt;&lt;svg viewbox=&quot;0 0 24 24&quot; aria-hidden=&quot;true&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;9&quot;&gt;&lt;path d=&quot;M12 8h.01M11 12h1v5h1&quot;&gt;&lt;/svg&gt;&lt;/span&gt;
   &lt;p&gt;Two fields need attention.&lt;/p&gt;
 &lt;/div&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-callout-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-callout-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/callout :: callout(${title}, ${message}, &#x27;warning&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -737,7 +737,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
 [@ui.card title=article.title description=article.date]
   ${article.intro}
 [/@ui.card]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-card-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-card-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;cardBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/card :: card(${title}, ${description}, ~{::cardBody})}&quot;&gt;&lt;/div&gt;
 
@@ -1015,7 +1015,7 @@ export function Demo() {
   );
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-data-list-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-data-list-ftl">[#-- Static HTML example; no parameterized macro is supplied for this entry. --]
 &lt;dl data-ui=&quot;data-list&quot;&gt;&lt;dt&gt;Status&lt;/dt&gt;&lt;dd&gt;&lt;span data-ui=&quot;badge&quot;&gt;Active&lt;/span&gt;&lt;/dd&gt;&lt;dt&gt;Name&lt;/dt&gt;&lt;dd&gt;Nino Beridze&lt;/dd&gt;&lt;dt&gt;Email&lt;/dt&gt;&lt;dd&gt;nino@example.ge&lt;/dd&gt;&lt;dt&gt;Company&lt;/dt&gt;&lt;dd&gt;Despani&lt;/dd&gt;&lt;/dl&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-data-list-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-data-list-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/data-list :: data_list(${details})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -1293,7 +1293,7 @@ export function Demo() {
     &lt;button value=&quot;cancel&quot;&gt;Cancel&lt;/button&gt;&lt;button value=&quot;save&quot;&gt;Save&lt;/button&gt;
   &lt;/form&gt;
 [/@ui.dialog]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-dialog-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-dialog-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;dialogBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/dialog :: dialog(&#x27;edit-profile&#x27;, &#x27;Edit profile&#x27;, ${title}, ${description}, ~{::dialogBody})}&quot;&gt;&lt;/div&gt;
 
@@ -1403,7 +1403,7 @@ export function Demo() {
   {&quot;label&quot;:&quot;Share&quot;, &quot;items&quot;:[{&quot;label&quot;:&quot;Facebook&quot;}, {&quot;label&quot;:&quot;Email&quot;}]},
   {&quot;label&quot;:&quot;Delete&quot;, &quot;variant&quot;:&quot;destructive&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-dropdown-menu-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-dropdown-menu-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/dropdown-menu :: dropdown_menu(&#x27;Actions&#x27;, ${actions})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -1995,7 +1995,7 @@ export function Demo() {
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.progress value=upload.percent label=&quot;Upload&quot;/]
 [@ui.progress label=&quot;Loading&quot;/]  [#-- no value = indeterminate --]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-progress-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-progress-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/progress :: progress(${progress}, &#x27;Upload progress&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -2270,7 +2270,7 @@ export function Demo() {
 [@ui.collapsible trigger=&quot;Show 3 more&quot;]
   &lt;p&gt;One&lt;/p&gt;&lt;p&gt;Two&lt;/p&gt;&lt;p&gt;Three&lt;/p&gt;
 [/@ui.collapsible]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-collapsible-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-collapsible-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;section th:fragment=&quot;detailsBody&quot;&gt;&lt;p th:text=&quot;${bodyText}&quot;&gt;Content&lt;/p&gt;&lt;/section&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/collapsible :: collapsible(&#x27;Details&#x27;, ~{::detailsBody})}&quot;&gt;&lt;/div&gt;
 
@@ -2428,7 +2428,7 @@ export function Demo() {
 [@ui.spinner /]
 [@ui.spinner size=&quot;lg&quot; variant=&quot;dots&quot; label=&quot;Loading messages…&quot; /]
 [@ui.button disabled=true][@ui.spinner size=&quot;sm&quot; label=&quot;Saving…&quot; /] Saving…[/@ui.button]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-spinner-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-spinner-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/spinner :: spinner(&#x27;Saving&#x27;, &#x27;dots&#x27;, &#x27;sm&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -2705,7 +2705,7 @@ Load Colibri CSS and core/auto.js in the page layout. --&gt;
   {&quot;label&quot;:&quot;Articles&quot;, &quot;href&quot;:&quot;/articles&quot;},
   {&quot;label&quot;:&quot;Edit&quot;}
 ]/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-breadcrumb-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-breadcrumb-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/breadcrumb :: breadcrumb(${breadcrumbs})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -2914,7 +2914,7 @@ export function Demo() {
 [@ui.pagination total=pages page=currentPage/]
 [#-- server-side links instead of buttons: --]
 [@ui.pagination total=pages page=currentPage href=&quot;?page={page}&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-pagination-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-pagination-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/pagination :: pagination(${page}, ${totalPages}, &#x27;Pages&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -3218,7 +3218,7 @@ export function Demo() {
   [@ui.panel value=&quot;news&quot;]News panel[/@ui.panel]
   [@ui.panel value=&quot;sport&quot;]Sports panel[/@ui.panel]
 [/@ui.tabs]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-tabs-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-tabs-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/tabs :: tabs(&#x27;sections&#x27;, &#x27;Sections&#x27;, ${items}, &#x27;first&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -3251,7 +3251,7 @@ export function Demo() {
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.calendar mode=&quot;single&quot; value=&quot;2026-10-30&quot;/]
 [@ui.calendar mode=&quot;range&quot; months=2/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-calendar-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-calendar-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/calendar :: calendar(&#x27;published&#x27;, ${published}, &#x27;en&#x27;)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -3305,7 +3305,7 @@ export function Demo() {
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.checkbox name=&quot;remember&quot; checked=form.remember label=&quot;Remember me&quot;/]
 [@ui.checkbox name=&quot;all&quot; label=&quot;All&quot; controls=&quot;#list .row-check&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-checkbox-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-checkbox-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/checkbox :: checkbox(&#x27;remember&#x27;, &#x27;Remember me&#x27;, ${remember}, false)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -3919,7 +3919,7 @@ export function Demo() {
   {&quot;value&quot;:&quot;tbilisi&quot;,&quot;label&quot;:&quot;Tbilisi&quot;}, {&quot;value&quot;:&quot;batumi&quot;,&quot;label&quot;:&quot;Batumi&quot;}
 ]/]
 [@ui.combobox name=&quot;langs&quot; multiple=true allowCustom=true options=langOptions/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-combobox-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-combobox-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/combobox :: combobox(&#x27;city&#x27;, &#x27;city&#x27;, &#x27;Choose a city&#x27;, ${options})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -4029,7 +4029,7 @@ export function Demo() {
   {&quot;label&quot;:&quot;Europe&quot;, &quot;options&quot;:[{&quot;value&quot;:&quot;ka&quot;,&quot;label&quot;:&quot;Georgian&quot;}, {&quot;value&quot;:&quot;en&quot;,&quot;label&quot;:&quot;English&quot;}]}
 ]/]
 [@ui.select name=&quot;tags&quot; multiple=true placeholder=&quot;Tags&quot; options=tagOptions/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-select-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-select-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/select :: select(&#x27;language&#x27;, &#x27;language&#x27;, &#x27;Language&#x27;, ${options}, ${selected})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -4057,7 +4057,7 @@ Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymelea
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-ftl">[#ftl output_format=&quot;HTML&quot;]
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 &lt;input name=&quot;title&quot; value=&quot;${(article.title)!}&quot; placeholder=&quot;Text&quot;&gt;</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-input-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-input-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/input :: input(&#x27;name&#x27;, &#x27;Name&#x27;, ${name}, true)}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
@@ -4135,7 +4135,7 @@ export function Demo() {
 }</code></pre></div><div data-ui-part="panel" data-value="ftl"><button class="sink-copy" data-ui="clipboard" data-target="#code-switch-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-switch-ftl">[#ftl output_format=&quot;HTML&quot;]
 [#import &quot;/colibri/freemarker/ui.ftl&quot; as ui]
 [@ui.switch name=&quot;airplane&quot; checked=settings.airplane label=&quot;Airplane mode&quot;/]</code></pre></div><div data-ui-part="panel" data-value="thymeleaf"><button class="sink-copy" data-ui="clipboard" data-target="#code-switch-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-switch-thymeleaf">&lt;!-- Application template: values come from the controller model.
-Install colibri-templates.jar or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
+Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thymeleaf/ into templates/colibri/thymeleaf/. --&gt;
 &lt;div th:replace=&quot;~{colibri/thymeleaf/switch :: switch(&#x27;notifications&#x27;, &#x27;Notifications&#x27;, ${notifications})}&quot;&gt;&lt;/div&gt;
 
 &lt;!-- Library fragment (already supplied; shown for reference): --&gt;
