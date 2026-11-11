@@ -25,7 +25,9 @@ const NOTES = {
 const encode = (config) => btoa(String.fromCharCode(...new TextEncoder().encode(JSON.stringify(compact(config))))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 const decode = (text) => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(text.replace(/-/g, "+").replace(/_/g, "/")), (c) => c.charCodeAt(0))));
 function initial() {
-  try { if (location.hash.length > 1) return normalize(decode(location.hash.slice(1))); } catch { /* a damaged link falls back to the default */ }
+  const hash = location.hash.slice(1);
+  if (Object.hasOwn(WIDGETS, hash)) return normalize({ t: hash }); // /widgets/#badge opens that widget
+  try { if (hash) return normalize(decode(hash)); } catch { /* a damaged link falls back to the default */ }
   return normalize({ t: "cta" });
 }
 let state = initial(), mode = "embed";

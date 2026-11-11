@@ -50,6 +50,18 @@ try {
  assert.match(await second.$eval('#wb-f-title',i=>i.value),/^Hello/);
  await second.close();
 
+ // The homepage button opens the builder on the badge; a pinned badge sits in the preview's corner, not the page's.
+ await page.goto(server.origin+'/');
+ await page.waitForFunction(()=>document.querySelector('#badge colibri-widget')?.shadowRoot?.querySelector('.cw-badge'));
+ assert.equal(await page.$$eval('a[href="/widgets/#badge"]',links=>links.map(a=>a.textContent.trim()).join('|')),'Build a widget|Build a widget');
+ await page.goto(server.origin+'/widgets/#badge');await page.reload();
+ await page.waitForFunction(()=>document.querySelector('#wb-preview').shadowRoot?.querySelector('.cw-badge'));
+ assert.equal(await inPreview(w=>w.shadowRoot.querySelector('.cw-badge').textContent),'Built with Colibri Kit');
+ await page.select('#wb-f-pin','br');
+ const pinned=await page.evaluate(()=>{const badge=document.querySelector('#wb-preview').shadowRoot.querySelector('.cw-badge').getBoundingClientRect(),canvas=document.querySelector('.wb-canvas').getBoundingClientRect();return{right:Math.round(canvas.right-badge.right),bottom:Math.round(canvas.bottom-badge.bottom)};});
+ assert.ok(Math.abs(pinned.right-16)<=2&&Math.abs(pinned.bottom-16)<=2,JSON.stringify(pinned));
+ assert.match(await page.$eval('#wb-snippet',c=>c.textContent),/"pin":"br"/);
+
  // Phone width: no horizontal scrolling.
  await page.setViewport({width:360,height:800});
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);

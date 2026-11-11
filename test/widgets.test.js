@@ -41,6 +41,14 @@ test('configuration is bounded: unknown types, values and keys fall back to defa
   assert.equal(parseConfig(null).t, 'badge');
 });
 
+test('a badge can be pinned to a bottom corner; other values are ignored', () => {
+  assert.doesNotMatch(renderWidget({ t: 'badge' }), /data-pin/);
+  assert.match(renderWidget({ t: 'badge' }), /Built with Colibri Kit/);
+  assert.match(renderWidget({ t: 'badge', d: { pin: 'br' } }), / data-pin="br" /);
+  assert.doesNotMatch(renderWidget({ t: 'badge', d: { pin: '"><b>' } }), /data-pin/);
+  assert.doesNotMatch(renderWidget({ t: 'cta', d: { pin: 'br' } }), /data-pin/);
+});
+
 test('the look is carried as custom properties on the wrapper', () => {
   const html = renderWidget({ t: 'cta', hue: 150, theme: 'dark', radius: 'round', width: 'l', align: 'center' });
   assert.match(html, /data-align="center" style="--c-hue:150;color-scheme:dark;--c-radius-s:12px;--c-radius:16px;--c-radius-l:24px;--cw-w:40rem"/);

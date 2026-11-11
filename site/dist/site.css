@@ -144,3 +144,10 @@ html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--
 /* Setup guides must remain readable on narrow application screens. */
 .prose { min-inline-size: 0; overflow-wrap: anywhere; }
 .prose table { inline-size: 100%; table-layout: fixed; }
+
+/* "Build a widget" call to action: copy on one side, live badges on the other */
+.badge-cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-l); padding: var(--c-space-l);
+  background: radial-gradient(28rem 14rem at 100% 0%, color-mix(in oklch, oklch(68% .2 320) 16%, transparent), transparent 70%), radial-gradient(26rem 14rem at 0% 100%, color-mix(in oklch, oklch(72% .17 190) 16%, transparent), transparent 70%), var(--c-surface);
+  & > .stack { flex: 1 1 22rem; }
+  & h2 { font-size: var(--c-text-xl); letter-spacing: -.02em; } }
+.badge-demo { flex: 1 1 14rem; display: grid; justify-items: center; gap: var(--c-space-s); padding: var(--c-space-l) var(--c-space-m); border-radius: var(--c-radius); border: 1px dashed var(--c-line); background: var(--c-sunken); }

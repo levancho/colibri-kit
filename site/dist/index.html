@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="/ui/themes/packs/index.css">
 <link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
 <script type="module" src="/kitchen-sink/examples/kit-bar.js"></script>
+<script async src="/widgets/embed.js"></script>
 </head>
 <body>
 <a class="skip visually-hidden" href="#main">Skip to content</a>
@@ -33,6 +34,7 @@
       </a>
       <p class="lede">Components, layouts and themes for building web applications. Built with semantic HTML and modern CSS, with interactions included. Works with HTML, React, FreeMarker and Thymeleaf. No Tailwind nightmare.</p>
       <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="#start">Get started</a>
+        <a class="btn" data-variant="outline" data-size="l" href="/widgets/#badge">Build a widget</a>
         <a class="gh-btn gh-btn-l" href="https://github.com/levancho/colibri-kit" target="_blank" rel="noopener"><svg class="gh-ico" viewBox="0 0 16 16" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg><span>Star on GitHub</span></a>
         <a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/kitchen-sink.html">Browse components →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/dashboards/">Dashboards →</a><a class="btn" data-variant="ghost" data-size="l" href="/kitchen-sink/examples/blocks/">Blocks →</a></div>
       <div class="stats cluster" data-gap="l"><div><b data-css-size>18 KiB</b><span>Colibri CSS</span></div><div><b data-catalog-count>169</b><span>catalog entries</span></div><div><b>0</b><span>build steps</span></div><div><b>1</b><span>token to re-brand</span></div></div>
@@ -428,6 +430,21 @@ Add the ai.l3v.colibri:colibri-templates dependency (Maven Central), or copy thy
   &lt;/div&gt;
 &lt;/section&gt;</code></pre></div></div>
     <div class="callout"><b>Why not utility classes?</b> With <code>class="flex flex-col gap-4 p-6 rounded-xl shadow"</code> the design ends up scattered through every template, and you need a compiler to keep it small. Colibri keeps markup readable (<code>class="card stack"</code>), keeps the design in one stylesheet, and needs no build step. One small helper file, <code>.muted</code>, <code>.truncate</code> and <code>.visually-hidden</code>, is the only "utility" set, and it stays tiny on purpose.</div>
+  </section>
+
+  <section class="center" id="badge" aria-labelledby="badge-h">
+    <div class="card badge-cta">
+      <div class="stack">
+        <h2 id="badge-h">Built with Colibri? <span class="grad">Show it.</span></h2>
+        <p class="muted">Build a small “Built with Colibri Kit” badge for the bottom of your website. Pick a style, choose where it sits, copy two lines of code.</p>
+        <div class="cluster" data-gap="s"><a class="btn" data-size="l" href="/widgets/#badge">Build a widget</a><a class="btn" data-variant="ghost" href="/widgets/">See all widgets</a></div>
+      </div>
+      <div class="badge-demo">
+        <colibri-widget config='{"t":"badge","d":{"size":"l"}}'></colibri-widget>
+        <colibri-widget config='{"t":"badge","d":{"style":"solid"}}'></colibri-widget>
+        <colibri-widget config='{"t":"badge","d":{"style":"outline","text":"Made with Colibri"}}'></colibri-widget>
+      </div>
+    </div>
   </section>
 </main>
 
