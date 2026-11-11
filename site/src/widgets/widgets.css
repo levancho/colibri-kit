@@ -1,0 +1,75 @@
+/* Widget builder page. Built on Colibri CSS tokens; the widgets themselves are styled in render.js. */
+.wb-hero { position: relative; overflow: clip; padding-block: var(--c-space-xl) var(--c-space-l); text-align: center;
+  background:
+    radial-gradient(42rem 22rem at 18% -10%, color-mix(in oklch, oklch(72% .17 190) 26%, transparent), transparent 70%),
+    radial-gradient(40rem 24rem at 85% 0%, color-mix(in oklch, oklch(68% .2 320) 24%, transparent), transparent 70%),
+    radial-gradient(30rem 18rem at 50% 110%, color-mix(in oklch, var(--c-accent) 20%, transparent), transparent 70%);
+  & .stack { --gap: var(--c-space-m); align-items: center; }
+  & .pill { align-self: center; }
+  & h1 { font-size: clamp(2.2rem, 1.4rem + 3.2vw, 3.8rem); line-height: 1.04; letter-spacing: -.04em; }
+  & .lede { max-inline-size: 60ch; font-size: var(--c-text-md); color: var(--c-muted); } }
+
+.wb { display: grid; grid-template-columns: minmax(18rem, 25rem) minmax(0, 1fr); gap: var(--c-space-l); align-items: start; padding-block: var(--c-space-m) var(--c-space-xl); }
+@media (width < 60rem) { .wb { grid-template-columns: minmax(0, 1fr); } .wb-out { order: -1; } }
+
+/* ---- left: the three steps */
+.wb-panel { --gap: var(--c-space-m); }
+.wb-step { --gap: var(--c-space-s); min-inline-size: 0; margin: 0; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); box-shadow: var(--c-shadow-s);
+  & legend { display: flex; align-items: center; gap: .6em; float: inline-start; inline-size: 100%; padding: 0; font-weight: 700; font-size: var(--c-text-md); letter-spacing: -.01em; }
+  & legend + * { clear: both; }
+  & :is(input:not([type=range]), select, textarea) { inline-size: 100%; }
+  & textarea { resize: vertical; }
+  & label, & .wb-label { font-size: var(--c-text-sm); font-weight: 600; } }
+.wb-n { display: inline-grid; place-items: center; inline-size: 1.6rem; block-size: 1.6rem; border-radius: 50%; font-size: .8rem; color: var(--c-brand-fg); background: linear-gradient(135deg, var(--c-accent), oklch(62% .2 calc(var(--c-hue) + 70))); }
+
+.wb-types { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--c-space-2xs); }
+.wb-type { display: grid; justify-items: center; gap: .35em; padding: .8em .3em; border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface); color: var(--c-muted); font: inherit; font-size: var(--c-text-xs); font-weight: 600; line-height: 1.2; cursor: pointer;
+  transition: border-color var(--c-dur-fast) var(--c-ease), color var(--c-dur-fast) var(--c-ease), background-color var(--c-dur-fast) var(--c-ease), transform var(--c-dur-fast) var(--c-ease);
+  & svg { inline-size: 1.5rem; block-size: 1.5rem; }
+  &:hover { color: var(--c-fg); border-color: color-mix(in oklch, var(--c-accent) 45%, var(--c-line)); transform: translateY(-1px); }
+  &[aria-pressed=true] { color: var(--c-accent); border-color: var(--c-accent); background: var(--c-accent-soft); box-shadow: 0 0 0 3px var(--c-accent-soft); } }
+
+/* segmented buttons */
+.wb-seg { display: inline-flex; inline-size: fit-content; max-inline-size: 100%; padding: 3px; gap: 2px; border-radius: var(--c-radius); background: var(--c-sunken); border: 1px solid var(--c-line);
+  & button { min-block-size: 2rem; padding: .25em .8em; border: 0; border-radius: calc(var(--c-radius) - 3px); background: transparent; color: var(--c-muted); font: inherit; font-size: var(--c-text-xs); font-weight: 600; cursor: pointer; white-space: nowrap; }
+  & button:hover { color: var(--c-fg); }
+  & button[aria-pressed=true] { background: var(--c-surface); color: var(--c-fg); box-shadow: var(--c-shadow-s); } }
+
+.wb-hue { appearance: none; inline-size: 100%; block-size: .9rem; border-radius: var(--c-radius-full); border: 1px solid var(--c-line); cursor: pointer;
+  background: linear-gradient(90deg in oklch longer hue, oklch(65% .19 0), oklch(65% .19 360));
+  &::-webkit-slider-thumb { appearance: none; inline-size: 1.4rem; block-size: 1.4rem; border-radius: 50%; border: 3px solid #fff; background: oklch(62% .19 var(--wb-hue, 250)); box-shadow: 0 1px 4px rgb(0 0 0 / .35); }
+  &::-moz-range-thumb { inline-size: 1.1rem; block-size: 1.1rem; border-radius: 50%; border: 3px solid #fff; background: oklch(62% .19 var(--wb-hue, 250)); box-shadow: 0 1px 4px rgb(0 0 0 / .35); } }
+.wb-swatches { --gap: var(--c-space-2xs); padding-block-start: var(--c-space-3xs); }
+.wb-swatch { inline-size: 1.75rem; block-size: 1.75rem; padding: 0; border-radius: 50%; border: 2px solid var(--c-surface); outline: 1px solid var(--c-line); background: oklch(62% .19 var(--h)); cursor: pointer; transition: transform var(--c-dur-fast) var(--c-ease);
+  &:hover { transform: scale(1.12); }
+  &[aria-pressed=true] { outline: 2px solid var(--c-fg); } }
+
+/* ---- right: preview and code */
+.wb-out { --gap: var(--c-space-m); position: sticky; inset-block-start: calc(var(--kb-h, 56px) + var(--c-space-s)); min-inline-size: 0; }
+@media (width < 60rem) { .wb-out { position: static; } }
+.wb-stage { overflow: clip; border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); box-shadow: var(--c-shadow-l); }
+.wb-bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-xs); padding: var(--c-space-2xs) var(--c-space-s); border-block-end: 1px solid var(--c-line); background: var(--c-sunken); }
+.wb-dots { display: inline-flex; gap: 5px; & i { inline-size: 10px; block-size: 10px; border-radius: 50%; background: var(--c-line); } & i:nth-child(1) { background: #ff5f57; } & i:nth-child(2) { background: #febc2e; } & i:nth-child(3) { background: #28c840; } }
+.wb-url { flex: 1 1 8rem; min-inline-size: 0; padding: .25em .9em; border-radius: var(--c-radius-full); background: var(--c-surface); border: 1px solid var(--c-line); font-size: var(--c-text-xs); color: var(--c-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wb-canvas { display: grid; place-items: center; min-block-size: clamp(18rem, 44vh, 28rem); padding: var(--c-space-l) var(--c-space-m); transition: background-color var(--c-dur) var(--c-ease);
+  background-color: #f7f7fb; background-image: radial-gradient(rgb(20 20 50 / .09) 1px, transparent 1px); background-size: 18px 18px; }
+.wb-stage[data-bg=dark] .wb-canvas { background-color: #12111a; background-image: radial-gradient(rgb(255 255 255 / .08) 1px, transparent 1px); }
+.wb-device { inline-size: 100%; transition: inline-size var(--c-dur-slow) var(--c-ease-out); }
+.wb-stage[data-size=phone] .wb-device { inline-size: min(100%, 22.5rem); padding: var(--c-space-s); border-radius: 1.75rem; border: 1px solid rgb(128 128 150 / .35); background: rgb(128 128 150 / .08); }
+
+.wb-code { --gap: var(--c-space-s); padding: var(--c-space-m); border-radius: var(--c-radius-l); border: 1px solid oklch(32% .03 280); background: oklch(19% .025 280); color: oklch(92% .01 280); color-scheme: dark;
+  & .hint { font-size: var(--c-text-xs); color: oklch(74% .02 280); }
+  & .wb-seg { background: oklch(14% .02 280); border-color: oklch(32% .03 280); }
+  & .wb-seg button { color: oklch(74% .02 280); }
+  & .wb-seg button[aria-pressed=true] { background: oklch(30% .04 280); color: #fff; }
+  & .btn[data-variant=outline] { color: inherit; border-color: oklch(36% .03 280); }
+  & .btn[data-variant=outline]:hover { background: oklch(26% .03 280); } }
+.wb-code-head { --justify: space-between; }
+.wb-pre { margin: 0; max-block-size: 15rem; overflow: auto; padding: var(--c-space-s); border-radius: var(--c-radius); border: 1px solid oklch(30% .03 280); background: oklch(14% .02 280); font-family: var(--c-font-mono); font-size: var(--c-text-xs); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; color: oklch(86% .06 190);
+  &:focus-visible { outline: 2px solid oklch(72% .16 250); outline-offset: 2px; } }
+
+.wb-why { padding-block: var(--c-space-l) var(--c-space-2xl);
+  & h2 { margin-block-end: var(--c-space-m); font-size: var(--c-text-xl); letter-spacing: -.02em; }
+  & .grid { --min: 15rem; }
+  & .card { --gap: var(--c-space-2xs); }
+  & h3 { font-size: var(--c-text-md); } }

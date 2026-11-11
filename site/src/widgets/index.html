@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Widget builder — Colibri Kit</title>
+<meta name="description" content="Build a badge, call to action, pricing card, FAQ or sign-up form in a minute and paste it into any website. Free, no account, no tracking. Built with Colibri.">
+<meta property="og:title" content="Colibri widget builder"><meta property="og:description" content="Build a widget in a minute and paste it into any website. Free, no account, no tracking.">
+<link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
+<script>/* apply the saved light/dark choice before first paint */try{var d=localStorage.getItem("colibri.kit.theme");if(d)document.documentElement.dataset.theme=d}catch(_){}</script>
+<link rel="stylesheet" href="/css/colibri.css">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
+<link rel="stylesheet" href="/widgets/widgets.css">
+<script type="module" src="/kitchen-sink/examples/kit-bar.js"></script>
+<script async src="/widgets/embed.js"></script>
+<script type="module" src="/widgets/builder.js"></script>
+</head>
+<body>
+<a class="skip visually-hidden" href="#builder">Skip to the builder</a>
+<header class="kbar" data-active="widgets">
+  <button class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Toggle dark mode">◐</button>
+</header>
+
+<main id="main">
+  <section class="wb-hero" aria-labelledby="wb-h">
+    <div class="center stack">
+      <span class="pill"><span class="pill-dot" aria-hidden="true"></span>Free · no account · no tracking</span>
+      <h1 id="wb-h">Build a widget.<br><span class="grad">Paste it anywhere.</span></h1>
+      <p class="lede">Pick a widget, make it yours, copy two lines of code. It works on any website — WordPress, Shopify, Webflow or plain HTML — and never clashes with your styles.</p>
+    </div>
+  </section>
+
+  <section class="center wb" id="builder" aria-label="Widget builder">
+    <form class="wb-panel stack" id="wb-form" autocomplete="off">
+      <fieldset class="wb-step stack">
+        <legend><span class="wb-n">1</span> Pick a widget</legend>
+        <div class="wb-types" id="wb-types"></div>
+      </fieldset>
+      <fieldset class="wb-step stack">
+        <legend><span class="wb-n">2</span> Write the content</legend>
+        <p class="hint" id="wb-blurb"></p>
+        <div class="stack" id="wb-fields"></div>
+      </fieldset>
+      <fieldset class="wb-step stack">
+        <legend><span class="wb-n">3</span> Choose the look</legend>
+        <div class="field">
+          <label for="wb-hue">Accent colour</label>
+          <input class="wb-hue" id="wb-hue" type="range" min="0" max="360" step="1">
+          <div class="cluster wb-swatches" id="wb-swatches" role="group" aria-label="Colour presets"></div>
+        </div>
+        <div class="field"><span class="wb-label" id="wb-l-theme">Theme</span>
+          <div class="wb-seg" role="group" aria-labelledby="wb-l-theme" data-key="theme"><button type="button" data-value="auto">Auto</button><button type="button" data-value="light">Light</button><button type="button" data-value="dark">Dark</button></div>
+          <span class="hint">Auto follows each visitor's system setting.</span></div>
+        <div class="field"><span class="wb-label" id="wb-l-radius">Corners</span>
+          <div class="wb-seg" role="group" aria-labelledby="wb-l-radius" data-key="radius"><button type="button" data-value="sharp">Sharp</button><button type="button" data-value="soft">Soft</button><button type="button" data-value="round">Round</button></div></div>
+        <div class="field" id="wb-width-field"><span class="wb-label" id="wb-l-width">Width</span>
+          <div class="wb-seg" role="group" aria-labelledby="wb-l-width" data-key="width"><button type="button" data-value="s">Small</button><button type="button" data-value="m">Medium</button><button type="button" data-value="l">Large</button><button type="button" data-value="full">Full</button></div></div>
+        <div class="field"><span class="wb-label" id="wb-l-align">Position</span>
+          <div class="wb-seg" role="group" aria-labelledby="wb-l-align" data-key="align"><button type="button" data-value="start">Left</button><button type="button" data-value="center">Centre</button></div></div>
+        <div class="cluster">
+          <button class="btn" data-variant="soft" type="button" id="wb-shuffle">Surprise me</button>
+          <button class="btn" data-variant="ghost" type="button" id="wb-reset">Start over</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <div class="wb-out stack">
+      <div class="wb-stage" id="wb-stage" data-bg="light" data-size="wide">
+        <div class="wb-bar">
+          <span class="wb-dots" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="wb-url" aria-hidden="true">your-website.com</span>
+          <div class="wb-seg" role="group" aria-label="Preview page background" data-stage="bg"><button type="button" data-value="light">Light page</button><button type="button" data-value="dark">Dark page</button></div>
+          <div class="wb-seg" role="group" aria-label="Preview width" data-stage="size"><button type="button" data-value="wide">Desktop</button><button type="button" data-value="phone">Phone</button></div>
+        </div>
+        <div class="wb-canvas"><div class="wb-device"><colibri-widget id="wb-preview"></colibri-widget></div></div>
+      </div>
+
+      <div class="wb-code stack">
+        <div class="cluster wb-code-head">
+          <div class="wb-seg" role="group" aria-label="Code format" id="wb-mode"><button type="button" data-value="embed">Embed code</button><button type="button" data-value="html">HTML only</button></div>
+          <button class="btn" type="button" id="wb-copy">Copy code</button>
+        </div>
+        <pre class="wb-pre" tabindex="0" aria-label="Code to paste into your site"><code id="wb-snippet"></code></pre>
+        <p class="hint" id="wb-note"></p>
+        <div class="cluster">
+          <button class="btn" data-variant="outline" data-size="s" type="button" id="wb-share">Copy a link to this design</button>
+          <span class="hint" id="wb-status" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="center wb-why" aria-labelledby="wb-why-h">
+    <h2 id="wb-why-h">What you are pasting</h2>
+    <div class="grid">
+      <article class="card stack"><h3>It keeps to itself</h3><p class="muted">The widget draws inside its own sandbox (a shadow root). Your site's CSS cannot break it, and its CSS cannot leak into your page.</p></article>
+      <article class="card stack"><h3>No tracking, no cookies</h3><p class="muted">The script draws the widget and nothing else. It makes no network requests and stores nothing. The newsletter form posts to the address you give it, not to us.</p></article>
+      <article class="card stack"><h3>Small and readable</h3><p class="muted">Everything you typed is in the snippet itself, so you can change the text later by editing it. Prefer no script at all? Use “HTML only” on a page that loads Colibri CSS.</p></article>
+      <article class="card stack"><h3>Free, with a small credit</h3><p class="muted">Every widget carries a “Built with Colibri” link. That is the whole price. The code is MIT-licensed and <a href="https://github.com/levancho/colibri-kit">on GitHub</a>.</p></article>
+    </div>
+  </section>
+</main>
+</body>
+</html>

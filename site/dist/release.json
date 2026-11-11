@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "a73685e1c622bdcb521229e6b761a58120eeae2033ab59b65bd95c1be428d5fe",
+  "release": "fa0575810230cd13bb2e3520672047564fb843c1f613128f97d818cd31e1a6be",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -82,7 +82,7 @@
     "kitchen-sink/examples/ftl-output.html": "e9abbb30536e17cbc4cd7803d91c4e4679353f8f4bf7d42edb9a3b8396116cd8",
     "kitchen-sink/examples/index.html": "22f577dcd465aebf66c0f58252f53787bf06f18c8e801e66b6b20fbf795fedca",
     "kitchen-sink/examples/kit-bar.css": "4478573697c4c7697418742e02ef9073e57f6598f08fcabc23e18349b30e20df",
-    "kitchen-sink/examples/kit-bar.js": "5924878d5fa0565b14574ae5534533aedcc9714291de1179cfd2485056f6b861",
+    "kitchen-sink/examples/kit-bar.js": "ca50441b1eef9050ad017c941418224d2235edd793695307c64bb39d39f25f52",
     "kitchen-sink/examples/kitchen-sink.html": "c4d691602a304197359648894a0326ffcb2ce9ff9aa2a991988dc12f0239c32a",
     "kitchen-sink/examples/kitchen-sink.js": "ba9856a68e9f540797653f309f7fc42356260be684f8b468d40364fa5f541057",
     "kitchen-sink/examples/playground/index.html": "d50c9e66ba1f9ea502a6cd8b5f08be25c84fc41cb88755f05e96320f5eb1b459",
@@ -265,6 +265,11 @@
     "ui/thymeleaf/spinner.html": "ce4a7c5438af2f9da5e83c231b2ba1f31d1e4d79fa718de6e5f8cd3d419885c4",
     "ui/thymeleaf/spring-field.html": "6fd6652454312db09cf1f96589e631bd2ab7714d7f7482d57ce758c835414eed",
     "ui/thymeleaf/switch.html": "ec8537dcf4f25ec17730bb6c8c98bf06b03b91631f63f6361a86d94178f295ef",
-    "ui/thymeleaf/tabs.html": "7bb0890f01dfe152461986e2378cce0b2db0774be148f7d564e6dc05571b94aa"
+    "ui/thymeleaf/tabs.html": "7bb0890f01dfe152461986e2378cce0b2db0774be148f7d564e6dc05571b94aa",
+    "widgets/builder.js": "7bcc2c2cfcd532ca41997e1043800ed1c12a7cda2d8e414284db007b600d7313",
+    "widgets/embed.js": "08867a38f21e94fec521c4311ac60ee4a1a0dd5c93ce5570f376e999bace1333",
+    "widgets/index.html": "5e41320f683b59be891a863a8df1585ad05a3e0b3d48cc357d11ad83a58069ea",
+    "widgets/render.js": "8f86dd6ad39cfd7001d3a1621b52458a86dd0a814b2a7b62eef8c55f6b1e3809",
+    "widgets/widgets.css": "3a316ca3d58ed37d571248788e3ebc80cd980e8a6df6263cd24ee7a154b1bcc2"
   }
 }
