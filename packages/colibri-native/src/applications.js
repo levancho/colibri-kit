@@ -70,7 +70,7 @@ function Chip({ label, selected = false, onPress, detail }) {
     h(Text, { size: "sm", weight: "medium", style: { color: selected ? c.accent : c.fg } }, label),
     detail == null ? null : h(Text, { size: "xs", weight: "semibold", style: { color: selected ? c.accent : c.muted } }, detail));
 }
-const ChipRow = ({ label, children }) => h(ScrollView, { horizontal: true, showsHorizontalScrollIndicator: false, accessibilityLabel: label, keyboardShouldPersistTaps: "handled", style: { flexGrow: 0 }, contentContainerStyle: { gap: 8, alignItems: "center", paddingVertical: 6 } },
+const ChipRow = ({ label, innerRef, children }) => h(ScrollView, { ref: innerRef, horizontal: true, showsHorizontalScrollIndicator: false, accessibilityLabel: label, keyboardShouldPersistTaps: "handled", style: { flexGrow: 0 }, contentContainerStyle: { gap: 8, alignItems: "center", paddingVertical: 6 } },
   label ? h(Text, { size: "xs", weight: "semibold", tone: "muted", style: { marginRight: 2 } }, label) : null, children);
 
 function OptionRow({ label, selected, onPress }) {
@@ -315,13 +315,15 @@ export function ApplicationTable({ model = {}, onAction, searchable = true, sort
  * model: { title, description, lanes: [{ id, title, deals: [{ id, company, value, owner, next? }] }] }.
  */
 export function ApplicationBoard({ model = {}, onAction, style }) {
-  const theme = useTheme(), c = theme.colors, window = useWindowDimensions(), pager = useRef(null);
+  const theme = useTheme(), c = theme.colors, window = useWindowDimensions(), pager = useRef(null), chips = useRef(null);
   const [state, setState] = useState({ from: model.lanes, lanes: model.lanes ?? [] });
   if (state.from !== model.lanes) setState({ from: model.lanes, lanes: model.lanes ?? [] });
   const lanes = state.lanes, [at, setAt] = useState(0), [open, setOpen] = useState(null), [measured, setMeasured] = useState(0);
   const gap = theme.space.s, laneWidth = Math.max(220, Math.min(300, (measured || window.width - theme.space.m * 2) - 56));
   const openLane = lanes.find((lane) => lane.deals?.some((deal) => deal.id === open)), openDeal = openLane?.deals.find((deal) => deal.id === open);
-  const jump = (index) => { setAt(index); pager.current?.scrollTo({ x: index * (laneWidth + gap), animated: true }); };
+  // Keeps the chip of the lane in view (chip widths are not measured, so the offset is an estimate).
+  const show = (index) => { setAt(index); if (index >= lanes.length - 1) chips.current?.scrollToEnd({ animated: true }); else chips.current?.scrollTo({ x: Math.max(0, index * 96 - 48), animated: true }); };
+  const jump = (index) => { show(index); pager.current?.scrollTo({ x: index * (laneWidth + gap), animated: true }); };
   const move = (laneId) => {
     const next = lanes.map((lane) => ({ ...lane, deals: lane.id === laneId ? [...(lane.deals ?? []).filter((deal) => deal.id !== open), openDeal] : (lane.deals ?? []).filter((deal) => deal.id !== open) }));
     setState({ from: model.lanes, lanes: next }); setOpen(null); send(onAction, "move-deal", open, { value: laneId });
@@ -329,9 +331,9 @@ export function ApplicationBoard({ model = {}, onAction, style }) {
   const total = (lane) => { const values = (lane.deals ?? []).map((deal) => num(deal.value)); return values.length && values.every((value) => value != null) ? money(values.reduce((sum, value) => sum + value, 0), lane.deals[0].value) : null; };
   return h(View, { style: flat({ gap: theme.space.xs }, style), onLayout: (event) => setMeasured(event.nativeEvent.layout.width) },
     h(Head, { title: model.title, description: model.description }),
-    h(ChipRow, { label: "Stages" }, lanes.map((lane, index) => h(Chip, { key: lane.id, label: lane.title, detail: lane.deals?.length ?? 0, selected: index === at, onPress: () => jump(index) }))),
+    h(ChipRow, { label: "Stages", innerRef: chips }, lanes.map((lane, index) => h(Chip, { key: lane.id, label: lane.title, detail: lane.deals?.length ?? 0, selected: index === at, onPress: () => jump(index) }))),
     h(ScrollView, { ref: pager, horizontal: true, showsHorizontalScrollIndicator: false, snapToInterval: laneWidth + gap, decelerationRate: "fast", scrollEventThrottle: 32,
-      onScroll: (event) => { const index = Math.round(event.nativeEvent.contentOffset.x / (laneWidth + gap)); if (index !== at && index >= 0 && index < lanes.length) setAt(index); },
+      onScroll: (event) => { const index = Math.round(event.nativeEvent.contentOffset.x / (laneWidth + gap)); if (index !== at && index >= 0 && index < lanes.length) show(index); },
       contentContainerStyle: { gap, alignItems: "flex-start", paddingBottom: theme.space["2xs"] } },
       lanes.map((lane) => h(View, { key: lane.id, accessibilityLabel: `${lane.title}, ${lane.deals?.length ?? 0} opportunities`, style: { width: laneWidth, padding: theme.space.xs, gap: theme.space.xs, borderRadius: theme.radius.l, borderWidth: 1, borderColor: c.line, backgroundColor: c.sunken } },
         h(View, { style: { ...row(theme.space.xs), paddingHorizontal: theme.space["2xs"], minHeight: 32 } },

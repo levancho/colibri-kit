@@ -170,7 +170,7 @@ export function NavItem({ label, icon, badge, trailing, selected = false, active
     ctx.tree ? (nested ? h(Chevron, { key: "c0", open: chevronOpen, color: c.muted }) : h(View, { key: "c0", style: { width: 16 } })) : null,
     icon != null ? h(Glyph, { key: "i", icon, color: selected ? c.accent : sub ? c.muted : c.fg }) : null,
     typeof label === "string" ? h(Text, { key: "l", size: "sm", weight: selected || active ? "semibold" : sub ? "regular" : "medium", numberOfLines: 1, style: { flex: 1, color: tint } }, label) : h(View, { key: "l", style: { flex: 1, minWidth: 0 } }, label),
-    badge != null && badge !== false ? (typeof badge === "string" || typeof badge === "number" ? h(Badge, { key: "b", tone: selected ? "accent" : undefined, style: { alignSelf: "center" } }, badge) : h(View, { key: "b" }, badge)) : null,
+    badge != null && badge !== false ? (typeof badge === "string" || typeof badge === "number" ? h(Badge, { key: "b", tone: selected ? "accent" : undefined, style: flat({ alignSelf: "center" }, !selected && { backgroundColor: c.line }) }, badge) : h(View, { key: "b" }, badge)) : null,
     trailing != null ? h(View, { key: "t" }, typeof trailing === "string" ? h(Text, { size: "xs", tone: "muted" }, trailing) : trailing) : null,
     nested && !ctx.tree && chevronOpen !== undefined ? h(Chevron, { key: "c1", open: chevronOpen, down, color: c.muted }) : null,
   ];

@@ -23,7 +23,7 @@ const PLATFORM = [
   { id: "documentation", label: "Documentation", icon: "▤", children: [{ id: "introduction", label: "Introduction" }, { id: "get-started", label: "Get started" }, { id: "tutorials", label: "Tutorials" }] },
   { id: "settings", label: "Settings", icon: "✦", children: [{ id: "general", label: "General" }, { id: "team", label: "Team" }, { id: "billing", label: "Billing" }] },
 ];
-const PROJECTS = [{ id: "design", label: "Design engineering", icon: "◆" }, { id: "sales", label: "Sales & marketing", icon: "◔", badge: "3" }, { id: "travel", label: "Travel", icon: "➤" }];
+const PROJECTS = [{ id: "design", label: "Design engineering", icon: "◆" }, { id: "sales", label: "Sales & marketing", icon: "◎", badge: "3" }, { id: "travel", label: "Travel", icon: "➤" }];
 const APP = [{ id: "platform", title: "Platform", items: PLATFORM }, { id: "projects", title: "Projects", items: PROJECTS }];
 const SECONDARY = [{ id: "support", label: "Support", icon: "?" }, { id: "feedback", label: "Feedback", icon: "✎" }];
 const TEAMS = { items: [{ id: "despani", name: "Despani", description: "Enterprise" }, { id: "l3v", name: "L3V", description: "Startup" }] };
@@ -52,7 +52,7 @@ const CALENDARS = [
   { id: "other", title: "Other", defaultOpen: false, items: [{ id: "travel-cal", label: "Travel" }, { id: "reminders", label: "Reminders", tone: "ok" }] },
 ];
 const SETTINGS = [
-  { id: "notifications", label: "Notifications", icon: "◔" }, { id: "navigation", label: "Navigation", icon: "☰" }, { id: "home", label: "Home", icon: "⌂" }, { id: "appearance", label: "Appearance", icon: "◐" },
+  { id: "notifications", label: "Notifications", icon: "◉" }, { id: "navigation", label: "Navigation", icon: "☰" }, { id: "home", label: "Home", icon: "⌂" }, { id: "appearance", label: "Appearance", icon: "◧" },
   { id: "messages", label: "Messages & media", icon: "▤" }, { id: "language", label: "Language & region", icon: "◎" }, { id: "privacy", label: "Privacy & visibility", icon: "◈" },
 ];
 const TODAY = new Date(2026, 9, 14);
