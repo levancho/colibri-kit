@@ -186,7 +186,7 @@ export default [
     return (
       <Stack>
         <Frame>
-          <ScrollSpy spy={spy} nestedScrollEnabled contentContainerStyle={{ padding: theme.space.m, gap: theme.space.l }}>
+          <ScrollSpy spy={spy} offset={theme.space.m} nestedScrollEnabled contentContainerStyle={{ padding: theme.space.m, gap: theme.space.l }}>
             <Card>
               <Caption>On this page</Caption>
               {GUIDE.map((section) => <ScrollTo key={section.id} to={section.id} onScroll={setLast} testID={`to-${section.id}`}>{section.title}</ScrollTo>)}
@@ -214,13 +214,13 @@ export default [
         <Sidebar open={open} onOpenChange={setOpen} mode="drawer" items={SIDEBAR} value={route} onSelect={setRoute} defaultExpanded={["Website"]} header={<SidebarHeader />} footer={<SidebarFooter />} label="Workspace navigation" />
         <Stack gap="xs">
           <Caption>In place</Caption>
+          <Switch label="Collapse to a rail of icons" value={collapsed} onValueChange={setCollapsed} />
           <View style={{ height: 380, flexDirection: "row", overflow: "hidden", borderWidth: 1, borderColor: theme.colors.line, borderRadius: theme.radius.l, backgroundColor: theme.colors.bg }}>
-            <Sidebar mode="inline" width={208} collapsed={collapsed} items={SIDEBAR} value={route} onSelect={setRoute} label="Workspace navigation, in place"
+            <Sidebar mode="inline" width={216} collapsed={collapsed} items={SIDEBAR} value={route} onSelect={setRoute} label="Workspace navigation, in place"
               header={collapsed ? <View style={{ alignItems: "center" }}><Avatar name="Northwind Studio" size={32} /></View> : <SidebarHeader />} />
             <Stack gap="xs" style={{ flex: 1, padding: theme.space.m }}>
               <Heading level={3} numberOfLines={1}>{title}</Heading>
               <Text size="sm" tone="muted">On a tablet the sidebar sits beside the content.</Text>
-              <Switch label="Collapse to a rail" value={collapsed} onValueChange={setCollapsed} />
             </Stack>
           </View>
         </Stack>

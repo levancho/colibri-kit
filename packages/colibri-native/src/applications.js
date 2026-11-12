@@ -607,9 +607,9 @@ function check(field, value) {
  * unless the field says otherwise.
  * onSubmit({ form, id, values }) runs only when every field is valid. Uncontrolled by default: the draft
  * survives re-renders and resets when recordKey (or model.id) or resetKey changes. Pass values and
- * onValuesChange to control it. The web model's action URL is not used: there is no page to post to.
+ * onValuesChange to control it. bare drops the card, for a form inside a Sheet or Dialog. The web model's action URL is not used: there is no page to post to.
  */
-export function ApplicationForm({ model = {}, onSubmit, onAction, values, onValuesChange, recordKey, resetKey, style }) {
+export function ApplicationForm({ model = {}, onSubmit, onAction, values, onValuesChange, recordKey, resetKey, bare = false, style }) {
   const theme = useTheme(), fields = model.fields ?? [], key = JSON.stringify([recordKey ?? model.id ?? null, resetKey ?? null]);
   const [state, setState] = useState({ key, draft: starting(fields), tried: false, done: false });
   if (state.key !== key) setState({ key, draft: starting(fields), tried: false, done: false });
@@ -621,7 +621,7 @@ export function ApplicationForm({ model = {}, onSubmit, onAction, values, onValu
     setState({ ...state, tried: false, done: true }); onSubmit?.({ form: model.form ?? "profile", id: model.id, values: { ...current } });
   };
   const reset = () => { const next = starting(fields); setState({ ...state, draft: next, tried: false, done: false }); onValuesChange?.(next); send(onAction, "reset-form", model.id); };
-  return h(Card, { gap: "m", style },
+  return h(bare ? Stack : Card, { gap: "m", style },
     h(Head, { title: model.title, description: model.description }),
     fields.map((field) => {
       const value = current[field.name], error = state.tried ? errors[field.name] : null, type = field.type ?? "text";

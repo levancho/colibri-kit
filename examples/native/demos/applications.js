@@ -191,7 +191,7 @@ function IdentityDemo() {
     <Stack>
       <ApplicationIdentity model={model} onAction={() => setEditing(true)} />
       <Sheet visible={editing} onClose={() => setEditing(false)}>
-        <ApplicationForm model={{ id: model.id, title: "Edit profile", submitLabel: "Save profile", fields }} style={{ borderWidth: 0, padding: 0, boxShadow: "none", shadowOpacity: 0, elevation: 0 }}
+        <ApplicationForm model={{ id: model.id, title: "Edit profile", submitLabel: "Save profile", fields }} bare
           onSubmit={({ values }) => { setModel({ ...model, name: values.name, role: values.role, details: [{ label: "Email", value: values.email }, ...model.details.slice(1)] }); setEditing(false); toast.show("Profile saved", { tone: "ok" }); }} />
       </Sheet>
     </Stack>
