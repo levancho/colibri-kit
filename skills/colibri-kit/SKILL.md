@@ -1,7 +1,7 @@
 ---
 name: colibri-kit
 description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, React, FreeMarker and Thymeleaf without adding Tailwind.
-version: 1.2.0
+version: 1.3.0
 license: MIT
 ---
 # Colibri Kit
@@ -89,6 +89,10 @@ import { Dialog, Tabs, Part, UI, useColibri, cx } from "@colibri-kit/ui/react";
 ```
 
 Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`, `data-variant="ghost"`). React is an optional peer dependency; JSX examples need the application’s JSX tooling. Do not also run `auto.js` on React-owned roots. The adapter refreshes a controller only when the DOM under its root changed, so event handlers may set state freely; a remote `datatable` emits `ui:query` once per user action and must be given new rows by rendering them, not by calling `refresh()`. The React adapter and automatic initializer import the full registry; explicit core-controller imports are the smaller integration for a few controls. Verify rerenders and teardown in the actual React integration.
+
+### React Native
+
+React Native has no HTML or CSS, so it uses a separate package, `@colibri-kit/native` (`packages/colibri-native/`), with the same vocabulary as props: `<Stack gap="m">`, `<Button variant="soft" size="l">`, `<Badge tone="ok">`. Wrap the app in `<ColibriProvider hue={…} scheme="auto|light|dark" radius="sharp|soft|round">` (and `<ToastProvider>` for `useToast()`); read tokens with `useTheme()` (`theme.colors.accent`, `theme.space.m`, `theme.radius.l`). Components: Screen, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Callout, Avatar, TextField, Switch, Checkbox, RadioGroup, Tabs, ListItem, List, Spinner, Progress, Dialog, Sheet. Never use `className`, `data-*` attributes, Colibri CSS files or `@colibri-kit/ui` in React Native code. It has no dependencies beyond `react` and `react-native` and works in Expo Go. See `packages/colibri-native/README.md`.
 
 ## 6. FreeMarker (Spring)
 

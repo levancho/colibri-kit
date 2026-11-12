@@ -1,4 +1,6 @@
 # Changelog
+## 1.3.0 (2026-11-12)
+- React Native: `@colibri-kit/native` (provider, `useTheme`, 23 components) with the same gap/variant/tone/size vocabulary as props; never mix it with Colibri CSS or `@colibri-kit/ui`.
 ## 1.2.0 (2026-11-10)
 - Reserved class names listed in tokens.md; `colibri classes`, `colibri collisions <file.css>` and the prefixed stylesheet (`colibri.prefixed.css`, `.c-*`) for projects that already use them.
 - CSS and UI accept each other's status words: `ok|warn|bad` and `success|warning|danger`; `danger` and `destructive`.
