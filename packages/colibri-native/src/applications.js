@@ -95,9 +95,9 @@ function Choice({ label, value, options = [], onChange }) {
 
 /** A tiny bar sparkline drawn with Views. The last bar is the current value and is drawn solid. */
 function Spark({ values = [], tone, height = 28 }) {
-  const theme = useTheme(), color = theme.colors[toneName(tone)] ?? theme.colors.accent, top = Math.max(...values, 1);
+  const theme = useTheme(), color = theme.colors[toneName(tone)] ?? theme.colors.accent, top = Math.max(...values), low = Math.min(...values); // scaled between the lowest and highest value so small changes show
   return h(View, { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants", "aria-hidden": true, style: { height, ...row(3, "flex-end") } },
-    values.map((value, index) => h(View, { key: index, style: { flex: 1, height: Math.max(2, Math.round((Math.max(0, value) / top) * height)), borderRadius: 2, backgroundColor: color, opacity: index === values.length - 1 ? 1 : 0.4 } })));
+    values.map((value, index) => h(View, { key: index, style: { flex: 1, maxWidth: 14, height: Math.max(2, Math.round((top > low ? 0.3 + (0.7 * (value - low)) / (top - low) : 1) * height)), borderRadius: 2, backgroundColor: color, opacity: index === values.length - 1 ? 1 : 0.4 } })));
 }
 
 // ---------------------------------------------------------------- application-shell
@@ -122,7 +122,7 @@ export function ApplicationShell({ model = {}, onAction, page, defaultPage, onPa
     const selected = entry.id === current;
     const icon = h(View, { style: { minWidth: rail ? 28 : 40, height: 28, paddingHorizontal: 6, borderRadius: theme.radius.full, alignItems: "center", justifyContent: "center", backgroundColor: selected ? c.accentSoft : "transparent" } },
       h(Text, { size: "sm", weight: "bold", style: { color: selected ? c.accent : c.muted } }, entry.icon ?? initials(entry.title).slice(0, 1)));
-    const badge = entry.badge == null ? null : h(Tag, { tone: "accent", style: rail ? null : { position: "absolute", top: 2, right: "18%" } }, entry.badge);
+    const badge = entry.badge == null ? null : h(Tag, { tone: "accent", style: rail ? null : { position: "absolute", top: 0, left: "58%" } }, entry.badge);
     return h(Pressable, { key: entry.id, onPress: () => go(entry.id), accessibilityRole: "button", accessibilityLabel: entry.title, accessibilityState: { selected }, "aria-current": selected ? "page" : undefined,
       style: ({ pressed }) => (rail
         ? { minHeight: theme.touch, paddingHorizontal: theme.space.xs, ...row(theme.space.xs), borderRadius: theme.radius.s, backgroundColor: selected ? c.accentSoft : pressed ? c.sunken : "transparent" }

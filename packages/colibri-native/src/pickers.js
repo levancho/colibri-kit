@@ -176,7 +176,9 @@ export function Calendar({ mode = "single", value, defaultValue, onChange, min, 
   const names = useMemo(() => dateNames(locale), [locale]);
   const start = Array.isArray(current) && mode === "range" ? current[0] : null, end = Array.isArray(current) && mode === "range" ? current[1] : null;
 
-  const blocked = (iso) => (min && iso < min) || (max && iso > max) || (typeof disabledDates === "function" ? !!disabledDates(iso) : !!disabledDates?.includes(iso));
+  // Days outside min and max are dimmed; days blocked one by one are also struck through.
+  const struck = (iso) => (typeof disabledDates === "function" ? !!disabledDates(iso) : !!disabledDates?.includes(iso));
+  const blocked = (iso) => (min && iso < min) || (max && iso > max) || struck(iso);
   const go = (months) => { const at = new Date(Date.UTC(year, monthIndex + months, 1)); setShown(fromUtc(at).slice(0, 7)); };
   const reachable = (months) => {
     const first = fromUtc(new Date(Date.UTC(year, monthIndex + months, 1))), last = fromUtc(new Date(Date.UTC(year, monthIndex + months + 1, 0)));
@@ -204,7 +206,7 @@ export function Calendar({ mode = "single", value, defaultValue, onChange, min, 
         band ? h(View, { key: "band", style: { position: "absolute", top: 3, bottom: 3, left: isStart ? "50%" : 0, right: isEnd ? "50%" : 0, backgroundColor: c.accentSoft } }) : null,
         h(View, { key: "disc", style: { width: disc, height: disc, borderRadius: disc / 2, alignItems: "center", justifyContent: "center", borderWidth: isToday && !selected ? 1.5 : 0, borderColor: c.accent,
           backgroundColor: selected ? c.accent : pressed ? c.sunken : "transparent", opacity: off ? 0.35 : 1 } },
-          h(Text, { size: "sm", weight: selected || isToday ? "bold" : "regular", style: { color: selected ? c.brandFg : outside || off ? c.muted : isToday ? c.accent : c.fg, opacity: outside && !selected ? 0.6 : 1, textDecorationLine: off && !outside ? "line-through" : "none" } }, String(+iso.slice(8)))),
+          h(Text, { size: "sm", weight: selected || isToday ? "bold" : "regular", style: { color: selected ? c.brandFg : outside || off ? c.muted : isToday ? c.accent : c.fg, opacity: outside && !selected ? 0.6 : 1, textDecorationLine: off && struck(iso) ? "line-through" : "none" } }, String(+iso.slice(8)))),
       ]);
   };
   const weeks = Array.from({ length: 6 }, (_, week) => h(View, { key: week, style: { flexDirection: "row" } }, Array.from({ length: 7 }, (__, column) => day(addDays(first, week * 7 + column - lead)))));
@@ -222,7 +224,7 @@ export function Calendar({ mode = "single", value, defaultValue, onChange, min, 
 
 // ---------------------------------------------------------------- date picker
 const CalendarGlyph = ({ color }) => h(View, { style: { width: 18, height: 17, borderWidth: 1.5, borderColor: color, borderRadius: 4, overflow: "hidden" } }, h(View, { style: { height: 4, backgroundColor: color } }));
-const DATE_LABELS = { clear: "Clear date", done: "Done", reset: "Clear", choose: "Choose a date", chooseRange: "Choose dates", start: "Start", end: "End" };
+const DATE_LABELS = { clear: "Clear date", done: "Done", reset: "Clear", choose: "Choose a date", chooseRange: "Choose dates" };
 
 /**
  * A field that opens the Calendar in a Sheet (the phone's answer to the web kit's input with a popover).
@@ -257,7 +259,7 @@ export function DatePicker({ mode = "single", value, defaultValue, onChange, lab
         ? h(Stack, { gap: "s" },
           h(Calendar, { ...shared, mode: "range", value: draft, onChange: setDraft }),
           h(Cluster, { justify: "space-between", wrap: false },
-            h(Text, { size: "sm", tone: "muted", numberOfLines: 1, style: { flex: 1 } }, draft[0] ? `${show(draft[0])} – ${draft[1] ? show(draft[1]) : "…"}` : prompt),
+            h(Text, { size: "sm", tone: "muted", numberOfLines: 2, style: { flex: 1 } }, draft[0] ? `${show(draft[0])} – ${draft[1] ? show(draft[1]) : "…"}` : prompt),
             h(Button, { title: words.reset, variant: "ghost", disabled: !draft[0], onPress: () => setDraft([null, null]) }),
             h(Button, { title: words.done, disabled: !draft[0] || !draft[1], onPress: () => { set(draft); setVisible(false); }, testID: testID ? `${testID}-done` : undefined })))
         : h(Calendar, { ...shared, mode: "single", value: current, onChange: (iso) => { set(iso); setVisible(false); } })));
@@ -309,8 +311,8 @@ export function ColorPicker({ value, defaultValue, onChange, onChangeEnd, swatch
     label ? h(Text, { size: "sm", weight: "semibold" }, label) : null,
     h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs } },
       h(View, { accessibilityRole: "image", accessibilityLabel: hex, style: { width: theme.touch, height: theme.touch, borderRadius: theme.radius.s, borderWidth: 1, borderColor: c.line, backgroundColor: hex } }),
-      showInput ? h(TextField, { testID: testID ? `${testID}-hex` : undefined, accessibilityLabel: words.hex, value: draft ?? hex, editable: !disabled, autoCapitalize: "none", autoCorrect: false, maxLength: 7, placeholder: "#rrggbb", style: { flex: 1 },
-        error: draft != null && !normalHex(draft) ? " " : undefined, inputStyle: { fontVariant: ["tabular-nums"] },
+      showInput ? h(TextField, { testID: testID ? `${testID}-hex` : undefined, accessibilityLabel: words.hex, value: draft ?? hex, editable: !disabled, autoCapitalize: "none", autoCorrect: false, maxLength: 7, selectTextOnFocus: true, placeholder: "#rrggbb", style: { flex: 1 },
+        "aria-invalid": draft != null && !normalHex(draft), inputStyle: draft != null && !normalHex(draft) ? { borderColor: c.bad } : null,
         onChangeText: (typed) => { setDraft(typed); const next = normalHex(typed); if (next && typed.replace("#", "").length === 6) { setKept(hexToHsl(next)); set(next); } },
         onBlur: () => { const next = normalHex(draft); setDraft(null); if (next) pick(next); } }) : h(Text, { weight: "medium", style: { flex: 1 } }, hex)),
     sliders ? rows.map((row) => h(View, { key: row.name },
@@ -563,24 +565,27 @@ export function Sortable({ value, defaultValue, onChange, renderItem, keyExtract
     disabled,
     start(key) {
       const from = keys.indexOf(key);
-      if (from < 0 || keys.some((each) => !layouts.current[each])) return;
-      dragY.setValue(0); state.current = { key, from, to: from, dy: 0 }; setSettle(null); setDrag({ key, from, to: from });
+      if (from < 0 || keys.some((each) => !(layouts.current[each] > 0))) return;
+      // Row positions come from the measured heights and the current order, so they are never stale after a reorder.
+      const box = {}; let y = 0;
+      for (const each of keys) { box[each] = { y, height: layouts.current[each] }; y += layouts.current[each] + space; }
+      dragY.setValue(0); state.current = { key, from, to: from, dy: 0, box }; setSettle(null); setDrag({ key, from, to: from, height: box[key].height });
     },
     move(dy) {
       const at = state.current; if (!at) return;
-      const box = layouts.current, own = box[at.key], top = box[keys[0]], bottom = box[keys[keys.length - 1]];
+      const box = at.box, own = box[at.key], top = box[keys[0]], bottom = box[keys[keys.length - 1]];
       const y = clamp(dy, top.y - own.y, bottom.y + bottom.height - own.y - own.height);
       dragY.setValue(y); at.dy = y;
       let to = at.from;
       if (y > 0) for (let i = at.from + 1; i < keys.length; i++) { const other = box[keys[i]]; if (own.y + own.height + y > other.y + other.height / 2) to = i; else break; }
       else for (let i = at.from - 1; i >= 0; i--) { const other = box[keys[i]]; if (own.y + y < other.y + other.height / 2) to = i; else break; }
-      if (to !== at.to) { at.to = to; setDrag({ key: at.key, from: at.from, to }); }
+      if (to !== at.to) { at.to = to; setDrag({ key: at.key, from: at.from, to, height: own.height }); }
     },
     end() {
       const at = state.current; if (!at) return;
       state.current = null; setDrag(null);
       // How far the row's slot moved: the heights (and gaps) of the rows it jumped over.
-      const box = layouts.current, lo = Math.min(at.from, at.to), hi = Math.max(at.from, at.to);
+      const box = at.box, lo = Math.min(at.from, at.to), hi = Math.max(at.from, at.to);
       let travel = 0; for (let i = lo; i <= hi; i++) if (i !== at.from) travel += box[keys[i]].height + space;
       setSettle({ key: at.key, offset: at.dy - (at.to > at.from ? travel : -travel) });
       dragY.setValue(0);
@@ -594,12 +599,12 @@ export function Sortable({ value, defaultValue, onChange, renderItem, keyExtract
   });
   // Moving a row with the keyboard reorders the DOM; keep the focus on the grip that was used.
   useEffect(() => { if (!refocus.current) return; control.current.grips.get(refocus.current)?.current?.focus?.(); refocus.current = null; });
-  const own = drag ? layouts.current[drag.key] : null;
+  const slide = drag ? drag.height + space : 0;
   return h(View, { testID, accessibilityRole: "list", accessibilityLabel: label, style: flat({ gap: space }, style) }, items.map((item, index) => {
     const key = keys[index], active = drag?.key === key;
-    const shift = !drag || active || !own ? 0 : index > drag.from && index <= drag.to ? -(own.height + space) : index < drag.from && index >= drag.to ? own.height + space : 0;
+    const shift = !drag || active ? 0 : index > drag.from && index <= drag.to ? -slide : index < drag.from && index >= drag.to ? slide : 0;
     return h(SortableRow, { key, itemKey: key, label: nameOf(item), index, count: items.length, active, shift, animate: !!drag, dragY, settle, control, disabled, handle,
-      onLayout: (event) => { const { y, height } = event.nativeEvent.layout; layouts.current[key] = { y, height }; } },
+      onLayout: (event) => { layouts.current[key] = event.nativeEvent.layout.height; } },
       renderItem ? renderItem({ item, index, dragging: active }) : h(Text, { weight: "medium", numberOfLines: 1 }, nameOf(item)));
   }));
 }

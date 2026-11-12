@@ -86,7 +86,8 @@ export default [
         </Card>
         <Card gap="xs">
           <Text size="sm" weight="semibold">Language</Text>
-          <Tabs value={locale} onChange={setLocale} options={[{ value: "en", label: "English" }, { value: "ka", label: "ქართული" }, { value: "de", label: "Deutsch" }]} />
+          <Tabs value={locale} onChange={setLocale} options={[{ value: "en", label: "English" }, { value: "de", label: "Deutsch" }, { value: "ka", label: "ქართული" }]} />
+          <Text size="xs" tone="muted">Names come from Intl; a device without that language shows English.</Text>
         </Card>
       </Stack>
     );

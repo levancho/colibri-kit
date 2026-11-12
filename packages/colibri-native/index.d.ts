@@ -90,6 +90,7 @@ export * from "./types/base";
 export * from "./types/data";
 export * from "./types/menus";
 export * from "./types/navigation";
+export * from "./types/mobile";
 export * from "./types/forms";
 export * from "./types/pickers";
 export * from "./types/conversation";

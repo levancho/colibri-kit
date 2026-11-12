@@ -5,6 +5,7 @@ import base from "./base.js";
 import data from "./data.js";
 import menus from "./menus.js";
 import navigation from "./navigation.js";
+import mobile from "./mobile.js";
 import forms from "./forms.js";
 import pickers from "./pickers.js";
 import conversation from "./conversation.js";
@@ -20,6 +21,7 @@ export const GROUPS = [
   group("base", "Display", "Surfaces, typography and small building blocks.", base),
   group("data", "Data display", "Tables, lists, carousels and placeholders.", data),
   group("menus", "Overlays and menus", "Things that open above the screen.", menus),
+  group("mobile", "Phone patterns", "Pieces only a phone app needs: bottom bar, app bar, swipe rows, action sheets.", mobile),
   group("navigation", "Navigation", "Moving between and within screens.", navigation),
   group("forms", "Forms", "Inputs and selection controls.", forms),
   group("pickers", "Pickers", "Sliders, dates, colours, files and reordering.", pickers),
