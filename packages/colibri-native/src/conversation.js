@@ -139,7 +139,8 @@ export function TraceStep({ title, status = "done", duration, glyph, detail, ope
   const line = [h(View, { key: "m", style: { width: 20, height: 20, alignItems: "center", justifyContent: "center" } }, mark),
     typeof title === "string" ? h(Text, { key: "t", size: "sm", tone: status === "running" || status === "pending" ? "muted" : status === "error" ? "bad" : undefined, style: { flex: 1 } }, title) : h(View, { key: "t", style: { flex: 1 } }, title),
     duration != null ? h(Text, { key: "d", size: "xs", tone: "muted", style: { fontVariant: ["tabular-nums"] } }, formatDuration(duration)) : null,
-    has ? h(NativeText, { key: "c", style: { color: c.muted, fontSize: theme.text.md, lineHeight: 20, width: 12, textAlign: "center", transform: [{ rotate: shown ? "90deg" : "0deg" }] } }, GLYPH.chevronRight) : null];
+    // The chevron slot is always there, so durations line up whether or not a line opens.
+    h(NativeText, { key: "c", style: { color: c.muted, fontSize: theme.text.md, lineHeight: 20, width: 12, textAlign: "center", transform: [{ rotate: shown ? "90deg" : "0deg" }] } }, has ? GLYPH.chevronRight : "")];
   const row = { minHeight: 36, paddingVertical: theme.space["2xs"], flexDirection: "row", alignItems: "center", gap: theme.space.xs };
   const label = `${typeof title === "string" ? title : "Step"}, ${STATUS_WORD[status] ?? status}${duration != null ? `, ${formatDuration(duration)}` : ""}`;
   return h(View, { ...webRole("listitem"), style }, has

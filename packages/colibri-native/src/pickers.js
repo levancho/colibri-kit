@@ -317,11 +317,11 @@ export function ColorPicker({ value, defaultValue, onChange, onChangeEnd, swatch
       h(View, { style: { flexDirection: "row", justifyContent: "space-between" } }, h(Text, { size: "xs", weight: "semibold", tone: "muted" }, row.name), h(Text, { size: "xs", tone: "muted" }, `${row.now}${row.unit}`)),
       h(SliderCore, { label: row.name, min: 0, max: row.max, step: 1, value: row.now, disabled, formatValue: (v) => `${v}${row.unit}`, thumbColor: hex, track: h(ColorTrack, { colors: row.colors, line: c.line }),
         onChange: (v) => apply(row.to(v)), onChangeEnd: (v) => onChangeEnd?.(hslToHex(...row.to(v))), testID: testID ? `${testID}-${row.name.toLowerCase()}` : undefined }))) : null,
-    list.length ? h(View, { accessibilityRole: "radiogroup", accessibilityLabel: words.swatches, style: { flexDirection: "row", flexWrap: "wrap", gap: theme.space.xs } }, list.map((entry) => {
+    list.length ? h(View, { accessibilityRole: "radiogroup", accessibilityLabel: words.swatches, style: { flexDirection: "row", flexWrap: "wrap", gap: theme.space["2xs"] } }, list.map((entry) => {
       const selected = entry.value === hex;
-      return h(Pressable, { key: entry.value, onPress: () => pick(entry.value), disabled, hitSlop: 4, accessibilityRole: "radio", accessibilityLabel: entry.label, accessibilityState: { selected, checked: selected, disabled }, "aria-checked": selected, "aria-disabled": disabled,
-        style: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: selected ? c.fg : "transparent" } },
-        h(View, { style: { width: 26, height: 26, borderRadius: 13, backgroundColor: entry.value, borderWidth: 1, borderColor: c.line } }));
+      return h(Pressable, { key: entry.value, onPress: () => pick(entry.value), disabled, hitSlop: 5, accessibilityRole: "radio", accessibilityLabel: entry.label, accessibilityState: { selected, checked: selected, disabled }, "aria-checked": selected, "aria-disabled": disabled,
+        style: { width: 34, height: 34, borderRadius: 17, alignItems: "center", justifyContent: "center", borderWidth: 2, borderColor: selected ? c.fg : "transparent" } },
+        h(View, { style: { width: 24, height: 24, borderRadius: 12, backgroundColor: entry.value, borderWidth: 1, borderColor: c.line } }));
     })) : null);
 }
 
@@ -377,17 +377,16 @@ export function FileInput({ value, defaultValue, onChange, onPick, onReject, mul
       const result = await onPick({ multiple, accept, maxFiles: multiple ? limit - files.length : 1 });
       if (!alive.current) return;
       const picked = result == null ? [] : Array.isArray(result) ? result : [result], accepted = [], rejected = [];
-      let room = multiple ? limit - files.length : 1, overflow = false;
+      let room = multiple ? limit - files.length : 1;
       for (const file of picked) {
         const name = fileName(file);
         if (!accepts(file, accept)) rejected.push({ file, reason: "type", message: say.wrongType(name) });
         else if (bytes != null && fileSize(file) > bytes) rejected.push({ file, reason: "size", message: say.tooLarge(name, showBytes(bytes)) });
-        else if (room <= 0) { rejected.push({ file, reason: "count", message: say.tooMany(limit) }); overflow = true; }
+        else if (room <= 0) rejected.push({ file, reason: "count", message: say.tooMany(limit) });
         else { accepted.push(file); room--; }
       }
       if (accepted.length) set(multiple ? [...files, ...accepted] : accepted);
       if (rejected.length) { setProblems([...new Set(rejected.map((entry) => entry.message))]); onReject?.(rejected); }
-      void overflow;
     } catch { if (alive.current) setProblems([say.failed]); } finally { if (alive.current) setBusy(false); }
   };
   const remove = (index) => { setProblems([]); set(files.filter((_, at) => at !== index)); };

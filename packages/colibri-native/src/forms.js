@@ -87,7 +87,8 @@ function fieldA11y(field, label) {
 /**
  * Label, description and error around any control. The control inside (Input, Textarea, PasswordInput, PinInput,
  * Select, NativeSelect, Combobox) picks up the label as its accessible name, the invalid and disabled state, and on the
- * web aria-labelledby / aria-describedby. Pressing the label focuses the control. error (a string) marks it invalid.
+ * web aria-labelledby / aria-describedby. Pressing the label focuses the control. error (a message, or true for no
+ * message) marks it invalid.
  */
 export function Field({ label, description, error, required = false, disabled = false, gap = "2xs", style, children, ...rest }) {
   const theme = useTheme(), id = useId(), controlRef = useRef(null), invalid = !!error;
@@ -207,7 +208,7 @@ export const PinInput = forwardRef(function PinInput({ length = 6, value, defaul
         char ? (mask ? h(View, { style: { width: 10, height: 10, borderRadius: 5, backgroundColor: c.fg } }) : h(Text, { size: dims.text, weight: "semibold" }, char))
           : current ? h(View, { style: { width: 2, height: Math.round(dims.h * 0.42), borderRadius: 1, backgroundColor: c.accent } }) : null);
     }),
-    h(TextInput, { ref: (node) => { if (field) field.controlRef.current = node; setRef(ref, node); }, value: code, onChangeText: change, editable: !off, autoFocus, maxLength: web ? undefined : length, caretHidden: true, contextMenuHidden: false,
+    h(TextInput, { ref: (node) => { if (field) field.controlRef.current = node; setRef(ref, node); }, value: code, onChangeText: change, editable: !off, autoFocus, caretHidden: true, contextMenuHidden: false,
       keyboardType: type === "numeric" ? "number-pad" : "default", inputMode: type === "numeric" ? "numeric" : "text", autoComplete: "one-time-code", textContentType: "oneTimeCode", autoCapitalize: "characters", autoCorrect: false, secureTextEntry: mask,
       ...fieldA11y(field, accessibilityLabel ?? (field?.label ? undefined : mask ? "PIN" : "Verification code")), accessibilityState: { disabled: off }, "aria-invalid": bad || undefined, selectionColor: "transparent",
       onFocus: (event) => { setFocused(true); onFocus?.(event); }, onBlur: (event) => { setFocused(false); onBlur?.(event); },
@@ -324,7 +325,7 @@ export const Combobox = forwardRef(function Combobox({ options = [], value, defa
     else { setSelected(item); setText(labelOf(item)); setDirty(false); setOpen(false); input.current?.blur(); }
   };
   const submit = () => { const entry = text.trim(); if (custom) commit(entry); else if (dirty && visible.length === 1 && !visible[0].disabled) commit(visible[0].value); };
-  const close = () => { setOpen(false); setDirty(false); if (multiple) setText(""); else if (allowCustom && dirty && text.trim()) setSelected(text.trim()); else setText(labelOf(selected)); };
+  const close = () => { setOpen(false); setDirty(false); if (onSearch) { clearTimeout(searching.current); request.current++; setRemote(null); setBusy(false); } if (multiple) setText(""); else if (allowCustom && dirty && text.trim()) setSelected(text.trim()); else setText(labelOf(selected)); };
   const a11y = fieldA11y(field, accessibilityLabel);
   return h(View, { style: flat({ gap: theme.space["2xs"] }, style) },
     multiple && picked.length ? h(View, { style: { flexDirection: "row", flexWrap: "wrap", gap: theme.space["2xs"], marginBottom: theme.space["3xs"] } }, picked.map((item) =>

@@ -42,6 +42,8 @@ const STATUS_TONES = [
 ];
 /** The tone of a status word. model.tones ({ Paid: "ok" }) overrides the built-in guesses. */
 const statusTone = (status, tones) => tones?.[status] ?? STATUS_TONES.find(([, pattern]) => pattern.test(String(status ?? "").trim()))?.[0];
+/** A Badge that follows the alignment of the row or column it is in (a bare Badge pins itself to the start). */
+const Tag = ({ style, ...rest }) => h(Badge, { style: flat({ alignSelf: "auto" }, style), ...rest });
 const row = (gap = 8, align = "center") => ({ flexDirection: "row", alignItems: align, gap });
 
 function Head({ title, description, level = 3, trailing }) {
@@ -94,8 +96,8 @@ function Choice({ label, value, options = [], onChange }) {
 /** A tiny bar sparkline drawn with Views. The last bar is the current value and is drawn solid. */
 function Spark({ values = [], tone, height = 28 }) {
   const theme = useTheme(), color = theme.colors[toneName(tone)] ?? theme.colors.accent, top = Math.max(...values, 1);
-  return h(View, { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants", "aria-hidden": true, style: { height, ...row(2, "flex-end") } },
-    values.map((value, index) => h(View, { key: index, style: { flex: 1, maxWidth: 10, height: Math.max(2, Math.round((Math.max(0, value) / top) * height)), borderRadius: 2, backgroundColor: color, opacity: index === values.length - 1 ? 1 : 0.4 } })));
+  return h(View, { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants", "aria-hidden": true, style: { height, ...row(3, "flex-end") } },
+    values.map((value, index) => h(View, { key: index, style: { flex: 1, height: Math.max(2, Math.round((Math.max(0, value) / top) * height)), borderRadius: 2, backgroundColor: color, opacity: index === values.length - 1 ? 1 : 0.4 } })));
 }
 
 // ---------------------------------------------------------------- application-shell
@@ -120,7 +122,7 @@ export function ApplicationShell({ model = {}, onAction, page, defaultPage, onPa
     const selected = entry.id === current;
     const icon = h(View, { style: { minWidth: rail ? 28 : 40, height: 28, paddingHorizontal: 6, borderRadius: theme.radius.full, alignItems: "center", justifyContent: "center", backgroundColor: selected ? c.accentSoft : "transparent" } },
       h(Text, { size: "sm", weight: "bold", style: { color: selected ? c.accent : c.muted } }, entry.icon ?? initials(entry.title).slice(0, 1)));
-    const badge = entry.badge == null ? null : h(Badge, { tone: "accent", style: rail ? null : { position: "absolute", top: 2, right: "18%" } }, entry.badge);
+    const badge = entry.badge == null ? null : h(Tag, { tone: "accent", style: rail ? null : { position: "absolute", top: 2, right: "18%" } }, entry.badge);
     return h(Pressable, { key: entry.id, onPress: () => go(entry.id), accessibilityRole: "button", accessibilityLabel: entry.title, accessibilityState: { selected }, "aria-current": selected ? "page" : undefined,
       style: ({ pressed }) => (rail
         ? { minHeight: theme.touch, paddingHorizontal: theme.space.xs, ...row(theme.space.xs), borderRadius: theme.radius.s, backgroundColor: selected ? c.accentSoft : pressed ? c.sunken : "transparent" }
@@ -169,9 +171,8 @@ export function ApplicationMetrics({ model = {}, onAction, columns, style }) {
         accessibilityLabel: `${item.label}: ${item.value}${item.change ? ", " + item.change : ""}`,
         style: { flexGrow: 1, flexShrink: 1, flexBasis: `${Math.floor(100 / perRow) - 6}%`, minWidth: 140, padding: theme.space.s } },
         h(Text, { size: "sm", tone: "muted", weight: "medium", numberOfLines: 1 }, item.label),
-        h(View, { style: row(theme.space.xs, "flex-end") },
-          h(Text, { size: "xl", weight: "bold", numberOfLines: 1, adjustsFontSizeToFit: true, style: { flex: 1, letterSpacing: -0.4 } }, item.value),
-          item.series?.length ? h(View, { style: { width: 56 } }, h(Spark, { values: item.series, tone: tone ?? "accent" })) : null),
+        h(Text, { size: "xl", weight: "bold", numberOfLines: 1, adjustsFontSizeToFit: true, style: { letterSpacing: -0.4 } }, item.value),
+        item.series?.length ? h(Spark, { values: item.series, tone: tone ?? "accent", height: 24 }) : null,
         item.change ? h(View, { style: row(6, "flex-start") },
           trend ? h(View, { style: { width: 18, height: 18, marginTop: 1, borderRadius: 9, alignItems: "center", justifyContent: "center", backgroundColor: t ? t.soft : theme.colors.sunken } },
             h(Text, { weight: "bold", style: { fontSize: 11, lineHeight: 14, color: t ? t.fg : theme.colors.muted } }, trend === "up" ? GLYPH.arrowUp : GLYPH.arrowDown)) : null,
@@ -227,7 +228,7 @@ export function ApplicationChart({ model, onAction, range, onRangeChange, height
               style: { flex: 1, flexDirection: "row", alignItems: "flex-end", justifyContent: "center", gap: n > 20 ? 1 : 2, borderTopLeftRadius: 4, borderTopRightRadius: 4, backgroundColor: picked === index ? c.sunken : "transparent" } },
               labels.map((label, column) => h(View, { key: label, style: { flex: 1, maxWidth: 16, height: `${(value(entry, column) / top) * 100}%`, minHeight: 1, borderTopLeftRadius: 3, borderTopRightRadius: 3, backgroundColor: colors[column % colors.length], opacity: picked == null || picked === index ? 1 : 0.45 } })))))),
       ),
-      h(View, { style: { marginLeft: 38, flexDirection: "row", justifyContent: "space-between", gap: n <= 7 ? gap : 0 } }, marks.map((index) =>
+      h(View, { style: { marginLeft: 38, flexDirection: "row", justifyContent: "space-between" } }, marks.map((index) =>
         h(Text, { key: index, size: "xs", tone: "muted", numberOfLines: 1, style: flat({ fontSize: 11 }, n <= 7 && { flex: 1, textAlign: "center" }) }, visible[index]?.label)))) : h(Text, { tone: "muted" }, "No data available."),
     h(View, { style: { minHeight: 36, paddingHorizontal: theme.space.s, paddingVertical: theme.space.xs, justifyContent: "center", borderRadius: theme.radius.s, backgroundColor: c.sunken } },
       h(Text, { size: "sm", accessibilityRole: "text", accessibilityLiveRegion: "polite", accessibilityLabel: selected ? undefined : summary },
@@ -273,7 +274,7 @@ export function ApplicationTable({ model = {}, onAction, searchable = true, sort
   const table = layout === "columns" || (layout === "auto" && width >= WIDE);
   const sortBy = (column) => setSort(sort.column !== column ? { column, dir: 1 } : sort.dir === 1 ? { column, dir: -1 } : { column: -1, dir: 1 });
   const arrow = (column) => (sort.column === column ? (sort.dir === 1 ? GLYPH.arrowUp : GLYPH.arrowDown) : null);
-  const badge = (entry) => (statusAt >= 0 && entry.cells?.[statusAt] ? h(Badge, { tone: statusTone(entry.cells[statusAt], model.tones) }, entry.cells[statusAt]) : null);
+  const badge = (entry) => (statusAt >= 0 && entry.cells?.[statusAt] ? h(Tag, { tone: statusTone(entry.cells[statusAt], model.tones) }, entry.cells[statusAt]) : null);
   const label = (entry) => columns.map((column, index) => `${column}: ${entry.cells?.[index] ?? ""}`).join(", ");
   const others = columns.map((_, index) => index).filter((index) => index !== 0 && index !== statusAt), last = others.length > 1 ? others[others.length - 1] : -1;
   const record = (entry, index) => h(Pressable, { key: entry.id ?? index, onPress: () => send(onAction, "view-record", entry.id), accessibilityRole: "button", accessibilityLabel: label(entry),
@@ -287,7 +288,7 @@ export function ApplicationTable({ model = {}, onAction, searchable = true, sort
         last >= 0 ? h(Text, { size: "sm", weight: "semibold", style: { fontVariant: ["tabular-nums"] } }, entry.cells?.[last]) : null, badge(entry))],
     h(Text, { key: "go", tone: "muted", size: "lg" }, GLYPH.chevronRight));
   return h(Card, { style },
-    h(Head, { title: model.title, description: model.description, trailing: h(Badge, null, visible.length === rows.length ? `${rows.length}` : `${visible.length} of ${rows.length}`) }),
+    h(Head, { title: model.title, description: model.description, trailing: h(Tag, null, visible.length === rows.length ? `${rows.length}` : `${visible.length} of ${rows.length}`) }),
     searchable ? h(TextField, { value: query, onChangeText: setQuery, placeholder: "Search records", accessibilityLabel: "Search records", autoCapitalize: "none", autoCorrect: false, returnKeyType: "search" }) : null,
     statuses.length > 1 ? h(ChipRow, { label: "Filter by status" },
       h(Chip, { label: "All", selected: !status, onPress: () => setStatus(null), detail: rows.length }),
@@ -334,7 +335,7 @@ export function ApplicationBoard({ model = {}, onAction, style }) {
       contentContainerStyle: { gap, alignItems: "flex-start", paddingBottom: theme.space["2xs"] } },
       lanes.map((lane) => h(View, { key: lane.id, accessibilityLabel: `${lane.title}, ${lane.deals?.length ?? 0} opportunities`, style: { width: laneWidth, padding: theme.space.xs, gap: theme.space.xs, borderRadius: theme.radius.l, borderWidth: 1, borderColor: c.line, backgroundColor: c.sunken } },
         h(View, { style: { ...row(theme.space.xs), paddingHorizontal: theme.space["2xs"], minHeight: 32 } },
-          h(Text, { weight: "bold", numberOfLines: 1, style: { flexShrink: 1 } }, lane.title), h(Badge, null, lane.deals?.length ?? 0),
+          h(Text, { weight: "bold", numberOfLines: 1, style: { flexShrink: 1 } }, lane.title), h(Tag, null, lane.deals?.length ?? 0),
           h(View, { style: { flex: 1 } }), total(lane) ? h(Text, { size: "sm", tone: "muted", weight: "medium" }, total(lane)) : null),
         lane.deals?.length ? lane.deals.map((deal) => h(Pressable, { key: deal.id, onPress: () => { setOpen(deal.id); send(onAction, "edit-deal", deal.id); }, accessibilityRole: "button", accessibilityLabel: `${deal.company}, ${deal.value}, ${deal.owner}. Change stage`,
           style: ({ pressed }) => ({ padding: theme.space.s, gap: theme.space.xs, borderRadius: theme.radius.m, borderWidth: 1, borderColor: c.line, backgroundColor: pressed ? c.bg : c.surface, ...depth(theme.shadow.s) }) },
@@ -369,7 +370,7 @@ export function ApplicationProjects({ model = {}, onAction, style }) {
         h(View, { style: { padding: theme.space.m, gap: theme.space.s } },
           h(View, { style: row(theme.space.xs, "flex-start") },
             h(View, { style: { flex: 1, gap: 2 } }, h(Heading, { level: 4 }, project.name), h(Text, { size: "sm", tone: "muted" }, project.description)),
-            project.status ? h(Badge, { tone: statusTone(project.status, model.tones) }, project.status) : null),
+            project.status ? h(Tag, { tone: statusTone(project.status, model.tones) }, project.status) : null),
           h(View, { style: { gap: theme.space["2xs"] } },
             h(View, { style: { ...row(8), justifyContent: "space-between" } }, h(Text, { size: "xs", weight: "semibold", tone: "muted" }, "Progress"), h(Text, { size: "xs", weight: "bold" }, `${progress}%`)),
             h(Progress, { value: progress / 100, tone: progress >= 100 ? "ok" : "accent" })),
@@ -394,7 +395,7 @@ export function ApplicationPlanner({ model = {}, onAction, style }) {
   const events = [...(model.events ?? [])].filter((event) => !days.length || event.day == null || event.day === day)
     .sort((a, b) => String(a.datetime ?? "").localeCompare(String(b.datetime ?? "")));
   return h(Card, { style },
-    h(Head, { title: model.title, description: model.description, trailing: h(Badge, { tone: events.length ? "accent" : undefined }, `${events.length} ${events.length === 1 ? "event" : "events"}`) }),
+    h(Head, { title: model.title, description: model.description, trailing: h(Tag, { tone: events.length ? "accent" : undefined }, `${events.length} ${events.length === 1 ? "event" : "events"}`) }),
     days.length ? h(View, { accessibilityRole: "tablist", style: { flexDirection: "row", gap: theme.space["2xs"] } }, days.map((entry) => {
       const selected = entry.id === day;
       return h(Pressable, { key: entry.id, onPress: () => { setDay(entry.id); send(onAction, "select-day", entry.id); }, accessibilityRole: "tab", accessibilityLabel: `${entry.label} ${entry.day}`, accessibilityState: { selected }, "aria-selected": selected,
@@ -414,8 +415,8 @@ export function ApplicationPlanner({ model = {}, onAction, style }) {
           style: ({ pressed }) => ({ flex: 1, marginVertical: theme.space["2xs"], minHeight: theme.touch, paddingVertical: theme.space.xs, paddingHorizontal: theme.space.s, ...row(theme.space.xs), borderRadius: theme.radius.m, borderLeftWidth: 3, borderLeftColor: tone.fg, backgroundColor: pressed ? tone.soft : tone.tint }) },
           h(View, { style: { flex: 1, gap: 1 } },
             h(Text, { weight: "semibold", numberOfLines: 2 }, event.title),
-            event.location ? h(Text, { size: "sm", tone: "muted", numberOfLines: 2 }, event.location) : null),
-          event.tag ? h(Badge, { tone: event.tone ?? "accent" }, event.tag) : null,
+            event.location ? h(Text, { size: "sm", tone: "muted", numberOfLines: 2 }, event.location) : null,
+            event.tag ? h(Tag, { tone: event.tone ?? "accent", style: { alignSelf: "flex-start", marginTop: 4 } }, event.tag) : null),
           h(Text, { tone: "muted", size: "lg" }, GLYPH.chevronRight)));
     })) : h(View, { style: { padding: theme.space.l, alignItems: "center" } }, h(Text, { tone: "muted" }, "Nothing scheduled.")));
 }
@@ -433,7 +434,7 @@ export function ApplicationIdentity({ model = {}, onAction, style }) {
     h(View, { style: { padding: theme.space.m, paddingTop: 0, gap: theme.space.s } },
       h(View, { style: { ...row(theme.space.s, "flex-end"), marginTop: -32 } },
         h(Avatar, { name: model.name, source: model.source, size: 72, style: { borderWidth: 3, borderColor: c.surface } }),
-        h(View, { style: { flex: 1 } }), model.status ? h(Badge, { tone: statusTone(model.status, model.tones), style: { marginBottom: 6 } }, model.status) : null),
+        h(View, { style: { flex: 1 } }), model.status ? h(Tag, { tone: statusTone(model.status, model.tones), style: { alignSelf: "flex-end", marginBottom: 6 } }, model.status) : null),
       h(View, { style: { gap: 2 } }, h(Heading, { level: 3 }, model.name), model.role ? h(Text, { tone: "muted" }, model.role) : null),
       model.stats?.length ? h(View, { style: { flexDirection: "row", borderRadius: theme.radius.m, backgroundColor: c.sunken } }, model.stats.map((stat, index) =>
         h(View, { key: stat.label, style: { flex: 1, paddingVertical: theme.space.xs, alignItems: "center", borderLeftWidth: index ? 1 : 0, borderLeftColor: c.line } },
@@ -482,7 +483,7 @@ export function ApplicationProducts({ model = {}, onAction, quantities, onQuanti
             round(GLYPH.minus, `Remove one ${product.name}`, () => set(product, quantity - 1)),
             h(Text, { weight: "bold", align: "center", accessibilityLabel: `${quantity} in order`, style: { minWidth: 20, fontVariant: ["tabular-nums"] } }, quantity),
             round(GLYPH.plus, `Add one ${product.name}`, () => set(product, quantity + 1), quantity >= limit))
-            : h(Button, { title: soldOut ? "Sold out" : "Add", variant: "soft", size: "s", disabled: soldOut, accessibilityLabel: `Add ${product.name} to order`, onPress: () => set(product, 1) })));
+            : h(Button, { title: soldOut ? "Sold out" : "Add", variant: "soft", size: "s", style: { alignSelf: "center" }, disabled: soldOut, accessibilityLabel: `Add ${product.name} to order`, onPress: () => set(product, 1) })));
     }),
     h(View, { accessibilityLiveRegion: "polite", style: { padding: theme.space.m, gap: theme.space.xs, borderRadius: theme.radius.l, borderWidth: 1, borderColor: c.line, backgroundColor: c.sunken } },
       h(Text, { size: "xs", weight: "bold", tone: "muted", style: { letterSpacing: 1, textTransform: "uppercase" } }, "Order summary"),
@@ -511,7 +512,7 @@ export function ApplicationReceipt({ model = {}, onAction, style }) {
     h(Text, { size: strong ? "md" : "sm", tone: strong === false ? "muted" : undefined, weight: strong ? "medium" : "regular", style: { fontVariant: ["tabular-nums"] } }, entry.amount));
   const dashed = h(View, { style: { height: 1, borderTopWidth: 1, borderStyle: "dashed", borderColor: c.line } });
   return h(Card, { style },
-    h(Head, { title: model.title, description: model.description, trailing: model.status ? h(Badge, { tone: statusTone(model.status, model.tones) }, model.status) : null }),
+    h(Head, { title: model.title, description: model.description, trailing: model.status ? h(Tag, { tone: statusTone(model.status, model.tones) }, model.status) : null }),
     dashed,
     h(View, { style: { gap: theme.space.xs } }, (model.items ?? []).map((entry, index) => line(entry, index, true))),
     model.totals?.length ? [h(View, { key: "rule" }, dashed), h(View, { key: "totals", style: { gap: theme.space["2xs"] } }, model.totals.map((entry, index) => line(entry, index, false)))] : null,
@@ -551,7 +552,7 @@ export function ApplicationConversation({ model = {}, onAction, onSubmit, style 
   };
   const queue = h(Card, { padded: false, gap: 0, accessibilityLabel: "Tickets", style: flat({ overflow: "hidden" }, wide && { width: 300 }) },
     h(View, { style: { ...row(theme.space.xs), justifyContent: "space-between", paddingHorizontal: theme.space.m, paddingVertical: theme.space.xs, backgroundColor: c.sunken } },
-      h(Text, { size: "xs", weight: "bold", tone: "muted", style: { letterSpacing: 1, textTransform: "uppercase" } }, "Tickets"), h(Badge, null, tickets.length)),
+      h(Text, { size: "xs", weight: "bold", tone: "muted", style: { letterSpacing: 1, textTransform: "uppercase" } }, "Tickets"), h(Tag, null, tickets.length)),
     tickets.map((entry) => {
       const selected = entry.id === state.id, status = edit(entry.id).status ?? (entry.id === model.selected?.id ? model.selected.status : null) ?? entry.status;
       return h(Pressable, { key: entry.id, onPress: () => { setState({ ...state, id: entry.id }); setDraft(""); setError(null); send(onAction, "select-ticket", entry.id); },
@@ -561,10 +562,10 @@ export function ApplicationConversation({ model = {}, onAction, onSubmit, style 
         h(View, { style: { flex: 1, gap: 1 } },
           h(Text, { size: "sm", weight: "semibold", numberOfLines: 1 }, entry.customer),
           h(Text, { size: "sm", tone: "muted", numberOfLines: 1 }, entry.title)),
-        h(Badge, { tone: statusTone(status, model.tones) }, status));
+        h(Tag, { tone: statusTone(status, model.tones) }, status));
     }));
   const thread = ticket ? h(Card, { style: wide ? { flex: 1 } : null },
-    h(Head, { title: ticket.title, description: `${ticket.customer} · #${ticket.id}`, trailing: h(Badge, { tone: statusTone(ticket.status, model.tones) }, ticket.status) }),
+    h(Head, { title: ticket.title, description: `${ticket.customer} · #${ticket.id}`, trailing: h(Tag, { tone: statusTone(ticket.status, model.tones) }, ticket.status) }),
     h(View, { style: { flexDirection: "row", flexWrap: "wrap", gap: theme.space.s } },
       h(Choice, { label: "Assigned to", value: ticket.assigned, options: ["Unassigned", ...(model.agents ?? [])], onChange: (value) => { patch("assigned", value); send(onAction, "assign-ticket", ticket.id, { value }); } }),
       h(Choice, { label: "Status", value: ticket.status, options: model.statuses ?? [], onChange: (value) => { patch("status", value); send(onAction, "ticket-status", ticket.id, { value }); } })),

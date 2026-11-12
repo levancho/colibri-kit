@@ -308,7 +308,7 @@ export default [
         <Card>
           <Button variant="outline" block onPress={() => setOpen(true)} testID="open-command" accessibilityLabel="Open command palette">
             <Text size="sm" tone="muted" style={{ flex: 1 }}>⌕  Search commands…</Text>
-            <Badge>⌘ K</Badge>
+            <Badge style={{ alignSelf: "center" }}>⌘ K</Badge>
           </Button>
           <Text size="sm" tone="muted" accessibilityLiveRegion="polite">{last ? `Ran “${last}”.` : "Open the palette and choose a command."}</Text>
         </Card>

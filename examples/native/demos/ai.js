@@ -64,7 +64,7 @@ function ChatDemo() {
 
 function ReasoningDemo() {
   const full = "The user wants every blocked account. An account counts as blocked when `block = 1`, or when its profile was never approved.\n\nI should join the profile table so both cases are covered, then list the usernames.";
-  const words = full.split(" "), [shown, setShown] = useState(words.length), streaming = shown < words.length;
+  const words = full.split(" "), [shown, setShown] = useState(0), streaming = shown < words.length;
   useTicker(streaming, () => setShown((count) => Math.min(words.length, count + 2)), 110);
   return (
     <Stack gap="m">

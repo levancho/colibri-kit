@@ -1,5 +1,5 @@
 // Demos for the conversation group: bubbles, messages, markers, traces, attachments, questionnaires and charts.
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Button, Card, Tabs,
@@ -66,8 +66,10 @@ export default [
           Add the new key next to the old one, deploy, and only then switch signing over. Sessions signed with the old key stay valid until they expire.
         </Message>
         <Marker variant="separator">Today</Marker>
-        <Message author="Maya Okafor" time="09:12" variant="muted">Did the staging deploy finish?</Message>
-        <Message author="Maya Okafor" grouped variant="muted">I would like to demo it at ten.</Message>
+        <Stack gap="2xs">
+          <Message author="Maya Okafor" time="09:12" variant="muted">Did the staging deploy finish?</Message>
+          <Message author="Maya Okafor" grouped variant="muted">I would like to demo it at ten.</Message>
+        </Stack>
         <Message from="user" time="09:14">Yes, it went out a few minutes ago.</Message>
         <Message author="Sam Chen" time="09:15">
           <Bubble variant="muted">Here is the build report.</Bubble>
@@ -153,8 +155,7 @@ export default [
     );
   } },
   { id: "chart", title: "Chart", description: "Bar charts drawn from plain Views: vertical, horizontal, stacked, sparkline and share. Line and pie charts need an SVG library.", Demo: () => {
-    const theme = useTheme(), [kind, setKind] = useState("bar"), [live, setLive] = useState(WEEK);
-    useEffect(() => { setLive(WEEK); }, []);
+    const theme = useTheme(), [kind, setKind] = useState("bar");
     return (
       <Stack gap="m">
         <Card>
@@ -171,7 +172,7 @@ export default [
           <Chart type="share" title="Storage used: 76.6 of 128 GB" data={STORAGE} formatValue={(value) => `${value} GB`} />
         </Card>
         <Cluster gap="s" align="stretch">
-          <Stat label="Active users" value="1,284" change="↑ 12% this week" tone="ok" values={live} />
+          <Stat label="Active users" value="1,284" change="↑ 12% this week" tone="ok" values={WEEK} />
           <Stat label="Error rate" value="0.8%" change="↑ 0.3 points" tone="bad" values={[4, 3, 5, 4, 6, 5, 7, 6, 9, 8, 11, 12]} />
         </Cluster>
         <Card>

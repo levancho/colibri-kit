@@ -231,7 +231,7 @@ export function StackTrace({ message, frames, trace, maxFrames = 5, onCopy, open
   const list = frames ?? String(trace ?? "").split("\n").filter((entry) => entry.trim());
   const visible = all ? list : list.slice(0, maxFrames), hidden = list.length - visible.length;
   const icon = h(View, { style: { width: 18, height: 18, borderRadius: 9, alignItems: "center", justifyContent: "center", backgroundColor: theme.tones.bad.soft } }, h(NativeText, { style: { color: c.bad, fontSize: 12, lineHeight: 18, fontWeight: "800" } }, GLYPH.warn));
-  return h(Fold, { icon, tone: "bad", label: message, meta: `${list.length} ${list.length === 1 ? "frame" : "frames"}`, open: shown, onToggle: setShown, style,
+  return h(Fold, { icon, tone: "bad", label: message, meta: shown ? undefined : `${list.length} ${list.length === 1 ? "frame" : "frames"}`, open: shown, onToggle: setShown, style,
     labelNode: h(NativeText, { numberOfLines: shown ? undefined : 2, style: { flex: 1, fontFamily: MONO, fontSize: theme.text.xs, lineHeight: 18, fontWeight: "600", color: c.bad } }, message) },
     h(MonoBlock, { label: "Stack frames" }, h(View, null, visible.map((frame, index) => h(NativeText, { key: index, selectable: true, style: { fontFamily: MONO, fontSize: theme.text.xs, lineHeight: 20, color: frame?.internal ? c.muted : c.fg } }, frameText(frame))))),
     hidden > 0 || onCopy || all ? h(Cluster, { justify: "space-between" },
@@ -298,7 +298,7 @@ export function Checkpoint({ id, label = "Checkpoint", detail, restoreLabel = "R
     h(View, { style: { width: 12, height: 12, borderRadius: 6, borderWidth: 2, borderColor: c.accent, alignItems: "center", justifyContent: "center" } }, h(View, { style: { width: 4, height: 4, borderRadius: 2, backgroundColor: c.accent } })),
     h(Text, { size: "sm", tone: "muted", numberOfLines: 1, style: { flexShrink: 1 } }, detail ? `${label} · ${detail}` : label),
     h(View, { style: flat(rule, { flex: 1, minWidth: theme.space.s }) }),
-    onRestore ? h(Button, { title: restoreLabel, variant: "ghost", size: "s", disabled, accessibilityLabel: `${restoreLabel} ${label}`, onPress: () => onRestore(id) }) : null);
+    onRestore ? h(Button, { title: restoreLabel, variant: "ghost", size: "s", disabled, style: { alignSelf: "center" }, accessibilityLabel: `${restoreLabel} ${label}`, onPress: () => onRestore(id) }) : null);
 }
 
 /**

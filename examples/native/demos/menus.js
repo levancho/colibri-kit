@@ -30,7 +30,7 @@ export default [
     );
   } },
   { id: "drawer", title: "Drawer", description: "A panel that slides in from any edge; drag it back towards the edge, tap outside or press back to close.", Demo: () => {
-    const toast = useToast(), [side, setSide] = useState(null), close = () => setSide(null);
+    const toast = useToast(), theme = useTheme(), [side, setSide] = useState(null), close = () => setSide(null);
     const [stock, setStock] = useState(true), [sale, setSale] = useState(false), [sort, setSort] = useState("new");
     return (
       <Stack>
@@ -49,7 +49,7 @@ export default [
           <RadioGroup value={sort} onChange={setSort} options={[{ value: "new", label: "Newest first" }, { value: "low", label: "Price: low to high" }, { value: "high", label: "Price: high to low" }]} />
         </Drawer>
         <Drawer visible={side === "left"} side="left" title="Colibri Studio" onClose={close}>
-          <Stack gap="3xs" style={{ marginHorizontal: -16 }}>
+          <Stack gap="3xs" style={{ marginHorizontal: -theme.space.m }}>
             {["Dashboard", "Articles", "Media library", "Members", "Settings"].map((name) => <ListItem key={name} title={name} trailing="›" onPress={() => { close(); toast.show(`Opened ${name}`); }} />)}
           </Stack>
         </Drawer>

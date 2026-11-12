@@ -213,7 +213,7 @@ function CodeView({ form, run, busy, problem, align, length, email, onVerify, on
   return h(Stack, { gap: "m" },
     h(AuthHeader, { title: "Enter verification code", subtitle: `We sent a ${length}-digit code to ${email ? email.trim() : "your email"}.`, align }),
     h(Problem, { message: problem }),
-    h(AuthCodeInput, { ...form.bind("code"), onChangeText: undefined, onChange: (code) => { form.set("code", code); setResent(false); }, length, disabled: busy }),
+    h(AuthCodeInput, { ...form.bind("code"), onChangeText: undefined, onChange: (code) => { form.set("code", code); setResent(false); }, length, disabled: busy, autoFocus: true }),
     h(Button, { title: "Verify", size: "l", block: true, loading: busy, onPress: verify }),
     h(Line, { align }, h(Text, { size: "sm", tone: "muted" }, "Didn't receive it?"), h(AuthLink, { title: "Resend", disabled: busy, onPress: () => { form.set("code", ""); run.reset(); onResend?.(email?.trim()); setResent(true); } }),
       back ? h(Text, { size: "sm", tone: "muted" }, "or") : null, back),
@@ -245,7 +245,7 @@ function Shell({ layout, logo, cover, legal, onLegal, style, testID, children })
     h(Card, { padded: false, gap: 0, style: { overflow: "hidden", ...depth(theme.shadow.m) } },
       cover === undefined ? h(AuthCover, { variant: "soft", brand: brandName }, brandName ? null : [logo ? h(View, { key: "logo" }, brand) : null]) : cover,
       h(View, { style: { padding: theme.space.l, gap: theme.space.m } }, children)), terms);
-  else body = h(View, { style: { gap: theme.space.l, paddingVertical: theme.space.m } }, h(View, { style: { gap: theme.space.m } }, children), terms);
+  else body = h(View, { style: { gap: theme.space.l, paddingVertical: theme.space.m } }, logo ? h(View, { style: { alignItems: "center" } }, brand) : null, h(View, { style: { gap: theme.space.m } }, children), terms);
   return h(KeyboardAvoidingView, { behavior: Platform.OS === "ios" ? "padding" : undefined, style, testID }, body);
 }
 

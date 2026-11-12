@@ -184,12 +184,12 @@ export function Drawer({ visible, onClose, side = "right", title, children, foot
         ...(horizontal ? pan.panHandlers : null),
         style: flat({ position: "absolute", zIndex: 1, backgroundColor: c.surface, opacity: extent ? 1 : 0, ...depth(theme.shadow.l) }, edge, move, style) },
         // Top and bottom drawers are dragged by their header, so the body can still scroll.
-        h(View, horizontal ? null : pan.panHandlers, side === "bottom" ? [grip, head] : head),
+        h(View, { ...(horizontal ? null : pan.panHandlers), style: web ? { userSelect: "none" } : null }, side === "bottom" ? [grip, head] : head),
         h(ScrollView, { style: { flexShrink: 1 }, keyboardShouldPersistTaps: "handled", contentContainerStyle: { paddingHorizontal: pad, paddingLeft: pad + safe.left, paddingRight: pad + safe.right, paddingTop: theme.space["2xs"], paddingBottom: footer ? theme.space.s : pad + (side === "top" ? 0 : safe.bottom), gap: theme.space.s } },
           h(InRow.Provider, { value: false }, typeof children === "string" ? h(Text, { tone: "muted" }, children) : children)),
         footer ? h(View, { style: { flexDirection: "row", justifyContent: "flex-end", gap: theme.space.xs, paddingHorizontal: pad, paddingTop: theme.space.s, paddingBottom: theme.space.m + (side === "top" ? 0 : safe.bottom), borderTopWidth: 1, borderTopColor: c.line } },
           h(InRow.Provider, { value: true }, footer)) : null,
-        side === "top" && grip ? h(View, pan.panHandlers, grip) : null),
+        side === "top" && grip ? h(View, { ...pan.panHandlers, style: { paddingTop: theme.space.xs } }, grip) : null),
       h(Animated.View, { style: flat(FILL, { backgroundColor: c.overlay, opacity: away.interpolate({ inputRange: [0, 1], outputRange: [1, 0] }) }) },
         h(Pressable, { onPress: close, accessible: dismissible, accessibilityLabel: closeLabel, accessibilityRole: "button", focusable: false, style: flat(FILL, web && { cursor: "default" }) }))));
 }

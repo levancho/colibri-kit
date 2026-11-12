@@ -74,7 +74,7 @@ function Entries({ items, value, onSelect, expanded, toggle, kind, rail = false,
     const checkable = typeof item.checked === "boolean", selected = !submenu && item.value !== undefined && item.value === value;
     const tone = theme.tones[toneName(item.badgeTone)] ? item.badgeTone : undefined;
     const trailing = [
-      item.badge != null && item.badge !== false ? h(Badge, { key: "badge", tone: tone ?? (selected ? "accent" : undefined) }, item.badge) : null,
+      item.badge != null && item.badge !== false ? h(Badge, { key: "badge", tone: tone ?? (selected ? "accent" : undefined), style: { alignSelf: "center" } }, item.badge) : null,
       item.shortcut ? h(Keys, { key: "keys" }, item.shortcut) : null,
       checkable ? h(Glyph, { key: "check", color: c.accent }, item.checked ? GLYPH.check : " ") : null,
       submenu ? h(Glyph, { key: "chevron", color: c.muted }, open ? GLYPH.chevronDown : GLYPH.chevronRight) : null,
@@ -462,11 +462,11 @@ function TabBar({ items, value, onSelect, scrollable, link, label, style }) {
       accessibilityRole: link ? "link" : "tab", accessibilityState: { selected, disabled: off }, "aria-disabled": off, ...(link ? (selected ? onWeb({ "aria-current": "page" }) : null) : { "aria-selected": selected }),
       ...onWeb({ onKeyDown: (event) => onKeyDown(event, item), ...(link ? null : { tabIndex: key === focusable ? 0 : -1 }) }),
       onLayout: (event) => { const { x, width: w } = event.nativeEvent.layout; boxes[key] = { x, width: w }; if (selected) place(false); },
-      style: ({ pressed }) => ({ minHeight: theme.touch, paddingHorizontal: scrolls ? theme.space.m : theme.space.xs, flexGrow: scrolls ? 0 : 1, flexBasis: scrolls ? "auto" : 0, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: theme.space["2xs"],
+      style: ({ pressed }) => ({ minHeight: theme.touch, paddingHorizontal: scrolls ? theme.space.m : theme.space.xs, flexGrow: scrolls ? 0 : 1, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: theme.space["2xs"],
         backgroundColor: pressed ? c.sunken : "transparent", opacity: off ? 0.4 : 1 }) },
       typeof item.icon === "string" ? h(Glyph, { color: selected ? c.accent : c.muted, width: 18, size: 15 }, item.icon) : item.icon ?? null,
       h(Text, { size: "sm", weight: selected ? "semibold" : "medium", numberOfLines: 1, style: { color: selected ? c.accent : c.muted, flexShrink: 1 } }, item.label),
-      item.badge != null && item.badge !== false ? h(Badge, { tone: selected ? "accent" : undefined }, item.badge) : null);
+      item.badge != null && item.badge !== false ? h(Badge, { tone: selected ? "accent" : undefined, style: { alignSelf: "center" } }, item.badge) : null);
   });
   const row = h(View, { style: { flexDirection: "row", flexGrow: 1 }, ...(scrolls ? null : { accessibilityRole: link ? undefined : "tablist", accessibilityLabel: label, ...(link ? onWeb({ accessibilityRole: "navigation" }) : null) }) }, tabs,
     h(Animated.View, { ...HIDDEN, pointerEvents: "none", style: { position: "absolute", bottom: 0, height: 2, borderRadius: 1, backgroundColor: c.accent, left, width } }));
@@ -512,7 +512,7 @@ const matches = (query, ...fields) => { const text = fields.flat().filter(Boolea
  */
 export function Command({ open = false, onOpenChange, groups = [], onSelect, query, defaultQuery = "", onQueryChange, placeholder = "Search commands…", emptyText = "No results found", label = "Command palette",
   closeOnSelect = true, modal = true, hotkey, style }) {
-  const theme = useTheme(), c = theme.colors, screen = useWindowDimensions(), [text, setText] = useControlled(query, defaultQuery, onQueryChange), [cursor, setCursor] = useState(0);
+  const theme = useTheme(), c = theme.colors, screen = useWindowDimensions(), [text, setText] = useControlled(query, defaultQuery, onQueryChange), [cursor, setCursor] = useState(0), [focused, setFocused] = useState(false);
   const shown = modal ? open : true, toggle = useRef(null);
   toggle.current = () => onOpenChange?.(!open);
   const wasOpen = useRef(open);
@@ -524,7 +524,7 @@ export function Command({ open = false, onOpenChange, groups = [], onSelect, que
     return () => globalThis.removeEventListener?.("keydown", onKey);
   }, [hotkey, modal]);
   const visible = useMemo(() => groups.map((group) => ({ ...group, items: (group.items ?? []).filter((item) => matches(text ?? "", item.label, item.keywords, item.description, group.label)) })).filter((group) => group.items.length), [groups, text]);
-  const flatItems = visible.flatMap((group) => group.items).filter((item) => !item.disabled), active = flatItems[Math.min(cursor, flatItems.length - 1)];
+  const flatItems = visible.flatMap((group) => group.items).filter((item) => !item.disabled), active = modal || focused ? flatItems[Math.min(cursor, flatItems.length - 1)] : undefined;
   const run = (item) => { if (!item || item.disabled) return; item.onPress?.(item); onSelect?.(item.value, item); if (modal && closeOnSelect) onOpenChange?.(false); };
   const onKeyPress = (event) => {
     const key = event.nativeEvent.key;
@@ -536,7 +536,7 @@ export function Command({ open = false, onOpenChange, groups = [], onSelect, que
     h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs, paddingHorizontal: theme.space.m, borderBottomWidth: 1, borderBottomColor: c.line } },
       h(Glyph, { color: c.muted, size: 20 }, GLYPH.search),
       h(TextInput, { value: text, onChangeText: (next) => { setText(next); setCursor(0); }, placeholder, placeholderTextColor: c.muted, selectionColor: c.accent, autoFocus: modal, autoCorrect: false, autoCapitalize: "none", returnKeyType: "go",
-        accessibilityLabel: label, accessibilityRole: "search", onKeyPress, onSubmitEditing: () => run(active), blurOnSubmit: false, testID: "command-input",
+        accessibilityLabel: label, accessibilityRole: "search", onKeyPress, onSubmitEditing: () => run(active), blurOnSubmit: false, onFocus: () => setFocused(true), onBlur: () => setFocused(false), testID: "command-input",
         style: flat({ flex: 1, minHeight: theme.touch + theme.space["2xs"], paddingVertical: theme.space.xs, color: c.fg, fontSize: theme.text.md }, web && { outlineStyle: "none" }) }),
       modal ? h(Pressable, { onPress: () => onOpenChange?.(false), accessibilityRole: "button", accessibilityLabel: "Close", hitSlop: 10 }, h(Keys, null, "esc")) : null),
     h(ScrollView, { keyboardShouldPersistTaps: "handled", ...onWeb({ accessibilityRole: "listbox" }), accessibilityLabel: "Results", style: { flexGrow: 0 }, contentContainerStyle: { padding: theme.space.xs, gap: theme.space["3xs"] } },
