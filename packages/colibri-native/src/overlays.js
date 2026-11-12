@@ -1,12 +1,11 @@
 // Things that sit above the screen: Dialog, Sheet and toasts. Built on React Native's own Modal and Animated.
 import { createContext, createElement as h, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
-import { Animated, Modal, Platform, Pressable, View } from "react-native";
+import { Animated, Modal, Pressable, View } from "react-native";
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
+import { web, depth } from "./internal.js";
 import { Text, Heading, Cluster } from "./components.js";
 
-const web = Platform.OS === "web";
-const depth = (shadow) => (web ? { boxShadow: shadow.boxShadow } : { shadowColor: shadow.shadowColor, shadowOffset: shadow.shadowOffset, shadowOpacity: shadow.shadowOpacity, shadowRadius: shadow.shadowRadius, elevation: shadow.elevation });
 
 /**
  * A centred modal card. The backdrop and the Android back button call onClose; set dismissible={false} for

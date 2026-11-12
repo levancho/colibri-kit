@@ -2,19 +2,11 @@
 // Same vocabulary as Colibri CSS: gap="s", variant="soft", tone="ok", size="l". No JSX, no build step,
 // no dependencies beyond react and react-native.
 // Accessibility state is passed both ways (accessibilityState and aria-*), so it reaches iOS, Android and the web.
-import { createContext, createElement as h, forwardRef, useContext, useState } from "react";
+import { createElement as h, forwardRef, useContext, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Platform, Pressable, ScrollView, Switch as NativeSwitch, Text as NativeText, TextInput, View } from "react-native";
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
-
-const web = Platform.OS === "web";
-/** Depth: boxShadow on the web, shadow props and elevation on iOS and Android. */
-const depth = (shadow) => (web ? { boxShadow: shadow.boxShadow } : { shadowColor: shadow.shadowColor, shadowOffset: shadow.shadowOffset, shadowOpacity: shadow.shadowOpacity, shadowRadius: shadow.shadowRadius, elevation: shadow.elevation });
-const gapOf = (theme, gap) => (typeof gap === "number" ? gap : theme.space[gap] ?? theme.space.s);
-const flat = (...styles) => styles.flat(Infinity).filter(Boolean);
-// Buttons and badges keep their own width in a column, and line up with their neighbours in a Cluster row.
-const InRow = createContext(false);
-const selfAlign = (inRow) => (inRow ? null : { alignSelf: "flex-start" });
+import { web, depth, gapOf, flat, InRow, selfAlign } from "./internal.js";
 
 // ---------------------------------------------------------------- layout
 /** Full-screen background. scroll wraps the content in a ScrollView; padded adds the standard page gutter. */

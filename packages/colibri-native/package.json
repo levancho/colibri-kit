@@ -42,6 +42,7 @@
   "files": [
     "src",
     "index.d.ts",
+    "types",
     "README.md",
     "LICENSE"
   ],
