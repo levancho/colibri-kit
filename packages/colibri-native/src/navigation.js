@@ -110,18 +110,20 @@ export function Breadcrumb({ items = [], maxItems = 4, separator = GLYPH.chevron
   const slop = { top: 10, bottom: 10, left: 4, right: 4 };
   return h(View, { accessibilityLabel: label, ...onWeb({ accessibilityRole: "navigation" }), style: flat({ flexDirection: "row", flexWrap: "wrap", alignItems: "center", columnGap: theme.space["2xs"], rowGap: theme.space["2xs"] }, style), ...rest },
     shown.map((entry, at) => {
-      const divider = at ? h(Text, { key: `s${at}`, ...HIDDEN, size: "sm", tone: "muted", style: { paddingHorizontal: 2 } }, separator) : null;
+      // The separator travels with the item after it, so a wrapped line never ends in a lone chevron.
+      const unit = (key, ...parts) => h(View, { key, style: { flexDirection: "row", alignItems: "center", gap: theme.space["2xs"], flexShrink: 1 } }, parts);
+      const divider = at ? h(Text, { key: "separator", ...HIDDEN, size: "sm", tone: "muted", style: { paddingHorizontal: 2 } }, separator) : null;
       if (entry.ellipsis) {
-        return [divider, h(Pressable, { key: "ellipsis", onPress: () => setExpanded(true), hitSlop: slop, accessibilityRole: "button", accessibilityLabel: `Show ${items.length - tail - 1} hidden levels`, accessibilityState: { expanded: false }, "aria-expanded": false,
+        return unit("ellipsis", divider, h(Pressable, { key: "item", onPress: () => setExpanded(true), hitSlop: slop, accessibilityRole: "button", accessibilityLabel: `Show ${items.length - tail - 1} hidden levels`, accessibilityState: { expanded: false }, "aria-expanded": false,
           style: ({ pressed }) => ({ paddingHorizontal: theme.space.xs, minHeight: 24, justifyContent: "center", borderRadius: theme.radius.s, backgroundColor: pressed ? c.line : c.sunken }) },
-          h(Text, { size: "sm", weight: "bold", tone: "muted", style: { lineHeight: 18 } }, GLYPH.more))];
+          h(Text, { size: "sm", weight: "bold", tone: "muted", style: { lineHeight: 18 } }, GLYPH.more)));
       }
       const { item, index } = entry, current = index === items.length - 1, press = item.onPress || onNavigate ? () => { item.onPress?.(item); onNavigate?.(item, index); } : undefined;
       if (current || !press) {
-        return [divider, h(Text, { key: `i${index}`, size: "sm", weight: current ? "semibold" : "medium", tone: current ? undefined : "muted", numberOfLines: 1, style: { maxWidth: 200, flexShrink: 1 }, ...(current ? onWeb({ "aria-current": "page" }) : null) }, item.label)];
+        return unit(`i${index}`, divider, h(Text, { key: "item", size: "sm", weight: current ? "semibold" : "medium", tone: current ? undefined : "muted", numberOfLines: 1, style: { maxWidth: 200, flexShrink: 1 }, ...(current ? onWeb({ "aria-current": "page" }) : null) }, item.label));
       }
-      return [divider, h(Pressable, { key: `i${index}`, onPress: press, hitSlop: slop, accessibilityRole: "link", accessibilityLabel: item.label, style: { flexShrink: 1 } },
-        ({ pressed }) => h(Text, { size: "sm", weight: "medium", numberOfLines: 1, style: { maxWidth: 160, color: pressed ? c.accent : c.muted, textDecorationLine: pressed ? "underline" : "none" } }, item.label))];
+      return unit(`i${index}`, divider, h(Pressable, { key: "item", onPress: press, hitSlop: slop, accessibilityRole: "link", accessibilityLabel: item.label, style: { flexShrink: 1 } },
+        ({ pressed }) => h(Text, { size: "sm", weight: "medium", numberOfLines: 1, style: { maxWidth: 160, color: pressed ? c.accent : c.muted, textDecorationLine: pressed ? "underline" : "none" } }, item.label)));
     }));
 }
 

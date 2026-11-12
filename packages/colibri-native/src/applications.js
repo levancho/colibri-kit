@@ -335,7 +335,7 @@ export function ApplicationBoard({ model = {}, onAction, style }) {
       contentContainerStyle: { gap, alignItems: "flex-start", paddingBottom: theme.space["2xs"] } },
       lanes.map((lane) => h(View, { key: lane.id, accessibilityLabel: `${lane.title}, ${lane.deals?.length ?? 0} opportunities`, style: { width: laneWidth, padding: theme.space.xs, gap: theme.space.xs, borderRadius: theme.radius.l, borderWidth: 1, borderColor: c.line, backgroundColor: c.sunken } },
         h(View, { style: { ...row(theme.space.xs), paddingHorizontal: theme.space["2xs"], minHeight: 32 } },
-          h(Text, { weight: "bold", numberOfLines: 1, style: { flexShrink: 1 } }, lane.title), h(Tag, null, lane.deals?.length ?? 0),
+          h(Text, { weight: "bold", numberOfLines: 1, style: { flexShrink: 1 } }, lane.title), h(Tag, { style: { backgroundColor: c.surface } }, lane.deals?.length ?? 0),
           h(View, { style: { flex: 1 } }), total(lane) ? h(Text, { size: "sm", tone: "muted", weight: "medium" }, total(lane)) : null),
         lane.deals?.length ? lane.deals.map((deal) => h(Pressable, { key: deal.id, onPress: () => { setOpen(deal.id); send(onAction, "edit-deal", deal.id); }, accessibilityRole: "button", accessibilityLabel: `${deal.company}, ${deal.value}, ${deal.owner}. Change stage`,
           style: ({ pressed }) => ({ padding: theme.space.s, gap: theme.space.xs, borderRadius: theme.radius.m, borderWidth: 1, borderColor: c.line, backgroundColor: pressed ? c.bg : c.surface, ...depth(theme.shadow.s) }) },

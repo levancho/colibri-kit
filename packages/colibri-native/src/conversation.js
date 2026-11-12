@@ -192,15 +192,17 @@ export function Attachment({ name, size, type, source, variant = "chip", progres
         uploading ? h(Progress, { value: progress, style: { position: "absolute", left: theme.space.xs, right: theme.space.xs, bottom: theme.space.xs, height: 4, backgroundColor: c.surface } }) : null),
       remove({ position: "absolute", top: -6, right: -6, borderWidth: 1, borderColor: c.line, backgroundColor: c.surface }));
   }
-  return h(Root, { ...rootProps, style: flat({ minWidth: 200, maxWidth: "100%", flexShrink: 1, minHeight: 56, padding: theme.space.xs, paddingRight: theme.space.s, flexDirection: "row", alignItems: "center", gap: theme.space.s,
+  // The remove button sits beside the pressable part, not inside it: a button must not contain another button.
+  return h(View, { ...(onPress ? null : rootProps), style: flat({ minWidth: 200, maxWidth: "100%", flexShrink: 1, minHeight: 56, paddingRight: onRemove ? theme.space.s : 0, flexDirection: "row", alignItems: "center", gap: theme.space.xs,
     borderWidth: 1, borderColor: error ? c.bad : c.line, borderRadius: theme.radius.m, backgroundColor: c.surface }, block ? { alignSelf: "stretch" } : selfAlign(inRow), style), ...rest },
-    source ? h(Image, { source, resizeMode: "cover", style: { width: 40, height: 40, borderRadius: theme.radius.s, backgroundColor: c.sunken } })
-      : h(View, { style: { width: 40, height: 40, borderRadius: theme.radius.s, alignItems: "center", justifyContent: "center", backgroundColor: error ? theme.tones.bad.soft : c.accentSoft } },
-        h(NativeText, { numberOfLines: 1, style: { color: error ? c.bad : c.accent, fontSize: error ? 16 : 10, fontWeight: "800", letterSpacing: error ? 0 : 0.3 } }, error ? GLYPH.warn : kind || "FILE")),
-    h(View, { style: { flex: 1, gap: 2 } },
-      h(Text, { size: "sm", weight: "medium", numberOfLines: 1, ellipsizeMode: "middle" }, name),
-      detail ? h(Text, { size: "xs", tone: error ? "bad" : "muted", numberOfLines: 1 }, detail) : null,
-      uploading ? h(Progress, { value: progress, style: { height: 4, marginTop: 2 } }) : null),
+    h(Root, { ...(onPress ? rootProps : null), style: { flex: 1, padding: theme.space.xs, paddingRight: onRemove ? 0 : theme.space.s, flexDirection: "row", alignItems: "center", gap: theme.space.s } },
+      source ? h(Image, { source, resizeMode: "cover", style: { width: 40, height: 40, borderRadius: theme.radius.s, backgroundColor: c.sunken } })
+        : h(View, { style: { width: 40, height: 40, borderRadius: theme.radius.s, alignItems: "center", justifyContent: "center", backgroundColor: error ? theme.tones.bad.soft : c.accentSoft } },
+          h(NativeText, { numberOfLines: 1, style: { color: error ? c.bad : c.accent, fontSize: error ? 16 : 10, fontWeight: "800", letterSpacing: error ? 0 : 0.3 } }, error ? GLYPH.warn : kind || "FILE")),
+      h(View, { style: { flex: 1, gap: 2 } },
+        h(Text, { size: "sm", weight: "medium", numberOfLines: 1, ellipsizeMode: "middle" }, name),
+        detail ? h(Text, { size: "xs", tone: error ? "bad" : "muted", numberOfLines: 1 }, detail) : null,
+        uploading ? h(Progress, { value: progress, style: { height: 4, marginTop: 2 } }) : null)),
     remove());
 }
 

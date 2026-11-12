@@ -79,7 +79,7 @@ export default [
       </Stack>
     );
   } },
-  { id: "motion-states", title: "MotionPressable and MotionLoop", description: "Press feedback (shrink, grow, lift, tilt, dim) and continuous loops (spin, pulse, bounce, ping, float). Touch has no hover, so the web kit's hover effects answer a press here.", Demo: () => {
+  { id: "motion-states", title: "Press and loop", description: "Press feedback (shrink, grow, lift, tilt, dim) and continuous loops (spin, pulse, bounce, ping, float). Touch has no hover, so the web kit's hover effects answer a press here.", Demo: () => {
     const theme = useTheme(), toast = useToast(), [paused, setPaused] = useState(false);
     const chip = { minHeight: theme.touch, paddingHorizontal: theme.space.m, alignItems: "center", justifyContent: "center", borderRadius: theme.radius.m, borderWidth: 1, borderColor: theme.colors.line, backgroundColor: theme.colors.surface };
     return (
@@ -144,7 +144,7 @@ export default [
       </Stack>
     );
   } },
-  { id: "motion-wired", title: "Animated components", description: "Dialog, Sheet and toasts animate on their own; Collapse, Presence and Enter add the same motion to your own layouts.", Demo: () => {
+  { id: "motion-wired", title: "Built-in motion", description: "Dialog, Sheet and toasts animate on their own; Collapse, Presence and Enter add the same motion to your own layouts.", Demo: () => {
     const theme = useTheme(), toast = useToast(), [open, setOpen] = useState(false), [banner, setBanner] = useState(true), [dialog, setDialog] = useState(false), [sheet, setSheet] = useState(false), [tab, setTab] = useState("day");
     const totals = { day: ["$1,240", "38 orders today"], week: ["$8,410", "251 orders this week"], month: ["$34,900", "1,022 orders this month"] }[tab];
     return (
