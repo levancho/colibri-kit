@@ -53,6 +53,7 @@ Re-brand in your application stylesheet: `:root { --c-hue: 160; }`. The included
 
 - `examples/kitchen-sink.html` — every component, live
 - [Widget builder](https://colibri-kit.io/widgets/) — build a badge, call to action, pricing card, FAQ or sign-up form and paste it into any website (`site/src/widgets/`)
+- [Colibri for React Native](https://colibri-kit.io/native/) — `@colibri-kit/native`: themed layout primitives and controls for React Native and Expo (`packages/colibri-native/`)
 - `examples/colibri-css.html` — Colibri CSS guide
 - `site/` — the Colibri Kit website (preview: https://colibri.l3v.ai)
 - `docs/colibri-ui.md` — Colibri UI architecture

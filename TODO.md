@@ -15,6 +15,15 @@ found by reading.
 - [x] **Docs and agent skills** name the npm packages and the Maven Central dependency instead of manual installs.
 - [ ] Add a root `CHANGELOG.md`.
 
+## React Native
+
+- [ ] **Publish `@colibri-kit/native` 0.1.0 to npm** (staged publishing, see `docs/publishing.md`). The site and README
+      already show `npm install @colibri-kit/native`.
+- [ ] **Run the example on real iOS and Android devices.** The package is tested through react-native-web only.
+- [ ] Add it to the publish workflow; decide whether it shares the version of the other two packages.
+- [ ] Not built yet: Select/picker, Slider, date picker, swipe-to-dismiss on Sheet, toast queue, RTL review,
+      reduced-motion handling for toasts, safe-area helper.
+
 ## Accessibility
 
 - [ ] **Focus is invisible in forced-colors mode** for most themed controls (verified in Chrome emulation).

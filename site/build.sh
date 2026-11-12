@@ -15,6 +15,8 @@ rm -rf site/dist && mkdir -p site/dist/css site/dist/ui site/dist/kitchen-sink
 cp -R site/src/* site/dist/
 # The embeddable widget script: renderer + Colibri CSS in one file (see site/src/widgets/).
 node tools/build-widgets.mjs >/dev/null
+# The React Native showcase, compiled for browsers with react-native-web (see site/src/native/).
+node tools/build-native-demo.mjs >/dev/null
 # The download must match these templates. Build it rather than publish a stale JAR.
 python3 tools/package-java-download.py
 cp packages/colibri-css/dist/*.css site/dist/css/

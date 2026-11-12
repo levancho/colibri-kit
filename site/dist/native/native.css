@@ -1,0 +1,10 @@
+/* React Native page: copy on one side, a phone running the real components on the other. */
+.np { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--c-space-xl); align-items: start; padding-block: var(--c-space-xl) var(--c-space-2xl); }
+@media (width < 60rem) { .np { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
+.np-copy { --gap: var(--c-space-m); min-inline-size: 0;
+  & h1 { font-size: clamp(2.2rem, 1.4rem + 3.2vw, 3.8rem); line-height: 1.04; letter-spacing: -.04em; }
+  & .lede { font-size: var(--c-text-lg); color: var(--c-muted); max-inline-size: 52ch; } }
+.np-code { margin: 0; padding: var(--c-space-s) var(--c-space-m); overflow-x: auto; border-radius: var(--c-radius); border: 1px solid oklch(30% .03 280); background: oklch(17% .025 280); color: oklch(88% .05 190); font-family: var(--c-font-mono); font-size: var(--c-text-xs); line-height: 1.7; }
+.np-phone { position: sticky; inset-block-start: calc(var(--kb-h, 56px) + var(--c-space-m)); inline-size: min(24.5rem, 100%); block-size: min(50rem, calc(100svh - var(--kb-h, 56px) - 2 * var(--c-space-m))); min-block-size: 32rem; padding: .7rem; border-radius: 3rem; background: oklch(20% .02 280); box-shadow: var(--c-shadow-l), inset 0 0 0 2px oklch(38% .02 280); }
+@media (width < 60rem) { .np-phone { position: static; block-size: 46rem; } }
+.np-screen { display: flex; block-size: 100%; overflow: hidden; border-radius: 2.35rem; isolation: isolate; }
