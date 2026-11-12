@@ -56,10 +56,12 @@ try {
  await page.waitForFunction(()=>[...document.querySelectorAll('[role=alert]')].some(a=>a.textContent==='Project deleted'));
  await page.waitForFunction(()=>![...document.querySelectorAll('[role=dialog]')].some(d=>d.textContent.includes('Delete this project?'))); // closes with a fade
  // Sheet opens and closes.
- await page.click('[data-testid=open-sheet]');await page.waitForFunction(()=>document.body.textContent.includes('Send by email'));
+ // A toast may be showing over the bottom of the screen, so these presses go to the element itself rather than to a screen position.
+ const tap=id=>page.$eval(`[data-testid=${id}]`,el=>el.click());
+ await tap('open-sheet');await page.waitForFunction(()=>document.body.textContent.includes('Send by email'));
  await page.evaluate(()=>[...document.querySelectorAll('[role=button]')].filter(b=>b.textContent==='Cancel').at(-1).click());await page.waitForFunction(()=>!document.body.textContent.includes('Send by email'));
  // Saving shows a busy button, then a toast.
- await page.click('[data-testid=save]');
+ await tap('save');
  await page.waitForFunction(()=>[...document.querySelectorAll('[role=alert]')].some(a=>a.textContent==='Profile saved'),{timeout:5000});
  assert.deepEqual(errors,[]);
  console.log('native e2e ok');
