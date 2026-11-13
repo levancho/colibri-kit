@@ -35,7 +35,7 @@ Read this before adding or changing a component.
 | `src/data.js` | tables, data lists, carousel, skeleton, empty state |
 | `src/menus.js` | menus, popovers, tooltips, drawers and other things that open above the screen |
 | `src/mobile.js` | phone-only patterns: bottom tab bar, app bar, floating action button, action sheet, swipe rows, bottom sheet with snap points |
-| `src/navigation.js` | breadcrumb, pagination, stepper, sidebar, command palette … |
+| `src/navigation.js` | menu, pagination, stepper, sidebar drawer, content tabs, scrollspy |
 | `src/forms.js` | inputs and selection controls |
 | `src/pickers.js` | slider, calendar, date and colour pickers, file inputs, repeater, sortable |
 | `src/conversation.js`, `src/ai.js` | messages, attachments, chart; AI elements |
