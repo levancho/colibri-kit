@@ -57,7 +57,8 @@ export type PlayMotion = "shake" | "bounce" | "pulse" | "pop" | "flash" | "heart
 export const PLAY_MOTIONS: PlayMotion[];
 export interface MotionHandle {
   /** Put this on an Animated.View. */
-  style: Animated.WithAnimatedObject<ViewStyle>;
+  // Animated style object; typed loosely because the Animated style helper types differ between React Native versions.
+  style: any;
   /** Restarts the animation; resolves true when it ran to the end, false when it was interrupted. */
   play(name: PlayMotion, options?: { duration?: number }): Promise<boolean>;
   /** Stops and returns to rest. */

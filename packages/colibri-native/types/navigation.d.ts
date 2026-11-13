@@ -1,29 +1,29 @@
 import type { ComponentType, ReactNode, Ref, RefObject } from "react";
 import type { LayoutChangeEvent, NativeScrollEvent, NativeSyntheticEvent, PressableProps, ScrollView, ScrollViewProps, StyleProp, ViewProps, ViewStyle } from "react-native";
 
-type NavTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "danger" | "destructive";
+type NavigationTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "danger" | "destructive";
 /** A text glyph (see GLYPH) or any element. */
-type NavIcon = ReactNode;
+type NavigationIcon = ReactNode;
 
 // ---------------------------------------------------------------- menu
-export interface MenuItem<T = string> {
-  type?: undefined; value?: T; label: string; description?: string; icon?: NavIcon; shortcut?: string;
-  badge?: string | number; badgeTone?: NavTone;
+export interface MenuActionEntry<T = string> {
+  type?: undefined; value?: T; label: string; description?: string; icon?: NavigationIcon; shortcut?: string;
+  badge?: string | number; badgeTone?: NavigationTone;
   /** A boolean makes it a checkable item. */
   checked?: boolean; disabled?: boolean;
   /** tone="bad" marks a destructive action. */
-  tone?: NavTone;
+  tone?: NavigationTone;
   /** A submenu that expands in place. */
   items?: MenuEntry<T>[];
-  onPress?: (item: MenuItem<T>) => void; accessibilityLabel?: string; testID?: string; key?: string;
+  onPress?: (item: MenuActionEntry<T>) => void; accessibilityLabel?: string; testID?: string; key?: string;
 }
 export interface MenuGroup<T = string> { type: "group"; label?: string; items: MenuEntry<T>[] }
 export interface MenuSeparator { type: "separator" }
-export type MenuEntry<T = string> = MenuItem<T> | MenuGroup<T> | MenuSeparator;
+export type MenuEntry<T = string> = MenuActionEntry<T> | MenuGroup<T> | MenuSeparator;
 export interface MenuProps<T = string> extends ViewProps {
   items: MenuEntry<T>[];
   /** The selected item's value. */
-  value?: T; onSelect?: (value: T | undefined, item: MenuItem<T>) => void;
+  value?: T; onSelect?: (value: T | undefined, item: MenuActionEntry<T>) => void;
   /** Keys (value or label) of submenus that start open. */
   defaultExpanded?: string[]; label?: string;
 }
@@ -82,7 +82,7 @@ export interface SidebarProps<T = string> {
   mode?: "auto" | "drawer" | "inline"; breakpoint?: number; side?: "left" | "right"; width?: number;
   /** In place only: shrink to a rail of icons. */
   collapsed?: boolean;
-  items?: MenuEntry<T>[]; value?: T; onSelect?: (value: T | undefined, item: MenuItem<T>) => void;
+  items?: MenuEntry<T>[]; value?: T; onSelect?: (value: T | undefined, item: MenuActionEntry<T>) => void;
   /** Close the drawer after a choice. Default true. */
   closeOnSelect?: boolean; defaultExpanded?: string[];
   header?: ReactNode; footer?: ReactNode; label?: string; children?: ReactNode; style?: StyleProp<ViewStyle>;
@@ -108,7 +108,7 @@ export interface StepperProps extends Omit<ViewProps, "children"> {
 export const Stepper: ComponentType<StepperProps>;
 
 // ---------------------------------------------------------------- tabs
-export interface TabItem<T = string> { value: T; label: string; icon?: NavIcon; badge?: string | number; disabled?: boolean; testID?: string }
+export interface TabItem<T = string> { value: T; label: string; icon?: NavigationIcon; badge?: string | number; disabled?: boolean; testID?: string }
 export interface TabViewTab<T = string> extends TabItem<T> { content?: ReactNode | ((state: { selected: boolean }) => ReactNode) }
 export interface TabViewProps<T = string> extends Omit<ViewProps, "children"> {
   tabs: TabViewTab<T>[]; value?: T; defaultValue?: T; onChange?: (value: T, previous: T) => void;

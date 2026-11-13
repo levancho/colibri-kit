@@ -20,7 +20,7 @@ export const GROUPS = [
   group("core", "Basics", "Layout, text, buttons and the everyday controls.", core),
   group("base", "Display", "Surfaces, typography and small building blocks.", base),
   group("data", "Data display", "Tables, lists, carousels and placeholders.", data),
-  group("menus", "Overlays and menus", "Things that open above the screen.", menus),
+  group("menus", "Overlays", "Things that open above the screen.", menus),
   group("mobile", "Phone patterns", "Pieces only a phone app needs: bottom bar, app bar, swipe rows, action sheets.", mobile),
   group("navigation", "Navigation", "Moving between and within screens.", navigation),
   group("forms", "Forms", "Inputs and selection controls.", forms),
@@ -28,9 +28,9 @@ export const GROUPS = [
   group("conversation", "Conversation", "Messages, attachments and charts.", conversation),
   group("ai", "AI elements", "Chat, reasoning, tools and agent status.", ai),
   group("motion", "Motion and theming", "Entrances, state changes and scoped themes.", motion),
-  group("blocks", "Sign-in and sign-up blocks", "Ready-made authentication screens.", blocks),
-  group("sidebars", "Sidebar blocks", "Ready-made navigation layouts.", sidebars),
-  group("applications", "Application components", "Dashboard pieces: metrics, charts, tables, boards.", applications),
+  group("blocks", "Auth blocks", "Ready-made sign-in and sign-up screens.", blocks),
+  group("sidebars", "Nav layouts", "Ready-made navigation layouts with a slide-in panel.", sidebars),
+  group("applications", "App components", "Dashboard pieces: metrics, charts, tables, boards.", applications),
 ].filter((entry) => entry.demos.length);
 
 export const DEMOS = Object.fromEntries(GROUPS.flatMap((entry) => entry.demos.map((demo) => [demo.id, { ...demo, group: entry.title }])));

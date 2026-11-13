@@ -1,7 +1,7 @@
 import type { ComponentType, ReactElement, ReactNode } from "react";
 import type { ImageSourcePropType, StyleProp, TextInputProps, ViewStyle } from "react-native";
 
-type NavTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "danger" | "destructive";
+type SidebarTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "danger" | "destructive";
 /** A text glyph ("◆"), initials ("LD") or any element. */
 export type NavIcon = string | number | ReactElement;
 
@@ -37,7 +37,7 @@ export interface NavPopoverProps {
 export const NavPopover: ComponentType<NavPopoverProps>;
 
 export interface NavMenuItemProps {
-  label: string; icon?: NavIcon; description?: string; trailing?: ReactNode; selected?: boolean; tone?: NavTone; disabled?: boolean;
+  label: string; icon?: NavIcon; description?: string; trailing?: ReactNode; selected?: boolean; tone?: SidebarTone; disabled?: boolean;
   /** Leave the menu open after the press. */
   keepOpen?: boolean; onPress?: () => void; style?: StyleProp<ViewStyle>;
 }
@@ -55,7 +55,7 @@ export interface NavItemProps {
 }
 export const NavItem: ComponentType<NavItemProps>;
 
-export interface NavCheckItemProps { label: string; checked?: boolean; onChange?: (checked: boolean) => void; tone?: NavTone; disabled?: boolean; style?: StyleProp<ViewStyle> }
+export interface NavCheckItemProps { label: string; checked?: boolean; onChange?: (checked: boolean) => void; tone?: SidebarTone; disabled?: boolean; style?: StyleProp<ViewStyle> }
 export const NavCheckItem: ComponentType<NavCheckItemProps>;
 
 export interface NavSectionProps {
@@ -93,7 +93,7 @@ export interface NavSwitcherProps {
 }
 export const NavSwitcher: ComponentType<NavSwitcherProps>;
 
-export interface NavAction { id: string; label: string; icon?: NavIcon; tone?: NavTone; separated?: boolean; onPress?: () => void }
+export interface NavAction { id: string; label: string; icon?: NavIcon; tone?: SidebarTone; separated?: boolean; onPress?: () => void }
 export interface NavUserProps {
   name: string; email?: string; source?: ImageSourcePropType;
   /** Shown in a menu that opens from the row. */
@@ -212,7 +212,7 @@ export interface Sidebar11Props extends NavShellControlProps {
 /** A changes list and a collapsible file tree. */
 export const Sidebar11: ComponentType<Sidebar11Props>;
 
-export interface SidebarCalendarGroup { id?: string; title: string; defaultOpen?: boolean; items: Array<{ id: string; label: string; tone?: NavTone }> }
+export interface SidebarCalendarGroup { id?: string; title: string; defaultOpen?: boolean; items: Array<{ id: string; label: string; tone?: SidebarTone }> }
 export interface Sidebar12Props extends NavShellControlProps {
   user?: NavUserProps; date?: Date; defaultDate?: Date; onDateChange?: (date: Date) => void; today?: Date; marked?: Date[];
   calendars?: SidebarCalendarGroup[]; checked?: string[]; defaultChecked?: string[]; onCheckedChange?: (ids: string[]) => void;

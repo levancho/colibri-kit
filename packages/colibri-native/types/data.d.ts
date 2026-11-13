@@ -76,7 +76,7 @@ export interface CarouselProps {
 }
 export const Carousel: ComponentType<CarouselProps>;
 
-export interface MessageScrollerHandle { scrollToBottom(options?: { animated?: boolean }): void; scrollTo: ScrollView["scrollTo"] }
+export interface MessageScrollerHandle { scrollToBottom(options?: { animated?: boolean }): void; scrollTo(options?: { x?: number; y?: number; animated?: boolean }): void }
 export interface MessageScrollerProps extends Omit<ScrollViewProps, "style"> {
   height?: number | `${number}%`; gap?: Gap; padded?: boolean; bordered?: boolean;
   /** How close to the end (in points) still counts as "at the bottom" (32). */

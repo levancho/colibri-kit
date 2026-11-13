@@ -1,6 +1,6 @@
 # @colibri-kit/native
 
-Colibri for React Native and Expo. A small set of layout primitives and everyday controls, themed from one hue.
+Colibri for React Native and Expo. The Colibri catalog for phones: layout, controls, overlays, forms, phone patterns, AI elements, ready-made screens and dashboard pieces, themed from one hue.
 
 - **One hue, whole palette.** The colours are the same ones Colibri CSS produces for that hue, in light and dark.
 - **No dependencies** beyond `react` and `react-native`. No native modules, so it works in Expo Go.
@@ -79,37 +79,57 @@ const theme = useTheme();
 
 ## Components
 
-| Component | Main props |
-|---|---|
-| `Screen` | `scroll`, `padded`, `gap` |
-| `Stack` | `gap`, `align`, `justify` (a column) |
-| `Cluster` | `gap`, `align`, `justify`, `wrap` (a wrapping row) |
-| `Divider` | |
-| `Text` | `size`, `tone` (`muted`, `accent`, `ok`, `warn`, `bad`), `weight`, `align` |
-| `Heading` | `level` 1 to 4 |
-| `Button` | `title`, `variant` (`solid`, `soft`, `outline`, `ghost`, `danger`), `size` (`s`, `m`, `l`), `icon`, `loading`, `disabled`, `block` |
-| `Card` | `gap`, `padded`, `onPress` |
-| `Badge` | `tone` |
-| `Callout` | `tone`, `title` |
-| `Avatar` | `name`, `source`, `size` |
-| `TextField` | `label`, `hint`, `error`, plus every `TextInput` prop |
-| `Switch` | `value`, `onValueChange`, `label` |
-| `Checkbox` | `checked`, `onChange`, `label` |
-| `RadioGroup` | `value`, `onChange`, `options` |
-| `Tabs` | `value`, `onChange`, `options` (a segmented control) |
-| `ListItem` | `title`, `subtitle`, `leading`, `trailing`, `onPress` |
-| `List` | `FlatList` with dividers; every `FlatList` prop |
-| `Spinner` | `size`, `tone` |
-| `Progress` | `value` 0 to 1, `tone` |
-| `Dialog` | `visible`, `onClose`, `title`, `actions`, `dismissible` |
-| `Sheet` | `visible`, `onClose`, `title` |
-| `ToastProvider`, `useToast` | `toast.show(message, { tone, duration })`, `toast.hide()` |
+203 components and hooks, grouped as in the [live catalog](https://colibri-kit.io/native/), where each one has a demo. Props are documented in the TypeScript declarations (`index.d.ts`, `types/`) and in the source comments.
 
-Tones accept `ok`, `warn`, `bad` and the aliases `success`, `warning`, `danger`. Every component takes `style` for one-off changes.
+| Group | Components and hooks |
+|---|---|
+| Basics | `Screen`, `Stack`, `Cluster`, `Divider`, `Text`, `Heading`, `Button`, `Card`, `Badge`, `Callout`, `Avatar`, `TextField`, `Switch`, `Checkbox`, `RadioGroup`, `Tabs`, `ListItem`, `List`, `Spinner`, `Progress`, `Dialog`, `Sheet`, `useToast`, `ToastProvider` |
+| Phone patterns | `BottomBar`, `useTabActive`, `TabScreens`, `AppBarAction`, `useAppBarScroll`, `AppBar`, `Fab`, `ActionSheet`, `BottomSheet`, `SwipeGroup`, `SwipeRow`, `PullToRefresh`, `SearchBar`, `Chip`, `ChipGroup`, `PageDots`, `Banner` |
+| Display | `Inset`, `Blockquote`, `Code`, `Lead`, `Small`, `Muted`, `Link`, `IconButton`, `Alert`, `Accordion`, `Collapsible`, `Toggle`, `ButtonGroup`, `Toolbar`, `ToolbarSeparator`, `ToolbarSpacer`, `Item`, `ItemGroup`, `ThemeSwitch` |
+| Data display | `Table`, `DataTable`, `DataList`, `Carousel`, `MessageScroller`, `CodeBlock`, `Rating`, `Skeleton`, `SkeletonText`, `Empty` |
+| Overlays and menus | `AlertDialog`, `Drawer`, `Popover`, `DropdownMenu`, `ContextMenu`, `Tooltip` |
+| Navigation | `Menu`, `Pagination`, `useScrollSpy`, `ScrollSpy`, `ScrollSpySection`, `ScrollTo`, `Sidebar`, `Stepper`, `TabView`, `TabNav` |
+| Forms | `useField`, `Field`, `InputAddon`, `Input`, `InputGroup`, `Textarea`, `PasswordInput`, `PinInput`, `Select`, `Combobox`, `CheckboxGroup`, `CheckboxCards`, `RadioCards`, `ToggleGroup`, `SegmentedControl` |
+| Pickers | `Slider`, `Calendar`, `DatePicker`, `ColorPicker`, `FileInput`, `ImageInput`, `Repeater`, `Sortable` |
+| Conversation | `BubbleGroup`, `Bubble`, `Message`, `Marker`, `TraceStep`, `Trace`, `Attachment`, `Questionnaire`, `ChartLegend`, `Chart` |
+| AI elements | `Reasoning`, `ChainOfThought`, `Task`, `Plan`, `Subagent`, `Tool`, `Terminal`, `StackTrace`, `TestResults`, `Queue`, `Checkpoint`, `Confirmation`, `Context`, `FileTree`, `InlineCitation`, `CitationPreview`, `Sources`, `Suggestion`, `ModelSelector`, `PromptInput`, `AiMessage`, `Chat` |
+| Motion and theming | `useReducedMotion`, `Enter`, `Presence`, `MotionPressable`, `MotionLoop`, `useMotion`, `Collapse`, `ThemeScope` |
+| Sign-in and sign-up blocks | `AuthLink`, `AuthBrand`, `AuthHeader`, `AuthCard`, `OrDivider`, `SocialButton`, `AuthLegal`, `AuthCover`, `AuthField`, `AuthCodeInput`, `Login01`, `Login02`, `Login03`, `Login04`, `Login05`, `Signup01`, `Signup02`, `Signup03`, `Signup04`, `Signup05` |
+| Navigation layouts | `useNav`, `NavPopover`, `NavMenuItem`, `NavItem`, `NavCheckItem`, `NavSection`, `NavList`, `NavSearch`, `NavSwitcher`, `NavUser`, `NavCalendar`, `NavShell`, `Sidebar01`, `Sidebar02`, `Sidebar03`, `Sidebar04`, `Sidebar05`, `Sidebar06`, `Sidebar07`, `Sidebar08`, `Sidebar10`, `Sidebar14`, `Sidebar16`, `Sidebar15`, `Sidebar09`, `Sidebar11`, `Sidebar12`, `Sidebar13` |
+| Application components | `ApplicationShell`, `ApplicationMetrics`, `ApplicationChart`, `ApplicationTable`, `ApplicationBoard`, `ApplicationProjects`, `ApplicationPlanner`, `ApplicationIdentity`, `ApplicationProducts`, `ApplicationReceipt`, `ApplicationConversation`, `ApplicationForm`, `ApplicationPhoto`, `ApplicationArticle` |
+
+Shared conventions:
+
+- `gap` takes a space token (`"3xs"` … `"2xl"`) or a number.
+- `variant` is `solid`, `soft`, `outline`, `ghost` or `danger`; `size` is `s`, `m` or `l`.
+- `tone` is `accent`, `ok`, `warn` or `bad` (`success`, `warning` and `danger` also work).
+- Controls take `value` + `onChange`, and most also work uncontrolled with `defaultValue`. Overlays take `visible` + `onClose` or `open` + `onOpenChange`.
+- Every component takes `style` for one-off changes.
+
+### What React Native core cannot do, and how the package handles it
+
+- **Pickers and clipboard.** Core has no file picker, image picker or clipboard. `FileInput`, `ImageInput` and the copy buttons take a callback (`onPick`, `onCopy`) that your app wires to its own library.
+- **Charts.** Core has no SVG, so `Chart` and `ApplicationChart` draw bar, stacked, sparkline and share charts from views. Line, area and pie charts are not included.
+- **Icons.** Icons are text glyphs or shapes drawn with views. Every component that shows an icon accepts your own element instead.
+- **Safe areas.** Core cannot read the notch or home-indicator size. Bars and sheets take `topInset` / `bottomInset`; pass the values from `react-native-safe-area-context`.
+- **Gestures.** Drags (bottom sheet, swipe rows, sortable, slider) use `PanResponder`, which tracks the finger on the JavaScript thread. Animations themselves run on the native thread.
+
+### Web components that were not ported
+
+These exist in the web catalog and were left out on purpose, because they do not fit a phone or React Native already does the job:
+
+| Web component | Reason |
+|---|---|
+| Keyboard key, command palette | Keyboard-driven desktop patterns |
+| Hover card | No hover on a touch screen |
+| Resizable panes, navigation menu, breadcrumb | Desktop layouts; phones use a back button and the vertical `Menu` |
+| Sticky, scroll area, aspect ratio, direction | Built into React Native (`stickyHeaderIndices`, `ScrollView`, `aspectRatio`, `I18nManager`) |
+| Accessible icon, label, separator, native select | Covered by `accessibilityLabel`, `Field`, `Divider` and `Select` |
+| Reparent and the twelve Colibri CSS entries | Web-only mechanics and CSS documentation |
 
 ## How it was tested
 
-The package is tested through react-native-web in a real browser: palette parity with Colibri CSS, every control in the showcase, and accessibility roles and states. It has not yet been run on an iOS or Android device by the maintainers; `examples/native` is an Expo app for that. Please report device-specific issues.
+The package is tested through react-native-web in a real browser: palette parity with Colibri CSS, every demo in the catalog opened with no errors or warnings, the basics exercised end to end, and each group's interactions exercised while it was built. It has not yet been run on an iOS or Android device by the maintainers; `examples/native` is an Expo app for that. Please report device-specific issues.
 
 ## Licence
 

@@ -20,7 +20,6 @@ import { Animated, BackHandler, Dimensions, Easing, FlatList, Keyboard, Modal, P
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
 import { web, depth, flat, GLYPH } from "./internal.js";
-import { Text } from "./components.js";
 
 // ---------------------------------------------------------------- shared helpers
 const ND = !web; // the native driver does not exist under react-native-web
@@ -39,6 +38,9 @@ const themed = (factory) => {
   const cache = new WeakMap();
   return () => { const theme = useTheme(); let styles = cache.get(theme); if (!styles) cache.set(theme, (styles = factory(theme))); return styles; };
 };
+// PanResponder only updates its velocity on a move event, so a finger that stopped before lifting still reports the
+// speed of its last move. A release this long after the last move counts as standing still.
+const resting = (movedAt) => Date.now() - (movedAt || 0) > 80;
 const hiddenFromReaders = { "aria-hidden": true, importantForAccessibility: "no-hide-descendants", accessibilityElementsHidden: true };
 
 // Without a safe-area library the insets can only be estimated. Pass the real values (bottomInset, topInset) when
@@ -523,16 +525,16 @@ export function BottomSheet({ visible, onClose, snapPoints = DEFAULT_SNAPS, snap
       return value;
     };
     const grant = () => { state.target = null; state.start = state.at; y.stopAnimation((value) => { state.start = value; }); };
-    const move = (_, gesture) => y.setValue(limit(state.start + gesture.dy));
+    const move = (_, gesture) => { state.moved = Date.now(); y.setValue(limit(state.start + gesture.dy)); };
     const release = (_, gesture) => {
-      const now = live.current, at = limit(state.start + gesture.dy), aim = at + gesture.vy * 180, lowest = now.tall - now.heights[0];
+      const now = live.current, at = limit(state.start + gesture.dy), vy = resting(state.moved) ? 0 : gesture.vy, aim = at + vy * 180, lowest = now.tall - now.heights[0];
       state.at = at;
-      if (now.dismissible && (aim > lowest + now.heights[0] * 0.5 || (gesture.vy > 1.4 && at > lowest))) {
-        leave(clamp((now.tall - at) / Math.max(0.5, gesture.vy), 120, 240)); now.onClose?.(); return;
+      if (now.dismissible && (aim > lowest + now.heights[0] * 0.5 || (vy > 1.4 && at > lowest))) {
+        leave(clamp((now.tall - at) / Math.max(0.5, vy), 120, 240)); now.onClose?.(); return;
       }
       let next = 0;
       now.heights.forEach((height, i) => { if (Math.abs(now.tall - height - aim) < Math.abs(now.tall - now.heights[next] - aim)) next = i; });
-      rest(now.tall - now.heights[next], gesture.vy * 1000);
+      rest(now.tall - now.heights[next], vy * 1000);
       if (next !== now.index) { if (now.snap === undefined) setInner(next); now.onSnapChange?.(next); }
     };
     const shared = { onPanResponderGrant: grant, onPanResponderMove: move, onPanResponderRelease: release, onPanResponderTerminate: release, onPanResponderTerminationRequest: () => false };
@@ -642,20 +644,20 @@ export const SwipeRow = memo(function SwipeRow({ children, leftActions = NONE, r
     };
     const end = (_, gesture) => {
       const now = live.current, at = limit(state.start + gesture.dx), sign = Math.sign(at), size = Math.abs(at);
-      const actions = sign > 0 ? now.leftActions : now.rightActions, open = actions.length * now.actionWidth, speed = gesture.vx * sign;
+      const actions = sign > 0 ? now.leftActions : now.rightActions, open = actions.length * now.actionWidth, vx = resting(state.moved) ? 0 : gesture.vx, speed = vx * sign;
       if (!sign || !actions.length) { settle(0); return; }
       if (now.fullSwipe && state.width && (size > state.width * 0.6 || (size > open && speed > 1.5))) {
         state.at = sign * state.width;
         timing(x, sign * state.width, 160, Easing.out(Easing.quad)).start(() => state.alive && run(actions[0]));
         return;
       }
-      settle(size + speed * 150 > open / 2 ? sign * open : 0, gesture.vx * 1000);
+      settle(size + speed * 150 > open / 2 ? sign * open : 0, vx * 1000);
     };
     return PanResponder.create({
       // Only a clearly horizontal drag is taken, so the list behind keeps its vertical scroll.
       onMoveShouldSetPanResponder: (_, gesture) => !live.current.disabled && Math.abs(gesture.dx) > 8 && Math.abs(gesture.dx) > Math.abs(gesture.dy) * 1.5 && (live.current.leftActions.length > 0 || live.current.rightActions.length > 0),
       onPanResponderGrant: () => { setArmed(true); live.current.group?.claim(close); state.start = state.at; x.stopAnimation((value) => { state.start = value; }); },
-      onPanResponderMove: (_, gesture) => x.setValue(limit(state.start + gesture.dx)),
+      onPanResponderMove: (_, gesture) => { state.moved = Date.now(); x.setValue(limit(state.start + gesture.dx)); },
       onPanResponderRelease: end, onPanResponderTerminate: end, onPanResponderTerminationRequest: () => false,
     });
   }, [x, state, live, settle, run, close]);
