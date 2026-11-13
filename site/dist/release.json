@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "84551e65c04b04fdc09102bbbbb09cec044ed7497a1e27181b8f3f7bd1f444e3",
+  "release": "eaab9b5158b1da0d3b0722e044c7ab3a492f3dc2a4013e0f644369f09ca8e5ee",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -16,7 +16,7 @@
     "framework-support.html": "8ac00034145235483768411fa7c28dd21a5b5c218a2b70542ed73650ede5efb5",
     "framework-support.json": "1a74e5230e2338c3075242a8b715e5d896fd9d2d54bda6701ebb7bb941b24a3b",
     "getting-started.html": "4658158fe57e2cf55bbc64cfa033b69a4a15fe16f8b83e22f9d7b16a64e5dddb",
-    "index.html": "fec656248eb67e47b814c59b6f17be46cc3023e04b924bf85bcc2d90721c5821",
+    "index.html": "03c1ffb507cd781b726bb13987d6d01de377652c121e8c3aba79f3a4c896b517",
     "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
     "kitchen-sink/examples/application-preview-entry.js": "83a464cbe300c0313d93d365d38301d5091b9cfe832283920b246579aecba481",
@@ -150,7 +150,7 @@
     "native/demo.js": "ce973f5b4bba81b936f99272cda74df1c8ed690f85124b388ef201d359d7833d",
     "native/index.html": "f2525f8db14e871ee9803b3d0d9b060345e4df40eb3dd32b59c3604cde26848d",
     "native/native.css": "d6aec062ca0b875669f87dc8bffad607b4fb089d9725aa3c89b7b7bc0430e2c5",
-    "site.css": "a62248c8aa9c8523efbe564e43aa766abd75a24b53f406fdd2fe77a3917e7ebd",
+    "site.css": "aef9744fc07505bd499dfa5521e8ed6f2e8a6f2f8efde80ae3435f4f3af9b8f9",
     "site.js": "411160b78f4f362aa1fd52723377c90db3d0a3399076787b6ab320249f0b9bcf",
     "studio/index.html": "69847f6a5c5e9bae48dd5c85a56d438ed8e86710363910970eb30ce7d3290e0f",
     "ui/dist/bundle-sizes.json": "e1385d78ef89c688c24549f71fcdccdb7014aac98705393899ca1f590d94ebfe",
