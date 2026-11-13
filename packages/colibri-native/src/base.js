@@ -46,18 +46,18 @@ const directionOf = (dir) => {
 };
 const DirectionContext = createContext(null);
 /** { dir, rtl, textStyle, mirror(ltrValue, rtlValue) } for the nearest DirectionProvider, or the device direction. */
-export function useDirection() {
+function useDirection() {
   return useContext(DirectionContext) ?? directionOf("auto");
 }
 /** dir: "ltr" | "rtl" | "auto" (follow I18nManager). Mirrors row layouts and start/end spacing for everything inside. */
-export function DirectionProvider({ dir = "auto", style, children, ...rest }) {
+function DirectionProvider({ dir = "auto", style, children, ...rest }) {
   const value = directionOf(dir);
   return h(DirectionContext.Provider, { value }, h(View, { style: flat({ direction: value.dir }, style), ...(web ? { dir: value.dir } : null), ...rest }, children));
 }
 
 // ---------------------------------------------------------------- separator
 /** A line between content. orientation: horizontal | vertical (vertical needs a row parent). decorative hides it from screen readers. */
-export function Separator({ orientation = "horizontal", decorative = false, style, ...rest }) {
+function Separator({ orientation = "horizontal", decorative = false, style, ...rest }) {
   const theme = useTheme(), vertical = orientation === "vertical";
   // Same line as Divider; drawn here because a separator also carries a role and an orientation.
   return h(View, { role: decorative ? "none" : "separator", "aria-orientation": decorative ? undefined : orientation, importantForAccessibility: decorative ? "no" : undefined,
@@ -70,7 +70,7 @@ const ratioOf = (ratio) => {
   return ratio > 0 ? ratio : 1;
 };
 /** A box that keeps its shape. ratio is width / height: 16 / 9, 1, or a string such as "4/3". */
-export function AspectRatio({ ratio = 16 / 9, style, children, ...rest }) {
+function AspectRatio({ ratio = 16 / 9, style, children, ...rest }) {
   return h(View, { style: flat({ width: "100%", aspectRatio: ratioOf(ratio), overflow: "hidden" }, style), ...rest }, children);
 }
 
@@ -113,7 +113,7 @@ export function Muted(props) {
 }
 
 /** One key cap, or a shortcut with keys={["Ctrl", "K"]}. */
-export function Kbd({ keys, separator = "+", style, children, ...rest }) {
+function Kbd({ keys, separator = "+", style, children, ...rest }) {
   const theme = useTheme(), inRow = useContext(InRow), c = theme.colors;
   const cap = (label, key) => h(View, { key, style: flat({ minWidth: 26, height: 26, paddingHorizontal: 7, alignItems: "center", justifyContent: "center", borderRadius: Math.min(6, theme.radius.s), borderWidth: 1, borderBottomWidth: 2, borderColor: c.line, backgroundColor: c.sunken }, keys ? null : [selfAlign(inRow), style]), ...(keys ? null : rest) },
     h(NativeText, { style: { color: c.fg, fontFamily: MONO, fontSize: theme.text.xs, lineHeight: 16, fontWeight: "600" } }, label));
@@ -127,7 +127,7 @@ export function Kbd({ keys, separator = "+", style, children, ...rest }) {
  * The text label of a form control. Pass target (the ref of the input) and pressing the label focuses it,
  * as a click on a web label does. required adds a mark; disabled dims it.
  */
-export function Label({ target, required = false, disabled = false, onPress, style, children, ...rest }) {
+function Label({ target, required = false, disabled = false, onPress, style, children, ...rest }) {
   const theme = useTheme();
   const press = target || onPress ? (event) => { onPress?.(event); target?.current?.focus?.(); } : undefined;
   return h(Text, { size: "sm", weight: "semibold", onPress: disabled ? undefined : press, suppressHighlighting: true, style: flat(disabled && { color: theme.colors.muted }, style), ...rest }, children,
@@ -164,7 +164,7 @@ export function IconButton({ icon, label, variant = "ghost", size = "m", shape =
  * Gives an icon a spoken name: the icon itself is hidden from screen readers and label is announced instead.
  * Without a label the icon is decorative and skipped. For a pressable icon use IconButton, which takes the label itself.
  */
-export function AccessibleIcon({ label, size = 18, tone, style, children, ...rest }) {
+function AccessibleIcon({ label, size = 18, tone, style, children, ...rest }) {
   const theme = useTheme(), color = tone === "muted" ? theme.colors.muted : theme.colors[toneName(tone)] ?? theme.colors.fg;
   const hidden = { "aria-hidden": true, importantForAccessibility: "no-hide-descendants", accessibilityElementsHidden: true };
   return h(View, { ...(label ? { accessible: true, accessibilityRole: "image", accessibilityLabel: label, "aria-label": label } : hidden), style: flat({ alignItems: "center", justifyContent: "center" }, style), ...rest },

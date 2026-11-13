@@ -1,6 +1,6 @@
 // Demos for the pickers: slider, calendar, dates, colours, files and reordering.
 import { useState } from "react";
-import { Platform, View } from "react-native";
+import { View } from "react-native";
 import {
   useTheme, useToast, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Tabs, TextField,
   Slider, Calendar, DatePicker, ColorPicker, FileInput, ImageInput, Repeater, Sortable,
@@ -17,16 +17,8 @@ const AVATAR_A = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt
 const AVATAR_B = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAIAAABt+uBvAAABHElEQVR42u3awQ0CMQwEQFdHLRRKDVRAFbz4I3Q8Lnac3EhbwSiP2Ot4v55ykEAACBAgQIAAAQIkgAABAgQIECBAAggQIECAfuZxvwH6FjnOdYH+0nRgiv40c5liIZ0pRrGWTr1RLKdTbBQr6lQaAeoBNFynzAhQA6AknRojQIAAAdoaKFWnwMgLAgQIEKCLA5nFANkHAbKT1mroxS7Ri2lWdfOuO9wHuTADBAgQIECAAPkHGTUMq/ZBVq77r1z1Yq47GutkG8UGOqlGsYdOnlFso5NkFDvpZBjFZjrDjWI/nbFGgKqAWukMNAJUAtRQZ5QRoHygtjpDjAAlAzXXOW8ECNBEoCV0ThoBAjQLaCGdM0aAAAECBAjQukAfXbDb/pMn73oAAAAASUVORK5CYII=";
 const COVER = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAKAAAABkCAIAAACO1KzYAAABy0lEQVR42u3au01cURiF0V0NtVAGkUPXQBUUQSHEjohdggPnQEQwEvaduef5s6QvvtKeNQ9pzsnzrz8qXLwEgAVYgAVYgAVYgAELsAALsAAL8NK9vf4AXBD1qwCXpZ3CDHiC7khjwHN0hxkDnqY7xhjwTN0BxoABq6dub2PAgAUYMGC6c4wB+wQLMGDAgAH7JwswYMBOkwA7D5YbHXInC7Nble5FA9Y54Jfff1U4wIAFWIAFWIAFWIAB67P7p8drA1wQdVlpwO1dl5IG3Jd2OnPQDg5wWdopzEFbmzloazOHbm3moK1tHLS1mUO3NnPQ1jYO3drMWfAABG1D4yx7zoW2CXNWPsuke14n/X7e734+/LditEcmfzSSOc2/Ew6OPC+9I+145jR8s9xGewPz7rStmBsAH3zQedqDzJVoxzDn5IPa0v7DuCptb+aceVCnnRfM34G23w9z1tzZavBeuj2Ys/LOdZg3nXw18PidKxhvvTpb7JzIvPvk7EI73rjG6uy1cxhzmcnZjra3cbHV2XRnD+ZdJl+1OlvvbMhcdXJ2pz3JXH5yCoy8jfmbrE6xnboIMGABFmABFmABFmDAAizAAizAAizAgFWzd3JxhCErqx6QAAAAAElFTkSuQmCC";
 
-// React Native core has no file picker. In an app, onPick calls expo-document-picker or expo-image-picker.
-// Here the web build opens a real <input type="file">, and a phone gets sample files instead.
-const web = Platform.OS === "web";
-const browse = ({ multiple = false, accept } = {}) => new Promise((resolve) => {
-  const input = document.createElement("input");
-  input.type = "file"; input.multiple = multiple; if (accept) input.accept = accept;
-  input.addEventListener("change", () => resolve([...input.files].map((file) => ({ name: file.name, size: file.size, type: file.type, uri: URL.createObjectURL(file) }))));
-  input.addEventListener("cancel", () => resolve(null));
-  input.click();
-});
+// React Native core has no file picker. In an app, onPick calls expo-document-picker or expo-image-picker and
+// returns what the user chose. These demos have no picker to call, so each press "picks" the next sample file.
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const SAMPLE_FILES = [
   { name: "Q3-board-report.pdf", size: 1_258_291, type: "application/pdf", uri: "sample://q3-board-report.pdf" },
@@ -131,36 +123,35 @@ export default [
       </Stack>
     );
   } },
-  { id: "file-input", title: "FileInput", description: "Lists chosen files with remove buttons and checks size, type and count. React Native has no built-in file picker, so your app passes one as onPick (expo-document-picker); this demo uses sample files on a phone.", Demo: () => {
+  { id: "file-input", title: "FileInput", description: "Lists chosen files with remove buttons and checks size, type and count. React Native has no built-in file picker, so your app passes one as onPick (expo-document-picker); this demo has no picker, so each press adds the next sample file.", Demo: () => {
     const toast = useToast(), [files, setFiles] = useState([SAMPLE_FILES[0]]), [next, setNext] = useState(1), [resume, setResume] = useState([]);
-    // Each press on a phone "picks" the next sample; the third one is 46 MB and is turned away.
+    // Each press "picks" the next sample; the third one is 46 MB and is turned away.
     const pickSample = async () => { await wait(500); setNext((n) => n + 1); return SAMPLE_FILES[next % SAMPLE_FILES.length]; };
     return (
       <Stack gap="m">
         <Card>
           <FileInput label="Attachments" multiple maxFiles={3} maxSize="2MB" value={files} onChange={setFiles} testID="attachments"
-            onPick={web ? browse : pickSample} onReject={(rejected) => toast.show(`${rejected.length} ${rejected.length === 1 ? "file was" : "files were"} not added`, { tone: "warn" })} />
+            onPick={pickSample} onReject={(rejected) => toast.show(`${rejected.length} ${rejected.length === 1 ? "file was" : "files were"} not added`, { tone: "warn" })} />
           <Text size="xs" tone="muted">{files.length} of 3 attached.</Text>
         </Card>
         <Card>
           <FileInput label="Résumé" accept=".pdf" maxSize="5MB" hint="PDF only, 5 MB at most" value={resume} onChange={setResume}
-            onPick={web ? () => browse({ accept: ".pdf" }) : async () => { await wait(400); return resume.length ? SAMPLE_FILES[3] : SAMPLE_FILES[4]; }} />
+            onPick={async () => { await wait(400); return resume.length ? SAMPLE_FILES[3] : SAMPLE_FILES[4]; }} />
         </Card>
       </Stack>
     );
   } },
-  { id: "image-input", title: "ImageInput", description: "A preview with change and delete. The picker itself comes from your app as onPick (expo-image-picker), because React Native has none built in; this demo swaps between sample pictures on a phone.", Demo: () => {
+  { id: "image-input", title: "ImageInput", description: "A preview with change and delete. The picker itself comes from your app as onPick (expo-image-picker), because React Native has none built in; this demo has no picker, so each press swaps in a sample picture.", Demo: () => {
     const [avatar, setAvatar] = useState({ uri: AVATAR_A, name: "portrait-cool.png", size: 341 }), [turn, setTurn] = useState(0), [cover, setCover] = useState(null);
-    const browseImage = async () => (await browse({ accept: "image/*" }))?.[0] ?? null;
     return (
       <Stack gap="m">
         <Card>
           <ImageInput label="Profile photo" value={avatar} onChange={setAvatar} maxSize="1MB" hint="PNG or JPG, 1 MB at most" testID="avatar"
-            onPick={web ? browseImage : async () => { await wait(500); setTurn((n) => n + 1); return SAMPLE_AVATARS[turn % 2]; }} />
+            onPick={async () => { await wait(500); setTurn((n) => n + 1); return SAMPLE_AVATARS[turn % 2]; }} />
         </Card>
         <Card>
           <ImageInput label="Cover image" shape="rounded" size={{ width: 480, height: 150 }} value={cover} onChange={setCover} chooseLabel="Add a cover" hint="Shown at the top of your public page." testID="cover"
-            onPick={web ? browseImage : async () => { await wait(500); return { uri: COVER, name: "hills-at-dawn.png", size: 516 }; }} />
+            onPick={async () => { await wait(500); return { uri: COVER, name: "hills-at-dawn.png", size: 516 }; }} />
         </Card>
       </Stack>
     );

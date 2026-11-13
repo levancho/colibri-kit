@@ -250,7 +250,7 @@ export function Carousel({ children, index, defaultIndex = 0, onChange, loop = f
  * (size + onResize, or defaultSize); min and max bound it. direction: "horizontal" (side by side) or "vertical".
  * The handle is an adjustable control: screen readers change it in steps, and on the web the arrow keys, Home and End work.
  */
-export function Resizable({ children, direction = "horizontal", size, defaultSize = 50, onResize, min = 15, max = 85, step = 5, handleLabel = "Resize panes", style }) {
+function Resizable({ children, direction = "horizontal", size, defaultSize = 50, onResize, min = 15, max = 85, step = 5, handleLabel = "Resize panes", style }) {
   const theme = useTheme(), c = theme.colors, [first, second] = Children.toArray(children), row = direction !== "vertical";
   const [raw, setSize] = useControlled(size, defaultSize, onResize), share = clamp(+raw || 0, min, max);
   const [dragging, setDragging] = useState(false), extent = useRef(0), start = useRef(share);
@@ -299,7 +299,7 @@ function Fade({ edge, color }) {
  * A bounded box whose content scrolls, with fades at the edges that have more to show.
  * maxHeight (or height) bounds it; horizontal scrolls sideways instead. Every ScrollView prop passes through; ref is the ScrollView.
  */
-export const ScrollArea = forwardRef(function ScrollArea({ maxHeight = 240, height, horizontal = false, fade = true, bordered = true, padded = true, fadeColor, style, contentStyle, children,
+const ScrollArea = forwardRef(function ScrollArea({ maxHeight = 240, height, horizontal = false, fade = true, bordered = true, padded = true, fadeColor, style, contentStyle, children,
   onScroll, onLayout, onContentSizeChange, accessibilityLabel, ...rest }, ref) {
   const theme = useTheme(), c = theme.colors, [edges, setEdges] = useState({ start: false, end: false });
   const box = useRef(0), content = useRef(0), offset = useRef(0);

@@ -55,7 +55,7 @@ function SliderCore({ value, defaultValue, onChange, onChangeEnd, min = 0, max =
   const [current, set] = useControlled(value, defaultValue ?? (isRange ? [min, max] : min), onChange);
   const values = (isRange ? (Array.isArray(current) ? current : [min, max]) : [Array.isArray(current) ? current[0] : current]).map((v) => clamp(Number.isFinite(+v) ? +v : min, min, max));
   const [active, setActive] = useState(-1), [focused, setFocused] = useState(-1);
-  const rail = useRef(null), box = useRef(null), drag = useRef(null), latest = useRef(values), live = useRef({});
+  const rail = useRef(null), box = useRef(null), drag = useRef(null), held = useRef(false), latest = useRef(values), live = useRef({});
   if (!drag.current) latest.current = values;
   const out = (list) => (isRange ? list : list[0]);
   const span = max - min || 1, percent = (v) => ((v - min) / span) * 100;
@@ -72,13 +72,15 @@ function SliderCore({ value, defaultValue, onChange, onChangeEnd, min = 0, max =
   const nudge = (index, amount) => { if (!disabled && move(index, latest.current[index] + amount)) onChangeEnd?.(out(latest.current)); };
   live.current = {
     disabled,
+    // Measuring is asynchronous, so a quick tap can lift before begin runs: it still moves the thumb, then ends.
     begin(x) {
       const now = latest.current, raw = min + clamp((x - box.current.x) / (box.current.w || 1), 0, 1) * span;
       const index = !isRange ? 0 : Math.abs(raw - now[0]) === Math.abs(raw - now[1]) ? (raw < now[0] ? 0 : 1) : Math.abs(raw - now[0]) < Math.abs(raw - now[1]) ? 0 : 1;
       drag.current = { index }; setActive(index); move(index, raw);
+      if (!held.current) live.current.end();
     },
     to(x) { if (drag.current) move(drag.current.index, min + clamp((x - box.current.x) / (box.current.w || 1), 0, 1) * span); },
-    end() { if (!drag.current) return; drag.current = null; setActive(-1); onChangeEnd?.(out(latest.current)); },
+    end() { held.current = false; if (!drag.current) return; drag.current = null; setActive(-1); onChangeEnd?.(out(latest.current)); },
   };
   const pan = useRef(PanResponder.create({
     onStartShouldSetPanResponder: () => !live.current.disabled,
@@ -86,7 +88,7 @@ function SliderCore({ value, defaultValue, onChange, onChangeEnd, min = 0, max =
     onPanResponderTerminationRequest: () => false,
     onShouldBlockNativeResponder: () => true,
     // The rail is measured when the finger lands, so the maths is right after scrolling or rotation.
-    onPanResponderGrant: (event) => { const x = touchX(event); rail.current?.measure((_x, _y, width, _h, pageX) => { box.current = { x: pageX, w: width }; live.current.begin(x); }); },
+    onPanResponderGrant: (event) => { const x = touchX(event); held.current = true; rail.current?.measure((_x, _y, width, _h, pageX) => { box.current = { x: pageX, w: width }; live.current.begin(x); }); },
     onPanResponderMove: (event) => live.current.to(touchX(event)),
     onPanResponderRelease: () => live.current.end(),
     onPanResponderTerminate: () => live.current.end(),
@@ -135,6 +137,7 @@ const toIso = (y, m, d) => `${String(y).padStart(4, "0")}-${pad2(m + 1)}-${pad2(
 const parseIso = (iso) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(typeof iso === "string" ? iso : ""); return m ? [+m[1], +m[2] - 1, +m[3]] : null; };
 const fromUtc = (date) => toIso(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 const addDays = (iso, n) => { const [y, m, d] = parseIso(iso); return fromUtc(new Date(Date.UTC(y, m, d + n))); };
+const fromMonth = (y, m) => { const at = new Date(Date.UTC(y, m, 1)); return [at.getUTCFullYear(), at.getUTCMonth()]; };
 const localToday = () => { const now = new Date(); return toIso(now.getFullYear(), now.getMonth(), now.getDate()); };
 const EN_MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const EN_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -192,8 +195,24 @@ export function Calendar({ mode = "single", value, defaultValue, onChange, min, 
     return set(iso < start ? [iso, start] : [start, iso], { complete: true });
   };
 
+  // On the web the grid is one tab stop: arrows move by day and week, Page Up/Down by month, Home/End to the week's ends.
+  const cells = useRef({}), focusNext = useRef(null);
+  useEffect(() => { if (!focusNext.current) return; cells.current[focusNext.current]?.focus?.(); focusNext.current = null; });
+  const onKey = (iso) => (event) => {
+    const key = keyOf(event), column = (new Date(`${iso}T00:00:00Z`).getUTCDay() - firstDay + 7) % 7, [y, m, d] = parseIso(iso);
+    const monthStep = (by) => toIso(...fromMonth(y, m + by), Math.min(d, new Date(Date.UTC(y, m + by + 1, 0)).getUTCDate()));
+    const to = { ArrowLeft: () => addDays(iso, -1), ArrowRight: () => addDays(iso, 1), ArrowUp: () => addDays(iso, -7), ArrowDown: () => addDays(iso, 7),
+      Home: () => addDays(iso, -column), End: () => addDays(iso, 6 - column), PageUp: () => monthStep(-1), PageDown: () => monthStep(1) }[key];
+    if (!to) return;
+    event.preventDefault?.();
+    let next = to(); if (min && next < min) next = min; if (max && next > max) next = max;
+    if (next.slice(0, 7) !== shown) setShown(next.slice(0, 7));
+    // In the same month the cell is already there; otherwise it is focused once the new month has rendered.
+    if (next.slice(0, 7) === shown) cells.current[next]?.focus?.(); else focusNext.current = next;
+  };
   const first = toIso(year, monthIndex, 1), lead = (new Date(Date.UTC(year, monthIndex, 1)).getUTCDay() - firstDay + 7) % 7;
-  const cell = theme.touch, disc = cell - 6;
+  const cell = theme.touch, disc = cell - 6, inMonth = (iso) => parseIso(iso) && iso.slice(0, 7) === first.slice(0, 7);
+  const tabStop = inMonth(picked) ? picked : inMonth(now) ? now : first;
   const day = (iso) => {
     const outside = iso.slice(0, 7) !== first.slice(0, 7), off = !!blocked(iso), isToday = iso === now;
     const isStart = mode === "range" && iso === start, isEnd = mode === "range" && iso === end, between = !!(start && end && iso > start && iso < end);
@@ -201,7 +220,7 @@ export function Calendar({ mode = "single", value, defaultValue, onChange, min, 
     const band = between || ((isStart || isEnd) && start && end && start !== end);
     return h(Pressable, { key: iso, testID: testID ? `${testID}-${iso}` : undefined, onPress: () => choose(iso), disabled: off, accessibilityRole: "button",
       accessibilityLabel: `${names.full(iso)}${isToday ? `, ${words.today}` : ""}`, accessibilityState: { selected: selected || between, disabled: off }, "aria-selected": selected || between, "aria-disabled": off,
-      "aria-current": isToday ? "date" : undefined, style: { flex: 1, height: cell, alignItems: "center", justifyContent: "center" } },
+      "aria-current": isToday ? "date" : undefined, ...(web ? { ref: (node) => { cells.current[iso] = node; }, tabIndex: iso === tabStop ? 0 : -1, onKeyDown: onKey(iso) } : null), style: { flex: 1, height: cell, alignItems: "center", justifyContent: "center" } },
       ({ pressed }) => [
         band ? h(View, { key: "band", style: { position: "absolute", top: 3, bottom: 3, left: isStart ? "50%" : 0, right: isEnd ? "50%" : 0, backgroundColor: c.accentSoft } }) : null,
         h(View, { key: "disc", style: { width: disc, height: disc, borderRadius: disc / 2, alignItems: "center", justifyContent: "center", borderWidth: isToday && !selected ? 1.5 : 0, borderColor: c.accent,
@@ -499,20 +518,22 @@ export function Repeater({ value, defaultValue, onChange, renderRow, createItem 
 
 // ---------------------------------------------------------------- sortable
 const Grip = ({ color }) => h(View, { style: { flexDirection: "row", gap: 3 } }, [0, 1].map((column) => h(View, { key: column, style: { gap: 3 } }, [0, 1, 2].map((dot) => h(View, { key: dot, style: { width: 4, height: 4, borderRadius: 2, backgroundColor: color } })))));
+// Row transforms run on the native driver; react-native-web has none, so there Animated falls back to JS.
+const NATIVE = !web;
 const reorder = (list, from, to) => { const next = list.slice(), [moved] = next.splice(from, 1); next.splice(to, 0, moved); return next; };
 
 function SortableRow({ itemKey, label, index, count, active, shift, animate, dragY, settle, control, disabled, handle, children, onLayout }) {
   const theme = useTheme(), c = theme.colors, offset = useRef(new Animated.Value(0)).current, grip = useRef(null);
   // Neighbours slide out of the way while a row is dragged, and snap (unanimated) into the new order on drop.
   useLayoutEffect(() => {
-    if (animate) Animated.timing(offset, { toValue: shift, duration: 140, useNativeDriver: false }).start();
+    if (animate) Animated.timing(offset, { toValue: shift, duration: 140, useNativeDriver: NATIVE }).start();
     else { offset.stopAnimation(); offset.setValue(shift); }
   }, [shift, animate, offset]);
   // The dropped row glides from where the finger left it to its slot.
   useLayoutEffect(() => {
     if (!settle || settle.key !== itemKey) return;
     offset.setValue(settle.offset);
-    Animated.timing(offset, { toValue: 0, duration: 160, useNativeDriver: false }).start();
+    Animated.timing(offset, { toValue: 0, duration: 160, useNativeDriver: NATIVE }).start();
   }, [settle, itemKey, offset]);
   useEffect(() => control.current.grips.set(itemKey, grip), [control, itemKey]);
   useEffect(() => () => { control.current.grips.delete(itemKey); }, [control, itemKey]);
@@ -522,9 +543,9 @@ function SortableRow({ itemKey, label, index, count, active, shift, animate, dra
     onPanResponderTerminationRequest: () => false,
     onShouldBlockNativeResponder: () => true,
     onPanResponderGrant: () => control.current.start(itemKey),
-    onPanResponderMove: (_event, gesture) => control.current.move(gesture.dy),
-    onPanResponderRelease: () => control.current.end(),
-    onPanResponderTerminate: () => control.current.end(),
+    onPanResponderMove: (_event, gesture) => control.current.move(itemKey, gesture.dy),
+    onPanResponderRelease: () => control.current.end(itemKey),
+    onPanResponderTerminate: () => control.current.end(itemKey),
   })).current;
   const actions = [index > 0 ? { name: "moveUp", label: "Move up" } : null, index < count - 1 ? { name: "moveDown", label: "Move down" } : null].filter(Boolean);
   const onKey = (event) => {
@@ -565,14 +586,15 @@ export function Sortable({ value, defaultValue, onChange, renderItem, keyExtract
     disabled,
     start(key) {
       const from = keys.indexOf(key);
-      if (from < 0 || keys.some((each) => !(layouts.current[each] > 0))) return;
+      if (state.current && !keys.includes(state.current.key)) state.current = null; // the dragged item was removed mid-drag
+      if (state.current || from < 0 || keys.some((each) => !(layouts.current[each] > 0))) return;
       // Row positions come from the measured heights and the current order, so they are never stale after a reorder.
       const box = {}; let y = 0;
       for (const each of keys) { box[each] = { y, height: layouts.current[each] }; y += layouts.current[each] + space; }
       dragY.setValue(0); state.current = { key, from, to: from, dy: 0, box }; setSettle(null); setDrag({ key, from, to: from, height: box[key].height });
     },
-    move(dy) {
-      const at = state.current; if (!at) return;
+    move(key, dy) {
+      const at = state.current; if (!at || at.key !== key || keys.some((each) => !at.box[each])) return;
       const box = at.box, own = box[at.key], top = box[keys[0]], bottom = box[keys[keys.length - 1]];
       const y = clamp(dy, top.y - own.y, bottom.y + bottom.height - own.y - own.height);
       dragY.setValue(y); at.dy = y;
@@ -581,9 +603,10 @@ export function Sortable({ value, defaultValue, onChange, renderItem, keyExtract
       else for (let i = at.from - 1; i >= 0; i--) { const other = box[keys[i]]; if (own.y + y < other.y + other.height / 2) to = i; else break; }
       if (to !== at.to) { at.to = to; setDrag({ key: at.key, from: at.from, to, height: own.height }); }
     },
-    end() {
-      const at = state.current; if (!at) return;
+    end(key) {
+      const at = state.current; if (!at || at.key !== key) return;
       state.current = null; setDrag(null);
+      if (keys.some((each) => !at.box[each])) { dragY.setValue(0); return; } // the list changed under the finger: drop the drag
       // How far the row's slot moved: the heights (and gaps) of the rows it jumped over.
       const box = at.box, lo = Math.min(at.from, at.to), hi = Math.max(at.from, at.to);
       let travel = 0; for (let i = lo; i <= hi; i++) if (i !== at.from) travel += box[keys[i]].height + space;

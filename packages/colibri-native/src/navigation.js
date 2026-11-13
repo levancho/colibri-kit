@@ -103,7 +103,7 @@ function useExpanded(initial) {
  * Where you are: Home › Articles › Edit. items: [{ label, onPress }]; the last one is the current page.
  * With more than maxItems the middle collapses into an ellipsis that expands when pressed.
  */
-export function Breadcrumb({ items = [], maxItems = 4, separator = GLYPH.chevronRight, label = "Breadcrumb", onNavigate, style, ...rest }) {
+function Breadcrumb({ items = [], maxItems = 4, separator = GLYPH.chevronRight, label = "Breadcrumb", onNavigate, style, ...rest }) {
   const theme = useTheme(), c = theme.colors, [expanded, setExpanded] = useState(false);
   const tail = Math.max(1, maxItems - 2), collapsed = !expanded && items.length > maxItems && items.length > tail + 1;
   const shown = collapsed ? [{ item: items[0], index: 0 }, { ellipsis: true }, ...items.slice(-tail).map((item, at) => ({ item, index: items.length - tail + at }))] : items.map((item, index) => ({ item, index }));
@@ -146,7 +146,7 @@ export function Menu({ items = [], value, onSelect, defaultExpanded, label, styl
  * from `breakpoint` up (or orientation="horizontal") they sit in a row with the open panel underneath.
  * items: [{ value, label, items: [{ value, label, description, onPress }] } | { value, label, onPress }].
  */
-export function NavigationMenu({ items = [], open, defaultOpen = null, onOpenChange, onSelect, orientation = "auto", breakpoint = 768, label = "Main", style, ...rest }) {
+function NavigationMenu({ items = [], open, defaultOpen = null, onOpenChange, onSelect, orientation = "auto", breakpoint = 768, label = "Main", style, ...rest }) {
   const theme = useTheme(), c = theme.colors, { width } = useWindowDimensions();
   const [current, setCurrent] = useControlled(open, defaultOpen, onOpenChange);
   const row = orientation === "horizontal" || (orientation === "auto" && width >= breakpoint);
@@ -215,7 +215,7 @@ export function Pagination({ page, defaultPage = 1, total = 1, onChange, sibling
  * It gets the page background so content does not show through, and a hairline once it is stuck.
  * onChange(stuck) fires when it sticks or lets go; children may be a function of { stuck }.
  */
-export function Sticky({ stuck = false, onChange, style, stuckStyle, children, ...rest }) {
+function Sticky({ stuck = false, onChange, style, stuckStyle, children, ...rest }) {
   const theme = useTheme(), first = useRef(true), latest = useRef(onChange);
   latest.current = onChange;
   useEffect(() => { if (first.current) { first.current = false; if (!stuck) return; } latest.current?.(stuck); }, [stuck]);
@@ -224,13 +224,13 @@ export function Sticky({ stuck = false, onChange, style, stuckStyle, children, .
 }
 
 /** For a plain ScrollView: <ScrollView stickyHeaderIndices={stickyHeaderIndices(children)}>{children}</ScrollView>. */
-export const stickyHeaderIndices = (children) => Children.toArray(children).flatMap((child, index) => (isValidElement(child) && child.type === Sticky ? [index] : []));
+const stickyHeaderIndices = (children) => Children.toArray(children).flatMap((child, index) => (isValidElement(child) && child.type === Sticky ? [index] : []));
 
 /**
  * A ScrollView that pins every direct <Sticky> child (it works out stickyHeaderIndices for you) and tells each
  * one whether it is stuck. Every ScrollView prop passes through.
  */
-export const StickyScrollView = forwardRef(function StickyScrollView({ children, onScroll, contentContainerStyle, onStickyHeight, scrollEventThrottle = 16, ...rest }, ref) {
+const StickyScrollView = forwardRef(function StickyScrollView({ children, onScroll, contentContainerStyle, onStickyHeight, scrollEventThrottle = 16, ...rest }, ref) {
   const [stuck, setStuck] = useState({}), marks = useRef({ tops: {}, heights: {}, y: 0 }).current;
   const content = StyleSheet.flatten(contentContainerStyle) ?? {}, gap = content.rowGap ?? content.gap ?? 0;
   const update = () => setStuck((current) => {
@@ -512,7 +512,7 @@ const matches = (query, ...fields) => { const text = fields.flat().filter(Boolea
  * open + onOpenChange show it in a Modal near the top of the screen; modal={false} renders the list in place.
  * With a keyboard: Up and Down move, Enter runs the highlighted command, and on the web hotkey="k" toggles it with Ctrl/Cmd+K.
  */
-export function Command({ open = false, onOpenChange, groups = [], onSelect, query, defaultQuery = "", onQueryChange, placeholder = "Search commands…", emptyText = "No results found", label = "Command palette",
+function Command({ open = false, onOpenChange, groups = [], onSelect, query, defaultQuery = "", onQueryChange, placeholder = "Search commands…", emptyText = "No results found", label = "Command palette",
   closeOnSelect = true, modal = true, hotkey, style }) {
   const theme = useTheme(), c = theme.colors, screen = useWindowDimensions(), [text, setText] = useControlled(query, defaultQuery, onQueryChange), [cursor, setCursor] = useState(0), [focused, setFocused] = useState(false);
   const shown = modal ? open : true, toggle = useRef(null);

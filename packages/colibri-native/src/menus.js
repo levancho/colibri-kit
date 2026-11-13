@@ -313,7 +313,7 @@ export function ContextMenu({ children, items = [], onSelect, open, onOpenChange
  * press outside closes it; with a mouse (web, tablets) it also opens after openDelay of hovering and closes when
  * the pointer leaves both the trigger and the card. Put the link's own action inside the card.
  */
-export function HoverCard({ trigger, children, open, defaultOpen, onOpenChange, side = "bottom", align = "start", offset, openDelay = 300, closeDelay = 150, label, style, contentStyle }) {
+function HoverCard({ trigger, children, open, defaultOpen, onOpenChange, side = "bottom", align = "start", offset, openDelay = 300, closeDelay = 150, label, style, contentStyle }) {
   const [isOpen, setOpen] = useOpen(open, defaultOpen, onOpenChange), anchor = useAnchor(isOpen), hover = useHover(isOpen, setOpen, openDelay);
   const close = useCallback(() => setOpen(false), [setOpen]);
   return h(Fragment, null,

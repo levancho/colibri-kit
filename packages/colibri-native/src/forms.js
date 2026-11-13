@@ -279,7 +279,7 @@ export const Select = forwardRef(function Select({ options = [], value, defaultV
  * The simplest picker (the web kit's native-select): one value from a short plain list in a sheet. Same props as Select,
  * without search or multiple selection. Use Select when you need those.
  */
-export const NativeSelect = forwardRef(function NativeSelect(props, ref) {
+const NativeSelect = forwardRef(function NativeSelect(props, ref) {
   return h(Select, { ...props, ref, multiple: false, searchable: false });
 });
 
