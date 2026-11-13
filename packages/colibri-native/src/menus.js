@@ -1,5 +1,5 @@
 // Things that open above the screen next to (or instead of) what was pressed: AlertDialog, Drawer, Popover,
-// DropdownMenu, ContextMenu, HoverCard and Tooltip. Built on React Native's own Modal, Animated and PanResponder.
+// DropdownMenu, ContextMenu and Tooltip. Built on React Native's own Modal, Animated and PanResponder.
 //
 // Anchored overlays measure their trigger with measureInWindow and are drawn in a transparent Modal, so they are
 // never clipped by a ScrollView or a Card. The Android back button (and Esc on the web) closes every one of them;
@@ -97,11 +97,10 @@ function Anchored({ visible, anchor, onClose, side = "bottom", align = "start", 
   useEffect(() => { if (!visible) { setSize(null); shown.setValue(0); clearTimeout(leaving.current); leaving.current = null; } }, [visible, shown]);
   useEffect(() => { if (ready) Animated.timing(shown, { toValue: 1, duration: 120, easing: Easing.out(Easing.quad), useNativeDriver: !web }).start(); }, [ready, shown]);
   useEffect(() => () => clearTimeout(leaving.current), []);
-  // Opened by hover: close once the pointer has left both the trigger and (for a card) the panel.
+  // Opened by hover: close once the pointer has left the trigger.
   const track = web && hover ? (event) => {
     const { clientX: x, clientY: y } = event.nativeEvent;
-    const inside = within(anchor, x, y, 2) || (hover.stay && spot && within({ x: spot.left, y: spot.top, ...size }, x, y, gap + 2));
-    if (inside) { clearTimeout(leaving.current); leaving.current = null; }
+    if (within(anchor, x, y, 2)) { clearTimeout(leaving.current); leaving.current = null; }
     else if (!leaving.current) leaving.current = setTimeout(onClose, hover.closeDelay ?? 150);
   } : undefined;
   const looks = look === "tip"
@@ -307,21 +306,6 @@ export function ContextMenu({ children, items = [], onSelect, open, onOpenChange
     h(MenuSurface, { visible: isOpen, anchor: point ?? anchor.rect, onClose: close, items, onSelect, presentation, side: "bottom", align: "start", label }));
 }
 
-// ---------------------------------------------------------------- hover-card
-/**
- * A preview card for a link or a name. A touch screen has no hover, so a press on the trigger opens it and a
- * press outside closes it; with a mouse (web, tablets) it also opens after openDelay of hovering and closes when
- * the pointer leaves both the trigger and the card. Put the link's own action inside the card.
- */
-function HoverCard({ trigger, children, open, defaultOpen, onOpenChange, side = "bottom", align = "start", offset, openDelay = 300, closeDelay = 150, label, style, contentStyle }) {
-  const [isOpen, setOpen] = useOpen(open, defaultOpen, onOpenChange), anchor = useAnchor(isOpen), hover = useHover(isOpen, setOpen, openDelay);
-  const close = useCallback(() => setOpen(false), [setOpen]);
-  return h(Fragment, null,
-    h(Trigger, { anchor, element: trigger, open: isOpen, popup: "dialog", hover, onPress: () => { hover.cancel(); setOpen(!isOpen); }, style }),
-    h(Anchored, { visible: isOpen, anchor: anchor.rect, onClose: close, side, align, offset, role: "dialog", label, hover: hover.hovering ? { stay: true, closeDelay } : null, style: contentStyle },
-      typeof children === "function" ? children({ close }) : children));
-}
-
 // ---------------------------------------------------------------- tooltip
 /**
  * A short hint for the element it wraps. Phones have no hover: a long press on the child shows it for `duration`
@@ -340,6 +324,6 @@ export function Tooltip({ label, children, side = "top", align = "center", offse
   const off = disabled || !label;
   return h(Fragment, null,
     h(Trigger, { anchor, element: children, hover: off ? null : hover, hint: typeof label === "string" ? label : undefined, onLongPress: off ? undefined : () => { hover.cancel(); setOpen(true); }, style }),
-    h(Anchored, { visible: isOpen && !off, anchor: anchor.rect, onClose: close, side, align, offset, role: "tooltip", modal: false, look: "tip", hover: byHover ? { stay: false, closeDelay: 80 } : null },
+    h(Anchored, { visible: isOpen && !off, anchor: anchor.rect, onClose: close, side, align, offset, role: "tooltip", modal: false, look: "tip", hover: byHover ? { closeDelay: 80 } : null },
       typeof label === "string" ? h(Text, { size: "sm", weight: "medium", style: { color: theme.colors.bg } }, label) : label));
 }

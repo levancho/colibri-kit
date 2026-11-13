@@ -76,29 +76,6 @@ export interface CarouselProps {
 }
 export const Carousel: ComponentType<CarouselProps>;
 
-export interface ResizableProps {
-  /** Exactly two panes. */
-  children?: ReactNode;
-  direction?: "horizontal" | "vertical";
-  /** The first pane's share in percent. */
-  size?: number; defaultSize?: number; onResize?: (size: number) => void;
-  min?: number; max?: number;
-  /** Percent moved per screen-reader or keyboard step (5). */
-  step?: number;
-  handleLabel?: string; style?: StyleProp<ViewStyle>;
-}
-export const Resizable: ComponentType<ResizableProps>;
-
-export interface ScrollAreaProps extends ScrollViewProps {
-  maxHeight?: number; height?: number;
-  /** Fades at the edges that have more content. */
-  fade?: boolean;
-  /** Defaults to the surface colour (the background colour when bordered is false). */
-  fadeColor?: string;
-  bordered?: boolean; padded?: boolean; contentStyle?: StyleProp<ViewStyle>; ref?: Ref<ScrollView>;
-}
-export const ScrollArea: ComponentType<ScrollAreaProps>;
-
 export interface MessageScrollerHandle { scrollToBottom(options?: { animated?: boolean }): void; scrollTo: ScrollView["scrollTo"] }
 export interface MessageScrollerProps extends Omit<ScrollViewProps, "style"> {
   height?: number | `${number}%`; gap?: Gap; padded?: boolean; bordered?: boolean;

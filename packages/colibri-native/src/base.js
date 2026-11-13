@@ -1,7 +1,7 @@
 // Display: surfaces, typography and the small building blocks (web catalog group "Base").
 // Built on the basics in components.js. No JSX, no dependencies beyond react and react-native.
 // The web kit's Spinner entry is the Spinner in components.js; it is not repeated here.
-import { Children, createContext, createElement as h, useContext, useState } from "react";
+import { Children, createElement as h, useContext, useState } from "react";
 import { I18nManager, Linking, Platform, Pressable, Text as NativeText, View } from "react-native";
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
@@ -23,57 +23,21 @@ const glyph = (icon, color, size) => (isText(icon)
   : typeof icon === "function" ? icon({ color, size }) : icon);
 /** A chevron drawn with two borders, so it sits on the optical centre in every font. direction: down | up | start | end. */
 function Chevron({ direction = "down", color, size = 8 }) {
-  const { rtl } = useDirection();
+  const rtl = systemRTL();
   const turn = { down: "45deg", up: "-135deg", end: rtl ? "135deg" : "-45deg", start: rtl ? "-45deg" : "135deg" }[direction];
   const nudge = { down: { marginTop: -size / 2 }, up: { marginTop: size / 2 }, end: null, start: null }[direction];
   return h(View, { "aria-hidden": true, importantForAccessibility: "no", style: { width: size + 6, height: size + 6, alignItems: "center", justifyContent: "center" } },
     h(View, { style: flat({ width: size, height: size, borderRightWidth: 2, borderBottomWidth: 2, borderColor: color, transform: [{ rotate: turn }] }, nudge) }));
 }
 
-// ---------------------------------------------------------------- direction
-// The web kit relies on the dir attribute and CSS logical properties. On a phone the layout direction is app-wide
-// (I18nManager.isRTL, changed with I18nManager.forceRTL and a restart). DirectionProvider scopes a direction to
-// one subtree with the Yoga `direction` style, which mirrors rows and start/end spacing below it. What Yoga does not
-// mirror (text alignment, directional glyphs) is exposed through useDirection().
+// The layout direction on a phone is app-wide (I18nManager.isRTL, changed with I18nManager.forceRTL and a restart).
+// Yoga mirrors rows and start/end spacing by itself; directional glyphs such as Chevron ask here.
 const systemRTL = () => !!I18nManager.isRTL || (web && typeof document !== "undefined" && document.documentElement?.dir === "rtl");
-const directionOf = (dir) => {
-  const system = systemRTL(), rtl = dir === "rtl" ? true : dir === "ltr" ? false : system;
-  return { dir: rtl ? "rtl" : "ltr", rtl,
-    // Only set when the scope differs from the device, so natural alignment is left alone otherwise.
-    textStyle: rtl === system && !web ? null : { writingDirection: rtl ? "rtl" : "ltr", textAlign: rtl ? "right" : "left" },
-    /** Picks the glyph or value for the reading direction: mirror("→", "←"). */
-    mirror: (ltr, whenRtl) => (rtl ? whenRtl : ltr) };
-};
-const DirectionContext = createContext(null);
-/** { dir, rtl, textStyle, mirror(ltrValue, rtlValue) } for the nearest DirectionProvider, or the device direction. */
-function useDirection() {
-  return useContext(DirectionContext) ?? directionOf("auto");
-}
-/** dir: "ltr" | "rtl" | "auto" (follow I18nManager). Mirrors row layouts and start/end spacing for everything inside. */
-function DirectionProvider({ dir = "auto", style, children, ...rest }) {
-  const value = directionOf(dir);
-  return h(DirectionContext.Provider, { value }, h(View, { style: flat({ direction: value.dir }, style), ...(web ? { dir: value.dir } : null), ...rest }, children));
-}
+/** A one-pixel line in the theme's line colour, announced as a separator unless decorative. Used by ToolbarSeparator and ItemGroup. */
+const hairline = (theme, { vertical = false, decorative = false, key, style } = {}) => h(View, { key, role: decorative ? "none" : "separator", "aria-orientation": decorative ? undefined : vertical ? "vertical" : "horizontal",
+  importantForAccessibility: decorative ? "no" : undefined, style: flat({ alignSelf: "stretch", backgroundColor: theme.colors.line }, vertical ? { width: 1 } : { height: 1 }, style) });
 
-// ---------------------------------------------------------------- separator
-/** A line between content. orientation: horizontal | vertical (vertical needs a row parent). decorative hides it from screen readers. */
-function Separator({ orientation = "horizontal", decorative = false, style, ...rest }) {
-  const theme = useTheme(), vertical = orientation === "vertical";
-  // Same line as Divider; drawn here because a separator also carries a role and an orientation.
-  return h(View, { role: decorative ? "none" : "separator", "aria-orientation": decorative ? undefined : orientation, importantForAccessibility: decorative ? "no" : undefined,
-    style: flat({ alignSelf: "stretch", backgroundColor: theme.colors.line }, vertical ? { width: 1 } : { height: 1 }, style), ...rest });
-}
-
-// ---------------------------------------------------------------- aspect ratio and inset
-const ratioOf = (ratio) => {
-  if (typeof ratio === "string") { const [a, b] = ratio.split(/[/:]/).map(Number); return a > 0 && b > 0 ? a / b : a > 0 ? a : 1; }
-  return ratio > 0 ? ratio : 1;
-};
-/** A box that keeps its shape. ratio is width / height: 16 / 9, 1, or a string such as "4/3". */
-function AspectRatio({ ratio = 16 / 9, style, children, ...rest }) {
-  return h(View, { style: flat({ width: "100%", aspectRatio: ratioOf(ratio), overflow: "hidden" }, style), ...rest }, children);
-}
-
+// ---------------------------------------------------------------- inset
 /**
  * Lets media inside a padded Card run to the card's edges. side: top | bottom | x | all.
  * pad is the padding of the surface it sits in (a space token or number; a Card uses "m").
@@ -112,28 +76,7 @@ export function Muted(props) {
   return h(Text, { size: "sm", tone: "muted", ...props });
 }
 
-/** One key cap, or a shortcut with keys={["Ctrl", "K"]}. */
-function Kbd({ keys, separator = "+", style, children, ...rest }) {
-  const theme = useTheme(), inRow = useContext(InRow), c = theme.colors;
-  const cap = (label, key) => h(View, { key, style: flat({ minWidth: 26, height: 26, paddingHorizontal: 7, alignItems: "center", justifyContent: "center", borderRadius: Math.min(6, theme.radius.s), borderWidth: 1, borderBottomWidth: 2, borderColor: c.line, backgroundColor: c.sunken }, keys ? null : [selfAlign(inRow), style]), ...(keys ? null : rest) },
-    h(NativeText, { style: { color: c.fg, fontFamily: MONO, fontSize: theme.text.xs, lineHeight: 16, fontWeight: "600" } }, label));
-  if (!keys) return cap(children);
-  return h(View, { accessible: true, accessibilityLabel: keys.join(` ${separator} `), style: flat({ flexDirection: "row", alignItems: "center", gap: theme.space["2xs"] }, selfAlign(inRow), style), ...rest },
-    keys.flatMap((label, index) => [index ? h(Text, { key: `s${index}`, size: "xs", tone: "muted", "aria-hidden": true }, separator) : null, cap(label, `k${index}`)]));
-}
-
-// ---------------------------------------------------------------- label and link
-/**
- * The text label of a form control. Pass target (the ref of the input) and pressing the label focuses it,
- * as a click on a web label does. required adds a mark; disabled dims it.
- */
-function Label({ target, required = false, disabled = false, onPress, style, children, ...rest }) {
-  const theme = useTheme();
-  const press = target || onPress ? (event) => { onPress?.(event); target?.current?.focus?.(); } : undefined;
-  return h(Text, { size: "sm", weight: "semibold", onPress: disabled ? undefined : press, suppressHighlighting: true, style: flat(disabled && { color: theme.colors.muted }, style), ...rest }, children,
-    required ? h(Text, { size: "sm", weight: "semibold", tone: "bad", "aria-hidden": true }, " *") : null);
-}
-
+// ---------------------------------------------------------------- link
 /**
  * A text link. href opens with Linking (a real anchor on the web); onPress replaces that.
  * current marks the page you are on (aria-current="page"). Nest it inside Text for links in a sentence.
@@ -148,7 +91,7 @@ export function Link({ href, onPress, current = false, disabled = false, tone = 
     style: flat({ color, textDecorationLine: current ? "none" : "underline", opacity: disabled ? 0.5 : pressed ? 0.6 : 1 }, style), ...rest }, children);
 }
 
-// ---------------------------------------------------------------- icons
+// ---------------------------------------------------------------- icon button
 /**
  * A square button that shows only an icon. label is required: it is what screen readers announce.
  * icon is a text glyph or an element. shape: square | round. variant and size as Button (default ghost, m).
@@ -158,17 +101,6 @@ export function IconButton({ icon, label, variant = "ghost", size = "m", shape =
   return h(Button, { variant, size, accessibilityLabel: label, "aria-label": label,
     style: flat({ width: dims.height, minHeight: dims.height, paddingHorizontal: 0, borderRadius: shape === "round" ? theme.radius.full : theme.radius.s }, style),
     textStyle: { fontSize: dims.glyph, lineHeight: Math.round(dims.glyph * 1.25), fontWeight: "600" }, ...rest }, content);
-}
-
-/**
- * Gives an icon a spoken name: the icon itself is hidden from screen readers and label is announced instead.
- * Without a label the icon is decorative and skipped. For a pressable icon use IconButton, which takes the label itself.
- */
-function AccessibleIcon({ label, size = 18, tone, style, children, ...rest }) {
-  const theme = useTheme(), color = tone === "muted" ? theme.colors.muted : theme.colors[toneName(tone)] ?? theme.colors.fg;
-  const hidden = { "aria-hidden": true, importantForAccessibility: "no-hide-descendants", accessibilityElementsHidden: true };
-  return h(View, { ...(label ? { accessible: true, accessibilityRole: "image", accessibilityLabel: label, "aria-label": label } : hidden), style: flat({ alignItems: "center", justifyContent: "center" }, style), ...rest },
-    h(View, label ? hidden : null, glyph(children, color, size)));
 }
 
 // ---------------------------------------------------------------- alert
@@ -293,7 +225,7 @@ export function Toolbar({ label, gap = "2xs", wrap = false, style, children, ...
 /** A short vertical line between groups of a Toolbar. */
 export function ToolbarSeparator({ style }) {
   const theme = useTheme();
-  return h(Separator, { orientation: "vertical", style: flat({ marginVertical: theme.space.xs, marginHorizontal: theme.space["2xs"] }, style) });
+  return hairline(theme, { vertical: true, style: flat({ marginVertical: theme.space.xs, marginHorizontal: theme.space["2xs"] }, style) });
 }
 /** Pushes what follows it to the far end of a Toolbar. */
 export function ToolbarSpacer() {
@@ -330,7 +262,7 @@ export function Item({ media, title, description, actions, onPress, disabled = f
 export function ItemGroup({ label, divided = true, style, children, ...rest }) {
   const theme = useTheme(), c = theme.colors, rows = Children.toArray(children);
   return h(View, { role: "list", accessibilityLabel: label, "aria-label": label, style: flat({ borderWidth: 1, borderColor: c.line, borderRadius: theme.radius.l, backgroundColor: c.surface, overflow: "hidden" }, style), ...rest },
-    rows.flatMap((row, index) => (divided && index ? [h(Separator, { key: `line-${index}`, decorative: true }), row] : [row])));
+    rows.flatMap((row, index) => (divided && index ? [hairline(theme, { key: `line-${index}`, decorative: true }), row] : [row])));
 }
 
 // ---------------------------------------------------------------- theme switch

@@ -1,7 +1,7 @@
-// Data display: tables, label/value lists, carousel, resizable panes, scroll regions, code, rating and placeholders.
+// Data display: tables, label/value lists, carousel, message log, code, rating and placeholders.
 // Built on the basics (Stack, Text, Button, TextField …) with react-native core only.
 import { Children, createElement as h, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { AccessibilityInfo, Animated, PanResponder, Platform, Pressable, ScrollView, Text as NativeText, View } from "react-native";
+import { AccessibilityInfo, Animated, Platform, Pressable, ScrollView, Text as NativeText, View } from "react-native";
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
 import { web, depth, gapOf, flat, GLYPH } from "./internal.js";
@@ -243,80 +243,6 @@ export function Carousel({ children, index, defaultIndex = 0, onChange, loop = f
       })) : null,
       showArrows ? arrow("Next slide", GLYPH.chevronRight, current + 1, !loop && current >= count - 1) : h(View, null)) : null);
 }
-
-// ---------------------------------------------------------------- resizable
-/**
- * Two panes with a divider you drag. Give it exactly two children. size is the first pane's share in percent
- * (size + onResize, or defaultSize); min and max bound it. direction: "horizontal" (side by side) or "vertical".
- * The handle is an adjustable control: screen readers change it in steps, and on the web the arrow keys, Home and End work.
- */
-function Resizable({ children, direction = "horizontal", size, defaultSize = 50, onResize, min = 15, max = 85, step = 5, handleLabel = "Resize panes", style }) {
-  const theme = useTheme(), c = theme.colors, [first, second] = Children.toArray(children), row = direction !== "vertical";
-  const [raw, setSize] = useControlled(size, defaultSize, onResize), share = clamp(+raw || 0, min, max);
-  const [dragging, setDragging] = useState(false), extent = useRef(0), start = useRef(share);
-  const live = useRef({}); live.current = { share, min, max, row, setSize };
-  const move = (to) => { const { min: low, max: high, share: now, setSize: set } = live.current, next = Math.round(clamp(to, low, high) * 10) / 10; if (next !== now) set(next); };
-  const responder = useRef(PanResponder.create({
-    onStartShouldSetPanResponder: () => true, onMoveShouldSetPanResponder: () => true, onPanResponderTerminationRequest: () => false,
-    onPanResponderGrant: () => { start.current = live.current.share; setDragging(true); },
-    onPanResponderMove: (event, gesture) => { if (extent.current) move(start.current + ((live.current.row ? gesture.dx : gesture.dy) / extent.current) * 100); },
-    onPanResponderRelease: () => setDragging(false), onPanResponderTerminate: () => setDragging(false),
-  })).current;
-  const keys = web ? { tabIndex: 0, onKeyDown: (event) => {
-    const far = event.shiftKey ? 10 : step, back = row ? "ArrowLeft" : "ArrowUp", forward = row ? "ArrowRight" : "ArrowDown";
-    const to = event.key === back ? share - far : event.key === forward ? share + far : event.key === "Home" ? min : event.key === "End" ? max : null;
-    if (to != null) { event.preventDefault(); move(to); }
-  } } : null;
-  const pane = (child, flex) => h(View, { style: { flexGrow: flex, flexShrink: 1, flexBasis: 0, overflow: "hidden", [row ? "minWidth" : "minHeight"]: 0 } }, child);
-  const HANDLE = 20, slop = (theme.touch - HANDLE) / 2;
-  return h(View, { onLayout: (event) => { const { width, height } = event.nativeEvent.layout; extent.current = Math.max(0, (row ? width : height) - HANDLE); },
-    style: flat({ flexDirection: row ? "row" : "column", alignItems: "stretch", minHeight: row ? 120 : 240, borderWidth: 1, borderColor: c.line, borderRadius: theme.radius.m, backgroundColor: c.surface, overflow: "hidden" }, style) },
-    pane(first, share),
-    h(View, { ...responder.panHandlers, ...keys, accessible: true, accessibilityRole: "adjustable", accessibilityLabel: handleLabel,
-      accessibilityValue: { min, max, now: Math.round(share), text: `${Math.round(share)}%` }, "aria-valuemin": min, "aria-valuemax": max, "aria-valuenow": Math.round(share), "aria-orientation": row ? "vertical" : "horizontal",
-      accessibilityActions: [{ name: "increment" }, { name: "decrement" }],
-      onAccessibilityAction: (event) => move(share + (event.nativeEvent.actionName === "increment" ? step : -step)),
-      hitSlop: row ? { left: slop, right: slop } : { top: slop, bottom: slop },
-      style: flat({ [row ? "width" : "height"]: HANDLE, alignItems: "center", justifyContent: "center", backgroundColor: dragging ? c.accentSoft : c.sunken, [row ? "borderLeftWidth" : "borderTopWidth"]: 1, [row ? "borderRightWidth" : "borderBottomWidth"]: 1, borderColor: c.line },
-        web && { cursor: row ? "col-resize" : "row-resize", userSelect: "none", touchAction: "none" }) },
-      h(View, { style: { [row ? "width" : "height"]: 4, [row ? "height" : "width"]: 28, borderRadius: 2, backgroundColor: dragging ? c.accent : c.muted, opacity: dragging ? 1 : 0.6 } })),
-    pane(second, 100 - share));
-}
-
-// ---------------------------------------------------------------- scroll area
-const FADE_STEPS = 6, FADE_STEP = 4;
-/** A soft edge made of thin strips (no gradient dependency). edge: top | bottom | left | right. */
-function Fade({ edge, color }) {
-  const vertical = edge === "top" || edge === "bottom", reverse = edge === "bottom" || edge === "right";
-  return h(View, { style: { position: "absolute", pointerEvents: "none", flexDirection: vertical ? "column" : "row", ...(vertical ? { left: 0, right: 0, [edge]: 0 } : { top: 0, bottom: 0, [edge]: 0 }) } },
-    Array.from({ length: FADE_STEPS }, (_, at) => {
-      const strength = (reverse ? at + 1 : FADE_STEPS - at) / (FADE_STEPS + 1);
-      return h(View, { key: at, style: { [vertical ? "height" : "width"]: FADE_STEP, backgroundColor: color, opacity: strength * strength } });
-    }));
-}
-
-/**
- * A bounded box whose content scrolls, with fades at the edges that have more to show.
- * maxHeight (or height) bounds it; horizontal scrolls sideways instead. Every ScrollView prop passes through; ref is the ScrollView.
- */
-const ScrollArea = forwardRef(function ScrollArea({ maxHeight = 240, height, horizontal = false, fade = true, bordered = true, padded = true, fadeColor, style, contentStyle, children,
-  onScroll, onLayout, onContentSizeChange, accessibilityLabel, ...rest }, ref) {
-  const theme = useTheme(), c = theme.colors, [edges, setEdges] = useState({ start: false, end: false });
-  const box = useRef(0), content = useRef(0), offset = useRef(0);
-  const update = () => {
-    const start = offset.current > 2, end = content.current - box.current - offset.current > 2;
-    setEdges((now) => (now.start === start && now.end === end ? now : { start, end }));
-  };
-  const color = fadeColor ?? (bordered ? c.surface : c.bg);
-  return h(View, { style: flat(bordered && { borderWidth: 1, borderColor: c.line, borderRadius: theme.radius.m, backgroundColor: c.surface }, { overflow: "hidden" }, horizontal ? null : { maxHeight, height }, style) },
-    h(ScrollView, { ref, horizontal, scrollEventThrottle: 16, nestedScrollEnabled: true, accessibilityLabel, ...(web ? { tabIndex: 0 } : null), ...rest,
-      contentContainerStyle: flat(padded && { padding: theme.space.s }, contentStyle),
-      onScroll: (event) => { offset.current = event.nativeEvent.contentOffset[horizontal ? "x" : "y"]; update(); onScroll?.(event); },
-      onLayout: (event) => { box.current = event.nativeEvent.layout[horizontal ? "width" : "height"]; update(); onLayout?.(event); },
-      onContentSizeChange: (w, hgt) => { content.current = horizontal ? w : hgt; update(); onContentSizeChange?.(w, hgt); } }, children),
-    fade && edges.start ? h(Fade, { edge: horizontal ? "left" : "top", color }) : null,
-    fade && edges.end ? h(Fade, { edge: horizontal ? "right" : "bottom", color }) : null);
-});
 
 // ---------------------------------------------------------------- message scroller
 /**

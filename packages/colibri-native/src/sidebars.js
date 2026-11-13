@@ -525,6 +525,18 @@ export function Sidebar15({ date, defaultDate, onDateChange, today, marked, asid
     aside ? h(Divider, { key: "line" }) : null, aside ? h(View, { key: "more", style: { gap: theme.space.xs } }, aside) : null] });
 }
 
+/** One message of Sidebar09's list. Choosing it closes the sliding panel on a phone; a docked list stays open. */
+function MailRow({ mail, selected, onPress }) {
+  const theme = useTheme(), c = theme.colors, nav = useContext(NavContext);
+  return h(Pressable, { onPress: () => { onPress(); nav.close?.(); }, ...a11y("button", `${mail.from}, ${mail.subject}, ${mail.time}${mail.unread ? ", unread" : ""}`, { selected }),
+    style: ({ pressed, hovered }) => ({ padding: theme.space.s, gap: 2, borderBottomWidth: 1, borderBottomColor: c.line, backgroundColor: selected ? c.accentSoft : pressed || hovered ? c.line : "transparent" }) },
+  h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs } },
+    mail.unread ? h(View, { style: { width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent } }) : null,
+    h(Text, { size: "sm", weight: "semibold", numberOfLines: 1, style: { flex: 1 } }, mail.from), h(Text, { size: "xs", tone: "muted" }, mail.time)),
+  h(Text, { size: "sm", weight: "medium", numberOfLines: 1 }, mail.subject),
+  mail.preview ? h(Text, { size: "xs", tone: "muted", numberOfLines: 2 }, mail.preview) : null);
+}
+
 /**
  * sidebar-09. Nested sidebars: an icon rail of folders next to a second sidebar that lists messages (mail-style).
  * folders: [{ id, label, icon, badge }]; messages: [{ id, folder, from, time, subject, preview, unread }].
@@ -543,16 +555,8 @@ export function Sidebar09({ folders = [], folder, defaultFolder, onFolderChange,
       h(Text, { weight: "semibold", accessibilityRole: "header" }, place.label ?? ""),
       h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs } }, h(Text, { size: "sm", tone: "muted" }, unreadLabel), h(Switch, { value: !!only, onValueChange: setOnly, accessibilityLabel: unreadLabel }))),
     h(NavSearch, { value: query, onChangeText: setQuery, placeholder: searchPlaceholder }));
-  const rows = list.length ? list.map((mail) => {
-    const on = mail.id === value;
-    return h(Pressable, { key: String(mail.id), onPress: () => { pick(mail.id, mail); setShown(false); }, ...a11y("button", `${mail.from}, ${mail.subject}, ${mail.time}${mail.unread ? ", unread" : ""}`, { selected: on }),
-      style: ({ pressed, hovered }) => ({ padding: theme.space.s, gap: 2, borderBottomWidth: 1, borderBottomColor: c.line, backgroundColor: on ? c.accentSoft : pressed || hovered ? c.line : "transparent" }) },
-    h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs } },
-      mail.unread ? h(View, { style: { width: 8, height: 8, borderRadius: 4, backgroundColor: c.accent } }) : null,
-      h(Text, { size: "sm", weight: "semibold", numberOfLines: 1, style: { flex: 1 } }, mail.from), h(Text, { size: "xs", tone: "muted" }, mail.time)),
-    h(Text, { size: "sm", weight: "medium", numberOfLines: 1 }, mail.subject),
-    mail.preview ? h(Text, { size: "xs", tone: "muted", numberOfLines: 2 }, mail.preview) : null);
-  }) : h(Text, { size: "sm", tone: "muted", align: "center", style: { padding: theme.space.l } }, emptyText);
+  const rows = list.length ? list.map((mail) => h(MailRow, { key: String(mail.id), mail, selected: mail.id === value, onPress: () => pick(mail.id, mail) }))
+    : h(Text, { size: "sm", tone: "muted", align: "center", style: { padding: theme.space.l } }, emptyText);
   const open = messages.find((mail) => mail.id === value);
   return h(NavShell, { ...shellProps(props), width: props.width ?? 300, open: shown, onOpenChange: setShown, rail, breadcrumb: breadcrumb ?? (title ? [title] : [place.label, open?.subject].filter(Boolean)),
     menuLabel: props.menuLabel ?? "Message list", navigationLabel: props.navigationLabel ?? "Messages", sidebarHeader: head, sidebar: h(View, { style: { marginHorizontal: -theme.space.xs, marginTop: -theme.space.xs, borderTopWidth: 1, borderTopColor: c.line } }, rows) }, children);

@@ -1,5 +1,5 @@
 // Declarations for src/base.js: surfaces, typography and small building blocks (web catalog group "Base").
-import type { ComponentType, ReactNode, RefObject } from "react";
+import type { ComponentType, ReactNode } from "react";
 import type { PressableProps, StyleProp, TextStyle, ViewProps, ViewStyle } from "react-native";
 import type { ButtonProps, Gap, TextProps, Tone } from "../index";
 
@@ -7,23 +7,7 @@ type Size = "s" | "m" | "l";
 /** A text glyph, an element, or a function that draws the icon in the control's colour and size. */
 export type IconSource = ReactNode | ((icon: { color: string; size: number }) => ReactNode);
 
-// ---- direction
-export interface Direction {
-  dir: "ltr" | "rtl"; rtl: boolean;
-  /** Alignment and writing direction for Text; null when the scope matches the device. */
-  textStyle: TextStyle | null;
-  /** Picks the value for the reading direction: mirror("→", "←"). */
-  mirror<T>(ltr: T, rtl: T): T;
-}
-export function useDirection(): Direction;
-export interface DirectionProviderProps extends ViewProps { dir?: "ltr" | "rtl" | "auto" }
-export const DirectionProvider: ComponentType<DirectionProviderProps>;
-
 // ---- structure
-export interface SeparatorProps extends ViewProps { orientation?: "horizontal" | "vertical"; decorative?: boolean }
-export const Separator: ComponentType<SeparatorProps>;
-export interface AspectRatioProps extends ViewProps { /** width / height as a number, or a string such as "16/9". */ ratio?: number | string }
-export const AspectRatio: ComponentType<AspectRatioProps>;
 export interface InsetProps extends ViewProps { side?: "top" | "bottom" | "x" | "all"; /** Padding of the surface it sits in. */ pad?: Gap; clip?: boolean }
 export const Inset: ComponentType<InsetProps>;
 
@@ -34,20 +18,14 @@ export const Code: ComponentType<TextProps>;
 export const Lead: ComponentType<TextProps>;
 export const Small: ComponentType<TextProps>;
 export const Muted: ComponentType<TextProps>;
-export interface KbdProps extends ViewProps { /** A shortcut: one cap per key. */ keys?: string[]; separator?: string }
-export const Kbd: ComponentType<KbdProps>;
 
-// ---- label and link
-export interface LabelProps extends TextProps { /** Ref of the input to focus when the label is pressed. */ target?: RefObject<{ focus?: () => void } | null>; required?: boolean; disabled?: boolean }
-export const Label: ComponentType<LabelProps>;
+// ---- link
 export interface LinkProps extends TextProps { href?: string; current?: boolean; disabled?: boolean; tone?: Tone }
 export const Link: ComponentType<LinkProps>;
 
-// ---- icons
+// ---- icon button
 export interface IconButtonProps extends Omit<ButtonProps, "title" | "icon" | "block"> { icon?: ReactNode; /** Announced by screen readers. */ label: string; shape?: "square" | "round" }
 export const IconButton: ComponentType<IconButtonProps>;
-export interface AccessibleIconProps extends ViewProps { /** Spoken name; leave out for a decorative icon. */ label?: string; size?: number; tone?: Tone | "muted" }
-export const AccessibleIcon: ComponentType<AccessibleIconProps>;
 
 // ---- alert
 export interface AlertProps extends ViewProps {

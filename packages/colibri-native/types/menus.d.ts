@@ -119,21 +119,6 @@ export interface ContextMenuProps {
 /** The same menu as DropdownMenu, opened where the finger is by a long press on its children. */
 export const ContextMenu: ComponentType<ContextMenuProps>;
 
-export interface HoverCardProps extends OpenProps {
-  /** One pressable element. A press opens the card (there is no hover on a touch screen). */
-  trigger: ReactElement;
-  children?: ReactNode | ((props: OverlayRenderProps) => ReactNode);
-  side?: OverlaySide; align?: OverlayAlign; offset?: number;
-  /** Milliseconds of mouse hover before it opens. Default 300. */
-  openDelay?: number;
-  /** Milliseconds after the pointer leaves before it closes. Default 150. */
-  closeDelay?: number;
-  label?: string;
-  style?: StyleProp<ViewStyle>; contentStyle?: StyleProp<ViewStyle>;
-}
-/** A preview card for a link or a name: opens on press, and on hover with a mouse. */
-export const HoverCard: ComponentType<HoverCardProps>;
-
 export interface TooltipProps {
   /** The hint. */
   label: ReactNode;
