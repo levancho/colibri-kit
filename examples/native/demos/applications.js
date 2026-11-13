@@ -214,13 +214,13 @@ export default [
     const toast = useToast();
     return <ApplicationMetrics model={METRICS} onAction={say(toast)} />;
   } },
-  { id: "application-chart", title: "ApplicationChart", description: "A bar chart drawn with Views (no SVG, so no line or pie charts), with a 7, 14 or 30 day switch, legend totals and the data as text.", Demo: () => {
+  { id: "application-chart", title: "ApplicationChart", description: "A bar chart drawn with Views (no SVG, so no line or pie charts), with a 7, 14 or 30 day switch, a legend, a summary in words and the data as a table.", Demo: () => {
     const toast = useToast();
     return <ApplicationChart model={CHART} onAction={say(toast)} />;
   } },
-  { id: "application-table", title: "ApplicationTable", description: "Records as rows on a phone and as columns on wide screens, with search, sort and a status filter.", Demo: () => {
+  { id: "application-table", title: "ApplicationTable", description: "Records as rows on a phone and as columns on wide screens, with search, sort, a status filter and paging for long lists.", Demo: () => {
     const toast = useToast();
-    return <ApplicationTable model={TABLE} onAction={({ id }) => toast.show(`Opened ${TABLE.rows.find((row) => row.id === id).cells[0]}`)} />;
+    return <ApplicationTable model={TABLE} pageSize={6} onAction={({ id }) => toast.show(`Opened ${TABLE.rows.find((row) => row.id === id).cells[0]}`)} />;
   } },
   { id: "application-board", title: "ApplicationBoard", description: "Kanban lanes in a sideways pager. Press a card to move it to another stage from a sheet (no drag and drop).", Demo: () => {
     const toast = useToast();

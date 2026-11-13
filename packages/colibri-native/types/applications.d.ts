@@ -32,7 +32,7 @@ export interface ApplicationShellModel { brand: string; title?: string; descript
 export interface ApplicationShellProps extends ApplicationBaseProps<ApplicationShellModel> {
   /** The current page id (controlled). Without it the shell keeps its own, starting at defaultPage. */
   page?: string; defaultPage?: string; onPageChange?: (id: string) => void;
-  /** "auto" (default): bottom tabs below 768pt, side rail from there. */
+  /** "auto" (default): bottom tabs below 768pt, side rail from there. With more than five pages the fifth tab is "More" and opens a sheet. */
   layout?: "auto" | "tabs" | "rail";
   /** Replaces the trailing end of the top bar. */
   actions?: ReactNode;
@@ -67,13 +67,13 @@ export interface ApplicationChartProps extends Partial<ApplicationChartModel> {
   /** Height of the plot area. Default 168. */
   height?: number; style?: StyleProp<ViewStyle>;
 }
-/** Bars only: React Native core has no SVG, so line, area and pie charts are not drawn. onAction: "open-link". */
+/** Bars only: React Native core has no SVG, so line, area and pie charts are not drawn. onAction: "open-link" with id = href. */
 export const ApplicationChart: ComponentType<ApplicationChartProps>;
 
 // ---- application-table
 export interface ApplicationTableRow { id: string; cells: string[] }
 export interface ApplicationTableModel { title?: string; description?: string; columns: string[]; rows: ApplicationTableRow[]; /** native extra: column name or index shown as badges and filter chips. Default: the column called "Status". */ statusColumn?: string | number; tones?: ApplicationStatusTones }
-export interface ApplicationTableProps extends ApplicationBaseProps<ApplicationTableModel> { searchable?: boolean; sortable?: boolean; /** "auto" (default): rows below 768pt, columns from there. */ layout?: "auto" | "rows" | "columns" }
+export interface ApplicationTableProps extends ApplicationBaseProps<ApplicationTableModel> { searchable?: boolean; sortable?: boolean; /** "auto" (default): rows below 768pt, columns from there. */ layout?: "auto" | "rows" | "columns"; /** Records shown before "Show more". Default 25. */ pageSize?: number }
 /** onAction: "view-record". */
 export const ApplicationTable: ComponentType<ApplicationTableProps>;
 
@@ -115,8 +115,8 @@ export const ApplicationProducts: ComponentType<ApplicationProductsProps>;
 
 // ---- application-receipt
 export interface ApplicationReceiptItem { label: string; amount: string; detail?: string }
-export interface ApplicationReceiptModel { id?: string; title: string; description?: string; status?: string; items: ApplicationReceiptItem[]; /** native extra: sub-total lines above the total */ totals?: ApplicationDetailAmount[]; total: string; note?: string; downloadLabel?: string; tones?: ApplicationStatusTones }
 export interface ApplicationDetailAmount { label: string; amount: string }
+export interface ApplicationReceiptModel { id?: string; title: string; description?: string; status?: string; items: ApplicationReceiptItem[]; /** native extra: sub-total lines above the total */ totals?: ApplicationDetailAmount[]; total: string; note?: string; downloadLabel?: string; tones?: ApplicationStatusTones }
 /** onAction: "download-receipt". */
 export const ApplicationReceipt: ComponentType<ApplicationBaseProps<ApplicationReceiptModel>>;
 
@@ -164,7 +164,7 @@ export const ApplicationForm: ComponentType<ApplicationFormProps>;
 export interface ApplicationPhotoTile { id: string; title: string; tone?: AppTone; source?: ImageSourcePropType }
 export interface ApplicationPhotoModel { eyebrow?: string; title: string; description?: string; href?: string; linkLabel?: string; /** Web image URL; not loaded here. */ image?: string; imageAlt?: string; source?: ImageSourcePropType; tone?: AppTone; /** native extra: a gallery grid */ photos?: ApplicationPhotoTile[] }
 export interface ApplicationPhotoProps extends ApplicationBaseProps<ApplicationPhotoModel> { /** Gallery tiles per row. Default 3. */ columns?: number }
-/** onAction: "open-link" with id = href, "view-photo". */
+/** onAction: "open-link" with id = href, "view-photo" with the tile id. */
 export const ApplicationPhoto: ComponentType<ApplicationPhotoProps>;
 
 // ---- application-article
