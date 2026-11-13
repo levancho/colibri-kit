@@ -117,10 +117,6 @@ export interface MultipleSelectProps<T = string> extends SelectBase<T> { multipl
 export type SelectProps<T = string> = SingleSelectProps<T> | MultipleSelectProps<T>;
 export function Select<T = string>(props: SelectProps<T>): ReactNode;
 
-/** Select without search or multiple selection: one value from a plain list. */
-export type NativeSelectProps<T = string> = Omit<SingleSelectProps<T>, "multiple" | "searchable" | "searchPlaceholder" | "emptyText" | "doneLabel">;
-export function NativeSelect<T = string>(props: NativeSelectProps<T>): ReactNode;
-
 interface ComboboxBase<T> extends Omit<InputProps, "value" | "defaultValue" | "onChange" | "onChangeText" | "trailing" | "multiline"> {
   options?: Array<SelectOption<T> | T>;
   /** Accept text that is not in the list; the value is then the text itself. */

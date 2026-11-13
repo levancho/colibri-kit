@@ -2,8 +2,8 @@
 import { useState } from "react";
 import { View } from "react-native";
 import {
-  useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Checkbox, RadioGroup, ListItem,
-  AlertDialog, Drawer, Popover, DropdownMenu, ContextMenu, HoverCard, Tooltip,
+  useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, TextField, Checkbox, RadioGroup, ListItem,
+  AlertDialog, Drawer, Popover, DropdownMenu, ContextMenu, Tooltip,
 } from "@colibri-kit/native";
 
 const FILES = [
@@ -126,22 +126,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "hover-card", title: "HoverCard", description: "A preview card for a name or link. Touch screens have no hover, so it opens on press (and on hover with a mouse).", Demo: () => (
-    <Card>
-      <Text>The spring release notes were written by</Text>
-      <HoverCard label="Maya Okafor" trigger={<Text tone="accent" weight="semibold" accessibilityRole="link" testID="open-hover-card">@mayaokafor</Text>}>
-        <Cluster wrap={false} align="flex-start" gap="s">
-          <Avatar name="Maya Okafor" size={44} />
-          <Stack gap="3xs" style={{ flexShrink: 1 }}>
-            <Text weight="semibold">Maya Okafor</Text>
-            <Text size="sm" tone="muted">Product lead at Colibri. Writes about design systems and small teams.</Text>
-            <Cluster gap="s"><Text size="xs" tone="muted">Joined March 2021</Text><Text size="xs" tone="muted">48 articles</Text></Cluster>
-          </Stack>
-        </Cluster>
-      </HoverCard>
-      <Text size="sm" tone="muted">Press the name to preview the profile; press anywhere else to close it.</Text>
-    </Card>
-  ) },
   { id: "popover", title: "Popover", description: "Any content in a floating panel beside its trigger; it flips and shifts to stay on screen.", Demo: () => {
     const [width, setWidth] = useState("100%"), [height, setHeight] = useState("240"), [notify, setNotify] = useState(true);
     return (

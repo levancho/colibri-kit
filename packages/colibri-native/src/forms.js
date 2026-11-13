@@ -1,9 +1,9 @@
 // Inputs and selection controls: Input and Field (the composable pair), InputGroup, Textarea, PasswordInput,
-// PinInput, Select, NativeSelect, Combobox, CheckboxGroup, CheckboxCards, RadioCards, ToggleGroup, SegmentedControl.
+// PinInput, Select, Combobox, CheckboxGroup, CheckboxCards, RadioCards, ToggleGroup, SegmentedControl.
 // Same vocabulary as the web kit (size="s|m|l", value + onChange, options: [{ value, label }]).
 //
 // Touch equivalents of web behaviour (ARCHITECTURE.md rule 8):
-// - Select and NativeSelect open a bottom Sheet instead of a popup anchored to the trigger.
+// - Select opens a bottom Sheet instead of a popup anchored to the trigger.
 // - Combobox shows its suggestions in the layout, right under the input, instead of floating above the page:
 //   a floating list cannot escape a ScrollView on a phone.
 // - There is no hover, typeahead or roving focus; every option is a 44pt row.
@@ -86,7 +86,7 @@ function fieldA11y(field, label) {
 
 /**
  * Label, description and error around any control. The control inside (Input, Textarea, PasswordInput, PinInput,
- * Select, NativeSelect, Combobox) picks up the label as its accessible name, the invalid and disabled state, and on the
+ * Select, Combobox) picks up the label as its accessible name, the invalid and disabled state, and on the
  * web aria-labelledby / aria-describedby. Pressing the label focuses the control. error (a message, or true for no
  * message) marks it invalid.
  */
@@ -273,14 +273,6 @@ export const Select = forwardRef(function Select({ options = [], value, defaultV
         h(Button, { title: clearLabel, variant: "ghost", disabled: empty, onPress: () => setSelected([]) }),
         h(Button, { title: chosen.length ? `${doneLabel} (${chosen.length})` : doneLabel, onPress: () => show(false) })) : null,
       inset ? h(View, { style: { height: inset } }) : null));
-});
-
-/**
- * The simplest picker (the web kit's native-select): one value from a short plain list in a sheet. Same props as Select,
- * without search or multiple selection. Use Select when you need those.
- */
-const NativeSelect = forwardRef(function NativeSelect(props, ref) {
-  return h(Select, { ...props, ref, multiple: false, searchable: false });
 });
 
 // ---------------------------------------------------------------- combobox

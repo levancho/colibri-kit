@@ -168,6 +168,7 @@ const CALENDAR_LABELS = { previousMonth: "Previous month", nextMonth: "Next mont
  * a range still needs its end. min, max and disabledDates (an array of ISO dates or a function) block days;
  * firstDay is 0 (Sunday) to 6, Monday by default. Month and weekday names come from Intl for `locale`,
  * with English as the fallback. month / onMonthChange ("YYYY-MM") control the visible month when needed.
+ * On the web the grid is a single tab stop and takes the arrow keys, Page Up/Down, Home and End.
  */
 export function Calendar({ mode = "single", value, defaultValue, onChange, min, max, disabledDates, firstDay = 1, locale, month, defaultMonth, onMonthChange, today, showYearNav = false, labels, style, testID }) {
   const theme = useTheme(), c = theme.colors, words = { ...CALENDAR_LABELS, ...labels };
@@ -572,6 +573,9 @@ function SortableRow({ itemKey, label, index, count, active, shift, animate, dra
  * value is the ordered array and onChange receives the new one. Items are strings or objects;
  * keyExtractor defaults to item.id ?? item.value ?? the item itself, getLabel names an item for assistive tech.
  * renderItem({ item, index, dragging }) draws the row's content; handle is "end" (default) or "start".
+ * The dragged row follows the finger through an Animated value (native driver on iOS and Android); React state
+ * changes only when the drop slot changes and on release. The list is not virtualized and does not auto-scroll
+ * a surrounding ScrollView, so it suits short lists (settings, priorities), not feeds.
  */
 export function Sortable({ value, defaultValue, onChange, renderItem, keyExtractor, getLabel, handle = "end", disabled = false, gap = "xs", label, style, testID }) {
   const theme = useTheme(), space = theme.space[gap] ?? gap;

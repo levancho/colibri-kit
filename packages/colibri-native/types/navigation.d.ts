@@ -5,17 +5,6 @@ type NavTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "dange
 /** A text glyph (see GLYPH) or any element. */
 type NavIcon = ReactNode;
 
-// ---------------------------------------------------------------- breadcrumb
-export interface BreadcrumbItem { label: string; onPress?: (item: BreadcrumbItem) => void }
-export interface BreadcrumbProps extends ViewProps {
-  /** The trail; the last item is the current page. */
-  items: BreadcrumbItem[];
-  /** Above this many items the middle collapses into an ellipsis that expands when pressed. Default 4. */
-  maxItems?: number; separator?: string; label?: string;
-  onNavigate?: (item: BreadcrumbItem, index: number) => void;
-}
-export const Breadcrumb: ComponentType<BreadcrumbProps>;
-
 // ---------------------------------------------------------------- menu
 export interface MenuItem<T = string> {
   type?: undefined; value?: T; label: string; description?: string; icon?: NavIcon; shortcut?: string;
@@ -40,19 +29,6 @@ export interface MenuProps<T = string> extends ViewProps {
 }
 export function Menu<T = string>(props: MenuProps<T>): ReactNode;
 
-// ---------------------------------------------------------------- navigation menu
-export interface NavigationMenuLink<T = string> { value?: T; label: string; description?: string; icon?: NavIcon; disabled?: boolean; onPress?: (link: NavigationMenuLink<T>) => void }
-export interface NavigationMenuItem<T = string> extends NavigationMenuLink<T> { items?: NavigationMenuLink<T>[] }
-export interface NavigationMenuProps<T = string> extends ViewProps {
-  items: NavigationMenuItem<T>[];
-  /** The key (value or label) of the open section, or null. */
-  open?: string | null; defaultOpen?: string | null; onOpenChange?: (open: string | null) => void;
-  onSelect?: (value: T | undefined, link: NavigationMenuLink<T>) => void;
-  /** auto: sections on a phone, a row from breakpoint (768) up. */
-  orientation?: "auto" | "vertical" | "horizontal"; breakpoint?: number; label?: string;
-}
-export function NavigationMenu<T = string>(props: NavigationMenuProps<T>): ReactNode;
-
 // ---------------------------------------------------------------- pagination
 export interface PaginationProps extends Omit<ViewProps, "children"> {
   /** 1-based current page. */
@@ -66,21 +42,9 @@ export interface PaginationProps extends Omit<ViewProps, "children"> {
 }
 export const Pagination: ComponentType<PaginationProps>;
 
-// ---------------------------------------------------------------- sticky
-export interface StickyProps extends Omit<ViewProps, "children"> {
-  /** Set by StickyScrollView and ScrollSpy; pass it yourself with a plain ScrollView. */
-  stuck?: boolean; onChange?: (stuck: boolean) => void; stuckStyle?: StyleProp<ViewStyle>;
-  children?: ReactNode | ((state: { stuck: boolean }) => ReactNode);
-}
-export const Sticky: ComponentType<StickyProps>;
-/** Indices of the direct Sticky children, for a plain ScrollView's stickyHeaderIndices. */
-export function stickyHeaderIndices(children: ReactNode): number[];
-export interface StickyScrollViewProps extends Omit<ScrollViewProps, "stickyHeaderIndices"> { onStickyHeight?: (height: number) => void; ref?: Ref<ScrollView> }
-export const StickyScrollView: ComponentType<StickyScrollViewProps>;
-
 // ---------------------------------------------------------------- scrollspy and scrollto
 export interface ScrollSpyOptions {
-  /** Height covered at the top (a pinned header). ScrollSpy measures its Sticky children when omitted. */
+  /** Height covered at the top (a pinned header). When omitted, ScrollSpy measures the children named by its stickyHeaderIndices prop. */
   offset?: number; defaultActive?: string | null; onChange?: (id: string | null) => void; animated?: boolean;
 }
 export interface ScrollSpyHandle {
@@ -97,7 +61,7 @@ export interface ScrollSpyHandle {
   register(id: string, y: number, node?: unknown): void; unregister(id: string): void; setHeaderHeight(height: number): void;
 }
 export function useScrollSpy(options?: ScrollSpyOptions): ScrollSpyHandle;
-export interface ScrollSpyProps extends StickyScrollViewProps, Omit<ScrollSpyOptions, "animated"> { spy?: ScrollSpyHandle }
+export interface ScrollSpyProps extends ScrollViewProps, Omit<ScrollSpyOptions, "animated"> { spy?: ScrollSpyHandle; ref?: Ref<ScrollView> }
 export const ScrollSpy: ComponentType<ScrollSpyProps>;
 export interface ScrollSpySectionProps extends ViewProps { id: string; spy?: ScrollSpyHandle }
 export const ScrollSpySection: ComponentType<ScrollSpySectionProps>;
@@ -162,20 +126,3 @@ export interface TabNavProps<T = string> {
   scrollable?: boolean; label?: string; style?: StyleProp<ViewStyle>;
 }
 export function TabNav<T = string>(props: TabNavProps<T>): ReactNode;
-
-// ---------------------------------------------------------------- command
-export interface CommandItem<T = string> { value?: T; label: string; description?: string; icon?: NavIcon; shortcut?: string; keywords?: string | string[]; disabled?: boolean; onPress?: (item: CommandItem<T>) => void; testID?: string }
-export interface CommandGroup<T = string> { label?: string; items: CommandItem<T>[] }
-export interface CommandProps<T = string> {
-  open?: boolean; onOpenChange?: (open: boolean) => void;
-  groups: CommandGroup<T>[]; onSelect?: (value: T | undefined, item: CommandItem<T>) => void;
-  query?: string; defaultQuery?: string; onQueryChange?: (query: string) => void;
-  placeholder?: string; emptyText?: string; label?: string;
-  /** Close after a command runs. Default true. */
-  closeOnSelect?: boolean;
-  /** false renders the palette in place instead of in a Modal. */
-  modal?: boolean;
-  /** Web only: the key that toggles it with Ctrl/Cmd, for example "k". */
-  hotkey?: string; style?: StyleProp<ViewStyle>;
-}
-export function Command<T = string>(props: CommandProps<T>): ReactNode;

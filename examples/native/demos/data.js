@@ -1,10 +1,10 @@
-// Demos for data display: tables, lists, carousel, resizable panes, scroll regions, code, rating and placeholders.
+// Demos for data display: tables, lists, carousel, message log, code, rating and placeholders.
 // The catalog entries progress, card, avatar and badge are shown with the basics (core.js).
 import { useEffect, useRef, useState } from "react";
 import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Text, Heading, Button, Card, Badge, Avatar, Switch,
-  Table, DataTable, DataList, Carousel, Resizable, ScrollArea, MessageScroller, CodeBlock, Rating, Skeleton, SkeletonText, Empty,
+  Table, DataTable, DataList, Carousel, MessageScroller, CodeBlock, Rating, Skeleton, SkeletonText, Empty,
 } from "@colibri-kit/native";
 
 const INVOICES = [
@@ -47,11 +47,6 @@ const Slide = ({ slide }) => {
   );
 };
 
-const Pane = ({ title, children }) => {
-  const theme = useTheme();
-  return <View style={{ flex: 1, padding: theme.space.s, gap: theme.space["2xs"] }}><Text size="xs" tone="muted" weight="semibold">{title}</Text>{children}</View>;
-};
-
 const CHAT = [
   { from: "them", text: "Hi! Is the Kazbegi article ready for review?" },
   { from: "me", text: "Almost. I am adding the trail map now." },
@@ -83,13 +78,6 @@ export default function App() {
     </ColibriProvider>
   );
 }`;
-
-const CHANGELOG = [
-  ["2.4.0", "Carousel can loop and play on its own."], ["2.3.2", "Fixed table headers losing their sort arrow."], ["2.3.1", "Rating reads its value to screen readers."],
-  ["2.3.0", "New: resizable panes."], ["2.2.0", "Skeletons respect reduced motion."], ["2.1.4", "Code blocks scroll sideways on small screens."],
-  ["2.1.0", "New: data table with search and pages."], ["2.0.1", "Dark mode contrast improvements."], ["2.0.0", "One theme for every component."],
-];
-const TAGS = ["Design", "Research", "Mobile", "Accessibility", "Performance", "Open source", "Typography", "Colour", "Motion", "Testing", "Release notes"];
 
 export default [
   { id: "table", title: "Table", description: "A plain table with a caption and headers; it scrolls sideways when the columns need more room.", Demo: () => (
@@ -157,40 +145,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "resizable", title: "Resizable", description: "Two panes with a divider you drag; screen readers and arrow keys move it in steps.", Demo: () => {
-    const [size, setSize] = useState(38);
-    return (
-      <Stack>
-        <Resizable size={size} onResize={setSize} min={20} max={75} style={{ height: 170 }}>
-          <Pane title="FILES">{["index.js", "theme.js", "data.js", "README.md"].map((file) => <Text key={file} size="sm" numberOfLines={1}>{file}</Text>)}</Pane>
-          <Pane title="PREVIEW"><Text size="sm">Drag the handle to give the preview more or less room.</Text></Pane>
-        </Resizable>
-        <Cluster justify="space-between"><Text size="sm" tone="muted">Files {Math.round(size)}% · Preview {100 - Math.round(size)}%</Text><Button title="Reset" size="s" variant="ghost" onPress={() => setSize(38)} /></Cluster>
-        <Resizable direction="vertical" defaultSize={45} style={{ height: 230 }}>
-          <Pane title="EDITOR"><Text size="sm">Write on top…</Text></Pane>
-          <Pane title="OUTPUT"><Text size="sm">…and read the result below.</Text></Pane>
-        </Resizable>
-      </Stack>
-    );
-  } },
-  { id: "scroll-area", title: "ScrollArea", description: "A bounded box whose content scrolls, with fades at the edges that have more to show.", Demo: () => (
-    <Stack gap="m">
-      <Stack gap="xs">
-        <Text size="sm" weight="semibold">Changelog</Text>
-        <ScrollArea maxHeight={190} accessibilityLabel="Changelog">
-          <Stack gap="s">{CHANGELOG.map(([version, note]) => (
-            <Cluster key={version} wrap={false} align="flex-start" gap="s"><Badge tone="accent">{version}</Badge><Text size="sm" style={{ flex: 1 }}>{note}</Text></Cluster>
-          ))}</Stack>
-        </ScrollArea>
-      </Stack>
-      <Stack gap="xs">
-        <Text size="sm" weight="semibold">Topics</Text>
-        <ScrollArea horizontal showsHorizontalScrollIndicator={false} accessibilityLabel="Topics">
-          <Cluster wrap={false}>{TAGS.map((tag) => <Badge key={tag}>{tag}</Badge>)}</Cluster>
-        </ScrollArea>
-      </Stack>
-    </Stack>
-  ) },
   { id: "message-scroller", title: "MessageScroller", description: "A chat log that stays on the newest message, with a button to jump back down after you scroll up.", Demo: () => {
     const [messages, setMessages] = useState(CHAT), [live, setLive] = useState(false), log = useRef(null);
     const add = (from) => setMessages((list) => [...list, { from, text: REPLIES[list.length % REPLIES.length] }]);

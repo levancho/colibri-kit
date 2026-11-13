@@ -1,9 +1,9 @@
-// Navigation: moving between and within screens. Breadcrumb, Menu, NavigationMenu, Pagination, ScrollSpy and
-// ScrollTo, Sidebar, Stepper, Sticky, TabView, TabNav and Command (the command palette).
+// Navigation: moving between and within screens. Menu, Pagination, ScrollSpy and ScrollTo, Sidebar, Stepper,
+// TabView and TabNav.
 // Built on the basics only. Roles that exist only on the web (navigation, tabpanel, option, aria-current) are
 // passed there and left out on iOS and Android, where they are not valid accessibility roles.
 import { Children, cloneElement, createContext, createElement as h, forwardRef, isValidElement, useCallback, useContext, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
-import { AccessibilityInfo, Animated, Modal, Pressable, ScrollView, StyleSheet, TextInput, View, useWindowDimensions } from "react-native";
+import { AccessibilityInfo, Animated, Modal, Pressable, ScrollView, View, useWindowDimensions } from "react-native";
 import { useTheme } from "./provider.js";
 import { toneName } from "./theme.js";
 import { web, depth, flat, GLYPH } from "./internal.js";
@@ -11,7 +11,7 @@ import { Text, Badge, Button, Divider } from "./components.js";
 
 // ---------------------------------------------------------------- shared
 const onWeb = (props) => (web ? props : null);
-/** Decorative glyphs and separators are skipped by screen readers. */
+/** Decorative glyphs are skipped by screen readers. */
 const HIDDEN = { accessibilityElementsHidden: true, importantForAccessibility: "no-hide-descendants", ...onWeb({ "aria-hidden": true }) };
 const keyOf = (item, index) => String(item.value ?? item.key ?? item.label ?? index);
 
@@ -42,12 +42,12 @@ const GroupLabel = ({ children, style }) => {
     style: flat({ letterSpacing: 0.8, textTransform: "uppercase", paddingHorizontal: theme.space.s, paddingTop: theme.space.s, paddingBottom: theme.space["2xs"] }, style) }, children);
 };
 
-/** One pressable line: glyph, label (and description), then whatever trails. Used by Menu, Sidebar, NavigationMenu and Command. */
-function Row({ icon, label, description, trailing, selected = false, highlighted = false, disabled = false, danger = false, indent = 0, rail = false, onPress, style, ...rest }) {
+/** One pressable line: glyph, label (and description), then whatever trails. Used by Menu and Sidebar. */
+function Row({ icon, label, description, trailing, selected = false, disabled = false, danger = false, indent = 0, rail = false, onPress, style, ...rest }) {
   const theme = useTheme(), c = theme.colors, color = danger ? c.bad : selected ? c.accent : c.fg;
   return h(Pressable, { onPress, disabled, ...rest,
     style: ({ pressed }) => flat({ minHeight: theme.touch, paddingVertical: theme.space["2xs"], paddingLeft: rail ? 0 : theme.space.s + indent, paddingRight: rail ? 0 : theme.space.s, flexDirection: "row", alignItems: "center",
-      justifyContent: rail ? "center" : "flex-start", gap: theme.space.s, borderRadius: theme.radius.s, backgroundColor: selected ? c.accentSoft : pressed || highlighted ? c.sunken : "transparent", opacity: disabled ? 0.45 : 1 }, style) },
+      justifyContent: rail ? "center" : "flex-start", gap: theme.space.s, borderRadius: theme.radius.s, backgroundColor: selected ? c.accentSoft : pressed ? c.sunken : "transparent", opacity: disabled ? 0.45 : 1 }, style) },
     h(Glyph, { color: danger || selected ? color : c.muted }, rail ? icon ?? String(label ?? "").slice(0, 1).toUpperCase() : icon),
     rail ? null : h(View, { style: { flex: 1 } },
       h(Text, { weight: selected ? "semibold" : "medium", numberOfLines: 1, style: { color } }, label),
@@ -98,35 +98,6 @@ function useExpanded(initial) {
   return [expanded, toggle];
 }
 
-// ---------------------------------------------------------------- breadcrumb
-/**
- * Where you are: Home › Articles › Edit. items: [{ label, onPress }]; the last one is the current page.
- * With more than maxItems the middle collapses into an ellipsis that expands when pressed.
- */
-function Breadcrumb({ items = [], maxItems = 4, separator = GLYPH.chevronRight, label = "Breadcrumb", onNavigate, style, ...rest }) {
-  const theme = useTheme(), c = theme.colors, [expanded, setExpanded] = useState(false);
-  const tail = Math.max(1, maxItems - 2), collapsed = !expanded && items.length > maxItems && items.length > tail + 1;
-  const shown = collapsed ? [{ item: items[0], index: 0 }, { ellipsis: true }, ...items.slice(-tail).map((item, at) => ({ item, index: items.length - tail + at }))] : items.map((item, index) => ({ item, index }));
-  const slop = { top: 10, bottom: 10, left: 4, right: 4 };
-  return h(View, { accessibilityLabel: label, ...onWeb({ accessibilityRole: "navigation" }), style: flat({ flexDirection: "row", flexWrap: "wrap", alignItems: "center", columnGap: theme.space["2xs"], rowGap: theme.space["2xs"] }, style), ...rest },
-    shown.map((entry, at) => {
-      // The separator travels with the item after it, so a wrapped line never ends in a lone chevron.
-      const unit = (key, ...parts) => h(View, { key, style: { flexDirection: "row", alignItems: "center", gap: theme.space["2xs"], flexShrink: 1 } }, parts);
-      const divider = at ? h(Text, { key: "separator", ...HIDDEN, size: "sm", tone: "muted", style: { paddingHorizontal: 2 } }, separator) : null;
-      if (entry.ellipsis) {
-        return unit("ellipsis", divider, h(Pressable, { key: "item", onPress: () => setExpanded(true), hitSlop: slop, accessibilityRole: "button", accessibilityLabel: `Show ${items.length - tail - 1} hidden levels`, accessibilityState: { expanded: false }, "aria-expanded": false,
-          style: ({ pressed }) => ({ paddingHorizontal: theme.space.xs, minHeight: 24, justifyContent: "center", borderRadius: theme.radius.s, backgroundColor: pressed ? c.line : c.sunken }) },
-          h(Text, { size: "sm", weight: "bold", tone: "muted", style: { lineHeight: 18 } }, GLYPH.more)));
-      }
-      const { item, index } = entry, current = index === items.length - 1, press = item.onPress || onNavigate ? () => { item.onPress?.(item); onNavigate?.(item, index); } : undefined;
-      if (current || !press) {
-        return unit(`i${index}`, divider, h(Text, { key: "item", size: "sm", weight: current ? "semibold" : "medium", tone: current ? undefined : "muted", numberOfLines: 1, style: { maxWidth: 200, flexShrink: 1 }, ...(current ? onWeb({ "aria-current": "page" }) : null) }, item.label));
-      }
-      return unit(`i${index}`, divider, h(Pressable, { key: "item", onPress: press, hitSlop: slop, accessibilityRole: "link", accessibilityLabel: item.label, style: { flexShrink: 1 } },
-        ({ pressed }) => h(Text, { size: "sm", weight: "medium", numberOfLines: 1, style: { maxWidth: 160, color: pressed ? c.accent : c.muted, textDecorationLine: pressed ? "underline" : "none" } }, item.label)));
-    }));
-}
-
 // ---------------------------------------------------------------- menu
 /**
  * A vertical list of actions. On the web kit `menu` is a desktop menu bar (File, Edit, View) opened by hover and
@@ -138,35 +109,6 @@ export function Menu({ items = [], value, onSelect, defaultExpanded, label, styl
   const theme = useTheme(), [expanded, toggle] = useExpanded(defaultExpanded);
   return h(View, { accessibilityRole: "menu", accessibilityLabel: label, style: flat({ gap: theme.space["3xs"] }, style), ...rest },
     h(Entries, { items, value, onSelect, expanded, toggle, kind: "menu" }));
-}
-
-// ---------------------------------------------------------------- navigation menu
-/**
- * Top-level items that open a panel of links. On a phone they are sections that expand in place, one at a time;
- * from `breakpoint` up (or orientation="horizontal") they sit in a row with the open panel underneath.
- * items: [{ value, label, items: [{ value, label, description, onPress }] } | { value, label, onPress }].
- */
-function NavigationMenu({ items = [], open, defaultOpen = null, onOpenChange, onSelect, orientation = "auto", breakpoint = 768, label = "Main", style, ...rest }) {
-  const theme = useTheme(), c = theme.colors, { width } = useWindowDimensions();
-  const [current, setCurrent] = useControlled(open, defaultOpen, onOpenChange);
-  const row = orientation === "horizontal" || (orientation === "auto" && width >= breakpoint);
-  const links = (item) => h(View, { style: row ? { padding: theme.space.xs, gap: theme.space["3xs"], borderWidth: 1, borderColor: c.line, borderRadius: theme.radius.m, backgroundColor: c.surface, ...depth(theme.shadow.m) }
-    : { marginLeft: theme.space.s + 11, paddingLeft: theme.space["2xs"], marginBottom: theme.space.xs, gap: theme.space["3xs"], borderLeftWidth: 1, borderLeftColor: c.line } },
-    item.items.map((link, index) => h(Row, { key: keyOf(link, index), icon: link.icon, label: link.label, description: link.description, disabled: link.disabled, accessibilityRole: "link", accessibilityState: { disabled: !!link.disabled }, "aria-disabled": !!link.disabled,
-      onPress: () => { link.onPress?.(link); onSelect?.(link.value, link); setCurrent(null); } })));
-  const triggers = items.map((item, index) => {
-    const key = keyOf(item, index), panel = Array.isArray(item.items) && item.items.length > 0, expanded = panel && current === key;
-    const trigger = panel
-      ? h(Row, { label: item.label, icon: row ? undefined : item.icon, selected: row && expanded, trailing: h(Glyph, { color: c.muted }, expanded ? GLYPH.chevronDown : GLYPH.chevronRight),
-        accessibilityRole: "button", accessibilityState: { expanded }, "aria-expanded": expanded, onPress: () => setCurrent(expanded ? null : key), style: row ? { paddingRight: theme.space["2xs"] } : null })
-      : h(Row, { label: item.label, icon: row ? undefined : item.icon, accessibilityRole: "link", onPress: () => { item.onPress?.(item); onSelect?.(item.value, item); setCurrent(null); } });
-    if (row) return h(View, { key, style: { minWidth: 120 } }, trigger);
-    return h(View, { key }, index ? h(Divider, null) : null, trigger, expanded ? links(item) : null);
-  });
-  const opened = row ? items.find((item, index) => keyOf(item, index) === current && item.items?.length) : null;
-  return h(View, { accessibilityLabel: label, ...onWeb({ accessibilityRole: "navigation" }), style: flat(row ? { gap: theme.space.xs } : null, style), ...rest },
-    row ? h(View, { style: { flexDirection: "row", flexWrap: "wrap", gap: theme.space["2xs"] } }, triggers) : triggers,
-    opened ? links(opened) : null);
 }
 
 // ---------------------------------------------------------------- pagination
@@ -209,49 +151,6 @@ export function Pagination({ page, defaultPage = 1, total = 1, onChange, sibling
     next);
 }
 
-// ---------------------------------------------------------------- sticky
-/**
- * A header that stays at the top of a StickyScrollView (or ScrollSpy) while the content scrolls under it.
- * It gets the page background so content does not show through, and a hairline once it is stuck.
- * onChange(stuck) fires when it sticks or lets go; children may be a function of { stuck }.
- */
-function Sticky({ stuck = false, onChange, style, stuckStyle, children, ...rest }) {
-  const theme = useTheme(), first = useRef(true), latest = useRef(onChange);
-  latest.current = onChange;
-  useEffect(() => { if (first.current) { first.current = false; if (!stuck) return; } latest.current?.(stuck); }, [stuck]);
-  return h(View, { ...rest, style: flat({ backgroundColor: theme.colors.bg, borderBottomWidth: 1, borderBottomColor: stuck ? theme.colors.line : "transparent" }, style, stuck && stuckStyle) },
-    typeof children === "function" ? children({ stuck }) : children);
-}
-
-/** For a plain ScrollView: <ScrollView stickyHeaderIndices={stickyHeaderIndices(children)}>{children}</ScrollView>. */
-const stickyHeaderIndices = (children) => Children.toArray(children).flatMap((child, index) => (isValidElement(child) && child.type === Sticky ? [index] : []));
-
-/**
- * A ScrollView that pins every direct <Sticky> child (it works out stickyHeaderIndices for you) and tells each
- * one whether it is stuck. Every ScrollView prop passes through.
- */
-const StickyScrollView = forwardRef(function StickyScrollView({ children, onScroll, contentContainerStyle, onStickyHeight, scrollEventThrottle = 16, ...rest }, ref) {
-  const [stuck, setStuck] = useState({}), marks = useRef({ tops: {}, heights: {}, y: 0 }).current;
-  const content = StyleSheet.flatten(contentContainerStyle) ?? {}, gap = content.rowGap ?? content.gap ?? 0;
-  const update = () => setStuck((current) => {
-    const next = {}; let changed = false;
-    for (const key of Object.keys(marks.tops)) { next[key] = marks.y > marks.tops[key] + 0.5; if (next[key] !== !!current[key]) changed = true; }
-    return changed || Object.keys(current).length !== Object.keys(next).length ? next : current;
-  });
-  const out = [], indices = [], live = new Set();
-  Children.toArray(children).forEach((child) => {
-    if (!isValidElement(child) || child.type !== Sticky) { out.push(child); return; }
-    const key = String(child.key); live.add(key);
-    // A zero-height marker in the normal flow: the header itself is re-parented by the ScrollView, so its own offset is not usable.
-    out.push(h(View, { key: `${key}:mark`, style: { height: 0, marginBottom: -gap }, onLayout: (event) => { marks.tops[key] = event.nativeEvent.layout.y; update(); } }));
-    indices.push(out.length);
-    out.push(cloneElement(child, { stuck: child.props.stuck || !!stuck[key], onLayout: (event) => { marks.heights[key] = event.nativeEvent.layout.height; onStickyHeight?.(Math.max(0, ...Object.values(marks.heights))); child.props.onLayout?.(event); } }));
-  });
-  for (const key of Object.keys(marks.tops)) if (!live.has(key)) { delete marks.tops[key]; delete marks.heights[key]; }
-  return h(ScrollView, { ref, ...rest, contentContainerStyle, scrollEventThrottle, stickyHeaderIndices: indices.length ? indices : undefined,
-    onScroll: (event) => { marks.y = event.nativeEvent.contentOffset.y; if (indices.length) update(); onScroll?.(event); } }, out);
-});
-
 // ---------------------------------------------------------------- scrollspy and scrollto
 const SpyContext = createContext(null);
 
@@ -260,7 +159,8 @@ const SpyContext = createContext(null);
  *   const spy = useScrollSpy();   spy.active   spy.scrollTo("pricing")
  * Use it with <ScrollSpy spy={spy}> and <ScrollSpySection id>, or wire your own ScrollView with
  * {...spy.scrollViewProps} and give each section {...spy.sectionProps(id)} (sections must be direct children of the content).
- * offset is the height covered at the top (a pinned header); ScrollSpy measures its Sticky children when it is not given.
+ * offset is the height covered at the top (a pinned header); when it is not given, ScrollSpy measures the children
+ * named by its stickyHeaderIndices prop.
  */
 export function useScrollSpy({ offset, defaultActive = null, onChange, animated = true } = {}) {
   const ref = useRef(null), [active, setActive] = useState(defaultActive);
@@ -312,15 +212,20 @@ export function useScrollSpy({ offset, defaultActive = null, onChange, animated 
 }
 
 /**
- * The ScrollView for a scroll spy. Put <ScrollSpySection id="…"> and optional <Sticky> headers directly inside.
+ * The ScrollView for a scroll spy. Put <ScrollSpySection id="…"> directly inside; every ScrollView prop passes through.
+ * A header pinned with the ScrollView's own stickyHeaderIndices prop is measured, so sections stop just below it.
  * Pass spy (from useScrollSpy) to read spy.active outside it; otherwise it keeps its own and reports through onChange(id).
  */
-export const ScrollSpy = forwardRef(function ScrollSpy({ spy: given, offset, defaultActive, onChange, onScroll, onLayout, onContentSizeChange, children, ...rest }, ref) {
-  const own = useScrollSpy({ offset, defaultActive, onChange }), spy = given ?? own, wired = spy.scrollViewProps;
+export const ScrollSpy = forwardRef(function ScrollSpy({ spy: given, offset, defaultActive, onChange, onScroll, onLayout, onContentSizeChange, stickyHeaderIndices: pins, children, ...rest }, ref) {
+  const own = useScrollSpy({ offset, defaultActive, onChange }), spy = given ?? own, wired = spy.scrollViewProps, heights = useRef({}).current;
   useImperativeHandle(ref, () => spy.ref.current, [spy.ref]);
-  return h(SpyContext.Provider, { value: spy }, h(StickyScrollView, { ...rest, ref: spy.ref, scrollEventThrottle: 16, onStickyHeight: spy.setHeaderHeight,
+  const pinned = Array.isArray(pins) && pins.length > 0;
+  // Children.toArray drops empty children, so an index means the same child on every platform.
+  const content = pinned ? Children.toArray(children).map((child, index) => (pins.includes(index) && isValidElement(child)
+    ? cloneElement(child, { onLayout: (event) => { heights[index] = event.nativeEvent.layout.height; spy.setHeaderHeight(Math.max(0, ...Object.values(heights))); child.props.onLayout?.(event); } }) : child)) : children;
+  return h(SpyContext.Provider, { value: spy }, h(ScrollView, { ...rest, ref: spy.ref, scrollEventThrottle: 16, stickyHeaderIndices: pinned ? pins : undefined,
     onScroll: (event) => { wired.onScroll(event); onScroll?.(event); }, onLayout: (event) => { wired.onLayout(event); onLayout?.(event); },
-    onContentSizeChange: (width, height) => { wired.onContentSizeChange(width, height); onContentSizeChange?.(width, height); } }, children));
+    onContentSizeChange: (width, height) => { wired.onContentSizeChange(width, height); onContentSizeChange?.(width, height); } }, content));
 });
 
 /** One tracked section. Must be a direct child of ScrollSpy so its offset is measured against the content. */
@@ -501,57 +406,4 @@ export function TabView({ tabs = [], value, defaultValue, onChange, scrollable, 
 export function TabNav({ items = [], value, defaultValue, onChange, scrollable, label = "Sections", style }) {
   const [current, setCurrent] = useControlled(value, defaultValue ?? items[0]?.value, onChange);
   return h(TabBar, { items, value: current, scrollable, link: true, label, style, onSelect: (item) => { item.onPress?.(item); if (item.value !== current) setCurrent(item.value, item); } });
-}
-
-// ---------------------------------------------------------------- command
-const matches = (query, ...fields) => { const text = fields.flat().filter(Boolean).join(" ").toLowerCase(); return query.toLowerCase().split(/\s+/).filter(Boolean).every((word) => text.includes(word)); };
-
-/**
- * A command palette: a search field over grouped actions, filtered as you type.
- * groups: [{ label, items: [{ value, label, description, icon, shortcut, keywords, disabled }] }]. Shortcuts are shown as text.
- * open + onOpenChange show it in a Modal near the top of the screen; modal={false} renders the list in place.
- * With a keyboard: Up and Down move, Enter runs the highlighted command, and on the web hotkey="k" toggles it with Ctrl/Cmd+K.
- */
-function Command({ open = false, onOpenChange, groups = [], onSelect, query, defaultQuery = "", onQueryChange, placeholder = "Search commands…", emptyText = "No results found", label = "Command palette",
-  closeOnSelect = true, modal = true, hotkey, style }) {
-  const theme = useTheme(), c = theme.colors, screen = useWindowDimensions(), [text, setText] = useControlled(query, defaultQuery, onQueryChange), [cursor, setCursor] = useState(0), [focused, setFocused] = useState(false);
-  const shown = modal ? open : true, toggle = useRef(null);
-  toggle.current = () => onOpenChange?.(!open);
-  const wasOpen = useRef(open);
-  useEffect(() => { if (modal && wasOpen.current && !open) { setText(""); setCursor(0); } wasOpen.current = open; }, [modal, open, setText]);
-  useEffect(() => {
-    if (!web || !hotkey || !modal) return undefined;
-    const onKey = (event) => { if ((event.ctrlKey || event.metaKey) && String(event.key).toLowerCase() === String(hotkey).toLowerCase()) { event.preventDefault(); toggle.current(); } };
-    globalThis.addEventListener?.("keydown", onKey);
-    return () => globalThis.removeEventListener?.("keydown", onKey);
-  }, [hotkey, modal]);
-  const visible = useMemo(() => groups.map((group) => ({ ...group, items: (group.items ?? []).filter((item) => matches(text ?? "", item.label, item.keywords, item.description, group.label)) })).filter((group) => group.items.length), [groups, text]);
-  const flatItems = visible.flatMap((group) => group.items).filter((item) => !item.disabled), active = modal || focused ? flatItems[Math.min(cursor, flatItems.length - 1)] : undefined;
-  const run = (item) => { if (!item || item.disabled) return; item.onPress?.(item); onSelect?.(item.value, item); if (modal && closeOnSelect) onOpenChange?.(false); };
-  const onKeyPress = (event) => {
-    const key = event.nativeEvent.key;
-    if (key === "ArrowDown" || key === "ArrowUp") { event.preventDefault?.(); setCursor((at) => (flatItems.length ? (Math.min(at, flatItems.length - 1) + (key === "ArrowDown" ? 1 : -1) + flatItems.length) % flatItems.length : 0)); }
-    else if (key === "Escape" && modal) onOpenChange?.(false);
-  };
-  const palette = h(View, { accessibilityLabel: label, accessibilityViewIsModal: modal || undefined, ...onWeb(modal ? { accessibilityRole: "dialog", "aria-modal": true } : null),
-    style: flat({ overflow: "hidden", borderWidth: 1, borderColor: c.line, borderRadius: theme.radius.l, backgroundColor: c.surface }, modal ? { width: "100%", maxWidth: 560, maxHeight: Math.round(screen.height * 0.7), ...depth(theme.shadow.l) } : null, style) },
-    h(View, { style: { flexDirection: "row", alignItems: "center", gap: theme.space.xs, paddingHorizontal: theme.space.m, borderBottomWidth: 1, borderBottomColor: c.line } },
-      h(Glyph, { color: c.muted, size: 20 }, GLYPH.search),
-      h(TextInput, { value: text, onChangeText: (next) => { setText(next); setCursor(0); }, placeholder, placeholderTextColor: c.muted, selectionColor: c.accent, autoFocus: modal, autoCorrect: false, autoCapitalize: "none", returnKeyType: "go",
-        accessibilityLabel: label, accessibilityRole: "search", onKeyPress, onSubmitEditing: () => run(active), blurOnSubmit: false, onFocus: () => setFocused(true), onBlur: () => setFocused(false), testID: "command-input",
-        style: flat({ flex: 1, minHeight: theme.touch + theme.space["2xs"], paddingVertical: theme.space.xs, color: c.fg, fontSize: theme.text.md }, web && { outlineStyle: "none" }) }),
-      modal ? h(Pressable, { onPress: () => onOpenChange?.(false), accessibilityRole: "button", accessibilityLabel: "Close", hitSlop: 10 }, h(Keys, null, "esc")) : null),
-    h(ScrollView, { keyboardShouldPersistTaps: "handled", ...onWeb({ accessibilityRole: "listbox" }), accessibilityLabel: "Results", style: { flexGrow: 0 }, contentContainerStyle: { padding: theme.space.xs, gap: theme.space["3xs"] } },
-      visible.length ? visible.map((group, index) => h(View, { key: group.label ?? index, ...onWeb({ accessibilityRole: "group", accessibilityLabel: group.label }) },
-        index ? h(Divider, { style: { marginVertical: theme.space["2xs"] } }) : null,
-        group.label ? h(GroupLabel, { style: index ? null : { paddingTop: theme.space["2xs"] } }, group.label) : null,
-        group.items.map((item, at) => h(Row, { key: keyOf(item, at), icon: item.icon, label: item.label, description: item.description, disabled: item.disabled, highlighted: item === active, onPress: () => run(item), testID: item.testID,
-          accessibilityRole: web ? "option" : "button", accessibilityState: { selected: item === active, disabled: !!item.disabled }, "aria-selected": item === active, "aria-disabled": !!item.disabled,
-          trailing: item.shortcut ? h(Keys, null, item.shortcut) : null }))))
-        : h(View, { style: { paddingVertical: theme.space.l, alignItems: "center" }, accessibilityLiveRegion: "polite" }, h(Text, { size: "sm", tone: "muted" }, emptyText))));
-  if (!modal) return palette;
-  return h(Modal, { visible: shown, transparent: true, animationType: "fade", onRequestClose: () => onOpenChange?.(false), statusBarTranslucent: true },
-    h(View, { style: { flex: 1, alignItems: "center", paddingHorizontal: theme.space.m, paddingTop: Math.max(theme.space["2xl"], Math.round(screen.height * 0.1)) } },
-      h(Pressable, { onPress: () => onOpenChange?.(false), accessibilityLabel: "Close", style: { position: "absolute", top: 0, right: 0, bottom: 0, left: 0, backgroundColor: c.overlay } }),
-      palette));
 }

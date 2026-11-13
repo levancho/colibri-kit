@@ -2,9 +2,9 @@
 import { useState } from "react";
 import { View } from "react-native";
 import {
-  useTheme, useToast, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch, ListItem,
-  Breadcrumb, Menu, NavigationMenu, Pagination, useScrollSpy, ScrollSpy, ScrollSpySection, ScrollTo, Sidebar, Stepper,
-  Sticky, StickyScrollView, TabView, TabNav, Command,
+  useTheme, useToast, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch,
+  Menu, Pagination, useScrollSpy, ScrollSpy, ScrollSpySection, ScrollTo, Sidebar, Stepper,
+  TabView, TabNav,
 } from "@colibri-kit/native";
 
 /** A fixed-height window with its own scrolling, so a demo can scroll inside the catalog page. */
@@ -29,12 +29,6 @@ const Section = ({ section, top }) => (
   </Stack>
 );
 
-const ORDERS = [
-  { day: "Today", rows: [["Maya Okafor", "Annual plan", "$240.00"], ["Sam Chen", "Team seats × 3", "$54.00"], ["Priya Nair", "Monthly plan", "$24.00"]] },
-  { day: "Yesterday", rows: [["Alex Rivera", "Monthly plan", "$24.00"], ["Jonas Weber", "Storage add-on", "$8.00"], ["Lucía Gómez", "Annual plan", "$240.00"], ["Tom Baker", "Monthly plan", "$24.00"]] },
-  { day: "Monday 9 November", rows: [["Aiko Tanaka", "Team seats × 5", "$90.00"], ["Noah Smith", "Monthly plan", "$24.00"], ["Elif Demir", "Annual plan", "$240.00"]] },
-];
-
 const SIDEBAR = [
   { type: "group", label: "Workspace", items: [
     { value: "home", label: "Home", icon: "⌂" },
@@ -55,42 +49,7 @@ const SidebarFooter = () => (
   <Cluster wrap={false} gap="s"><Avatar name="Maya Okafor" size={32} /><View style={{ flex: 1 }}><Text size="sm" weight="medium" numberOfLines={1}>Maya Okafor</Text><Text size="xs" tone="muted" numberOfLines={1}>maya@northwind.example</Text></View></Cluster>
 );
 
-const COMMANDS = [
-  { label: "Go to", items: [
-    { value: "home", label: "Home", icon: "⌂", shortcut: "G H", keywords: "main dashboard start" },
-    { value: "articles", label: "Articles", icon: "☰", shortcut: "G A", keywords: "posts blog" },
-    { value: "media", label: "Media library", icon: "▣", keywords: "images files uploads" },
-  ] },
-  { label: "Actions", items: [
-    { value: "new-article", label: "New article", icon: "+", shortcut: "⌘ N", keywords: "create write post" },
-    { value: "invite", label: "Invite a teammate", icon: "✉", keywords: "member user add" },
-    { value: "export", label: "Export as CSV", icon: "↓", keywords: "download spreadsheet" },
-  ] },
-  { label: "Settings", items: [
-    { value: "theme", label: "Change theme", icon: "◐", keywords: "dark light appearance" },
-    { value: "profile", label: "Edit profile", icon: "☺", shortcut: "⌘ ,", keywords: "account name avatar" },
-    { value: "billing", label: "Billing", icon: "$", disabled: true, description: "Only workspace owners can open billing." },
-  ] },
-];
-
 export default [
-  { id: "breadcrumb", title: "Breadcrumb", description: "Shows where you are; a long trail collapses its middle into an ellipsis you can press.", Demo: () => {
-    const [last, setLast] = useState(null), go = (item) => setLast(item.label);
-    return (
-      <Stack gap="m">
-        <Card>
-          <Caption>Short trail</Caption>
-          <Breadcrumb onNavigate={go} items={[{ label: "Home" }, { label: "Articles" }, { label: "Edit" }]} />
-        </Card>
-        <Card>
-          <Caption>Long trail</Caption>
-          <Breadcrumb onNavigate={go} items={[{ label: "Home" }, { label: "Workspace" }, { label: "Projects" }, { label: "Website redesign" }, { label: "Assets" }, { label: "Logo files" }]} />
-          <Text size="sm" tone="muted">Press the ellipsis to show the hidden levels.</Text>
-        </Card>
-        <Text size="sm" tone="muted" accessibilityLiveRegion="polite">{last ? `Went to ${last}.` : "Press a level to go there."}</Text>
-      </Stack>
-    );
-  } },
   { id: "menu", title: "Menu", description: "A list of actions with groups, glyph icons, shortcuts, checkable items, a selected item and a submenu that expands in place. The web menu bar has no phone equivalent, so this is the list its menus hold.", Demo: () => {
     const toast = useToast(), [sort, setSort] = useState("updated"), [wrap, setWrap] = useState(true), [bar, setBar] = useState(false);
     return (
@@ -120,29 +79,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "navigation-menu", title: "NavigationMenu", description: "Top-level items that open a panel of links. On a phone they are sections that expand in place; on a wide screen they sit in a row.", Demo: () => {
-    const [last, setLast] = useState(null);
-    return (
-      <Stack gap="m">
-        <Card padded={false} style={{ paddingHorizontal: 8, paddingVertical: 4 }}>
-          <NavigationMenu defaultOpen="products" onSelect={(value, link) => setLast(link.label)} items={[
-            { value: "products", label: "Products", items: [
-              { value: "cms", label: "Colibri CMS", description: "Publish pages and articles without a build step." },
-              { value: "ui", label: "Colibri UI", description: "The component kit this catalog shows." },
-              { value: "cloud", label: "Colibri Cloud", description: "Hosting with backups and a staging copy." },
-            ] },
-            { value: "resources", label: "Resources", items: [
-              { value: "docs", label: "Documentation", description: "Guides and the full reference." },
-              { value: "blog", label: "Blog", description: "Release notes and how we build." },
-            ] },
-            { value: "pricing", label: "Pricing" },
-            { value: "contact", label: "Contact" },
-          ]} />
-        </Card>
-        <Text size="sm" tone="muted" accessibilityLiveRegion="polite">{last ? `Opened ${last}.` : "Open a section and choose a link."}</Text>
-      </Stack>
-    );
-  } },
   { id: "pagination", title: "Pagination", description: "Previous and next with page numbers and ellipses; it drops to a compact form when space is short.", Demo: () => {
     const [page, setPage] = useState(7), [small, setSmall] = useState(2), [compact, setCompact] = useState(3);
     return (
@@ -166,12 +102,12 @@ export default [
     return (
       <Stack>
         <Frame>
-          <ScrollSpy spy={spy} nestedScrollEnabled contentContainerStyle={{ paddingBottom: theme.space.l }}>
-            <Sticky>
+          <ScrollSpy spy={spy} nestedScrollEnabled stickyHeaderIndices={[0]} contentContainerStyle={{ paddingBottom: theme.space.l }}>
+            <View style={{ backgroundColor: theme.colors.bg, borderBottomWidth: 1, borderBottomColor: theme.colors.line }}>
               <Cluster wrap={false} gap="2xs" style={{ paddingHorizontal: theme.space.s, paddingVertical: theme.space.xs }}>
                 {GUIDE.slice(0, 4).map((section) => <ScrollTo key={section.id} to={section.id} variant="chip" testID={`chip-${section.id}`}>{section.title}</ScrollTo>)}
               </Cluster>
-            </Sticky>
+            </View>
             {GUIDE.slice(0, 4).map((section) => (
               <ScrollSpySection key={section.id} id={section.id} style={{ paddingHorizontal: theme.space.m, paddingTop: theme.space.m }}><Section section={section} /></ScrollSpySection>
             ))}
@@ -258,29 +194,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "sticky", title: "Sticky", description: "Headers that stay pinned to the top of a ScrollView while their content scrolls under them, and know when they are stuck.", Demo: () => {
-    const theme = useTheme(), [pinned, setPinned] = useState(null);
-    return (
-      <Stack>
-        <Frame>
-          <StickyScrollView nestedScrollEnabled>
-            {ORDERS.flatMap((group) => [
-              <Sticky key={group.day} onChange={(stuck) => stuck && setPinned(group.day)}>
-                {({ stuck }) => (
-                  <Cluster justify="space-between" style={{ paddingHorizontal: theme.space.m, paddingVertical: theme.space.xs }}>
-                    <Text size="sm" weight="bold">{group.day}</Text>
-                    {stuck ? <Badge tone="accent">Pinned</Badge> : <Text size="xs" tone="muted">{group.rows.length} orders</Text>}
-                  </Cluster>
-                )}
-              </Sticky>,
-              ...group.rows.map(([name, plan, amount]) => <ListItem key={group.day + name} title={name} subtitle={plan} leading={<Avatar name={name} size={32} />} trailing={amount} />),
-            ])}
-          </StickyScrollView>
-        </Frame>
-        <Text size="sm" tone="muted" accessibilityLiveRegion="polite">{pinned ? `“${pinned}” is pinned.` : "Scroll the list: each day stays at the top until the next one arrives."}</Text>
-      </Stack>
-    );
-  } },
   { id: "tabs", title: "TabView", description: "Content tabs: a bar with a sliding underline and the selected tab's panel. The bar scrolls sideways when there are many tabs.", Demo: () => {
     const [tab, setTab] = useState("activity");
     return (
@@ -298,26 +211,6 @@ export default [
             { value: name.toLowerCase(), label: name, content: <Text tone="muted">The latest {name.toLowerCase()} stories, updated every hour.</Text> }
           ))} />
         </Card>
-      </Stack>
-    );
-  } },
-  { id: "command", title: "Command", description: "A command palette: search grouped actions, with shortcuts shown as text. Opens in a modal; on the web Ctrl/⌘+K toggles it.", Demo: () => {
-    const [open, setOpen] = useState(false), [last, setLast] = useState(null), [inline, setInline] = useState(null);
-    return (
-      <Stack gap="m">
-        <Card>
-          <Button variant="outline" block onPress={() => setOpen(true)} testID="open-command" accessibilityLabel="Open command palette">
-            <Text size="sm" tone="muted" style={{ flex: 1 }}>⌕  Search commands…</Text>
-            <Badge style={{ alignSelf: "center" }}>⌘ K</Badge>
-          </Button>
-          <Text size="sm" tone="muted" accessibilityLiveRegion="polite">{last ? `Ran “${last}”.` : "Open the palette and choose a command."}</Text>
-        </Card>
-        <Command open={open} onOpenChange={setOpen} hotkey="k" groups={COMMANDS} onSelect={(value, item) => setLast(item.label)} />
-        <Stack gap="xs">
-          <Caption>In place</Caption>
-          <Command modal={false} groups={COMMANDS.slice(0, 2)} placeholder="Filter actions…" label="Actions" onSelect={(value, item) => setInline(item.label)} />
-          {inline ? <Text size="sm" tone="muted">Ran “{inline}”.</Text> : null}
-        </Stack>
       </Stack>
     );
   } },

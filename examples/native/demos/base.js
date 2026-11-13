@@ -1,15 +1,14 @@
 // Demos for the display group: surfaces, typography and the small building blocks.
-import { useEffect, useRef, useState } from "react";
-import { I18nManager, View } from "react-native";
+import { useEffect, useState } from "react";
+import { View } from "react-native";
 import {
-  ColibriProvider, useToast, useTheme, Stack, Cluster, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch, Spinner,
-  Accordion, Alert, AspectRatio, Collapsible, Kbd, Label, Link, Separator, Inset, IconButton, AccessibleIcon,
+  ColibriProvider, useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch, Spinner,
+  Accordion, Alert, Collapsible, Link, Inset, IconButton,
   Blockquote, Code, Lead, Small, Muted, ThemeSwitch, Toggle, Item, ItemGroup, ButtonGroup, Toolbar, ToolbarSeparator, ToolbarSpacer,
-  DirectionProvider, useDirection,
 } from "@colibri-kit/native";
 
 // Text glyphs stand in for icons: the package ships no icon font.
-const ICON = { undo: "↶", redo: "↷", link: "∞", close: "×", plus: "+", more: "⋯", star: "★", bell: "♪", user: "☺", file: "▤", lock: "⚙\uFE0E", check: "✓" };
+const ICON = { undo: "↶", redo: "↷", link: "∞", close: "×", plus: "+", more: "⋯", star: "★", bell: "♪", file: "▤", lock: "⚙\uFE0E" };
 
 const Caption = ({ children }) => <Text size="xs" weight="bold" tone="muted" style={{ letterSpacing: 0.8, textTransform: "uppercase" }}>{children}</Text>;
 
@@ -31,27 +30,6 @@ const FAQ = [
   { value: "returns", title: "Can I return an item?", content: "Yes, within 30 days if it is unused. Start a return from the order page and print the prepaid label." },
   { value: "gift", title: "Gift wrapping", content: "Unavailable during the sale.", disabled: true },
 ];
-
-function DirectionSample() {
-  const { dir, rtl, textStyle, mirror } = useDirection(), toast = useToast();
-  return (
-    <Stack gap="s">
-      <Alert tone="ok" title={rtl ? "تم الحفظ" : "Saved"} dismissible closeLabel={rtl ? "إغلاق" : "Close"}>
-        <Text size="sm" tone="muted" style={textStyle}>{rtl ? "تم تحديث ملفك الشخصي." : "Your profile was updated."}</Text>
-      </Alert>
-      <ItemGroup label={rtl ? "الإعدادات" : "Settings"}>
-        <Item media={ICON.user} onPress={() => toast.show(rtl ? "الملف الشخصي" : "Profile")}
-          title={<Text weight="medium" style={textStyle}>{rtl ? "الملف الشخصي" : "Profile"}</Text>}
-          description={<Text size="sm" tone="muted" style={textStyle}>{rtl ? "الاسم والصورة" : "Name and photo"}</Text>} />
-      </ItemGroup>
-      <Cluster justify="space-between">
-        <Button variant="outline" size="s" title={`${mirror("←", "→")} ${rtl ? "السابق" : "Back"}`} />
-        <Badge>{`dir = ${dir}`}</Badge>
-        <Button size="s" title={`${rtl ? "التالي" : "Next"} ${mirror("→", "←")}`} />
-      </Cluster>
-    </Stack>
-  );
-}
 
 export default [
   { id: "accordion", title: "Accordion", description: "Headings that each expand to show a section, one at a time or several.", Demo: () => {
@@ -87,17 +65,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "aspect-ratio", title: "AspectRatio", description: "A box that keeps its width-to-height shape at any width.", Demo: () => {
-    const [ratio, setRatio] = useState("16/9"), theme = useTheme();
-    return (
-      <Stack>
-        <ButtonGroup label="Ratio" type="single" required block value={ratio} onChange={setRatio} options={["16/9", "4/3", "1/1", "3/4"].map((value) => ({ value, label: value.replace("/", " : ") }))} />
-        <View style={{ alignSelf: "center", width: ratio === "3/4" || ratio === "1/1" ? "70%" : "100%" }}>
-          <AspectRatio ratio={ratio} style={{ borderRadius: theme.radius.m }}><Artwork label="Harbour at dawn" detail={`${ratio.replace("/", " : ")} frame`} /></AspectRatio>
-        </View>
-      </Stack>
-    );
-  } },
   { id: "collapsible", title: "Collapsible", description: "One button that shows or hides a block of content.", Demo: () => {
     const [advanced, setAdvanced] = useState(false);
     return (
@@ -119,30 +86,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "kbd", title: "Kbd", description: "Key caps for keyboard shortcuts, for tablets and connected keyboards.", Demo: () => (
-    <Card>
-      {[["Open search", ["⌘", "K"]], ["Save", ["Ctrl", "S"]], ["Redo", ["Ctrl", "Shift", "Z"]], ["Close", ["Esc"]]].map(([name, keys]) => (
-        <Cluster key={name} justify="space-between"><Text>{name}</Text><Kbd keys={keys} /></Cluster>
-      ))}
-      <Separator />
-      <Cluster gap="2xs"><Muted>Press</Muted><Kbd>?</Kbd><Muted>to see every shortcut.</Muted></Cluster>
-    </Card>
-  ) },
-  { id: "label", title: "Label", description: "The text label of a form control. Pressing it focuses the input.", Demo: () => {
-    const email = useRef(null), [value, setValue] = useState("");
-    return (
-      <Card>
-        <Stack gap="2xs">
-          <Label target={email} required testID="email-label">Work email</Label>
-          <TextField ref={email} accessibilityLabel="Work email" placeholder="you@company.com" keyboardType="email-address" autoCapitalize="none" value={value} onChangeText={setValue} hint="Press the label to focus this field." />
-        </Stack>
-        <Stack gap="2xs">
-          <Label disabled>Employee number</Label>
-          <TextField accessibilityLabel="Employee number" value="Assigned after sign-up" editable={false} />
-        </Stack>
-      </Card>
-    );
-  } },
   { id: "link", title: "Link", description: "A text link, alone or inside a sentence, with a style for the current page.", Demo: () => {
     const toast = useToast(), [page, setPage] = useState("Overview");
     return (
@@ -150,32 +93,25 @@ export default [
         <Cluster gap="m">{["Overview", "Pricing", "Changelog"].map((name) => <Link key={name} current={page === name} onPress={() => setPage(name)}>{name}</Link>)}</Cluster>
         <Card>
           <Text>By continuing you agree to the <Link onPress={() => toast.show("Opening the terms")}>terms of service</Link> and the <Link onPress={() => toast.show("Opening the privacy policy")}>privacy policy</Link>.</Text>
-          <Separator />
+          <Divider />
           <Cluster gap="m"><Link href="https://reactnative.dev">Opens a web address</Link><Link tone="bad" onPress={() => toast.show("Account deletion", { tone: "bad" })}>Delete account</Link><Link disabled>Unavailable</Link></Cluster>
         </Card>
       </Stack>
     );
   } },
-  { id: "separator", title: "Separator", description: "A horizontal or vertical line between content.", Demo: () => (
-    <Card>
-      <Stack gap="2xs"><Text weight="semibold">Colibri Kit</Text><Muted>An open-source component library.</Muted></Stack>
-      <Separator />
-      <Cluster gap="s" style={{ height: 22 }}><Text size="sm">Docs</Text><Separator orientation="vertical" /><Text size="sm">Components</Text><Separator orientation="vertical" /><Text size="sm">Source</Text></Cluster>
-    </Card>
-  ) },
   { id: "inset", title: "Inset", description: "Lets media inside a padded card run to the card's edges.", Demo: () => (
     <Stack gap="m">
       <Card>
-        <Inset side="top"><AspectRatio ratio={21 / 9}><Artwork /></AspectRatio></Inset>
+        <Inset side="top"><View style={{ aspectRatio: 21 / 9 }}><Artwork /></View></Inset>
         <Stack gap="2xs"><Text weight="semibold">Glacier pack, 28 L</Text><Muted>The cover runs edge to edge; the text keeps the card padding.</Muted></Stack>
         <Cluster justify="space-between"><Text weight="bold">$149</Text><Button title="Add to bag" size="s" /></Cluster>
       </Card>
       <Card>
         <Text weight="semibold">Team</Text>
         <Inset side="bottom">
-          <Separator decorative />
+          <Divider />
           <Item media={<Avatar name="Maya Okafor" size={36} />} title="Maya Okafor" description="Owner" />
-          <Separator decorative />
+          <Divider />
           <Item media={<Avatar name="Alex Rivera" size={36} />} title="Alex Rivera" description="Editor" />
         </Inset>
       </Card>
@@ -193,21 +129,12 @@ export default [
           <IconButton icon={ICON.plus} label="New note" variant="solid" shape="round" onPress={() => toast.show("New note")} />
           <IconButton icon={ICON.close} label="Remove" variant="danger" shape="round" onPress={() => toast.show("Removed", { tone: "bad" })} />
         </Cluster>
-        <Separator />
+        <Divider />
         <Cluster><IconButton icon={ICON.plus} label="Add, small" size="s" variant="outline" /><IconButton icon={ICON.plus} label="Add, medium" variant="outline" /><IconButton icon={ICON.plus} label="Add, large" size="l" variant="outline" /></Cluster>
         <Muted>Screen readers hear the label: “Undo”, “More actions”, “New note”.</Muted>
       </Card>
     );
   } },
-  { id: "accessible-icon", title: "AccessibleIcon", description: "Gives an icon a spoken name; without one it is treated as decoration.", Demo: () => (
-    <Card>
-      <Cluster gap="s"><AccessibleIcon label="Synced" tone="ok" size={20}>{ICON.check}</AccessibleIcon><Text>All changes saved</Text></Cluster>
-      <Cluster gap="s"><AccessibleIcon label="Warning" tone="warn" size={20}>⚠︎</AccessibleIcon><Text>2 files could not upload</Text></Cluster>
-      <Cluster gap="s"><AccessibleIcon tone="muted" size={20}>{ICON.star}</AccessibleIcon><Text>Favourites</Text></Cluster>
-      <Separator />
-      <Muted>A screen reader says “Synced, All changes saved”. The star has no label, so it is skipped.</Muted>
-    </Card>
-  ) },
   { id: "typography", title: "Typography", description: "Lead paragraphs, quotes, inline code and small print for article content.", Demo: () => (
     <Stack gap="m">
       <Stack gap="xs">
@@ -246,7 +173,7 @@ export default [
           <Toggle label="Underline" disabled textStyle={{ textDecorationLine: "underline" }}>U</Toggle>
           <Toggle variant="outline" pressed={pinned} onChange={setPinned}>{pinned ? "★ Pinned" : "☆ Pin"}</Toggle>
         </Cluster>
-        <Separator />
+        <Divider />
         <Text style={{ fontWeight: bold ? "700" : "400", fontStyle: italic ? "italic" : "normal" }}>The quick brown fox jumps over the lazy dog.</Text>
         <Cluster><Toggle size="s" variant="outline" defaultPressed>Small</Toggle><Toggle variant="outline">Medium</Toggle><Toggle size="l" variant="outline">Large</Toggle></Cluster>
       </Card>
@@ -300,16 +227,6 @@ export default [
       </Stack>
     );
   } },
-  { id: "direction", title: "Direction", description: "Right-to-left layout for one part of the screen; the app-wide direction comes from I18nManager.", Demo: () => {
-    const [dir, setDir] = useState("rtl");
-    return (
-      <Stack gap="m">
-        <ButtonGroup label="Direction" type="single" required block value={dir} onChange={setDir} options={[{ value: "ltr", label: "Left to right" }, { value: "rtl", label: "Right to left" }, { value: "auto", label: "Device" }]} />
-        <DirectionProvider dir={dir}><DirectionSample /></DirectionProvider>
-        <Muted>This device is {I18nManager.isRTL ? "right-to-left" : "left-to-right"}. DirectionProvider mirrors rows and start/end spacing inside it; useDirection supplies the text alignment and the arrow that Yoga does not flip. A whole app switches with I18nManager.forceRTL and a restart.</Muted>
-      </Stack>
-    );
-  } },
   { id: "spinner", title: "Spinner", description: "The platform activity indicator in theme colours, announced while something loads.", Demo: () => {
     const [loading, setLoading] = useState(false), [rows, setRows] = useState(null);
     useEffect(() => {
@@ -320,7 +237,7 @@ export default [
     return (
       <Card>
         <Cluster gap="m"><Spinner accessibilityLabel="Loading" /><Spinner size="large" accessibilityLabel="Loading" /><Spinner tone="ok" accessibilityLabel="Loading" /><Spinner tone="warn" accessibilityLabel="Loading" /><Spinner tone="bad" accessibilityLabel="Loading" /></Cluster>
-        <Separator />
+        <Divider />
         <Cluster><Button title="Saving…" loading /><Button title="Load data" variant="outline" disabled={loading} onPress={() => { setRows(null); setLoading(true); }} testID="load" /></Cluster>
         <Cluster gap="xs" style={{ minHeight: 24 }} accessibilityLiveRegion="polite">
           {loading ? <><Spinner accessibilityLabel="Loading data" /><Muted>Loading data…</Muted></> : <Muted>{rows ? `Loaded ${rows} rows.` : "Nothing loaded yet."}</Muted>}

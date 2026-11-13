@@ -2,7 +2,7 @@
 import { useState } from "react";
 import {
   useToast, Stack, Cluster, Divider, Text, Button, Card, Badge,
-  Input, Field, InputGroup, InputAddon, Textarea, PasswordInput, PinInput, Select, NativeSelect, Combobox,
+  Input, Field, InputGroup, InputAddon, Textarea, PasswordInput, PinInput, Select, Combobox,
   CheckboxGroup, CheckboxCards, RadioCards, ToggleGroup, SegmentedControl,
 } from "@colibri-kit/native";
 
@@ -57,7 +57,7 @@ export default [
           <Input value={username} onChangeText={setUsername} autoCapitalize="none" />
         </Field>
         <Field label="Country" description="Used for tax and delivery estimates.">
-          <NativeSelect value={country} onChange={setCountry} placeholder="Choose a country" options={COUNTRIES[0].options} />
+          <Select value={country} onChange={setCountry} placeholder="Choose a country" options={COUNTRIES[0].options} />
         </Field>
         <Field label="Company" description="Set by your workspace owner." disabled>
           <Input defaultValue="Despani" />
@@ -120,21 +120,6 @@ export default [
           <Select options={["Free", "Pro", "Team"]} placeholder="Choose a plan" />
         </Field>
         <Select options={TOPICS} defaultValue="news" disabled accessibilityLabel="Disabled select" />
-      </Card>
-    );
-  } },
-  { id: "native-select", title: "NativeSelect", description: "The simplest picker: one value from a short, plain list.", Demo: () => {
-    const [city, setCity] = useState("tbilisi");
-    return (
-      <Card gap="m">
-        <Field label="City">
-          <NativeSelect value={city} onChange={setCity} options={CITIES.slice(0, 4)} testID="city" />
-        </Field>
-        <Cluster gap="s">
-          <NativeSelect size="s" defaultValue="25" options={["10", "25", "50", "100"]} accessibilityLabel="Rows per page" style={{ width: 96 }} />
-          <Text size="sm" tone="muted">rows per page</Text>
-        </Cluster>
-        <NativeSelect options={CITIES} placeholder="Unavailable" disabled accessibilityLabel="Disabled picker" />
       </Card>
     );
   } },
