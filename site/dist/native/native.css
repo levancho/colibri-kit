@@ -44,3 +44,41 @@
 .np-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-xs); & .np-search { flex: 1 1 14rem; } & .np-tabs { justify-self: auto; } }
 .np-needs { display: flex; flex-wrap: wrap; align-items: center; gap: .5em; font-size: var(--c-text-xs); color: var(--c-muted); }
 .np-req { font-size: .7rem; font-weight: 600; color: var(--c-accent); }
+
+/* The two sections of Colibri React Native: Documentation and Components */
+.np-sections { position: sticky; inset-block-start: var(--kb-h, 56px); z-index: 20; border-block-end: 1px solid var(--c-line); background: color-mix(in oklch, var(--c-bg) 88%, transparent); backdrop-filter: blur(10px);
+  & > div { display: flex; align-items: center; gap: var(--c-space-xs); min-block-size: 3rem; overflow-x: auto; }
+  & b { margin-inline-end: var(--c-space-s); font-size: var(--c-text-sm); letter-spacing: -.01em; white-space: nowrap; }
+  & a { padding: .4em .9em; border-radius: var(--c-radius-full); color: var(--c-muted); font-size: var(--c-text-sm); font-weight: 600; text-decoration: none; white-space: nowrap; }
+  & a:hover { color: var(--c-fg); background: var(--c-sunken); }
+  & a[aria-current] { color: var(--c-brand-fg); background: var(--c-accent); } }
+.np-side { inset-block-start: calc(var(--kb-h, 56px) + 3rem + var(--c-space-s)); }
+.np-phone, .np-codebox { block-size: min(48rem, calc(100svh - var(--kb-h, 56px) - 3rem - 2 * var(--c-space-s) - 2.9rem)); }
+.np-intro h1 { font-size: var(--c-text-2xl); }
+
+/* Documentation page: contents on the left, the guide and API reference on the right */
+.nd { display: grid; grid-template-columns: 14rem minmax(0, 1fr); gap: var(--c-space-xl); align-items: start; padding-block: var(--c-space-l) var(--c-space-2xl); }
+@media (width < 60rem) { .nd { grid-template-columns: minmax(0, 1fr); } .nd-toc { position: static; max-block-size: none; } }
+.nd-toc { position: sticky; inset-block-start: calc(var(--kb-h, 56px) + 3rem + var(--c-space-m)); display: grid; gap: .1rem; max-block-size: calc(100svh - var(--kb-h, 56px) - 3rem - 2 * var(--c-space-m)); overflow-y: auto; font-size: var(--c-text-sm);
+  & b { padding-block: var(--c-space-xs) .2rem; font-size: var(--c-text-xs); letter-spacing: .06em; text-transform: uppercase; color: var(--c-muted); }
+  & a { padding: .25em .6em; border-radius: var(--c-radius-s); color: var(--c-fg); text-decoration: none; }
+  & a:hover { background: var(--c-sunken); color: var(--c-accent); }
+  & #nd-toc-groups { display: grid; gap: .1rem; } }
+.nd-main { max-inline-size: none; min-inline-size: 0;
+  & section { scroll-margin-block-start: calc(var(--kb-h, 56px) + 3rem + var(--c-space-m)); }
+  & > section { padding-block: 0; }
+  & > section + section { margin-block-start: var(--c-space-xl); }
+  & h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); line-height: 1.05; letter-spacing: -.035em; }
+  & .lede { font-size: var(--c-text-lg); color: var(--c-muted); max-inline-size: 62ch; }
+  & table { inline-size: 100%; font-size: var(--c-text-sm); }
+  & .np-option h3 { display: flex; flex-wrap: wrap; align-items: center; gap: .5em; margin: 0; font-size: var(--c-text-md); } }
+.nd-group { margin-block-start: var(--c-space-l); scroll-margin-block-start: calc(var(--kb-h, 56px) + 3rem + var(--c-space-m)); }
+.nd-item { margin-block-start: var(--c-space-m); padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface); scroll-margin-block-start: calc(var(--kb-h, 56px) + 3rem + var(--c-space-m)); overflow-x: auto;
+  & h4 { display: flex; flex-wrap: wrap; align-items: baseline; gap: .6em; margin: 0; font-size: var(--c-text-md); }
+  & h4 small { font-weight: 400; color: var(--c-muted); }
+  & .np-code { white-space: pre-wrap; overflow-wrap: anywhere; } }
+.nd-demo { margin-inline-start: auto; font-size: var(--c-text-xs); font-weight: 600; }
+.nd-props { margin-block-start: var(--c-space-xs);
+  & td, & th { vertical-align: top; }
+  & td:nth-child(2) code { white-space: normal; overflow-wrap: anywhere; }
+  & small { color: var(--c-bad); } }

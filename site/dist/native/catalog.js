@@ -10,9 +10,9 @@ function render(groups) {
   titles = Object.fromEntries(groups.flatMap((group) => group.demos.map((demo) => [demo.id, demo.title])));
   count.textContent = String(Object.keys(titles).length);
   requirements = Object.fromEntries(groups.flatMap((group) => group.demos.map((demo) => [demo.id, group.requires ?? []])));
-  const light = groups.filter((group) => !group.requires?.length).reduce((sum, group) => sum + group.demos.length, 0);
-  document.getElementById("np-light-count").textContent = `${light} components`;
-  document.getElementById("np-full-count").textContent = `${Object.keys(titles).length - light} components`;
+  const core = groups.filter((group) => !group.requires?.length).reduce((sum, group) => sum + group.demos.length, 0);
+  document.getElementById("np-core-count").textContent = `${core} components`;
+  document.getElementById("np-full-count").textContent = `${Object.keys(titles).length - core} components`;
   list.replaceChildren(...groups.map((group) => {
     const full = Boolean(group.requires?.length), needs = (group.requires ?? []).map((library) => library.name);
     const section = el("section", { className: "np-group" },
@@ -21,8 +21,8 @@ function render(groups) {
       full ? el("p", { className: "np-needs" }, el("span", { className: "badge", textContent: "Full" }), " Needs " + needs.join(" and ") + ".") : "",
       el("div", { className: "np-cards" }, ...group.demos.map((demo) => {
         const card = el("a", { className: "np-card", href: "#" + demo.id }, el("b", { textContent: demo.title }), el("span", { textContent: demo.description }));
-        if (full) card.append(el("small", { className: "np-req", textContent: "Needs " + group.requires.map((library) => library.label).join(" + ") }));
-        card.dataset.id = demo.id; card.dataset.tier = full ? "full" : "light"; card.dataset.text = `${demo.title} ${demo.description} ${demo.id} ${full ? "full " + needs.join(" ") : "light"}`.toLowerCase();
+        if (full) card.append(el("small", { className: "np-req", textContent: "Full · needs " + group.requires.map((library) => library.label).join(" + ") }));
+        card.dataset.id = demo.id; card.dataset.tier = full ? "full" : "core"; card.dataset.text = `${demo.title} ${demo.description} ${demo.id} ${full ? "full " + needs.join(" ") : "core"}`.toLowerCase();
         return card;
       })));
     section.querySelector(".np-needs .badge")?.setAttribute("data-tone", "accent");
@@ -45,7 +45,7 @@ function show() {
 }
 function code() {
   const id = current(), sample = samples?.[id];
-  document.getElementById("np-code-name").textContent = sample ? titles[id] ?? id : samples ? "Pick a component to see its code" : "Loading the code samples…";
+  document.getElementById("np-code-name").textContent = sample ? `${titles[id] ?? id} · ${(requirements[id] ?? []).length ? "Full" : "Core"}` : samples ? "Pick a component to see its code" : "Loading the code samples…";
   // A Full component's sample starts with what to install, so it can be pasted into a fresh project.
   const needs = (requirements[id] ?? []).map((library) => library.name);
   document.getElementById("np-source").textContent = sample ? (needs.length ? `// Full: needs ${needs.join(", ")}\n// npx expo install ${needs.join(" ")}\n\n` : "") + sample : "";

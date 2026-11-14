@@ -22,7 +22,7 @@ found by reading.
 - [ ] **Run the catalog on real iOS and Android devices.** The package is tested through react-native-web only.
       Check first: bottom sheet versus scroll view on Android, swipe rows inside lists, native-driver animations,
       Android elevation, and the default safe-area insets.
-- [x] **Optional libraries.** Done as Light (`@colibri-kit/native`) and Full (`@colibri-kit/native/full`), with separate
+- [x] **Optional libraries.** Done as Core (`@colibri-kit/native`) and Full (`@colibri-kit/native/full`), with separate
       `/gestures`, `/svg` and `/safe-area` entries. See the package README.
 - [ ] **Full on a device.** Highest risk first: `BottomSheet` scroll hand-off with real touch scrolling, gestures
       inside `Modal` on Android, long-press drags against native scroll views, keyboard handling in the sheet.

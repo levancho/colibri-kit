@@ -19,6 +19,8 @@ node tools/build-widgets.mjs >/dev/null
 # The Full entry of @colibri-kit/native is generated from the other entries.
 node tools/native-full.mjs >/dev/null
 node tools/build-native-demo.mjs >/dev/null
+# The API reference on the documentation page, read from the type declarations.
+node tools/native-docs.mjs >/dev/null
 # One code sample per demo, taken from the demo source.
 node tools/native-code.mjs >/dev/null
 # The download must match these templates. Build it rather than publish a stale JAR.

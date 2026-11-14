@@ -3,29 +3,29 @@
 Colibri for React Native and Expo. The Colibri catalog for phones: layout, controls, overlays, forms, phone patterns, AI elements, ready-made screens and dashboard pieces, themed from one hue.
 
 - **One hue, whole palette.** The colours are the same ones Colibri CSS produces for that hue, in light and dark.
-- **Light or Full.** Light has no dependencies beyond `react` and `react-native`. Full adds gestures, SVG charts, icons and safe areas through four optional libraries.
+- **Core or Full.** Core has no dependencies beyond `react` and `react-native`. Full adds gestures, SVG charts, icons and safe areas through four optional libraries.
 - **No build step and no configuration.** Plain JavaScript, with TypeScript declarations included.
 - **The same words as the web kit:** `gap="s"`, `variant="soft"`, `tone="ok"`, `size="l"`.
 - **Accessible by default:** roles, states, labels and 44-point touch targets.
 
 Live demo (the real components, running through react-native-web): https://colibri-kit.io/native/
 
-## Install: Light or Full
+## Install: Core or Full
 
-There are two ways to use the package. They share names and props, so you can start with Light and move to Full later
+There are two ways to use the package. They share names and props, so you can start with Core and move to Full later
 by changing the import path.
 
-| | Light | Full |
+| | Core | Full |
 |---|---|---|
 | Import from | `@colibri-kit/native` | `@colibri-kit/native/full` |
-| Needs | `react`, `react-native` | Light plus `react-native-reanimated`, `react-native-gesture-handler`, `react-native-svg`, `react-native-safe-area-context` |
+| Needs | `react`, `react-native` | Core plus `react-native-reanimated`, `react-native-gesture-handler`, `react-native-svg`, `react-native-safe-area-context` |
 | Works in Expo Go | yes | yes (all four ship with Expo) |
 | drags (sheets, swipe rows, sortable, slider) | tracked on the JavaScript thread | tracked on the UI thread, with swipe-to-dismiss |
 | Charts | bar-based, drawn with views | line, area, bar, pie, donut, sparkline, ring, gauge |
 | Icons | text glyphs | a 66-icon outline set |
 | Notch and home indicator | pass `topInset` / `bottomInset` yourself | read automatically |
 
-**Light**
+**Core**
 
 ```sh
 npm install @colibri-kit/native
@@ -76,7 +76,7 @@ export default function App() {
 In Full, a component that exists in both (for example `BottomSheet`) is the gesture version. The
 [live catalog](https://colibri-kit.io/native/) marks every component that needs a library and names it.
 
-Requires React Native 0.71 or newer (Expo SDK 48 or newer) for Light. Full, and the gestures entry on its own, need
+Requires React Native 0.71 or newer (Expo SDK 48 or newer) for Core. Full, and the gestures entry on its own, need
 Reanimated 4 or newer (which brings `react-native-worklets` and the New Architecture) and Gesture Handler 3 or newer;
 use `npx expo install` so the versions match your Expo SDK. The SVG and safe-area entries work with older versions.
 

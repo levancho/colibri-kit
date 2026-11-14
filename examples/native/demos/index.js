@@ -18,7 +18,7 @@ import gestures from "./gestures.js";
 import svg from "./svg.js";
 import safeArea from "./safe-area.js";
 
-// requires: the optional libraries a group needs. Groups without it are the Light set (no dependencies).
+// requires: the optional libraries a group needs. Groups without it are the Core set (no dependencies).
 const group = (id, title, description, demos, requires = []) => ({ id, title, description, demos, requires });
 export const LIBRARIES = {
   "react-native-reanimated": "Reanimated", "react-native-gesture-handler": "Gesture Handler",
