@@ -151,3 +151,7 @@ html[data-kit-theme]{background:var(--c-bg);color:var(--c-fg);font-family:var(--
   & > .stack { flex: 1 1 22rem; }
   & h2 { font-size: var(--c-text-xl); letter-spacing: -.02em; } }
 .badge-demo { flex: 1 1 14rem; display: grid; justify-items: center; gap: var(--c-space-s); padding: var(--c-space-l) var(--c-space-m); border-radius: var(--c-radius); border: 1px dashed var(--c-line); background: var(--c-sunken); }
+
+.affiliate-footer .elevenlabs-affiliate { display: grid; gap: 6px; font-size: var(--c-text-sm); line-height: 1.5; }
+.affiliate-footer .elevenlabs-affiliate a { color: var(--c-fg); text-underline-offset: 3px; }
+.affiliate-footer .elevenlabs-affiliate small { color: var(--c-muted); font-size: .75rem; }
