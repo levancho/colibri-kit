@@ -1,5 +1,5 @@
 // Colibri UI base primitives.
-import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, roving, owner } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, roving, owner, parseNumber, langOf } from "./util.js";
 
 /* Dismiss / Alert (Metronic Dismiss, shadcn Alert): <div data-ui="dismiss" role="alert|status">… <button data-ui-part="close" aria-label="Close">×</button></div>
    Cancel ui:beforedismiss to veto. data-remove="false" keeps node (hidden) instead of removing. */
@@ -21,14 +21,32 @@ export function createDismiss(root) {
    <ol data-ui="toaster" data-position="bottom-right" data-max="3" aria-label="Notifications"></ol>
    toast({title, description, variant:"default|success|error|warning|info|loading", duration:4000, action:{label,onClick}, id})
    → returns id; toast.dismiss(id); toast.update(id, opts); toast.promise(p, {loading,success,error}).
-   Each toast: <li data-ui-part="toast" data-variant data-state="open|closing"> title/description/action/close parts. Pauses on hover/focus. */
+   Each toast: <li data-ui-part="toast" data-variant data-state="open|closing"> title/description/action/close parts. Pauses on hover/focus.
+   Landmark: the list stays a list; the named role="region" is a wrapper. If the toaster's parent is already a
+   [role=region] it is used; otherwise the controller wraps the list in <section data-ui-part="region"> (and unwraps it
+   on destroy). Frameworks that own the DOM (React) should render that wrapper themselves. Each new toast (and each
+   update that changes its text) is announced once, through a polite or, for error/warning, an assertive live region. */
 let defaultToaster = null;
 export function createToaster(root) {
   return once(root, "__uiToaster", () => {
     const doc = root.ownerDocument, max = Number(root.dataset.max ?? 3); defaultToaster = root;
-    root.setAttribute("role", "region"); root.setAttribute("aria-label", root.getAttribute("aria-label") || "Notifications"); root.tabIndex = -1;
+    const label = root.getAttribute("aria-label") || "Notifications";
+    if (root.getAttribute("role") === "region") root.removeAttribute("role"); // markup from older versions
+    let region = root.parentElement?.getAttribute("role") === "region" ? root.parentElement : null, wrapped = false;
+    if (!region) {
+      region = doc.createElement("section"); region.dataset.uiPart = "region"; region.setAttribute("role", "region");
+      root.before(region); region.append(root); wrapped = true;
+    }
+    if (!region.hasAttribute("aria-label") && !region.hasAttribute("aria-labelledby")) region.setAttribute("aria-label", label);
+    if (!region.hasAttribute("tabindex")) region.tabIndex = -1;
     const live = { polite: mk("polite"), assertive: mk("assertive") };
-    function mk(p) { const r = doc.createElement("div"); r.setAttribute("aria-live", p); r.setAttribute("aria-atomic", "true"); r.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"; root.after(r); return r; }
+    function mk(p) { const r = doc.createElement("div"); r.setAttribute("aria-live", p); r.setAttribute("aria-atomic", "true"); r.dataset.uiPart = "announcer"; r.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"; root.after(r); return r; }
+    const text = (o) => `${o.title || ""} ${o.description || ""}`.trim();
+    function announce(o) {
+      const loud = ["error", "warning"].includes(o.variant);
+      (loud ? live.polite : live.assertive).textContent = "";
+      (loud ? live.assertive : live.polite).textContent = text(o);
+    }
     const map = new Map();
     function dismiss(id) {
       const t = map.get(id); if (!t) return; clearTimeout(t.timer); map.delete(id);
@@ -43,14 +61,14 @@ export function createToaster(root) {
       el.querySelector('[data-ui-part="title"]').textContent = o.title || "";
       if (o.description) el.querySelector('[data-ui-part="description"]').textContent = o.description;
       if (o.action) el.querySelector('[data-ui-part="action"]').textContent = o.action.label;
-      (["error", "warning"].includes(o.variant) ? live.assertive : live.polite).textContent = `${o.title || ""} ${o.description || ""}`;
     }
     function show(o) {
       o = { duration: 4000, ...(typeof o === "string" ? { title: o } : o) };
       const id = o.id ?? uid("toast"); if (map.has(id)) return update(id, o);
       const el = doc.createElement("li"); el.dataset.uiPart = "toast"; el.dataset.id = id;
-      const t = { id, el, o }; map.set(id, t); fill(t);
-      el.addEventListener("click", (e) => { if (e.target.closest('[data-ui-part="close"]')) dismiss(id); else if (e.target.closest('[data-ui-part="action"]')) { o.action.onClick?.(); dismiss(id); } });
+      const t = { id, el, o }; map.set(id, t); fill(t); announce(o);
+      // read the toast's current options: update() may have replaced the action since it was shown
+      el.addEventListener("click", (e) => { if (e.target.closest('[data-ui-part="close"]')) dismiss(id); else if (e.target.closest('[data-ui-part="action"]')) { t.o.action?.onClick?.(); dismiss(id); } });
       const pause = () => { clearTimeout(t.timer); if (t.start) t.left = Math.max(0, (t.left ?? t.o.duration) - (Date.now() - t.start)); }, resume = () => arm(t);
       el.addEventListener("pointerenter", pause); el.addEventListener("pointerleave", resume); el.addEventListener("focusin", pause); el.addEventListener("focusout", resume);
       const pos = root.dataset.position || "bottom-right"; pos.startsWith("top") ? root.prepend(el) : root.append(el);
@@ -58,16 +76,29 @@ export function createToaster(root) {
       const extra = [...map.values()].slice(0, Math.max(0, map.size - max)); extra.forEach((x) => dismiss(x.id));
       emit(root, "toast-open", { id }); return id;
     }
-    function update(id, o) { const t = map.get(id); if (!t) return show({ ...o, id }); t.o = { ...t.o, ...o }; t.left = undefined; fill(t); arm(t); return id; }
+    function update(id, o) {
+      const t = map.get(id); if (!t) return show({ ...o, id });
+      const before = text(t.o) + t.o.variant; t.o = { ...t.o, ...o }; t.left = undefined; fill(t);
+      if (text(t.o) + t.o.variant !== before) announce(t.o);
+      arm(t); return id;
+    }
     const api = Object.assign(show, { dismiss, update, clear: () => [...map.keys()].forEach(dismiss),
       promise(p, m) { const id = show({ title: m.loading, variant: "loading", duration: Infinity }); p.then((v) => update(id, { title: typeof m.success === "function" ? m.success(v) : m.success, variant: "success", duration: 4000 }), (e) => update(id, { title: typeof m.error === "function" ? m.error(e) : m.error, variant: "error", duration: 6000 })); return p; },
-      destroy() { api.clear(); live.polite.remove(); live.assertive.remove(); } });
+      destroy() {
+        [...map.values()].forEach((t) => { clearTimeout(t.timer); t.el.remove(); }); map.clear();
+        live.polite.remove(); live.assertive.remove();
+        if (wrapped && region.isConnected) { region.before(root); region.remove(); }
+        if (defaultToaster === root) defaultToaster = null;
+        delete root.toast;
+      } });
     root.toast = api;
     return api;
   });
 }
-/** global helper: toast("Saved") — uses first [data-ui=toaster] (created on demand). */
+/** global helper: toast("Saved") — uses the first connected [data-ui=toaster] (created on demand). A toaster that
+    was removed from the page is never reused: toasts rendered there would be invisible. */
 function toaster() {
+  if (defaultToaster && !defaultToaster.isConnected) defaultToaster = null;
   let r = defaultToaster || document.querySelector('[data-ui="toaster"]');
   if (!r) { r = document.createElement("ol"); r.dataset.ui = "toaster"; document.body.append(r); }
   return createToaster(r);
@@ -144,11 +175,13 @@ export function createAvatar(root) {
    <button data-ui="theme-switch" [data-target="html"] [data-storage-key]>  cycles; or a select/radio-group with data-ui-theme-value. */
 export function createThemeSwitch(root) {
   return once(root, "__uiThemeSwitch", () => {
-    const b = bag(), doc = root.ownerDocument, key = root.dataset.storageKey || "colibri.theme", target = doc.querySelector(root.dataset.target || "html");
+    const b = bag(), doc = root.ownerDocument, key = root.dataset.storageKey || "colibri.theme", target = (() => { try { return doc.querySelector(root.dataset.target || "html"); } catch { return null; } })() || doc.documentElement;
     const mq = doc.defaultView.matchMedia?.("(prefers-color-scheme: dark)");
-    let mode = (() => { try { return localStorage.getItem(key) || "system"; } catch { return "system"; } })();
+    // storage is outside our control (other scripts, older versions, the user): only a known mode is used
+    const MODES = ["light", "dark", "system"], valid = (m) => MODES.includes(m);
+    let mode = (() => { try { const m = localStorage.getItem(key); return valid(m) ? m : "system"; } catch { return "system"; } })();
     const apply = () => { const eff = mode === "system" ? (mq?.matches ? "dark" : "light") : mode; target.dataset.theme = eff; target.style.colorScheme = eff; root.dataset.mode = mode; root.setAttribute("aria-label", root.getAttribute("aria-label") || "Toggle theme"); if (root.tagName === "BUTTON") root.setAttribute("aria-pressed", String(eff === "dark")); emit(root, "change", { mode, theme: eff }); };
-    const set = (m) => { mode = m; try { localStorage.setItem(key, m); } catch {} apply(); };
+    const set = (m) => { if (!valid(m)) return; mode = m; try { localStorage.setItem(key, m); } catch {} apply(); };
     if (root.tagName === "BUTTON") { btn(root); b.on(root, "click", () => set({ light: "dark", dark: "system", system: "light" }[mode])); }
     else b.on(root, "change", (e) => { const v = e.target.value || e.detail?.value; if (v) set(v); });
     mq && b.on(mq, "change", () => mode === "system" && apply()); apply();
@@ -170,7 +203,7 @@ export function createDataTable(root, o = {}) {
     const all = () => [...tbody.rows];
     const ths = table.tHead?.rows[0] ? [...table.tHead.rows[0].cells] : [];
     ths.forEach((th, i) => { if (th.dataset.sort == null) return; th.setAttribute("aria-sort", "none"); th.tabIndex = 0; th.dataset.uiPart = "sort-header"; th.dataset.col = i; });
-    const cellVal = (tr, i, type) => { const c = tr.cells[i]; const v = c?.dataset.value ?? c?.textContent.trim() ?? ""; return type === "number" ? parseFloat(v.replace(/[^\d.-]/g, "")) || 0 : type === "date" ? Date.parse(v) || 0 : v.toLocaleLowerCase(); };
+    const cellVal = (tr, i, type) => { const c = tr.cells[i]; const v = c?.dataset.value ?? c?.textContent.trim() ?? ""; return type === "number" ? parseNumber(v, c?.dataset.value != null ? "en" : langOf(c)) || 0 : type === "date" ? Date.parse(v) || 0 : v.toLocaleLowerCase(); };
     const selectAll = root.querySelector('[data-ui-part="select-all"] input'), info = part(root, "info"), pager = root.querySelector('[data-ui="pagination"]');
     const selected = () => all().filter((r) => r.querySelector('[data-ui-part="row-select"]')?.checked);
     function syncSelect() {
@@ -178,6 +211,20 @@ export function createDataTable(root, o = {}) {
       const vis = all().filter((r) => !r.hidden), on = vis.filter((r) => r.querySelector('[data-ui-part="row-select"]')?.checked).length;
       if (selectAll) { selectAll.checked = vis.length > 0 && on === vis.length; selectAll.indeterminate = on > 0 && on < vis.length; }
       root.dataset.selected = selected().length; emit(root, "select", { ids: selected().map((r) => r.dataset.id) });
+    }
+    // The table owns page, filter and sort; the pager only mirrors them. setTotal() alone kept the pager's
+    // own page (still 3 after a search had reset the table to page 1), so the two drifted apart.
+    let syncing = false;
+    function syncPager(pages) {
+      if (!pager) return;
+      const p = pager.__uiPagination;
+      if (!p || p.page === undefined) { pager.dataset.total = pages; pager.dataset.page = page; return; }
+      syncing = true;
+      try {
+        if (p.page > page) p.setTotal(page); // clamps the pager down to the table's page without an event
+        p.setTotal(pages);
+        if (p.page !== page) { const f = doc.activeElement; p.page = page; if (f && f !== doc.activeElement && f.isConnected) f.focus?.(); }
+      } finally { syncing = false; }
     }
     function apply() {
       if (remote) { emit(root, "query", { sort, page, search: q, pageSize: size }); return; }
@@ -189,7 +236,7 @@ export function createDataTable(root, o = {}) {
       ordered.forEach((r, i) => (r.hidden = size ? Math.floor(i / size) + 1 !== page : false));
       if (info) info.textContent = match.length ? `${size ? (page - 1) * size + 1 : 1}–${size ? Math.min(page * size, match.length) : match.length} / ${match.length}` : (root.dataset.emptyText || "0");
       const empty = part(root, "empty"); if (empty) empty.hidden = match.length > 0;
-      if (pager) { const p = pager.__uiPagination; if (p) { p.setTotal(pages); } else { pager.dataset.total = pages; pager.dataset.page = page; } }
+      syncPager(pages);
       root.dataset.count = match.length; syncSelect();
     }
     const toggleSort = (th, multi) => {
@@ -205,7 +252,7 @@ export function createDataTable(root, o = {}) {
     b.on(tbody, "change", (e) => { if (e.target.closest('[data-ui-part="row-select"]')) syncSelect(); });
     const search = root.dataset.search ? doc.querySelector(root.dataset.search) : part(root, "search");
     search && b.on(search, "input", () => { q = search.value; page = 1; apply(); });
-    pager && b.on(pager, "ui:change", (e) => { page = e.detail.page; apply(); });
+    pager && b.on(pager, "ui:change", (e) => { if (syncing || e.target !== pager || !Number.isFinite(e.detail?.page)) return; page = e.detail.page; apply(); });
     apply();
     return { get selected() { return selected().map((r) => r.dataset.id); }, filter(fn) { pred = fn; page = 1; apply(); }, setPageSize(n) { size = n; page = 1; apply(); },
       setColumnVisible(i, on) { table.querySelectorAll("tr").forEach((tr) => { if (tr.cells[i]) tr.cells[i].hidden = !on; }); },

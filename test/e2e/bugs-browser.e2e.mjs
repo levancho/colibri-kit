@@ -26,7 +26,7 @@ let n = 0;
 /** Serve `body` with `script` (a module importing from /ui/src/core/) and return its URL. */
 function page(body, script = "", { head = "", headers } = {}) {
   const p = `/__bugs/${++n}.html`;
-  fixtures.set(p, { headers, html: `<!doctype html><html lang="en"><head><meta charset="utf-8">${head}<link rel="stylesheet" href="/ui/themes/colibri.css"></head><body>${body}<script type="module">${script}\nwindow.__ready = true;</script></body></html>` });
+  fixtures.set(p, { headers, html: `<!doctype html><html lang="en"><head><meta charset="utf-8">${head}<link rel="stylesheet" href="/ui/themes/colibri.css"></head><body>${body}<script type="module" nonce="t3st">${script}\nwindow.__ready = true;</script></body></html>` });
   return origin + p;
 }
 const chrome = process.env.CHROME || ["/usr/bin/google-chrome", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"].find(fs.existsSync);
@@ -114,6 +114,42 @@ check("sortable: buttons and checkboxes inside items can be clicked; drag still 
   await p.mouse.move(a.x, end);
   await p.mouse.up();
   assert.deepEqual(await p.evaluate(() => window.api.order), ["b", "c", "a"]);
+  await p.close();
+});
+
+/* 11. CSP: motion.register() works under a strict Content-Security-Policy (no 'unsafe-inline' styles). */
+const strict = { "Content-Security-Policy": "default-src 'self'; script-src 'self' 'nonce-t3st'; style-src 'self'; object-src 'none'; base-uri 'none'" };
+const cspPage = (setup = "", policy = strict) => page(`<div id="box" data-ui-motion="swing">Box</div><div id="exit" data-ui-motion="swing">Exit</div>`,
+  `${setup}
+   window.violations = []; document.addEventListener("securitypolicyviolation", (e) => window.violations.push(e.violatedDirective + " " + e.blockedURI));
+   const { register, initMotion } = await import("/ui/src/core/motion.js");
+   register("swing", { in: [{ transform: "rotate(-8deg)", opacity: 0 }, {}], out: [{}, { opacity: 0, transform: "rotate(8deg)" }] }, document);
+   initMotion();`,
+  { head: '<meta property="csp-nonce" nonce="t3st"><link rel="stylesheet" href="/ui/themes/motion.css">', headers: policy });
+async function motionWorks(p) {
+  const vars = await p.$eval("#box", (el) => [getComputedStyle(el).getPropertyValue("--ui-motion-in").trim(), getComputedStyle(el).getPropertyValue("--ui-motion-out").trim()]);
+  assert.deepEqual(vars, ["ui-swing-in", "ui-swing-out"], "registered preset styles were blocked");
+  await p.$eval("#exit", (el) => { el.hidden = true; });
+  const names = await p.evaluate(() => [...document.querySelectorAll("[data-motion-ghost]")].flatMap((g) => g.getAnimations().map((a) => a.animationName)));
+  assert.ok(names.includes("ui-swing-out"), `exit animation did not run: ${JSON.stringify(names)}`);
+  assert.deepEqual(await p.evaluate(() => window.violations), [], "CSP violations");
+}
+check("csp: motion.register() works under a strict policy (constructed stylesheet)", async () => {
+  const p = await open(cspPage());
+  await p.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
+  await p.reload(); await p.waitForFunction(() => window.__ready);
+  await motionWorks(p);
+  assert.equal(await p.evaluate(() => document.querySelectorAll("style").length), 0, "a <style> element was injected");
+  await p.close();
+});
+check("csp: without constructable stylesheets the fallback <style> carries the page nonce", async () => {
+  // the fallback needs the nonce in style-src too (docs/csp.md); the first check proves adopted sheets need none
+  const p = await open(cspPage(`delete Document.prototype.adoptedStyleSheets;`, { "Content-Security-Policy": strict["Content-Security-Policy"].replace("style-src 'self'", "style-src 'self' 'nonce-t3st'") }));
+  assert.equal(await p.evaluate(() => "adoptedStyleSheets" in document), false);
+  await p.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
+  await p.reload(); await p.waitForFunction(() => window.__ready);
+  await motionWorks(p);
+  assert.equal(await p.evaluate(() => document.getElementById("ui-motion-registry")?.nonce), "t3st");
   await p.close();
 });
 
