@@ -4,6 +4,8 @@
 import { useEffect, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { ColibriProvider, ToastProvider, useTheme, Screen, Stack, Cluster, Divider, Text, Heading, Card, Badge, Tabs, ListItem, Button } from "@colibri-kit/native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GROUPS, DEMOS } from "./demos/index.js";
 
 const HUES = [255, 285, 330, 20, 75, 150, 190];
@@ -83,10 +85,13 @@ export default function App() {
   const open = (id) => { if (web) globalThis.location.hash = id; else setRoute(id); };
   const demo = DEMOS[route];
   return (
+    // The two wrappers are only needed for the optional entries (gestures, safe areas).
+    <GestureHandlerRootView style={{ flex: 1 }}><SafeAreaProvider>
     <ColibriProvider hue={hue} scheme={scheme} radius={radius}>
       <ToastProvider>
         {demo ? <DemoScreen key={demo.id} demo={demo} back={() => open("")} /> : <Home open={open} look={{ hue, setHue, scheme, setScheme, radius, setRadius }} />}
       </ToastProvider>
     </ColibriProvider>
+    </SafeAreaProvider></GestureHandlerRootView>
   );
 }

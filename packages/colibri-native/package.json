@@ -1,7 +1,7 @@
 {
   "name": "@colibri-kit/native",
   "version": "0.1.0",
-  "description": "Colibri for React Native and Expo: themed layout primitives and controls from one hue. No dependencies, no build step.",
+  "description": "Colibri for React Native and Expo: themed components from one hue. No required dependencies; optional entries for gestures, SVG charts and icons, and safe areas.",
   "homepage": "https://colibri-kit.io/native/",
   "repository": {
     "type": "git",
@@ -34,6 +34,18 @@
       "types": "./index.d.ts",
       "default": "./src/index.js"
     },
+    "./gestures": {
+      "types": "./types/gestures.d.ts",
+      "default": "./src/gestures/index.js"
+    },
+    "./svg": {
+      "types": "./types/svg.d.ts",
+      "default": "./src/svg/index.js"
+    },
+    "./safe-area": {
+      "types": "./types/safe-area.d.ts",
+      "default": "./src/safe-area/index.js"
+    },
     "./theme": "./src/theme.js",
     "./color": "./src/color.js",
     "./package.json": "./package.json"
@@ -48,7 +60,25 @@
   ],
   "peerDependencies": {
     "react": ">=18",
-    "react-native": ">=0.71"
+    "react-native": ">=0.71",
+    "react-native-gesture-handler": ">=2.14",
+    "react-native-reanimated": ">=3.6",
+    "react-native-safe-area-context": ">=4",
+    "react-native-svg": ">=13"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-reanimated": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    }
+  }
 }
