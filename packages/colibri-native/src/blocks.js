@@ -345,7 +345,7 @@ function SignupFlow({ layout, title, subtitle, logo, cover, loading = false, err
     h(AuthHeader, { title: title ?? layout.title, subtitle: subtitle ?? layout.subtitle, align }), h(Problem, { message: problem }),
     before ? socials : null, before && hasSocials ? h(OrDivider, { label: "Or continue with" }) : null,
     h(Stack, { gap: "s" },
-      h(AuthField, { label: "Full name", placeholder: "Levan Dvalishvili", ...form.bind("name"), editable: !busy, autoCapitalize: "words", autoComplete: "name", textContentType: "name", ...next("email") }),
+      h(AuthField, { label: "Full name", placeholder: "Jordan Lee", ...form.bind("name"), editable: !busy, autoCapitalize: "words", autoComplete: "name", textContentType: "name", ...next("email") }),
       h(AuthField, { ...EMAIL_PROPS, ...form.bind("email"), editable: !busy, ...next("password") }),
       h(AuthField, { label: "Password", secure: true, ...form.bind("password"), editable: !busy, hint: `Must be at least ${minPasswordLength} characters long.`, autoCapitalize: "none", autoCorrect: false, autoComplete: "new-password", textContentType: "newPassword", ...next("confirm") }),
       h(AuthField, { label: "Confirm password", secure: true, ...form.bind("confirm"), editable: !busy, autoCapitalize: "none", autoCorrect: false, autoComplete: "new-password", textContentType: "newPassword", returnKeyType: "go", onSubmitEditing: submit }),

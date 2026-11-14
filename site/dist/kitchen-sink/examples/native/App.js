@@ -1,6 +1,7 @@
 // Colibri for React Native: the component catalog.
 // Runs in Expo (see README.md) and, through react-native-web, on https://colibri-kit.io/native/
-// Home lists every demo by group; a demo screen shows one component in use.
+// Home lists every demo by group; a demo screen shows one component in use. A demo entry is
+// { id, title, description, Demo, fullscreen? }.
 import { useEffect, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { ColibriProvider, ToastProvider, useTheme, Screen, Stack, Cluster, Divider, Text, Heading, Card, Badge, Tabs, ListItem, Button } from "@colibri-kit/native";
@@ -63,10 +64,14 @@ function DemoScreen({ demo, back }) {
         <Text weight="semibold" numberOfLines={1} style={{ flex: 1 }}>{demo.title}</Text>
         <Badge>{demo.group}</Badge>
       </Cluster>
-      <Screen scroll gap="m">
-        <Text tone="muted">{demo.description}</Text>
-        <Demo />
-      </Screen>
+      {/* A demo marked fullscreen is a whole screen (an app frame, a navigation layout): it gets the rest of the phone
+          to itself, with no page padding or outer scrolling, as it would in a real app. */}
+      {demo.fullscreen ? <View style={{ flex: 1 }}><Demo /></View> : (
+        <Screen scroll gap="m">
+          <Text tone="muted">{demo.description}</Text>
+          <Demo />
+        </Screen>
+      )}
     </View>
   );
 }

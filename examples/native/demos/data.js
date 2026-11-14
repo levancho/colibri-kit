@@ -16,12 +16,12 @@ const INVOICES = [
 
 const ARTICLES = [
   { id: 1, title: "Tbilisi in three days", author: "Nino Beridze", views: 12480, date: "2026-10-01" },
-  { id: 2, title: "Batumi by the sea", author: "Levan Kapanadze", views: 9815, date: "2026-09-15" },
+  { id: 2, title: "Batumi by the sea", author: "Jordan Kapanadze", views: 9815, date: "2026-09-15" },
   { id: 3, title: "Kutaisi food guide", author: "Maya Okafor", views: 30210, date: "2026-10-20" },
   { id: 4, title: "A weekend in Gori", author: "Sam Chen", views: 512, date: "2025-12-31" },
   { id: 5, title: "Zugdidi markets", author: "Nino Beridze", views: 4203, date: "2026-01-11" },
   { id: 6, title: "Hiking in Kazbegi", author: "Alex Rivera", views: 18770, date: "2026-06-04" },
-  { id: 7, title: "Wine roads of Kakheti", author: "Levan Kapanadze", views: 22145, date: "2026-08-22" },
+  { id: 7, title: "Wine roads of Kakheti", author: "Jordan Kapanadze", views: 22145, date: "2026-08-22" },
   { id: 8, title: "Svaneti towers", author: "Maya Okafor", views: 7390, date: "2026-03-09" },
   { id: 9, title: "Borjomi spa towns", author: "Alex Rivera", views: 2644, date: "2026-02-17" },
   { id: 10, title: "Mtskheta day trip", author: "Sam Chen", views: 6021, date: "2026-05-28" },
@@ -119,7 +119,7 @@ export default [
         <DataList items={[
           { label: "Status", value: <Badge tone="ok">Active</Badge> },
           { label: "Email", value: "nino@example.ge" },
-          { label: "Company", value: "Despani" },
+          { label: "Company", value: "Northstar" },
           { label: "Plan", value: "Team — $49 per month" },
           { label: "Next invoice", value: "1 December 2026" },
         ]} />

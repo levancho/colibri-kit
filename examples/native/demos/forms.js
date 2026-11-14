@@ -35,10 +35,10 @@ export default [
     );
   } },
   { id: "input-group", title: "InputGroup", description: "An input with fixed text or a button attached to its edges.", Demo: () => {
-    const toast = useToast(), [site, setSite] = useState("despani"), [price, setPrice] = useState("49.00");
+    const toast = useToast(), [site, setSite] = useState("northstar"), [price, setPrice] = useState("49.00");
     return (
       <Card>
-        <InputGroup prefix="https://" suffix=".ge" value={site} onChangeText={setSite} autoCapitalize="none" accessibilityLabel="Site address" />
+        <InputGroup prefix="https://" suffix=".com" value={site} onChangeText={setSite} autoCapitalize="none" accessibilityLabel="Site address" />
         <InputGroup prefix="$" suffix="per month" value={price} onChangeText={setPrice} keyboardType="decimal-pad" accessibilityLabel="Price per month" />
         <InputGroup value={`colibri-kit.io/invite/${site || "team"}`} readOnly accessibilityLabel="Invite link"
           suffix={<InputAddon side="end" onPress={() => toast.show("Link copied", { tone: "ok" })}>Copy</InputAddon>} />
@@ -60,7 +60,7 @@ export default [
           <Select value={country} onChange={setCountry} placeholder="Choose a country" options={COUNTRIES[0].options} />
         </Field>
         <Field label="Company" description="Set by your workspace owner." disabled>
-          <Input defaultValue="Despani" />
+          <Input defaultValue="Northstar" />
         </Field>
       </Card>
     );
