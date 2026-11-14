@@ -1,6 +1,8 @@
 // Declarations for src/applications.js: the application (dashboard) components.
 // Each takes { model, onAction, onSubmit } like its web counterpart. Model field names are the web ones; fields
 // marked "native extra" are optional additions a phone layout uses.
+// ApplicationShell and ApplicationConversation are whole screens and fill their parent (flex: 1);
+// ApplicationTable and ApplicationBoard become whole screens with fill. The rest are pieces of a scrolling page.
 import type { ComponentType, ReactNode } from "react";
 import type { ImageSourcePropType, StyleProp, ViewStyle } from "react-native";
 
@@ -8,7 +10,7 @@ type AppTone = "accent" | "ok" | "warn" | "bad" | "success" | "warning" | "dange
 
 /** What onAction receives. The web contract's element and originalEvent do not exist in React Native. */
 export interface ApplicationAction<Value = unknown> {
-  /** For example "navigate", "view-record", "edit-deal", "move-deal", "add-product", "open-link". */
+  /** For example "navigate", "view-record", "edit-deal", "move-deal", "select-stage", "close-ticket", "add-product", "open-link". */
   action: string;
   /** The id of the page, record, deal, product … the action is about. */
   id?: string;
@@ -27,17 +29,25 @@ export type ApplicationStatusTones = Record<string, AppTone>;
 interface ApplicationBaseProps<Model> { model: Model; onAction?: ApplicationActionHandler; style?: StyleProp<ViewStyle> }
 
 // ---- application-shell
-export interface ApplicationShellPage { id: string; title: string; description?: string; /** native extra: a text glyph; default is the first letter */ icon?: string; /** native extra */ badge?: string | number }
+export interface ApplicationShellPage { id: string; title: string; /** native extra: a shorter name for the tab */ label?: string; description?: string; /** native extra: a text glyph; default is the first letter */ icon?: string; /** native extra */ badge?: string | number }
 export interface ApplicationShellModel { brand: string; title?: string; description?: string; pages: ApplicationShellPage[]; /** native extra: a name for the portrait in the top bar */ user?: string }
 export interface ApplicationShellProps extends ApplicationBaseProps<ApplicationShellModel> {
   /** The current page id (controlled). Without it the shell keeps its own, starting at defaultPage. */
   page?: string; defaultPage?: string; onPageChange?: (id: string) => void;
-  /** "auto" (default): bottom tabs below 768pt, side rail from there. With more than five pages the fifth tab is "More" and opens a sheet. */
+  /**
+   * "auto" (default): bottom tabs below 768pt, side rail from there. With more than five pages, or labels too long
+   * to fit side by side, the last tab is "More" and opens a sheet with the rest.
+   */
   layout?: "auto" | "tabs" | "rail";
+  /** The safe-area insets of the app: top pads the top bar below the status bar, bottom pads the tab bar above the home indicator. */
+  insets?: { top?: number; bottom?: number };
+  /** Default true: the page scrolls between the bars. false hands that area to a page that scrolls by itself (a list, a thread). */
+  scroll?: boolean;
   /** Replaces the trailing end of the top bar. */
   actions?: ReactNode;
   children?: ReactNode | ((page: string | undefined) => ReactNode);
 }
+/** A whole screen: it fills its parent (flex: 1). The top bar and the tab bar stay put; only the page scrolls. */
 export const ApplicationShell: ComponentType<ApplicationShellProps>;
 
 // ---- application-metrics
@@ -67,13 +77,24 @@ export interface ApplicationChartProps extends Partial<ApplicationChartModel> {
   /** Height of the plot area. Default 168. */
   height?: number; style?: StyleProp<ViewStyle>;
 }
-/** Bars only: React Native core has no SVG, so line, area and pie charts are not drawn. onAction: "open-link" with id = href. */
+/**
+ * Bars only: React Native core has no SVG, so line, area and pie charts are not drawn. Touch or drag across the
+ * plot to read a point. onAction: "open-link" with id = href.
+ */
 export const ApplicationChart: ComponentType<ApplicationChartProps>;
 
 // ---- application-table
 export interface ApplicationTableRow { id: string; cells: string[] }
 export interface ApplicationTableModel { title?: string; description?: string; columns: string[]; rows: ApplicationTableRow[]; /** native extra: column name or index shown as badges and filter chips. Default: the column called "Status". */ statusColumn?: string | number; tones?: ApplicationStatusTones }
-export interface ApplicationTableProps extends ApplicationBaseProps<ApplicationTableModel> { searchable?: boolean; sortable?: boolean; /** "auto" (default): rows below 768pt, columns from there. */ layout?: "auto" | "rows" | "columns"; /** Records shown before "Show more". Default 25. */ pageSize?: number }
+export interface ApplicationTableProps extends ApplicationBaseProps<ApplicationTableModel> {
+  searchable?: boolean; sortable?: boolean;
+  /** "auto" (default): rows below 768pt, columns from there. */
+  layout?: "auto" | "rows" | "columns";
+  /** Records shown before "Show more" when it is a card in a scrolling page. Default 25. Not used with fill. */
+  pageSize?: number;
+  /** The whole screen: fills its parent (flex: 1), heading, search and chips stay put, the records scroll in a virtualised list. */
+  fill?: boolean;
+}
 /** onAction: "view-record". */
 export const ApplicationTable: ComponentType<ApplicationTableProps>;
 
@@ -81,19 +102,26 @@ export const ApplicationTable: ComponentType<ApplicationTableProps>;
 export interface ApplicationDeal { id: string; company: string; value: string; owner: string; /** native extra: the next step */ next?: string }
 export interface ApplicationLane { id: string; title: string; deals: ApplicationDeal[] }
 export interface ApplicationBoardModel { title?: string; description?: string; lanes: ApplicationLane[] }
-/** onAction: "edit-deal" when a card is pressed, "move-deal" with value = the new lane id. */
-export const ApplicationBoard: ComponentType<ApplicationBaseProps<ApplicationBoardModel>>;
+export interface ApplicationBoardProps extends ApplicationBaseProps<ApplicationBoardModel> {
+  /** The whole screen: fills its parent (flex: 1), heading and stage tabs stay put, the cards scroll. */
+  fill?: boolean;
+}
+/**
+ * One stage at a time: stage tabs with counts above one full-width column of cards (lanes side by side from 768pt).
+ * onAction: "select-stage" with the lane id, "edit-deal" when a card is pressed, "move-deal" with value = the new lane id.
+ */
+export const ApplicationBoard: ComponentType<ApplicationBoardProps>;
 
 // ---- application-projects
 export interface ApplicationProject { id: string; name: string; description?: string; /** 0 to 100 */ progress: number; /** Web image URL; not loaded here. */ image?: string; /** A local image to show instead of the placeholder. */ source?: ImageSourcePropType; status?: string; members?: string[]; tone?: AppTone }
 export interface ApplicationProjectsModel { title?: string; description?: string; projects: ApplicationProject[]; tones?: ApplicationStatusTones }
-/** onAction: "view-project". */
+/** A compact list, one pressable row per project. onAction: "view-project". */
 export const ApplicationProjects: ComponentType<ApplicationBaseProps<ApplicationProjectsModel>>;
 
 // ---- application-planner
 export interface ApplicationEvent { id: string; /** ISO date and time; events are ordered by it */ datetime?: string; time: string; title: string; location?: string; /** native extra: id of the day it belongs to */ day?: string; tag?: string; tone?: AppTone }
 export interface ApplicationPlannerDay { id: string; /** "Mon" */ label: string; /** "2" */ day: string }
-export interface ApplicationPlannerModel { title?: string; description?: string; events: ApplicationEvent[]; /** native extra: a strip of days above the agenda */ days?: ApplicationPlannerDay[]; /** The day selected at first. */ day?: string }
+export interface ApplicationPlannerModel { title?: string; description?: string; events: ApplicationEvent[]; /** native extra: a strip of days above the agenda; up to seven share the width, more scroll sideways */ days?: ApplicationPlannerDay[]; /** The day selected at first. */ day?: string }
 /** onAction: "view-event", "select-day". */
 export const ApplicationPlanner: ComponentType<ApplicationBaseProps<ApplicationPlannerModel>>;
 
@@ -123,9 +151,19 @@ export const ApplicationReceipt: ComponentType<ApplicationBaseProps<ApplicationR
 // ---- application-conversation
 export interface ApplicationMessage { author: string; text: string; time?: string; /** Sent by the person using the app: shown on the right. */ own?: boolean }
 export interface ApplicationTicket { id: string; customer: string; title: string; status: string; message?: string; /** native extra: the whole thread; default is the one message */ messages?: ApplicationMessage[]; face?: string; image?: string; source?: ImageSourcePropType }
-export interface ApplicationConversationModel { tickets: ApplicationTicket[]; selected?: Partial<ApplicationTicket> & { id: string; assigned?: string }; agents?: string[]; statuses?: string[]; tones?: ApplicationStatusTones }
-export interface ApplicationConversationProps extends ApplicationBaseProps<ApplicationConversationModel> { onSubmit?: ApplicationSubmitHandler<{ reply: string }> }
-/** onAction: "select-ticket", "assign-ticket" and "ticket-status" (with value). onSubmit: form "reply". */
+export interface ApplicationConversationModel { /** native extra: heading of the queue. Default "Tickets". */ title?: string; tickets: ApplicationTicket[]; selected?: Partial<ApplicationTicket> & { id: string; assigned?: string }; agents?: string[]; statuses?: string[]; tones?: ApplicationStatusTones }
+export interface ApplicationConversationProps extends ApplicationBaseProps<ApplicationConversationModel> {
+  onSubmit?: ApplicationSubmitHandler<{ reply: string }>;
+  /** The screen shown first on a phone. Default "list" (the queue). */
+  defaultScreen?: "list" | "thread";
+  /** Height of whatever sits above the component (a navigation header), so the reply box clears the keyboard on iOS. */
+  keyboardOffset?: number;
+}
+/**
+ * A whole screen (fills its parent): the queue, then the thread of the pressed ticket with a back control and the
+ * reply box on the bottom edge; side by side from 768pt.
+ * onAction: "select-ticket", "close-ticket", "assign-ticket" and "ticket-status" (with value). onSubmit: form "reply".
+ */
 export const ApplicationConversation: ComponentType<ApplicationConversationProps>;
 
 // ---- application-form
@@ -143,7 +181,7 @@ export interface ApplicationField {
   pattern?: string;
   /** The error shown when the field is empty or does not match pattern. */
   message?: string;
-  /** For select and radio. */
+  /** For select (a field that opens a sheet of the options) and radio (a list). */
   options?: Array<string | { value: string; label: string; disabled?: boolean }>;
 }
 export interface ApplicationFormModel { id?: string; /** Reported as form in onSubmit. Default "profile". */ form?: string; title?: string; description?: string; /** Web only: not used. */ action?: string; submitLabel?: string; resetLabel?: string; successMessage?: string; fields: ApplicationField[] }
@@ -162,9 +200,9 @@ export const ApplicationForm: ComponentType<ApplicationFormProps>;
 
 // ---- application-photo
 export interface ApplicationPhotoTile { id: string; title: string; tone?: AppTone; source?: ImageSourcePropType }
-export interface ApplicationPhotoModel { eyebrow?: string; title: string; description?: string; href?: string; linkLabel?: string; /** Web image URL; not loaded here. */ image?: string; imageAlt?: string; source?: ImageSourcePropType; tone?: AppTone; /** native extra: a gallery grid */ photos?: ApplicationPhotoTile[] }
-export interface ApplicationPhotoProps extends ApplicationBaseProps<ApplicationPhotoModel> { /** Gallery tiles per row. Default 3. */ columns?: number }
-/** onAction: "open-link" with id = href, "view-photo" with the tile id. */
+export interface ApplicationPhotoModel { eyebrow?: string; title: string; description?: string; href?: string; linkLabel?: string; /** Web image URL; not loaded here. */ image?: string; imageAlt?: string; source?: ImageSourcePropType; tone?: AppTone; /** native extra: a strip of thumbnails under the picture */ photos?: ApplicationPhotoTile[] }
+/** onAction: "open-link" with id = href, "view-photo" with the thumbnail id. */
+export type ApplicationPhotoProps = ApplicationBaseProps<ApplicationPhotoModel>;
 export const ApplicationPhoto: ComponentType<ApplicationPhotoProps>;
 
 // ---- application-article

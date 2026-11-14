@@ -8,12 +8,14 @@ import {
 } from "@colibri-kit/native";
 
 const SHELL = {
-  brand: "Northstar", user: "Jordan Lee", title: "Overview", description: "Three projects are on track. One needs your review.",
+  brand: "Northstar", user: "Jordan Lee",
   pages: [
     { id: "overview", title: "Overview", icon: "⌂", description: "Three projects are on track. One needs your review." },
-    { id: "records", title: "Records", icon: "☰", description: "Customers and their current plans." },
+    { id: "records", title: "Customers", icon: "☰", description: "Customers and their current plans." },
     { id: "inbox", title: "Inbox", icon: "✉", badge: 2, description: "Two conversations are waiting for a reply." },
-    { id: "settings", title: "Settings", icon: "⚙", description: "Workspace, members and billing." },
+    { id: "projects", title: "Projects", icon: "▦", description: "Current work and who is on it." },
+    { id: "reports", title: "Reports", icon: "↗", description: "Visitors and signups in October." },
+    { id: "settings", title: "Settings", icon: "⚙", description: "Your profile and workspace." },
   ],
 };
 
@@ -46,11 +48,17 @@ const TABLE = {
     { id: "priya", cells: ["Priya Nair", "Lumen Health", "Enterprise", "$4,800", "Active"] },
     { id: "jonas", cells: ["Jonas Weber", "Kiosk GmbH", "Starter", "$79", "Churned"] },
     { id: "aiko", cells: ["Aiko Tanaka", "Paper Crane", "Pro", "$240", "Trial"] },
+    { id: "lena", cells: ["Lena Fischer", "Blumenhaus", "Team", "$860", "Active"] },
+    { id: "omar", cells: ["Omar Haddad", "Cedar & Stone Architects", "Enterprise", "$5,200", "Active"] },
+    { id: "nora", cells: ["Nora Lindqvist", "Fjord Supply", "Starter", "$79", "Past due"] },
+    { id: "diego", cells: ["Diego Morales", "Casa Azul", "Pro", "$240", "Active"] },
+    { id: "hana", cells: ["Hana Kobayashi", "Minato Labs", "Team", "$1,100", "Trial"] },
+    { id: "eli", cells: ["Eli Brooks", "Brooks & Daughters", "Starter", "$79", "Churned"] },
   ],
 };
 
 const BOARD = {
-  title: "Sales pipeline", description: "Select an opportunity to update its stage.",
+  title: "Sales pipeline", description: "Press an opportunity to move it to another stage.",
   lanes: [
     { id: "new", title: "New", deals: [
       { id: "atlas", company: "Atlas Studio", value: "$12,000", owner: "Maya Chen", next: "Intro call on Thursday" },
@@ -58,6 +66,9 @@ const BOARD = {
     ] },
     { id: "proposal", title: "Proposal", deals: [
       { id: "north", company: "North & Co", value: "$24,000", owner: "Alex Rivera", next: "Proposal review on Nov 9" },
+      { id: "paper", company: "Paper Crane", value: "$9,500", owner: "Sam Patel", next: "Waiting for their budget approval" },
+      { id: "fjord", company: "Fjord Supply", value: "$17,200", owner: "Jordan Lee", next: "Send the revised pricing" },
+      { id: "casa", company: "Casa Azul", value: "$6,800", owner: "Maya Chen", next: "Demo for the operations team on Friday" },
     ] },
     { id: "negotiation", title: "Negotiation", deals: [
       { id: "harbor", company: "Harbor Freight Labs", value: "$61,000", owner: "Maya Chen", next: "Legal is reviewing the contract" },
@@ -126,6 +137,9 @@ const TICKETS = [
     ] },
   { id: "2080", customer: "Alex Rivera", title: "Update our invoice address", status: "Pending", message: "Please add 12 Market Street to invoice #1048." },
   { id: "2079", customer: "Priya Nair", title: "Export stops at 500 rows", status: "Resolved", message: "The CSV export of our customer list ends at row 500. Is there a limit?" },
+  { id: "2078", customer: "Tomás Ortega", title: "Change the billing contact", status: "Open", message: "Our finance lead changed. Can invoices go to accounts@harbor.example from now on?" },
+  { id: "2077", customer: "Inès Laurent", title: "Card was declined twice", status: "Pending", message: "The renewal failed on Monday and again today, but the card works elsewhere." },
+  { id: "2076", customer: "Aiko Tanaka", title: "How do I extend the trial?", status: "Resolved", message: "We need one more week to finish our evaluation." },
 ];
 const CONVERSATION = { tickets: TICKETS, selected: { ...TICKETS[0], assigned: "Jordan Lee" }, agents: ["Jordan Lee", "Maya Chen", "Sam Patel"], statuses: ["Open", "Pending", "Resolved"] };
 
@@ -163,20 +177,40 @@ const ARTICLE = {
 
 const say = (toast) => ({ action, id, value }) => toast.show([action, id, typeof value === "object" ? null : value].filter((part) => part != null && part !== "").join(" · "));
 
+// A whole app in the frame. Overview is a long page and Inbox a short one: the top bar and the tab bar stay put either way.
 function ShellDemo() {
-  const theme = useTheme(), [page, setPage] = useState("overview");
+  const toast = useToast(), [page, setPage] = useState("overview");
   return (
-    <View style={{ height: 600, borderRadius: theme.radius.l, borderWidth: 1, borderColor: theme.colors.line, overflow: "hidden" }}>
-      <ApplicationShell model={SHELL} page={page} onPageChange={setPage}>
-        {page === "overview" ? <>
-          <ApplicationMetrics model={{ items: METRICS.items.slice(0, 2) }} />
-          <Card><Text weight="semibold">Needs your review</Text><Text size="sm" tone="muted">Website refresh · the pricing page copy is two days late.</Text><Progress value={0.3} tone="warn" /><Button title="Open records" variant="soft" onPress={() => setPage("records")} /></Card>
-        </> : null}
-        {page === "records" ? <Card padded={false} gap={0}>{TABLE.rows.slice(0, 5).map((row, index) => <View key={row.id}>{index ? <Divider /> : null}<ListItem title={row.cells[0]} subtitle={`${row.cells[1]} · ${row.cells[2]}`} trailing={<Badge tone={row.cells[4] === "Active" ? "ok" : "warn"}>{row.cells[4]}</Badge>} /></View>)}</Card> : null}
-        {page === "inbox" ? <Card padded={false} gap={0}>{TICKETS.slice(0, 2).map((ticket, index) => <View key={ticket.id}>{index ? <Divider /> : null}<ListItem title={ticket.title} subtitle={`${ticket.customer} · ${ticket.message}`} trailing={<Badge tone="accent">{ticket.status}</Badge>} /></View>)}</Card> : null}
-        {page === "settings" ? <ApplicationIdentity model={IDENTITY} onAction={() => setPage("overview")} /> : null}
-      </ApplicationShell>
-    </View>
+    <ApplicationShell model={SHELL} page={page} onPageChange={setPage}>
+      {page === "overview" ? <>
+        <ApplicationMetrics model={{ items: METRICS.items }} />
+        <Card><Text weight="semibold">Needs your review</Text><Text size="sm" tone="muted">Website refresh · the pricing page copy is two days late.</Text><Progress value={0.3} tone="warn" /><Button title="Open projects" variant="soft" block onPress={() => setPage("projects")} /></Card>
+        <ApplicationPlanner model={{ ...PLANNER, title: "Today", description: "Monday, November 2", days: undefined, events: PLANNER.events.filter((event) => event.day === "mon") }} />
+      </> : null}
+      {page === "records" ? <ApplicationTable model={{ columns: TABLE.columns, rows: TABLE.rows }} pageSize={8} onAction={({ id }) => toast.show(`Opened ${TABLE.rows.find((row) => row.id === id).cells[0]}`)} /> : null}
+      {page === "inbox" ? <Card padded={false} gap={0}>{TICKETS.slice(0, 2).map((ticket, index) => <View key={ticket.id}>{index ? <Divider /> : null}<ListItem title={ticket.title} subtitle={`${ticket.customer} · ${ticket.message}`} trailing={<Badge tone="accent">{ticket.status}</Badge>} /></View>)}</Card> : null}
+      {page === "projects" ? <ApplicationProjects model={{ projects: PROJECTS.projects }} onAction={({ id }) => toast.show(`Opened ${PROJECTS.projects.find((project) => project.id === id).name}`)} /> : null}
+      {page === "reports" ? <ApplicationChart model={CHART} onAction={say(toast)} /> : null}
+      {page === "settings" ? <ApplicationIdentity model={IDENTITY} onAction={() => toast.show("Edit profile")} /> : null}
+    </ApplicationShell>
+  );
+}
+
+// The record list as a whole screen. Pressing a record opens its fields in a sheet.
+function TableDemo() {
+  const theme = useTheme(), [open, setOpen] = useState(null), record = TABLE.rows.find((row) => row.id === open);
+  return (
+    <>
+      <ApplicationTable fill model={TABLE} onAction={({ id }) => setOpen(id)} />
+      <Sheet visible={!!record} onClose={() => setOpen(null)} title={record?.cells[0]}>
+        {record ? <Stack gap="xs">
+          {TABLE.columns.slice(1).map((column, index) => (
+            <View key={column} style={{ flexDirection: "row", justifyContent: "space-between", gap: theme.space.s }}><Text tone="muted">{column}</Text><Text weight="medium">{record.cells[index + 1]}</Text></View>
+          ))}
+          <Button title="Done" block onPress={() => setOpen(null)} />
+        </Stack> : null}
+      </Sheet>
+    </>
   );
 }
 
@@ -209,28 +243,25 @@ function FormDemo() {
 }
 
 export default [
-  { id: "application-shell", title: "ApplicationShell", description: "The app frame: top bar, page heading and content, with a bottom tab bar on phones and a side rail on wide screens.", Demo: ShellDemo },
+  { id: "application-shell", title: "ApplicationShell", fullscreen: true, description: "The app frame: a top bar, a bottom tab bar that stays on the bottom edge (with More for the sixth page on) and the page scrolling between them.", Demo: ShellDemo },
   { id: "application-metrics", title: "ApplicationMetrics", description: "A grid of KPI cards with value, change in the ok or bad tone and a tiny bar sparkline.", Demo: () => {
     const toast = useToast();
     return <ApplicationMetrics model={METRICS} onAction={say(toast)} />;
   } },
-  { id: "application-chart", title: "ApplicationChart", description: "A bar chart drawn with Views (no SVG, so no line or pie charts), with a 7, 14 or 30 day switch, a legend, a summary in words and the data as a table.", Demo: () => {
+  { id: "application-chart", title: "ApplicationChart", description: "A bar chart drawn with Views (no SVG, so no line or pie charts). Touch or drag across it to read a day; switch between 7, 14 and 30 days.", Demo: () => {
     const toast = useToast();
     return <ApplicationChart model={CHART} onAction={say(toast)} />;
   } },
-  { id: "application-table", title: "ApplicationTable", description: "Records as rows on a phone and as columns on wide screens, with search, sort, a status filter and paging for long lists.", Demo: () => {
-    const toast = useToast();
-    return <ApplicationTable model={TABLE} pageSize={6} onAction={({ id }) => toast.show(`Opened ${TABLE.rows.find((row) => row.id === id).cells[0]}`)} />;
+  { id: "application-table", title: "ApplicationTable", fullscreen: true, description: "A record list as a whole screen: search, one row of sort and status chips, and records that scroll under them.", Demo: TableDemo },
+  { id: "application-board", title: "ApplicationBoard", fullscreen: true, description: "A kanban board one stage at a time: stage tabs with counts, a full-width column of cards, and a sheet to move a card (no drag and drop).", Demo: () => {
+    const toast = useToast(), title = (id) => BOARD.lanes.find((lane) => lane.id === id).title;
+    return <ApplicationBoard fill model={BOARD} onAction={({ action, value }) => { if (action === "move-deal") toast.show(`Moved to ${title(value)}`, { tone: "ok" }); }} />;
   } },
-  { id: "application-board", title: "ApplicationBoard", description: "Kanban lanes in a sideways pager. Press a card to move it to another stage from a sheet (no drag and drop).", Demo: () => {
-    const toast = useToast();
-    return <ApplicationBoard model={BOARD} onAction={({ action, id, value }) => { if (action === "move-deal") toast.show(`Moved ${id} to ${value}`, { tone: "ok" }); }} />;
-  } },
-  { id: "application-projects", title: "ApplicationProjects", description: "Project cards with a placeholder cover, status, progress, members and a details action.", Demo: () => {
+  { id: "application-projects", title: "ApplicationProjects", description: "A compact project list: picture tile, name, progress, status and members in one pressable row each.", Demo: () => {
     const toast = useToast();
     return <ApplicationProjects model={PROJECTS} onAction={({ id }) => toast.show(`Opened ${PROJECTS.projects.find((project) => project.id === id).name}`)} />;
   } },
-  { id: "application-planner", title: "ApplicationPlanner", description: "A day strip and the day's events on a time rail.", Demo: () => {
+  { id: "application-planner", title: "ApplicationPlanner", description: "A day strip that fits the width and the day's events with their times beside them.", Demo: () => {
     const toast = useToast();
     return <ApplicationPlanner model={PLANNER} onAction={({ action, id }) => { if (action === "view-event") toast.show(PLANNER.events.find((event) => event.id === id).title); }} />;
   } },
@@ -243,12 +274,10 @@ export default [
     const toast = useToast();
     return <ApplicationReceipt model={RECEIPT} onAction={({ id }) => toast.show(`Receipt ${id} is ready to share`, { tone: "ok" })} />;
   } },
-  { id: "application-conversation", title: "ApplicationConversation", description: "A ticket queue and the selected thread with assignment, status and a reply box.", Demo: () => {
-    const toast = useToast();
-    return <ApplicationConversation model={CONVERSATION} onAction={({ action, value }) => { if (value) toast.show(action === "assign-ticket" ? `Assigned to ${value}` : `Status: ${value}`); }} onSubmit={() => toast.show("Reply sent", { tone: "ok" })} />;
-  } },
+  // No toasts here: a choice or a reply shows in the thread itself, and a toast would cover the reply box.
+  { id: "application-conversation", title: "ApplicationConversation", fullscreen: true, description: "A support desk as two screens: the ticket queue, then a thread with a back control, assignment, status and a reply box on the bottom edge.", Demo: () => <ApplicationConversation model={CONVERSATION} /> },
   { id: "application-form", title: "ApplicationForm", description: "A form built from a list of fields. It validates on submit and hands the values to onSubmit.", Demo: FormDemo },
-  { id: "application-photo", title: "ApplicationPhoto", description: "A photo feature with a gallery grid. Pictures are tinted placeholder tiles; no remote image is loaded.", Demo: () => {
+  { id: "application-photo", title: "ApplicationPhoto", description: "A photo feature with a strip of thumbnails. Pictures are tinted placeholder tiles; no remote image is loaded.", Demo: () => {
     const toast = useToast();
     return <ApplicationPhoto model={PHOTO} onAction={({ action, id }) => { if (action === "open-link") toast.show(`Open ${id}`); }} />;
   } },
