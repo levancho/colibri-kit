@@ -67,6 +67,14 @@ class TemplateTest {
     assertFalse(html.contains("data-locale"),"calendar follows the page language unless a locale is passed");
     assertFalse(html.contains("1.500")||html.contains("12,5")||html.contains("1.234"),html);
   }
+  @Test void freemarkerSkeletonWritesNoStyleAttributeByDefault() throws Exception {
+    // A strict Content-Security-Policy (style-src without 'unsafe-inline') blocks style attributes (docs/csp.md).
+    var cfg=new Configuration(Configuration.VERSION_2_3_35);cfg.setClassLoaderForTemplateLoading(getClass().getClassLoader(),"templates");
+    var host="[#ftl][#import '/colibri/freemarker/ui.ftl' as ui][@ui.skeleton/]|[@ui.skeleton attrs={'class':'avatar-skeleton'}/]|[@ui.skeleton w=w h='2rem'/]";
+    var out=new StringWriter();new Template("host",new StringReader(host),cfg).process(Map.of("w","40%\"><script>"),out);String[] html=out.toString().split("\\|");
+    assertFalse(html[0].contains("style="),html[0]);assertTrue(html[1].contains("class=\"avatar-skeleton\"")&&!html[1].contains("style="),html[1]);
+    assertTrue(html[2].contains("style=\"width:40%&quot;&gt;&lt;script&gt;;height:2rem\""),html[2]);
+  }
   @Test void fullFreeMarkerCatalogMatchesEngineRenderedFixture() throws Exception {
     var cfg=new Configuration(Configuration.VERSION_2_3_31);cfg.setTagSyntax(Configuration.SQUARE_BRACKET_TAG_SYNTAX);cfg.setDefaultEncoding("UTF-8");
     cfg.setTemplateLoader(new freemarker.cache.MultiTemplateLoader(new freemarker.cache.TemplateLoader[]{new freemarker.cache.ClassTemplateLoader(getClass(),"/templates/colibri/freemarker"),new freemarker.cache.FileTemplateLoader(new File("../../test/ftl"))}));

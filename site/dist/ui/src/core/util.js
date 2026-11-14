@@ -203,3 +203,10 @@ export function parseNumber(text, locale) {
   const n = Number(s);
   return Number.isFinite(n) ? (negative ? -n : n) : NaN;
 }
+
+/** Right-to-left: the horizontal arrow keys swap meaning (WAI-ARIA APG, "Keyboard navigation in RTL"). The nearest
+    dir attribute wins; otherwise the computed direction (CSS `direction`). */
+export const isRTL = (el) => (el.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" ||
+  el.ownerDocument.defaultView?.getComputedStyle?.(el).direction === "rtl";
+/** The key as a left-to-right reader means it: ArrowLeft and ArrowRight are swapped inside rtl. */
+export const logicalKey = (el, key) => (isRTL(el) ? { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[key] || key : key);

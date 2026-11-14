@@ -1,6 +1,6 @@
 // Colibri UI: primitives added after the Radix audit (Toolbar, Segmented control, Checkbox/Radio cards,
 // Checkbox group, Tab nav, Accessible icon). Headless: state lives in ARIA + data-state, styling is the theme's job.
-import { parts, emit, setState, btn, once, bag, roving, isDisabled, uid } from "./util.js";
+import { parts, emit, setState, btn, once, bag, roving, isDisabled, uid, logicalKey } from "./util.js";
 
 // <div data-ui="toolbar" aria-label="Formatting" [data-orientation=vertical]> buttons, links, toggle-groups, separators </div>
 // One tab stop for the whole bar; arrows/Home/End move between controls (WAI-ARIA toolbar pattern).
@@ -20,7 +20,7 @@ export function createToolbar(root, o = {}) {
     b.on(root, "keydown", (e) => {
       // only keys pressed on one of the bar's own controls; never a field's, a popup's or a nested component's
       if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || editable(e.target) || !items().includes(e.target)) return;
-      const n = roving(items(), e.target, e.key, { orientation }); if (n) { e.preventDefault(); e.stopPropagation(); cur = n; render(); n.focus(); } }, true);
+      const n = roving(items(), e.target, logicalKey(root, e.key), { orientation }); if (n) { e.preventDefault(); e.stopPropagation(); cur = n; render(); n.focus(); } }, true);
     queueMicrotask(render); render();
     return { refresh: render, destroy: b.off };
   });

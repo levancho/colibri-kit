@@ -18,7 +18,7 @@ add(G, "scrollspy", "Scrollspy", "done", "Scrollspy", "-", "IntersectionObserver
  """<p>See the left sidebar: the active section is highlighted while you scroll.</p>""")
 add(G, "scrollto", "Scroll To", "done", "Scrollto", "-", "Smooth scroll + moves focus to target (tabindex=-1), respects prefers-reduced-motion.",
  """<a data-ui="scrollto" href="#top" data-offset="0">↑ Back to top</a>""")
-add(G, "sidebar", "Sidebar", "done", "Sidebar (layout)", "Sidebar", "data-state=expanded|collapsed; mobile offcanvas below breakpoint; Ctrl/Cmd+B; persisted. This page's sidebar.",
+add(G, "sidebar", "Sidebar", "done", "Sidebar (layout)", "Sidebar", "data-state=expanded|collapsed; mobile offcanvas below breakpoint; Ctrl/Cmd+B (data-shortcut picks another key, \"false\" turns it off; never from a text field or editor); persisted. This page's sidebar.",
  """<button data-ui-sidebar-toggle="#sink-sidebar">Toggle page sidebar (Ctrl/Cmd+B)</button>""")
 add(G, "stepper", "Stepper", "done", "Stepper", "-", "aria-current=step on the step; linear mode checks native validity; ui:beforechange cancellable; ui:finish.",
  """<div data-ui="stepper" data-linear><ol data-ui-part="list"><li data-ui-part="step">Account</li><li data-ui-part="step">Profile</li><li data-ui-part="step">Finish</li></ol>
@@ -38,7 +38,7 @@ add(G, "questionnaire", "Questionnaire", "planned", "-", "Questionnaire", "Compo
 add(G, "marker", "Marker / Trace", "planned", "-", "Marker, Trace", "AI-chat visual elements; structural only, planned.")
 
 G = "Forms"
-add(G, "input", "Input", "css", "Input", "Input", "Native input; Field wires label/description/error.", """<input placeholder="Text"> <input disabled value="Disabled"> <input aria-invalid="true" value="Invalid">""")
+add(G, "input", "Input", "css", "Input", "Input", "Native input; Field wires label/description/error.", """<input placeholder="Text" aria-label="Text"> <input disabled value="Disabled" aria-label="Disabled example"> <input aria-invalid="true" value="Invalid" aria-label="Invalid example">""")
 add(G, "input-group", "Input Group", "css", "Input Group", "Input Group", "Structure: addon parts around an input.",
  """<div data-ui-part="input-group"><span data-ui-part="addon">https://</span><input aria-label="Site" value="despani.ge"><span data-ui-part="addon">.ge</span></div>""")
 add(G, "field", "Field / Form", "done", "(form)", "Field, Form", "Generates ids; wires label for, aria-describedby, aria-invalid; shows error on native invalid or server data-invalid.",

@@ -34,6 +34,8 @@ export function createCalendar(root, o = {}) {
     const fmtFull = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
     const isDis = (d) => (min && d < min) || (max && d > max) || disabledDays.includes(d.getDay()) || o.isDisabled?.(d);
     const same = (a, c) => a && c && iso(a) === iso(c);
+    sel = sel.filter((d) => !isDis(d)); // a date outside data-min/data-max or on a disabled day is never selected
+    if (sel[0] && !same(sel[0], focus)) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); }
     root.setAttribute("role", "application"); root.setAttribute("aria-roledescription", "calendar");
     root.innerHTML = `<div data-ui-part="header"><button type="button" data-ui-part="prev" aria-label="Previous month">‹</button><div data-ui-part="title" aria-live="polite"></div><button type="button" data-ui-part="next" aria-label="Next month">›</button></div><div data-ui-part="months"></div>`;
     const title = part(root, "title"), monthsEl = part(root, "months");
@@ -93,7 +95,7 @@ export function createCalendar(root, o = {}) {
     });
     render();
     return { get value() { return mode === "single" ? (sel[0] ? iso(sel[0]) : null) : sel.map(iso); },
-      set value(v) { sel = [].concat(v ?? []).map(parse).filter(Boolean); if (sel[0]) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); } render(); },
+      set value(v) { sel = [].concat(v ?? []).map(parse).filter((d) => d && !isDis(d)); if (sel[0]) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); } render(); },
       focus: () => render(true), destroy: b.off };
   });
 }
@@ -117,8 +119,13 @@ export function createDatePicker(root, o = {}) {
       emit(root, open ? "open" : "close"); };
     trigger && b.on(trigger, "click", () => set(!open));
     input && b.on(input, "keydown", (e) => { if (e.key === "ArrowDown" && e.altKey) { e.preventDefault(); set(true); } });
-    input && b.on(input, "change", () => { cal.value = input.value.split(/\s*[–,]\s*/); emit(root, "change", { value: cal.value }); });
-    b.on(calEl, "ui:change", (e) => { e.stopPropagation(); const v = e.detail.value; if (input) input.value = Array.isArray(v) ? v.join(" – ") : v || ""; emit(root, "change", { value: v }); if (e.detail.complete && mode !== "multiple") { set(false); (trigger || input)?.focus(); } });
-    return { get value() { return cal.value; }, set value(v) { cal.value = v; if (input) input.value = [].concat(v).join(" – "); }, show: () => set(true), hide: () => set(false), destroy() { unlayer?.(); b.off(); cal.destroy(); } };
+    // A typed date the calendar cannot select (unparseable, out of range, a disabled day) is kept in the field but
+    // marked aria-invalid, and the change event says valid: false.
+    const typed = () => (input?.value || "").split(/\s*[–,]\s*/).filter(Boolean);
+    const check = (n) => { const ok = [].concat(cal.value ?? []).length === n; if (input) { if (ok) input.removeAttribute("aria-invalid"); else input.setAttribute("aria-invalid", "true"); } return ok; };
+    if (input?.value) check(typed().length);
+    input && b.on(input, "change", () => { const t = typed(); cal.value = t; const valid = check(t.length); emit(root, "change", { value: cal.value, valid }); });
+    b.on(calEl, "ui:change", (e) => { e.stopPropagation(); const v = e.detail.value; if (input) { input.value = Array.isArray(v) ? v.join(" – ") : v || ""; input.removeAttribute("aria-invalid"); } emit(root, "change", { value: v, valid: true }); if (e.detail.complete && mode !== "multiple") { set(false); (trigger || input)?.focus(); } });
+    return { get value() { return cal.value; }, set value(v) { cal.value = v; if (input) { input.value = [].concat(cal.value ?? []).join(" – "); input.removeAttribute("aria-invalid"); } }, show: () => set(true), hide: () => set(false), destroy() { unlayer?.(); b.off(); cal.destroy(); } };
   });
 }

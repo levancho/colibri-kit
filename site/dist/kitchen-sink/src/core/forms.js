@@ -1,5 +1,5 @@
 // Colibri UI form primitives. Native form elements stay the source of truth (they post with plain forms).
-import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, owner } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, owner, isRTL, logicalKey } from "./util.js";
 
 /* Field (shadcn Field/Label, Metronic Input wrapper): wires label/description/error to the control.
    <div data-ui="field" [data-invalid]><label data-ui-part="label">Name</label>
@@ -62,7 +62,8 @@ export function createSlider(root, o = {}) {
       const out = values.length > 1 ? [...values] : values[0];
       o.onValueChange?.(out); emit(root, "input", { value: out }); if (commit) emit(root, "change", { value: out });
     };
-    const fromPointer = (e) => { const r = track.getBoundingClientRect(); const f = vertical ? 1 - (e.clientY - r.top) / r.height : (e.clientX - r.left) / r.width; return min + Math.min(1, Math.max(0, f)) * (max - min); };
+    // rtl: the track runs right to left, so the minimum sits at the right edge
+    const fromPointer = (e) => { const r = track.getBoundingClientRect(); const f = vertical ? 1 - (e.clientY - r.top) / r.height : (isRTL(root) ? r.right - e.clientX : e.clientX - r.left) / r.width; return min + Math.min(1, Math.max(0, f)) * (max - min); };
     let drag = -1, pointer = null;
     b.on(root, "pointerdown", (e) => {
       if (isDisabled(root) || e.button !== 0 || drag >= 0) return; const v = fromPointer(e);
@@ -80,7 +81,8 @@ export function createSlider(root, o = {}) {
     for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) b.on(root, type, end);
     thumbs.forEach((t, i) => b.on(t, "keydown", (e) => {
       const big = Math.max(step, (max - min) / 10); const m = { ArrowRight: step, ArrowUp: step, ArrowLeft: -step, ArrowDown: -step, PageUp: big, PageDown: -big };
-      if (e.key in m) { e.preventDefault(); setAt(i, values[i] + m[e.key] * (e.shiftKey ? 10 : 1), true); }
+      const k = vertical ? e.key : logicalKey(root, e.key); // rtl: ArrowLeft increases, as the track runs right to left
+      if (k in m) { e.preventDefault(); setAt(i, values[i] + m[k] * (e.shiftKey ? 10 : 1), true); }
       else if (e.key === "Home") { e.preventDefault(); setAt(i, min, true); } else if (e.key === "End") { e.preventDefault(); setAt(i, max, true); }
     }));
     render();

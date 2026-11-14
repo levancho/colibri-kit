@@ -18,6 +18,8 @@ class ApplicationChartTest {
     assertTrue(html.contains("Day 30"));assertTrue(html.contains("<td>10</td><td>30</td>"),"series values must come from the map entry, not Map.values()");assertTrue(html.contains("data-n=\"14\""));
     assertEquals(30,html.split("<tr>",-1).length-2);
     assertFalse(html.contains("th:block"));
+    assertFalse(html.contains("style="),"no style attributes: a strict CSP blocks them (docs/csp.md)");
+    assertTrue(html.contains("<li>Visitors</li>")&&html.contains("<li>Signups</li>"),"legend items in series order");
     var dir=Path.of("target/chart-fixtures");Files.createDirectories(dir);Files.writeString(dir.resolve(kind+".html"),html);
   }
   @Test void freemarkerChartUsesRowsAndEscapesText() throws Exception {

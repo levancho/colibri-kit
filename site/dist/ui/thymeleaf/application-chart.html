@@ -12,5 +12,5 @@
   <thead><tr><th scope="col">Day</th><th th:each="label : ${labels}" scope="col" th:text="${label}">Series</th></tr></thead>
   <tbody><tr th:each="row : ${rows}"><th scope="row" th:text="${row.label}">Day 1</th><td th:each="value : ${row['values']}" th:text="${value}">0</td></tr></tbody>
  </table></details>
- <ul class="legend"><li th:each="label, item : ${labels}" th:style="${'--dot:var(--chart-' + (item.index + 1) + ')'}" th:text="${label}">Series</li></ul>
+ <ul class="legend"><li th:each="label : ${labels}" th:text="${label}">Series</li></ul>
 </section>

@@ -227,8 +227,10 @@ export function createThemeSwitch(root) {
     // storage is outside our control (other scripts, older versions, the user): only a known mode is used
     const MODES = ["light", "dark", "system"], valid = (m) => MODES.includes(m);
     let mode = (() => { try { const m = localStorage.getItem(key); return valid(m) ? m : "system"; } catch { return "system"; } })();
-    const apply = () => { const eff = mode === "system" ? (mq?.matches ? "dark" : "light") : mode; target.dataset.theme = eff; target.style.colorScheme = eff; root.dataset.mode = mode; root.setAttribute("aria-label", root.getAttribute("aria-label") || "Toggle theme"); if (root.tagName === "BUTTON") root.setAttribute("aria-pressed", String(eff === "dark")); emit(root, "change", { mode, theme: eff }); };
+    const apply = () => { const eff = mode === "system" ? (mq?.matches ? "dark" : "light") : mode; target.dataset.theme = eff; target.style.colorScheme = eff; root.dataset.mode = mode; if (root.tagName === "BUTTON") root.setAttribute("aria-pressed", String(eff === "dark")); emit(root, "change", { mode, theme: eff }); };
     const set = (m) => { if (!valid(m)) return; mode = m; try { localStorage.setItem(key, m); } catch {} apply(); };
+    // A fallback name only for an icon-only switch: a visible text ("Theme: dark") is the name (WCAG 2.5.3).
+    if (!root.hasAttribute("aria-label") && !root.hasAttribute("aria-labelledby") && !root.textContent.trim()) root.setAttribute("aria-label", "Toggle theme");
     if (root.tagName === "BUTTON") { btn(root); b.on(root, "click", () => set({ light: "dark", dark: "system", system: "light" }[mode])); }
     else b.on(root, "change", (e) => { const v = e.target.value || e.detail?.value; if (v) set(v); });
     mq && b.on(mq, "change", () => mode === "system" && apply()); apply();
@@ -259,19 +261,15 @@ export function createDataTable(root, o = {}) {
       if (selectAll) { selectAll.checked = vis.length > 0 && on === vis.length; selectAll.indeterminate = on > 0 && on < vis.length; }
       root.dataset.selected = selected().length; emit(root, "select", { ids: selected().map((r) => r.dataset.id) });
     }
-    // The table owns page, filter and sort; the pager only mirrors them. setTotal() alone kept the pager's
-    // own page (still 3 after a search had reset the table to page 1), so the two drifted apart.
+    // The table owns page, filter and sort; the pager only mirrors them through its silent sync(). setTotal() alone
+    // kept the pager's own page (still 3 after a search had reset the table to page 1), so the two drifted apart.
     let syncing = false;
     function syncPager(pages) {
       if (!pager) return;
       const p = pager.__uiPagination;
       if (!p || p.page === undefined) { pager.dataset.total = pages; pager.dataset.page = page; return; }
       syncing = true;
-      try {
-        if (p.page > page) p.setTotal(page); // clamps the pager down to the table's page without an event
-        p.setTotal(pages);
-        if (p.page !== page) { const f = doc.activeElement; p.page = page; if (f && f !== doc.activeElement && f.isConnected) f.focus?.(); }
-      } finally { syncing = false; }
+      try { p.sync({ page, total: pages }); } finally { syncing = false; } // silent: no ui:change, focus stays put
     }
     function apply() {
       if (remote) { emit(root, "query", { sort, page, search: q, pageSize: size }); return; }
@@ -369,6 +367,7 @@ export function createMessageScroller(root) {
   return once(root, "__uiMessageScroller", () => {
     const b = bag(), vp = part(root, "viewport") || root, jump = btn(part(root, "jump"));
     vp.setAttribute("role", vp.getAttribute("role") || "log"); vp.setAttribute("aria-live", "polite");
+    if (!vp.hasAttribute("tabindex")) vp.tabIndex = 0; // a scrollable region must be reachable by keyboard to scroll it
     let stick = true; const atBottom = () => vp.scrollHeight - vp.scrollTop - vp.clientHeight < 8;
     const toBottom = (smooth) => vp.scrollTo?.({ top: vp.scrollHeight, behavior: smooth ? "smooth" : "auto" });
     b.on(vp, "scroll", () => { stick = atBottom(); if (jump) jump.hidden = stick; setState(root, stick ? "pinned" : "scrolled"); }, { passive: true });
@@ -383,12 +382,18 @@ export function createMessageScroller(root) {
 export function createClipboard(root) {
   return once(root, "__uiClipboard", () => {
     const b = bag(), doc = root.ownerDocument; btn(root);
+    // One reset timer at a time (a second copy restarts it), cleared on destroy; a copy that settles after destroy
+    // changes nothing.
+    let reset = 0, live = true;
     b.on(root, "click", async () => {
       const t = root.dataset.text ?? (root.dataset.target ? (doc.querySelector(root.dataset.target)?.value ?? doc.querySelector(root.dataset.target)?.textContent) : "");
-      try { await navigator.clipboard.writeText(t); setState(root, "copied"); emit(root, "copy", { text: t }); } catch (e) { setState(root, "error"); emit(root, "copy-error", { error: e }); }
-      setTimeout(() => setState(root, "idle"), Number(root.dataset.resetMs ?? 2000));
+      let ok = true, error;
+      try { await navigator.clipboard.writeText(t); } catch (e) { ok = false; error = e; }
+      if (!live) return;
+      if (ok) { setState(root, "copied"); emit(root, "copy", { text: t }); } else { setState(root, "error"); emit(root, "copy-error", { error }); }
+      clearTimeout(reset); reset = setTimeout(() => setState(root, "idle"), Number(root.dataset.resetMs ?? 2000));
     });
-    setState(root, "idle"); return { destroy: b.off };
+    setState(root, "idle"); return { destroy() { live = false; clearTimeout(reset); b.off(); } };
   });
 }
 

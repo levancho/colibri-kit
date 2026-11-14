@@ -2,7 +2,7 @@
 // and AI Elements: chain-of-thought, task, plan, tool, reasoning, sources, subagent, stack-trace, test-results,
 // terminal, checkpoint, confirmation, context, file-tree, prompt-input, queue, suggestion).
 // Headless: JS sets roles, ARIA, data-state/data-status and emits ui:* events; CSS lives in the theme.
-import { uid, parts, part, emit, setState, btn, once, bag } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, parseNumber, langOf } from "./util.js";
 
 const setText = (el, v) => { if (el && el.textContent !== String(v)) el.textContent = v; };
 const setData = (el, k, v) => { if (el && el.dataset[k] !== String(v)) el.dataset[k] = v; };
@@ -32,16 +32,25 @@ function statusLabel(root) { const s = part(root, "status"); if (s && !s.dataset
 export function createBubble(root) {
   return once(root, "__uiBubble", () => {
     const b = bag();
-    for (const r of parts(root, "reaction")) { btn(r); r.setAttribute("aria-pressed", r.getAttribute("aria-pressed") || "false");
+    // A reaction named by aria-label ("Thumbs up") must still contain its visible text, the count (WCAG 2.5.3 Label in
+    // Name): the name becomes "Thumbs up 2" and follows the count. The author's label is kept in data-label.
+    const named = (r) => { if (r.dataset.label == null) return; const n = r.querySelector("[data-ui-part=count]")?.textContent.trim();
+      const v = n ? `${r.dataset.label} ${n}` : r.dataset.label; if (r.getAttribute("aria-label") !== v) r.setAttribute("aria-label", v); };
+    const reactions = parts(root, "reaction");
+    for (const r of reactions) { btn(r); r.setAttribute("aria-pressed", r.getAttribute("aria-pressed") || "false");
+      if (r.hasAttribute("aria-label") && r.dataset.label == null) r.dataset.label = r.getAttribute("aria-label"); named(r);
       b.on(r, "click", () => { const on = r.getAttribute("aria-pressed") !== "true"; r.setAttribute("aria-pressed", String(on));
-        const n = r.querySelector("[data-ui-part=count]"); if (n) n.textContent = Math.max(0, (+n.textContent || 0) + (on ? 1 : -1));
+        const n = r.querySelector("[data-ui-part=count]"); if (n) n.textContent = Math.max(0, (+n.textContent || 0) + (on ? 1 : -1)); named(r);
         emit(root, "react", { value: r.dataset.value || r.textContent.trim(), on }); }); }
     const tg = part(root, "toggle"), content = part(root, "content");
     if (tg && content) { btn(tg); content.id ||= uid("ui-bubble");
       tg.setAttribute("aria-controls", content.id);
       const set = (x) => { root.dataset.expanded = String(x); tg.setAttribute("aria-expanded", String(x)); tg.textContent = x ? (tg.dataset.less || "Show less") : (tg.dataset.more || "Show more"); };
       set(false); b.on(tg, "click", () => set(root.dataset.expanded !== "true")); }
-    return { destroy: b.off };
+    // counts changed by the application (a re-render, a live update) rename their button too
+    const mo = reactions.some((r) => r.dataset.label != null) ? new MutationObserver(() => reactions.forEach(named)) : null;
+    reactions.forEach((r) => mo?.observe(r, { childList: true, subtree: true, characterData: true }));
+    return { destroy() { mo?.disconnect(); b.off(); } };
   });
 }
 export function createMessage(root) {
@@ -85,7 +94,8 @@ export function createAttachment(root) {
     const sync = () => {
       const p = root.dataset.progress, bar = part(root, "progress");
       root.dataset.state = root.dataset.error != null ? "error" : p != null && +p < 100 ? "uploading" : "done";
-      if (bar) { bar.setAttribute("role", "progressbar"); bar.setAttribute("aria-valuemin", "0"); bar.setAttribute("aria-valuemax", "100"); bar.setAttribute("aria-valuenow", p ?? 100); bar.style.setProperty("--ui-value", `${p ?? 100}%`); bar.hidden = root.dataset.state !== "uploading"; }
+      if (bar) { bar.setAttribute("role", "progressbar");
+        if (!bar.hasAttribute("aria-label") && !bar.hasAttribute("aria-labelledby")) { if (title) bar.setAttribute("aria-labelledby", title.id); else bar.setAttribute("aria-label", "Upload progress"); } bar.setAttribute("aria-valuemin", "0"); bar.setAttribute("aria-valuemax", "100"); bar.setAttribute("aria-valuenow", p ?? 100); bar.style.setProperty("--ui-value", `${p ?? 100}%`); bar.hidden = root.dataset.state !== "uploading"; }
     };
     const mo = new MutationObserver(sync); mo.observe(root, { attributes: true, attributeFilter: ["data-progress", "data-error"] }); sync();
     parts(root, "action").forEach(btn);
@@ -136,7 +146,7 @@ export function createQuestionnaire(root) {
       items.forEach((it, k) => { it.hidden = k !== i; it.dataset.state = k < i ? "answered" : k === i ? "current" : "upcoming"; });
       const done = i >= items.length;
       root.dataset.state = done ? "complete" : "active";
-      if (prog) { prog.setAttribute("role", "progressbar"); prog.setAttribute("aria-valuemin", "0"); prog.setAttribute("aria-valuemax", items.length); prog.setAttribute("aria-valuenow", Math.min(i + 1, items.length)); prog.setAttribute("aria-valuetext", `Question ${Math.min(i + 1, items.length)} of ${items.length}`); prog.style.setProperty("--ui-value", `${(Math.min(i + 1, items.length) / items.length) * 100}%`); const l = prog.querySelector("[data-ui-part=label]"); if (l) l.textContent = `${Math.min(i + 1, items.length)} / ${items.length}`; }
+      if (prog) { prog.setAttribute("role", "progressbar"); if (!prog.hasAttribute("aria-label") && !prog.hasAttribute("aria-labelledby")) prog.setAttribute("aria-label", root.dataset.progressLabel || "Progress"); prog.setAttribute("aria-valuemin", "0"); prog.setAttribute("aria-valuemax", items.length); prog.setAttribute("aria-valuenow", Math.min(i + 1, items.length)); prog.setAttribute("aria-valuetext", `Question ${Math.min(i + 1, items.length)} of ${items.length}`); prog.style.setProperty("--ui-value", `${(Math.min(i + 1, items.length) / items.length) * 100}%`); const l = prog.querySelector("[data-ui-part=label]"); if (l) l.textContent = `${Math.min(i + 1, items.length)} / ${items.length}`; }
       const cur = items[i];
       const show = (p, v) => { const el = part(root, p); if (el) el.hidden = !v; };
       show("previous", i > 0 && !done); show("skip", !!cur && cur.dataset.skippable != null); show("next", !!cur && i < items.length - 1); show("submit", !!cur && i === items.length - 1);
@@ -216,7 +226,11 @@ export const createChainOfThought = agentBlock("chain-of-thought"), createTask =
 
 // ---------- AI elements: interactive ----------
 export function createCheckpoint(root) {
-  return once(root, "__uiCheckpoint", () => { const b = bag(); root.setAttribute("role", "separator"); const r = part(root, "restore");
+  return once(root, "__uiCheckpoint", () => { const b = bag(), r = part(root, "restore"), label = part(root, "label");
+    // A separator's children are presentational, so a restore button inside one is hidden from assistive technology:
+    // with a button the checkpoint is a named group; without one it stays a (named) separator. The line is CSS.
+    root.setAttribute("role", r ? "group" : "separator");
+    if (label && !root.hasAttribute("aria-label") && !root.hasAttribute("aria-labelledby")) { label.id ||= uid("ui-checkpoint"); root.setAttribute("aria-labelledby", label.id); }
     if (r) { btn(r); b.on(r, "click", () => { if (emit(root, "restore", { id: root.dataset.id }, true)) { root.dataset.state = "restored"; } }); }
     return { destroy: b.off }; });
 }
@@ -325,7 +339,7 @@ export function createChart(root) {
     const b = bag(), table = root.querySelector("table"); if (!table) return { destroy() {} };
     const NS = "http://www.w3.org/2000/svg", head = [...(table.tHead?.rows[0]?.cells || [])].map((c) => c.textContent.trim());
     const rows = [...table.tBodies[0].rows].map((r) => [...r.cells].map((c) => c.textContent.trim()));
-    const series = head.slice(1), labels = rows.map((r) => r[0]), data = series.map((_, s) => rows.map((r) => parseFloat(r[s + 1]) || 0));
+    const series = head.slice(1), labels = rows.map((r) => r[0]), data = series.map((_, s) => rows.map((r) => parseNumber(r[s + 1], langOf(root)) || 0));
     const max = Math.max(1, ...data.flat()), W = 600, H = 220, P = 28, cw = (W - P * 2) / labels.length;
     const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", `0 0 ${W} ${H + 24}`); svg.dataset.uiPart = "plot"; svg.setAttribute("role", "img");
     svg.setAttribute("aria-label", `${root.querySelector("figcaption")?.textContent.trim() || "Chart"}: ${root.dataset.type || "bar"} chart, data in the table below`);

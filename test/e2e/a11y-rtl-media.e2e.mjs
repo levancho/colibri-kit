@@ -21,6 +21,9 @@ const FIXTURE = (dir) => `<!doctype html><html lang="en" dir="${dir}" data-theme
 <div data-ui="carousel" id="car" aria-label="Featured"><div data-ui-part="viewport"><div data-ui-part="slide">1</div><div data-ui-part="slide">2</div><div data-ui-part="slide">3</div></div><button data-ui-part="prev" aria-label="Previous">‹</button><button data-ui-part="next" aria-label="Next">›</button><div data-ui-part="dots"></div></div>
 <div data-ui="calendar" id="cal" data-value="2026-10-14" data-locale="en"></div>
 <button data-ui="switch" id="sw" aria-label="Wifi" aria-checked="true"></button>
+<div data-ui="radio-group" id="rg" aria-label="Size"><button data-ui-part="item" data-value="s">S</button><button data-ui-part="item" data-value="m">M</button><button data-ui-part="item" data-value="l">L</button></div>
+<div data-ui="toolbar" id="tb" aria-label="Format"><button>Bold</button><button>Italic</button><button>Under</button></div>
+<div data-ui="slider" id="sl" data-min="0" data-max="100" data-value="20"><div data-ui-part="track"><div data-ui-part="range"></div></div><span data-ui-part="thumb" aria-label="Volume"></span></div>
 <div data-ui="tooltip" id="tip" data-delay="0"><button data-ui-part="trigger">Info</button><div data-ui-part="content">A longer tooltip text</div></div>
 <script type="module">import { init } from "/ui/src/core/index.js"; init(document); window.__ready = true;</script>
 </body></html>`;
@@ -68,10 +71,35 @@ try {
   await page.focus("#car [data-ui-part=viewport]"); await page.keyboard.press("ArrowLeft");
   assert.equal(await page.$eval("#car", (e) => e.dataset.index), "1", "carousel: ArrowLeft = next slide");
   await page.focus('#cal [data-date="2026-10-14"]'); await page.keyboard.press("ArrowLeft"); assert.equal(await active(page), "15", "calendar: ArrowLeft = next day");
-  console.log("ok RTL: tabs, menubar, menu marks and submenu, carousel, calendar and switch mirror layout and arrow keys");
+  // radio group and toolbar: ArrowLeft moves to the next item in rtl
+  await page.click("#rg [data-value=s]"); await page.keyboard.press("ArrowLeft");
+  assert.equal(await active(page), "M", "radio group: ArrowLeft = next"); assert.equal(await page.$eval("#rg", (e) => e.dataset.value), "m");
+  await page.keyboard.press("ArrowRight"); assert.equal(await active(page), "S", "radio group: ArrowRight = previous");
+  await page.focus("#tb button"); await page.keyboard.press("ArrowLeft"); assert.equal(await active(page), "Italic", "toolbar: ArrowLeft = next");
+  await page.keyboard.press("ArrowRight"); assert.equal(await active(page), "Bold", "toolbar: ArrowRight = previous");
+  // slider: the minimum is at the right edge; the thumb, the filled range and the pointer agree; ArrowLeft increases
+  const sl = await box(page, "#sl [data-ui-part=track]"), th = await box(page, "#sl [data-ui-part=thumb]"), rng = await box(page, "#sl [data-ui-part=range]");
+  const at = (v) => sl.right - (sl.right - sl.left) * v / 100;
+  assert.ok(Math.abs(th.cx - at(20)) < 2, `slider: thumb of 20 sits 20% from the right edge (${th.cx} vs ${at(20)})`);
+  assert.ok(Math.abs(rng.right - sl.right) < 2 && Math.abs(rng.left - at(20)) < 2, "slider: the filled range starts at the right edge");
+  await page.focus("#sl [data-ui-part=thumb]"); await page.keyboard.press("ArrowLeft");
+  assert.equal(await page.$eval("#sl", (e) => e.dataset.value), "21", "slider: ArrowLeft increases in rtl");
+  await page.keyboard.press("ArrowRight"); await page.keyboard.press("ArrowRight");
+  assert.equal(await page.$eval("#sl", (e) => e.dataset.value), "19", "slider: ArrowRight decreases in rtl");
+  const y = await page.$eval("#sl", (e) => { const r = e.getBoundingClientRect(); return r.top + r.height / 2; });
+  await page.mouse.click(at(75), y);
+  assert.equal(await page.$eval("#sl", (e) => e.dataset.value), "75", "slider: a press 75% from the right edge sets 75");
+  const th2 = await box(page, "#sl [data-ui-part=thumb]"); assert.ok(Math.abs(th2.cx - at(75)) < 2, "slider: the thumb follows the pointer");
+  console.log("ok RTL: tabs, menubar, menu marks and submenu, carousel, calendar, switch, radio group, toolbar and slider mirror layout and arrow keys");
 
   // ---- forced colors: every themed focus is a real outline ----
   await load(page, "ltr");
+  // ltr is unchanged: ArrowRight is next, the slider's minimum is on the left
+  await page.focus("#tb button"); await page.keyboard.press("ArrowRight"); assert.equal(await active(page), "Italic", "toolbar ltr: ArrowRight = next");
+  await page.click("#rg [data-value=s]"); await page.keyboard.press("ArrowRight"); assert.equal(await active(page), "M", "radio group ltr: ArrowRight = next");
+  { const sl = await box(page, "#sl [data-ui-part=track]"), th = await box(page, "#sl [data-ui-part=thumb]");
+    assert.ok(Math.abs(th.cx - (sl.left + (sl.right - sl.left) * 0.2)) < 2, "slider ltr: thumb of 20 sits 20% from the left edge");
+    await page.focus("#sl [data-ui-part=thumb]"); await page.keyboard.press("ArrowRight"); assert.equal(await page.$eval("#sl", (e) => e.dataset.value), "21", "slider ltr: ArrowRight increases"); }
   await page.emulateMediaFeatures([{ name: "forced-colors", value: "active" }]);
   for (const sel of ["#tabs [data-value=a]", "#bar [data-ui-part=trigger]", "#car [data-ui-part=viewport]", '#cal [data-date="2026-10-14"]', "#sw", "#tip [data-ui-part=trigger]"]) {
     await page.keyboard.press("Shift"); await page.focus(sel);

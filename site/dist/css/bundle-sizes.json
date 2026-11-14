@@ -1,11 +1,11 @@
 {
   "colibri.css": {
-    "bytes": 18763,
-    "gzip": 6042
+    "bytes": 18956,
+    "gzip": 6127
   },
   "colibri-applications.css": {
-    "bytes": 98626,
-    "gzip": 14249
+    "bytes": 99123,
+    "gzip": 14387
   },
   "colibri-ui-bridge.css": {
     "bytes": 1430,

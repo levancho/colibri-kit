@@ -153,6 +153,27 @@ check("csp: without constructable stylesheets the fallback <style> carries the p
   await p.close();
 });
 
+/* .card is not a size container: inside a flex row or a fit-content parent it kept collapsing to one word per line. */
+const cardPage = (body) => { const p = `/__bugs/${++n}.html`; fixtures.set(p, { html: `<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="stylesheet" href="/css/colibri.css">
+  <style>.profile{display:grid;gap:8px;justify-items:start}@container (inline-size > 22rem){.profile{grid-template-columns:auto 1fr auto}}</style></head><body>${body}<script>window.__ready = true;</script></body></html>` }); return origin + p; };
+check("css: a .card in a cluster, a flex row or a fit-content box is as wide as its text", async () => {
+  const text = "Some words in a card that should sit on one line";
+  const p = await open(cardPage(`<div class="cluster"><div class="card" id="a"><p>${text}</p></div></div>
+    <div style="display:flex"><div class="card" id="b"><p>${text}</p></div></div><div style="width:fit-content"><div class="card" id="c"><p>${text}</p></div></div>`));
+  for (const id of ["a", "b", "c"]) {
+    const { lines, type } = await p.$eval(`#${id}`, (e) => { const q = e.querySelector("p"); return { lines: Math.round(q.getBoundingClientRect().height / parseFloat(getComputedStyle(q).lineHeight)), type: getComputedStyle(e).containerType }; });
+    assert.equal(type, "normal", `#${id}: .card is a size container`); assert.equal(lines, 1, `#${id}: the card wrapped its text onto ${lines} lines`);
+  }
+  await p.close();
+});
+check("css: .card.container gives its content container queries", async () => {
+  const card = `<div class="card container"><div class="profile"><span>A</span><b>Name</b><button>Follow</button></div></div>`;
+  const p = await open(cardPage(`<div class="split" style="--side:13rem">${card}${card}</div>`));
+  const cols = await p.$$eval(".profile", (ps) => ps.map((e) => getComputedStyle(e).gridTemplateColumns.split(" ").length));
+  assert.deepEqual(cols, [1, 3], "the narrow card stacks and the wide card goes horizontal");
+  await p.close();
+});
+
 /* run */
 let failed = 0;
 try {

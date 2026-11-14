@@ -42,14 +42,17 @@ and allow it in the policy: `style-src 'self' 'nonce-r4nd0m'`. Generate a new no
 
 ## Server-rendered templates
 
-Two template helpers write a `style` attribute, which `style-src` without `'unsafe-inline'` (or a
-`style-src-attr` source) blocks:
+The FreeMarker and Thymeleaf templates write no `style` attribute by default:
 
-- the FreeMarker `skeleton` macro in `freemarker/ui.ftl` (`width` and `height`), and
-- the chart legend in `freemarker/application-chart.ftl` and `thymeleaf/application-chart.html` (`--dot`).
+- the chart legend (`freemarker/application-chart.ftl`, `thymeleaf/application-chart.html`) colours its dots from
+  the stylesheet (`.legend li:nth-child(n)` maps to `--chart-n`), so the markup is plain `<li>` elements;
+- the FreeMarker `skeleton` macro (`freemarker/ui.ftl`) is sized by the theme (100% by 1rem). Its `w` and `h`
+  arguments still write `style="width:…;height:…"`, which `style-src` without `'unsafe-inline'` (or a
+  `style-src-attr` source) blocks. Under a strict policy give it a class instead,
+  `[@ui.skeleton attrs={"class": "avatar-skeleton"}/]`, and size that class in your stylesheet.
 
-Under a strict policy, size skeletons with your own classes and colour legend dots in your stylesheet, or allow
-these attributes with `style-src-attr 'unsafe-inline'` if your policy permits it.
+`ApplicationChartTest` and `TemplateTest` (`npm run test:java`) check that the default output has no `style`
+attribute.
 
 ## Checking it
 

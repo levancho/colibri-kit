@@ -42,7 +42,10 @@ export function createPagination(root, o = {}) {
     const go = (p) => { p = Math.min(total, Math.max(1, p)); if (p === page) return; page = p; render(); o.onPageChange?.(p); emit(root, "change", { page: p }); root.querySelector('[aria-current="page"]')?.focus(); };
     if (!href) b.on(root, "click", (e) => { const x = e.target.closest("[data-page]"); if (x && !isDisabled(x)) go(Number(x.dataset.page)); });
     render();
-    return { get page() { return page; }, set page(p) { go(p); }, setTotal(t) { total = t; page = Math.min(page, t); render(); }, destroy: b.off };
+    return { get page() { return page; }, set page(p) { go(p); }, setTotal(t) { total = t; page = Math.min(page, t); render(); },
+      /** Set page and total together, without ui:change and without moving focus (a datatable keeping its pager in step). */
+      sync({ page: p = page, total: t = total } = {}) { total = Math.max(1, Number(t) || 1); page = Math.min(total, Math.max(1, Number(p) || 1)); render(); },
+      destroy: b.off };
   });
 }
 
@@ -118,7 +121,8 @@ export function createScrollspy(root, o = {}) {
     const markUser = (e) => { if (e?.type === "pointerdown" && e.target.closest?.("a[href^='#']")) { userOwned = false; return; } userOwned = true; };
     const navScroll = () => { if (selfScroll) { selfScroll = false; return; } markUser(); };
     navBox?.addEventListener("wheel", markUser, { passive: true }); navBox?.addEventListener("touchstart", markUser, { passive: true });
-    navBox?.addEventListener("click", (e) => { if (e.target.closest?.("a[href^='#']")) userOwned = false; }); navBox?.addEventListener("scroll", navScroll, { passive: true });
+    const navClick = (e) => { if (e.target.closest?.("a[href^='#']")) userOwned = false; };
+    navBox?.addEventListener("click", navClick); navBox?.addEventListener("scroll", navScroll, { passive: true });
     // Active = last section whose top has crossed the offset line (robust for tall sections, unlike "first visible").
     const view = doc.defaultView, scroller = container || view;
     const compute = () => {
@@ -135,7 +139,8 @@ export function createScrollspy(root, o = {}) {
     scroller.addEventListener("scroll", onScroll, { passive: true }); view.addEventListener("resize", onScroll);
     compute();
     const io = { disconnect() { scroller.removeEventListener("scroll", onScroll); view.removeEventListener("resize", onScroll);
-      navBox?.removeEventListener("wheel", markUser); navBox?.removeEventListener("touchstart", markUser);  navBox?.removeEventListener("scroll", navScroll); } };
+      navBox?.removeEventListener("wheel", markUser); navBox?.removeEventListener("touchstart", markUser);  navBox?.removeEventListener("scroll", navScroll);
+      navBox?.removeEventListener("click", navClick); if (raf) { view.cancelAnimationFrame(raf); raf = 0; } } };
     return { get active() { return active?.id ?? null; }, refresh: compute, destroy() { io.disconnect(); } };
   });
 }
@@ -169,7 +174,7 @@ export function createSticky(root) {
 
 /* Sidebar (shadcn Sidebar, Metronic layout sidebar): expanded/collapsed (desktop) + open/closed (mobile), persisted.
    <aside data-ui="sidebar" data-collapsible="icon|offcanvas|none" [data-storage-key="colibri.sidebar"] [data-breakpoint="1024"]>…</aside>
-   <button data-ui-sidebar-toggle="#id"> anywhere; Ctrl/Cmd+B toggles. Groups: data-ui-part="group" with nested collapsible. */
+   <button data-ui-sidebar-toggle="#id"> anywhere; Ctrl/Cmd+B toggles (data-shortcut="k" picks another key, "false" turns it off). Groups: data-ui-part="group" with nested collapsible. */
 export function createSidebar(root, o = {}) {
   return once(root, "__uiSidebar", () => {
     const b = bag(), doc = root.ownerDocument, win = doc.defaultView, key = root.dataset.storageKey || "colibri.sidebar";
@@ -184,7 +189,12 @@ export function createSidebar(root, o = {}) {
     };
     const toggle = () => { if (mobile()) mobileOpen = !mobileOpen; else { collapsed = !collapsed; try { localStorage.setItem(key, collapsed ? "collapsed" : "expanded"); } catch {} } render(); emit(root, "change", { state: root.dataset.state }); };
     b.on(doc, "click", (e) => { if (e.target.closest(`[data-ui-sidebar-toggle="#${root.id}"]`)) toggle(); else if (mobile() && mobileOpen && !root.contains(e.target)) { mobileOpen = false; render(); } });
-    b.on(doc, "keydown", (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b" && root.dataset.shortcut !== "false") { e.preventDefault(); toggle(); } if (e.key === "Escape" && mobile() && mobileOpen) { mobileOpen = false; render(); } });
+    // data-shortcut="b" (default) | another key | "false". Never taken from a text field or an editor (where Ctrl/Cmd+B
+    // means bold), with Alt or Shift held, or when another handler already used the key.
+    const shortcut = String(o.shortcut ?? root.dataset.shortcut ?? "b").toLowerCase();
+    const editing = (t) => t?.isContentEditable || !!t?.closest?.('input,textarea,select,[contenteditable]:not([contenteditable="false"]),[role="textbox"]');
+    b.on(doc, "keydown", (e) => { if (shortcut !== "false" && shortcut && (e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && !e.defaultPrevented
+        && e.key?.toLowerCase() === shortcut && !editing(e.target)) { e.preventDefault(); toggle(); } if (e.key === "Escape" && mobile() && mobileOpen) { mobileOpen = false; render(); } });
     b.on(win, "resize", render); render();
     return { toggle, get state() { return root.dataset.state; }, destroy: b.off };
   });

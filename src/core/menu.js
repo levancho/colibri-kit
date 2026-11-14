@@ -16,7 +16,7 @@
 //  data-ui="navigation-menu": <ul data-ui-part="list"><li data-ui-part="menu"><button data-ui-part="trigger">…
 //      <div data-ui-part="content">links</div></li>…</ul>  (hover or click; disclosure, not role=menu)
 // Events: ui:open / ui:close / ui:select {item, value, checked}. Cancel ui:select to keep menu open.
-import { uid, emit, setState, btn, once, bag, roving, typeahead, place, layer, isDisabled, owner } from "./util.js";
+import { uid, emit, setState, btn, once, bag, roving, typeahead, place, layer, isDisabled, owner, isRTL, logicalKey } from "./util.js";
 
 const Q = (el, p) => [...el.querySelectorAll(`:scope [data-ui-part="${p}"]`)];
 // items belonging to this content level only (not nested sub-contents). Disabled items keep their menu role (so a
@@ -24,10 +24,6 @@ const Q = (el, p) => [...el.querySelectorAll(`:scope [data-ui-part="${p}"]`)];
 const allLevelItems = (content) => [...content.querySelectorAll('[data-ui-part="item"],[data-ui-part="sub-trigger"]')]
   .filter((i) => i.closest('[data-ui-part="content"],[data-ui-part="sub-content"]') === content);
 const levelItems = (content) => allLevelItems(content).filter((i) => !isDisabled(i));
-/** Right-to-left: the horizontal arrow keys swap meaning (WAI-ARIA APG, "Keyboard navigation in RTL"). */
-export const isRTL = (el) => (el.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" ||
-  el.ownerDocument.defaultView?.getComputedStyle?.(el).direction === "rtl";
-const logicalKey = (el, key) => (isRTL(el) ? { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[key] || key : key);
 
 function menuLevel(content, { onClose, side = "bottom", align = "start", anchor, point, onSelect, onArrowOut, ignore = [] }) {
   const b = bag(), ta = typeahead();
@@ -187,12 +183,13 @@ export function createMenubar(root, o = {}) {
 export function createNavigationMenu(root, o = {}) {
   return once(root, "__uiNavigationMenu", () => {
     const b = bag(), hover = root.dataset.openOn !== "click";
+    const base = root.id || uid("ui-nav"); // one prefix per instance: "ui-nav-0" was shared by every menu without an id
     const menus = [...root.querySelectorAll('[data-ui-part="menu"]')];
     let cur = null, t;
     const items = menus.map((m, i) => {
       const tr = m.querySelector('[data-ui-part="trigger"]'), c = m.querySelector('[data-ui-part="content"]');
       if (!tr) return null; btn(tr);
-      if (c) { c.id ||= `${root.id || "ui-nav"}-${i}`; tr.setAttribute("aria-controls", c.id); tr.setAttribute("aria-expanded", "false"); c.hidden = true; }
+      if (c) { c.id ||= `${base}-${i}`; tr.setAttribute("aria-controls", c.id); tr.setAttribute("aria-expanded", "false"); c.hidden = true; }
       return { m, tr, c };
     }).filter(Boolean);
     const set = (it) => {

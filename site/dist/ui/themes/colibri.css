@@ -254,9 +254,9 @@ dialog [data-ui=command]{border:0;width:100%}
 
 /* slider (vars from core: --ui-slider-start/end on root, --ui-slider-pos on thumbs) */
 [data-ui=slider]{position:relative;width:min(100%,320px);height:20px;touch-action:none;flex:none}
-[data-ui=slider] [data-ui-part=track]{position:absolute;left:0;right:0;top:50%;height:6px;margin-top:-3px;border-radius:99px;background:var(--ui-muted);overflow:hidden}
-[data-ui=slider] [data-ui-part=range]{position:absolute;top:0;bottom:0;left:var(--ui-slider-start,0%);right:calc(100% - var(--ui-slider-end,0%));background:var(--ui-primary)}
-[data-ui=slider] [data-ui-part=thumb]{position:absolute;top:50%;left:var(--ui-slider-pos,0%);width:18px;height:18px;margin:-9px 0 0 -9px;border-radius:50%;background:var(--ui-background);border:2px solid var(--ui-primary);box-shadow:0 1px 3px #0003;cursor:grab}
+[data-ui=slider] [data-ui-part=track]{position:absolute;inset-inline:0;top:50%;height:6px;margin-top:-3px;border-radius:99px;background:var(--ui-muted);overflow:hidden}
+[data-ui=slider] [data-ui-part=range]{position:absolute;top:0;bottom:0;inset-inline-start:var(--ui-slider-start,0%);inset-inline-end:calc(100% - var(--ui-slider-end,0%));background:var(--ui-primary)}
+[data-ui=slider] [data-ui-part=thumb]{position:absolute;top:50%;inset-inline-start:var(--ui-slider-pos,0%);width:18px;height:18px;margin:-11px 0 0;margin-inline-start:-11px;border-radius:50%;background:var(--ui-background);border:2px solid var(--ui-primary);box-shadow:0 1px 3px #0003;cursor:grab}
 [data-ui=slider] [data-ui-part=thumb]:focus-visible{outline:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--ui-ring) 45%,transparent)}
 [data-ui=slider] input[type=hidden]{display:none}
 
@@ -389,7 +389,7 @@ dialog [data-ui=command]{border:0;width:100%}
 [data-ui=dismiss][hidden]{display:none}
 [data-ui-part=empty-state]{display:grid;justify-items:center;gap:.4rem;width:min(100%,380px);padding:2rem;border:1.5px dashed var(--ui-input);border-radius:var(--ui-radius-lg);text-align:center}
 [data-ui-part=empty-state]>div{font-size:32px}[data-ui-part=empty-state] h3,[data-ui-part=empty-state] p{margin:0}[data-ui-part=empty-state] p{color:var(--ui-muted-foreground)}
-[data-ui-part=skeleton]{background:var(--ui-muted);border-radius:var(--ui-radius-sm);animation:ui-pulse 1.6s ease-in-out infinite}
+[data-ui-part=skeleton]{inline-size:100%;block-size:1rem;background:var(--ui-muted);border-radius:var(--ui-radius-sm);animation:ui-pulse 1.6s ease-in-out infinite}
 [data-ui-part=spinner]{display:inline-block;width:20px;height:20px;border:2px solid var(--ui-muted);border-top-color:var(--ui-primary);border-radius:50%;animation:ui-spin .8s linear infinite}
 [data-ui=separator]{border:0;background:var(--ui-border);height:1px;width:100%;margin:0}
 [data-ui=separator][data-orientation=vertical]{width:1px;height:auto;align-self:stretch}
@@ -1090,7 +1090,7 @@ html[data-theme=dark][data-ui-gray=mauve]{--ui-muted:#26212a;--ui-muted-foregrou
 :where([data-ui=card]){background:var(--ui-card);color:var(--ui-foreground);border:1px solid var(--ui-border);border-radius:var(--ui-radius-lg);box-shadow:var(--ui-shadow-sm);padding:var(--card-pad,16px)}
 /* Right-to-left. Layout above uses logical properties; these rules mirror what logical properties cannot:
    transforms, background positions and directional icons. Physical sides stay physical where the API names a side
-   (sheet/drawer/sidebar data-side) and where JavaScript measures in physical pixels (slider, segmented control). */
+   (sheet/drawer/sidebar data-side) and where JavaScript measures in physical pixels (segmented control). The slider measures from the inline start. */
 [data-ui=switch]:dir(rtl):is([data-state=checked],[aria-checked=true],:checked)::after{transform:translateX(-16px)}
 :where(.ui-root) select[data-ui=native-select]:dir(rtl){background-position:left .6rem center}
 [data-ui-part=sub-trigger]:dir(rtl)::after,[data-ui-part=breadcrumb]:dir(rtl) li+li::before,[data-ui=pagination]:dir(rtl) [data-ui-part=prev]::before,[data-ui=pagination]:dir(rtl) [data-ui-part=next]::after,:is([data-ui=calendar],[data-ui=carousel]):dir(rtl) :is([data-ui-part=prev],[data-ui-part=next])::before{scale:-1 1}
