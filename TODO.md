@@ -53,23 +53,28 @@ found by reading.
 - [x] **Menu**: disabled items keep their role with `aria-disabled`; submenu Escape, RTL Left/Right, menubar roving
       tab stop with Home/End, context-menu focus return (fixed).
 - [x] **Popover, hover-card, date-picker** dialogs are named; popover moves focus inside and back (fixed).
-- [ ] **Non-modal dialog** ignores Esc and outside click (verified). `src/core/dialog.js`, outside this change set.
+- [x] **Non-modal dialog** closes on Esc and on an outside press, focus returns to the trigger (fixed in
+      `src/core/dialog.js`; verified in Chrome by `test/e2e/bugs-browser.e2e.mjs`).
 - [x] **Tooltip** is hoverable, persistent and dismissable with Esc (WCAG 1.4.13) (fixed).
 - [x] **Stepper** clickable steps are buttons; **calendar** uses the APG date grid (`aria-selected` on gridcells);
       **carousel** has a pause/play button, pauses on hover and focus, no autoplay under reduced motion (fixed).
-- [ ] **Screen-reader testing has never been done.** Either do it or soften the homepage line
-      "Keyboard & screen-reader support built in".
-- [x] **RTL** (mostly fixed): the theme uses logical properties; tabs, menu, menubar, navigation menu, carousel,
-      calendar and button group follow `dir="rtl"`. Still open: radio group (`src/core/checkbox.js`), toolbar
-      (`src/core/extras.js`) and slider (`src/core/forms.js`, whose CSS stays physical until its pointer maths is).
-- [ ] **axe findings outside the themed components** (`test/e2e/a11y-axe.e2e.mjs`, KNOWN list): unnamed progress bars,
-      checkpoint separator with a button, reaction labels (`src/core/ai.js`); theme-switch label and message-scroller
-      tab stop (`src/core/base.js`); gallery chrome contrast and scrollable code panels (`tools/`); demo markup.
+- [ ] **Screen-reader testing has never been done.** The manual script is `docs/screen-reader-testing.md`
+      (VoiceOver macOS/iOS, NVDA, JAWS, TalkBack). Until it has been run, the homepage says "Keyboard support and
+      WAI-ARIA roles built in; screen-reader testing in progress" instead of "Keyboard & screen-reader support".
+- [x] **RTL** (fixed): the theme uses logical properties; tabs, menu, menubar, navigation menu, carousel, calendar,
+      button group, radio group, toolbar and slider follow `dir="rtl"` (shared `isRTL`/`logicalKey` in
+      `src/core/util.js`). The slider measures pointer presses from the right edge and its theme rules use
+      `inset-inline-*`. Tested in `test/e2e/a11y-rtl-media.e2e.mjs` and `test/bugs-phase1.test.js`.
+- [x] **axe findings outside the themed components** (fixed; the KNOWN list in `test/e2e/a11y-axe.e2e.mjs` is empty):
+      progress bars named, a checkpoint with a button is a named group, reaction names include their count
+      (`src/core/ai.js`); the theme switch keeps its visible text as its name and the message-scroller viewport is a
+      tab stop (`src/core/base.js`); gallery `--s-muted` darkened and code panels focusable (`tools/`); demo inputs
+      and icon-only provider buttons labelled; blocks `li[data-off]` and the "−20%" label pass contrast.
 
 ## Component bugs
 
-Regression tests: `test/bugs-forms.test.js`, `test/bugs-base.test.js`, `test/bugs-react.test.js` and
-`test/e2e/bugs-browser.e2e.mjs` (Chrome; add it to the `test:e2e` script in `package.json`).
+Regression tests: `test/bugs-forms.test.js`, `test/bugs-base.test.js`, `test/bugs-react.test.js`,
+`test/bugs-phase1.test.js` and `test/e2e/bugs-browser.e2e.mjs` (Chrome; part of `npm run test:e2e`).
 
 - [x] **Confirm dialogs can be escaped**: three presses of Esc closed an `alert-dialog` or a vetoed
       `ui:beforeclose` in Chrome. Escape is now handled (and cancelled) on keydown for the topmost dialog only, after
@@ -80,36 +85,44 @@ Regression tests: `test/bugs-forms.test.js`, `test/bugs-base.test.js`, `test/bug
       after 5px of travel, never from a control inside an item; `pointercancel` puts the item back.
 - [x] **Accordion** toggled when a nested component's trigger was clicked; only an item's own trigger counts now.
 - [x] **Datatable and pager desynchronised** after search or sort. The table owns page, filter and sort and keeps
-      the pager on its page (without moving focus). Pagination should get a silent `sync({page,total})` so the
-      datatable need not clamp it with `setTotal()` (proposed for `navigation.js`).
-- [ ] **Tooltip / hover-card timers survive destroy**, leaving a stuck layer that blocks a parent popover
-      (verified). `src/core/popover.js:57`. Same omission in navigation-menu, reasoning, clipboard.
+      the pager on its page through the pager's silent `sync({ page, total })` (no `ui:change`, no focus move;
+      `src/core/navigation.js`).
+- [x] **Timers survive destroy** (fixed): tooltip, hover-card (`popover.js`), reasoning and navigation-menu clear
+      their timers in `destroy` (`test/a11y-behaviour.test.js`); clipboard keeps its reset timer and clears it
+      (`base.js`, `test/bugs-phase1.test.js`).
 - [x] **React**: alert, badge and attachment no longer remove React's node (hidden; the app removes it on
       `dismiss`/`remove`); `DataList`, `Callout`, `Inset` are CSS-only kinds; `options` are compared by value and
       callbacks always call the latest function. A React-rendered toaster is never moved into a wrapper.
 - [x] **Destroy then re-create leaked** hidden inputs (slider, pin-input, sortable): fixed in `forms.js`.
-- [ ] Menubar and scrollspy leak listeners on destroy (verified): fix proposed for `menu.js` and `navigation.js`.
+- [x] **Menubar and scrollspy leaked listeners on destroy** (fixed): menubar uses a listener bag (`menu.js`);
+      scrollspy removes its click handler and cancels a pending animation frame (`navigation.js`).
 - [x] **Slider**: `pointercancel`/`lostpointercapture` end the drag; float steps are rounded to the step's precision.
       Resizable and sortable handle `pointercancel` too.
 - [x] **Custom elements**: `<ui-checkbox>`, `<ui-switch>` and `<ui-toggle>` are focusable and work with Space/Enter;
       `<ui-textarea>` wraps a `<textarea>` instead of throwing.
 - [x] **Toast**: never renders into a removed toaster; the action uses the latest options; the list stays a list
       inside a named `role="region"` wrapper; each toast is announced once through a live region.
-- [ ] **`.card` collapses** to one word per line inside flex or `.cluster` because of `container-type: inline-size`
-      (reproduced: 41px wide, one word per line). Fix proposed for `packages/colibri-css`: make the container opt-in
-      (`.card.container`).
+- [x] **`.card` collapsed** to one word per line inside flex, `.cluster` or a fit-content parent because of
+      `container-type: inline-size` (fixed): a card is no longer a size container; add `.container` to one whose
+      content uses container queries. The kitchen-sink example now works (a container query measures an ancestor,
+      so the layout sits inside a `.card.container`; before, the wide card never switched). Tested in Chrome.
 - [x] **CSP**: `motion.register()` uses a constructed stylesheet (`adoptedStyleSheets`), with a `<style>` fallback
-      that takes a nonce. See `docs/csp.md`.
+      that takes a nonce. Templates write no `style` attribute by default: chart legend dots come from the
+      stylesheet, the FreeMarker `skeleton` is sized by the theme (its `w`/`h` arguments still write one; use a
+      class under a strict policy). See `docs/csp.md`; checked by `npm run test:java`.
 - [ ] **Lazy loader**: one slow chunk delays every component in the pass; a failed chunk cannot be retried
       without a reload (browser caches the failure). Both are documented; consider per-module initialisation.
 - [x] Smaller items fixed: toolbar no longer takes keys from nested fields and popups; file-input matches `accept`
       like the browser (wildcards, extensions, case, literal `+` and `.`); theme-switch validates stored and submitted
       modes; no null dereferences when parts are missing; chart panels and datatable read localised numbers
       (`parseNumber`).
-- [ ] Smaller items in other files, fixes proposed: duplicate ids in navigation-menu and in tabs with spaces in
-      values (`menu.js`, `tabs.js`); sidebar Ctrl/Cmd+B from text fields and a configurable key (`navigation.js`);
-      date-picker accepting out-of-range dates (`calendar.js`); `parseFloat("1,200")` in the conversation chart
-      (`ai.js`); carousel swallowing keys meant for nested inputs.
+- [x] Smaller items in other files (fixed, `test/bugs-phase1.test.js`): unique ids in navigation-menu and in tabs
+      (values escaped for ids, so `aria-controls` survives a space); sidebar Ctrl/Cmd+B ignores text fields,
+      editors, Alt/Shift chords and handled events, with `data-shortcut` (`"false"` turns it off); the date picker
+      rejects disabled and out-of-range dates (initial value, setter, typed value with `aria-invalid` and
+      `valid: false`); the conversation chart reads localised numbers (`parseNumber`).
+- [x] Carousel no longer takes arrow keys typed in a field inside a slide (`src/core/base.js`; tested in
+      `test/bugs-phase1.test.js`).
 
 ## Stylesheets
 
