@@ -167,14 +167,17 @@ test("calendar: APG date grid puts aria-selected on gridcells, aria-current on t
   key(document.activeElement, "ArrowRight"); assert.equal(document.activeElement.dataset.date, "2026-10-14");
 });
 
-test("carousel: autoplay has a labelled pause button, pauses on hover and focus, and never starts under reduced motion", async () => {
+test("carousel: autoplay has a labelled pause button, pauses on hover and focus, and never starts under reduced motion", async (t) => {
   const markup = `<div data-ui="carousel" data-loop data-autoplay="40" aria-label="Featured"><div data-ui-part="viewport"><div data-ui-part="slide">1</div><div data-ui-part="slide">2</div><div data-ui-part="slide">3</div></div><button data-ui-part="prev">‹</button><button data-ui-part="next">›</button></div>`;
   const r = mount(markup), c = $(r, '[data-ui="carousel"]'), play = $(c, '[data-ui-part="play"]');
+  const api = c.__uiCarousel; t.after(() => api.destroy()); // a failed assertion must not leave the autoplay interval running
   assert.ok(play, "pause/play button generated"); assert.equal(c.firstElementChild, play, "first in tab order");
   assert.equal(play.getAttribute("aria-label"), "Stop slide rotation"); assert.equal(c.__uiCarousel.playing, true);
   assert.equal($(c, '[data-ui-part="viewport"]').getAttribute("aria-live"), "off");
   ptr(c, "pointerenter"); const at = c.__uiCarousel.index; await sleep(120); assert.equal(c.__uiCarousel.index, at, "paused while hovered");
-  ptr(c, "pointerleave"); await sleep(120); assert.notEqual(c.__uiCarousel.index, at, "resumes after hover");
+  // count slide changes: with three looping slides, three ticks bring the index back to where it was
+  let moved = 0; c.addEventListener("ui:change", () => moved++);
+  ptr(c, "pointerleave"); await sleep(120); assert.ok(moved > 0, "resumes after hover");
   $(c, '[data-ui-part="next"]').focus(); assert.equal(c.__uiCarousel.playing, false, "paused while focus is inside");
   $(c, '[data-ui-part="next"]').blur();
   play.click(); assert.equal(c.__uiCarousel.playing, false); assert.equal(play.getAttribute("aria-label"), "Start slide rotation");
