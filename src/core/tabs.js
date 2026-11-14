@@ -106,7 +106,7 @@ export function createTabs(root, options = {}) {
     const list = enabled();
     if (!list.length || isDisabled(t)) return;
     const i = list.indexOf(t);
-    const rtl = root.ownerDocument.defaultView.getComputedStyle(root).direction === "rtl";
+    const rtl = (root.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" || root.ownerDocument.defaultView.getComputedStyle(root).direction === "rtl";
     const prev = orientation === "vertical" ? "ArrowUp" : rtl ? "ArrowRight" : "ArrowLeft";
     const next = orientation === "vertical" ? "ArrowDown" : rtl ? "ArrowLeft" : "ArrowRight";
     let target = null;
