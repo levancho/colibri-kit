@@ -23,23 +23,31 @@
     <div class="stack np-intro">
       <span class="pill"><span class="pill-dot" aria-hidden="true"></span>React Native and Expo</span>
       <h1>Components for <span class="grad">React Native.</span></h1>
-      <p class="lede">The Colibri catalog, rebuilt for phones: <b id="np-count">every</b> components and ready-made screens, themed from one hue. No dependencies beyond React Native, no build step, no configuration.</p>
-      <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
-      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";
-
-&lt;ColibriProvider hue={160}&gt;
-  &lt;Screen&gt;
-    &lt;Stack gap="m"&gt;
-      &lt;Heading&gt;Hello&lt;/Heading&gt;
-      &lt;Button title="Continue" variant="soft" onPress={next} /&gt;
-    &lt;/Stack&gt;
-  &lt;/Screen&gt;
-&lt;/ColibriProvider&gt;</code></pre>
+      <p class="lede">The Colibri catalog, rebuilt for phones: <b id="np-count">every</b> components and ready-made screens, themed from one hue. No build step, no configuration, and two ways to use it.</p>
+      <div class="np-options" role="group" aria-label="Two ways to install">
+        <section class="np-option" aria-labelledby="np-light-h">
+          <h2 id="np-light-h">Light <span class="badge">no dependencies</span></h2>
+          <p class="muted">Everything that needs only React Native itself: <b id="np-light-count">most</b> of the catalog. Works in any project and in Expo Go with nothing else to install.</p>
+          <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+          <pre class="np-code"><code>import { Button, BottomSheet } from "@colibri-kit/native";</code></pre>
+        </section>
+        <section class="np-option" aria-labelledby="np-full-h">
+          <h2 id="np-full-h">Full <span class="badge" data-tone="accent">4 libraries</span></h2>
+          <p class="muted">Light, plus <b id="np-full-count">the components</b> that need a library: finger-driven sheets, rows and lists (Reanimated and Gesture Handler), line and pie charts and an icon set (SVG), and bars that fit the notch (Safe Area Context).</p>
+          <pre class="np-code"><code>npm install @colibri-kit/native
+npx expo install react-native-reanimated react-native-gesture-handler react-native-svg react-native-safe-area-context</code></pre>
+          <pre class="np-code"><code>import { Button, BottomSheet, LineChart } from "@colibri-kit/native/full";</code></pre>
+        </section>
+      </div>
+      <p class="muted">The two share names and props. A component that exists in both, such as <code>BottomSheet</code>, is the finger-driven version in Full, so moving from Light to Full is a change of import path. You can also take one piece at a time: <code>@colibri-kit/native/gestures</code>, <code>/svg</code> or <code>/safe-area</code>, each needing only its own library. In the list below, a card marked <span class="badge" data-tone="accent">Full</span> names the libraries it needs; unmarked cards are Light.</p>
       <p class="muted">Pick a component below to try it on the phone, then switch to <b>Code</b> for a sample you can paste. The phone runs the real component code in your browser through react-native-web. <a href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a>.</p>
     </div>
-    <div class="field np-search">
-      <label for="np-q" class="visually-hidden">Filter components</label>
-      <input id="np-q" type="search" placeholder="Filter components…" autocomplete="off">
+    <div class="np-filter">
+      <div class="field np-search">
+        <label for="np-q" class="visually-hidden">Filter components</label>
+        <input id="np-q" type="search" placeholder="Filter components…" autocomplete="off">
+      </div>
+      <div class="np-tabs" id="np-tier" role="group" aria-label="Show Light or Full components"><button type="button" data-tier="all" aria-pressed="true">All</button><button type="button" data-tier="light" aria-pressed="false">Light</button><button type="button" data-tier="full" aria-pressed="false">Full only</button></div>
     </div>
     <div id="catalog" class="stack np-catalog" aria-live="polite"><p class="muted">Loading the component list…</p></div>
     <noscript><p class="callout" data-tone="warn">The component list and the live demo need JavaScript.</p></noscript>

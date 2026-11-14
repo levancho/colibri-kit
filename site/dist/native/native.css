@@ -34,3 +34,13 @@
 .np-codebar { display: flex; align-items: center; justify-content: space-between; gap: var(--c-space-s); padding: var(--c-space-xs) var(--c-space-s); border-block-end: 1px solid oklch(30% .03 280); font-size: var(--c-text-sm); font-weight: 600; }
 .np-source { margin: 0; padding: var(--c-space-s); overflow: auto; font-family: var(--c-font-mono); font-size: var(--c-text-xs); line-height: 1.65; color: oklch(88% .05 190); tab-size: 2;
   &:focus-visible { outline: 2px solid oklch(72% .16 250); outline-offset: -2px; } }
+
+/* Light and Full: the two ways to install, side by side */
+.np-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: var(--c-space-s); }
+.np-option { display: grid; align-content: start; gap: var(--c-space-xs); min-inline-size: 0; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface);
+  & h2 { display: flex; align-items: center; gap: .5em; font-size: var(--c-text-lg); letter-spacing: -.015em; }
+  & p { font-size: var(--c-text-sm); }
+  & .np-code { white-space: pre-wrap; overflow-wrap: anywhere; } }
+.np-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-xs); & .np-search { flex: 1 1 14rem; } & .np-tabs { justify-self: auto; } }
+.np-needs { display: flex; flex-wrap: wrap; align-items: center; gap: .5em; font-size: var(--c-text-xs); color: var(--c-muted); }
+.np-req { font-size: .7rem; font-weight: 600; color: var(--c-accent); }

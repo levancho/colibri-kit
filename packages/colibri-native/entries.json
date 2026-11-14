@@ -1,0 +1,43 @@
+{
+  "light": 215,
+  "svg": [
+    "LineChart",
+    "AreaChart",
+    "BarChart",
+    "PieChart",
+    "DonutChart",
+    "Sparkline",
+    "ProgressRing",
+    "Gauge",
+    "Icon",
+    "iconNames"
+  ],
+  "safeArea": [
+    "SafeAreaRoot",
+    "useInsets",
+    "SafeScreen",
+    "SafeBottomBar",
+    "SafeAppBar",
+    "SafeFab",
+    "SafeActionSheet",
+    "SafeBottomSheet",
+    "SafeBanner"
+  ],
+  "gestures": {
+    "upgraded": [
+      "BottomSheet",
+      "Sheet",
+      "Drawer",
+      "SwipeRow",
+      "SwipeGroup",
+      "Sortable",
+      "Slider",
+      "Carousel",
+      "ApplicationBoard"
+    ],
+    "added": [
+      "AnimatedList",
+      "PressableScale"
+    ]
+  }
+}
