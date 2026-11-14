@@ -1,0 +1,4 @@
+/* The demo app alone, shown inside the phone frame on /native/. A page of its own, so the window it measures is
+   the phone: dialogs, drawers and sheets open inside the frame and layouts use phone widths. */
+html, body, #app { block-size: 100%; margin: 0; }
+#app { display: flex; }
