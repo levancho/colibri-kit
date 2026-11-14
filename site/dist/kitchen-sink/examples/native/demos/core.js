@@ -4,7 +4,7 @@ import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Callout, Avatar,
   TextField, Switch, Checkbox, RadioGroup, Tabs, ListItem, List, Spinner, Progress, Dialog, Sheet,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const Box = ({ label }) => {
   const theme = useTheme();

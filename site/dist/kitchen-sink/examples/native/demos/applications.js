@@ -5,7 +5,7 @@ import {
   useToast, useTheme, Stack, Text, Card, Badge, Button, ListItem, Divider, Progress, Sheet,
   ApplicationShell, ApplicationMetrics, ApplicationChart, ApplicationTable, ApplicationBoard, ApplicationProjects, ApplicationPlanner,
   ApplicationIdentity, ApplicationProducts, ApplicationReceipt, ApplicationConversation, ApplicationForm, ApplicationPhoto, ApplicationArticle,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const SHELL = {
   brand: "Northstar", user: "Jordan Lee",

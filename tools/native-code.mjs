@@ -61,7 +61,7 @@ export function samplesFor(file) {
       const bucket = bySource.get(info.from) ?? { named: [], whole: [] };
       (info.spec ? bucket.named : bucket.whole).push(info.spec ?? info.whole); bySource.set(info.from, bucket);
     }
-    const order = ["react", "react-native", "@colibri-kit/native"];
+    const order = ["react", "react-native", "@colibri-kit/native-core", "@colibri-kit/native-full"];
     const lines = [...bySource].sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0])).map(([from, { named, whole }]) => `import ${[...whole, named.length ? `{ ${named.join(", ")} }` : ""].filter(Boolean).join(", ")} from "${from}";`);
     const body = demo.type === "Identifier" ? `export default ${demo.name};` : demo.type === "ArrowFunctionExpression" || demo.type === "FunctionExpression" ? `export default ${dedent(text(demo)).replace(/^\(\) => /, "function Example() ").replace(/^function Example\(\) \(([\s\S]*)\)$/, (_, jsx) => `function Example() {\n  return (${jsx.split("\n").map((line, index) => (index ? "  " + line : line)).join("\n")});\n}`)}` : `export default ${text(demo)};`;
     samples[id] = [lines.join("\n"), ...helpers.map((node) => dedent(text(node))), body].filter(Boolean).join("\n\n") + "\n";

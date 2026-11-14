@@ -1,9 +1,9 @@
-// @colibri-kit/native rendered through react-native-web (site/dist/native): palette parity with Colibri CSS, and behaviour.
+// @colibri-kit/native-core rendered through react-native-web (site/dist/native): palette parity with Colibri CSS, and behaviour.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import puppeteer from 'puppeteer-core';
 import {serveBuild} from './server.mjs';
-import {createTheme} from '../../packages/colibri-native/src/theme.js';
+import {createTheme} from '../../packages/colibri-native-core/src/theme.js';
 const server=await serveBuild();
 const browser=await puppeteer.launch({executablePath:process.env.CHROME || ['/usr/bin/google-chrome','/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'].find(fs.existsSync),args:['--no-sandbox']});
 try {
@@ -104,20 +104,29 @@ try {
  assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),fullIds.length);
  await page.$eval('#np-tier [data-tier=all]',button=>button.click());
  await open('svg-line-chart');await page.click('.np-tabs [data-view=code]');
- assert.match(await page.$eval('#np-source',e=>e.textContent),/^\/\/ Full: needs react-native-svg\n\/\/ npx expo install react-native-svg\n/);
+ assert.match(await page.$eval('#np-source',e=>e.textContent),/^\/\/ Colibri React Native Full\n\/\/ npm install @colibri-kit\/native-full\n\/\/ npx expo install react-native-svg\n/);
  await page.click('.np-tabs [data-view=demo]');
 
  // 4. Code samples: one per demo, generated from the demo source.
  const samples=await page.evaluate(()=>fetch('/native/code.json').then(r=>r.json()));
  for (const group of catalog) for (const demo of group.demos) assert.ok(samples[demo.id]?.includes('export default'),`code sample for ${demo.id}`);
- assert.match(samples.button,/^import \{ [^}]*\bButton\b[^}]*\} from "@colibri-kit\/native";/);
+ assert.match(samples.button,/^import \{ [^}]*\bButton\b[^}]*\} from "@colibri-kit\/native-core";/);
+ assert.match(samples['svg-line-chart'],/from "@colibri-kit\/native-full";/);assert.doesNotMatch(samples['svg-line-chart'],/native-core/);
  await open('button');await page.click('.np-tabs [data-view=code]');
  assert.equal(await page.$eval('.np-phone',e=>e.hidden),true);
- assert.equal(await page.$eval('#np-source',e=>e.textContent),samples.button);assert.equal(await page.$eval('#np-code-name',e=>e.textContent),'Button · Core');
+ assert.equal(await page.$eval('#np-source',e=>e.textContent),'// Colibri React Native Core\n// npm install @colibri-kit/native-core\n\n'+samples.button);assert.equal(await page.$eval('#np-code-name',e=>e.textContent),'Button · Core');
  await page.click('.np-tabs [data-view=demo]');assert.equal(await page.$eval('.np-codebox',e=>e.hidden),true);
  // 5. Documentation: its own section beside Components, with the two editions explained and an API reference.
  assert.deepEqual(await page.$$eval('.np-sections a',links=>links.map(a=>[a.textContent,a.getAttribute('href'),a.getAttribute('aria-current')])),[['Documentation','/native/docs/',null],['Components','/native/','page']]);
  assert.deepEqual(await page.$$eval('.np-option h2',heads=>heads.map(h=>h.firstChild.textContent.trim())),['Colibri React Native Core','Colibri React Native Full']);
+ // Two packages, each with its own install line.
+ assert.deepEqual(await page.$$eval('.np-option .np-code',blocks=>blocks.map(block=>block.textContent)),['npm install @colibri-kit/native-core','npm install @colibri-kit/native-full']);
+ // The header switch sets light or dark for the page and the phone follows it.
+ const phoneBg=()=>app.$eval('[data-testid^="demo-"],[data-testid=home]',el=>getComputedStyle(el).backgroundColor);
+ await page.click('#theme');const first=await page.evaluate(()=>document.documentElement.dataset.theme);assert.ok(['light','dark'].includes(first));
+ await app.waitForFunction(()=>true);await new Promise(r=>setTimeout(r,300));const bgA=await phoneBg();
+ await page.click('#theme');const second=await page.evaluate(()=>document.documentElement.dataset.theme);assert.notEqual(second,first);
+ await new Promise(r=>setTimeout(r,300));assert.notEqual(await phoneBg(),bgA,'the phone changes with the page');
  await page.click('.np-sections a[href="/native/docs/"]');
  await page.waitForFunction(()=>'docsReady' in document.documentElement.dataset);
  assert.equal(await page.$eval('.np-sections a[aria-current]',a=>a.textContent),'Documentation');
@@ -137,6 +146,7 @@ try {
  for (const prop of ['keyboardAware','snapPoints','visible','onClose']) assert.ok(sheetProps.includes(prop),`the Full BottomSheet documents ${prop}`);
  await page.type('#nd-q','keyboardAware');
  assert.deepEqual(await page.$$eval('.nd-item:not([hidden])',items=>items.map(item=>item.id)),['api-gestures-BottomSheet']);
+ assert.deepEqual(await page.$$eval('#editions .np-option .np-code',blocks=>blocks.map(block=>block.textContent)),['npm install @colibri-kit/native-core','npm install @colibri-kit/native-full']);
  for (const id of ['editions','install-core','install-full','theming','reference']) assert.ok(await page.$('#'+id),`the documentation has #${id}`);
  assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  assert.deepEqual(errors,[]);

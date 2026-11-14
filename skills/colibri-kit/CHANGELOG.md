@@ -1,10 +1,12 @@
 # Changelog
+## 1.6.0 (2026-11-14)
+- React Native is two packages: `@colibri-kit/native-core` (no dependencies) and `@colibri-kit/native-full` (includes Core; gestures, SVG charts and icons, safe areas). Documentation is at colibri-kit.io/native/docs/.
 ## 1.5.0 (2026-11-14)
-- React Native: Core (`@colibri-kit/native`, no dependencies) and Full (`@colibri-kit/native/full`: gestures, SVG charts and icons, safe areas) with the same names and props; which libraries each needs; phone navigation layouts replace the numbered sidebar blocks.
+- React Native: Core (`@colibri-kit/native-core`, no dependencies) and Full (`@colibri-kit/native-full`: gestures, SVG charts and icons, safe areas) with the same names and props; which libraries each needs; phone navigation layouts replace the numbered sidebar blocks.
 ## 1.4.0 (2026-11-14)
-- React Native: `@colibri-kit/native` now covers the catalog (about 200 components and hooks in twelve groups, including phone-only patterns, ready-made screens and application components); lists what has no native version and the callback rules for pickers and clipboard.
+- React Native: `@colibri-kit/native-core` now covers the catalog (about 200 components and hooks in twelve groups, including phone-only patterns, ready-made screens and application components); lists what has no native version and the callback rules for pickers and clipboard.
 ## 1.3.0 (2026-11-12)
-- React Native: `@colibri-kit/native` (provider, `useTheme`, 23 components) with the same gap/variant/tone/size vocabulary as props; never mix it with Colibri CSS or `@colibri-kit/ui`.
+- React Native: `@colibri-kit/native-core` (provider, `useTheme`, 23 components) with the same gap/variant/tone/size vocabulary as props; never mix it with Colibri CSS or `@colibri-kit/ui`.
 ## 1.2.0 (2026-11-10)
 - Reserved class names listed in tokens.md; `colibri classes`, `colibri collisions <file.css>` and the prefixed stylesheet (`colibri.prefixed.css`, `.c-*`) for projects that already use them.
 - CSS and UI accept each other's status words: `ok|warn|bad` and `success|warning|danger`; `danger` and `destructive`.

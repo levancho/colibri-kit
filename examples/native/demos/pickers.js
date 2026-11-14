@@ -4,7 +4,7 @@ import { View } from "react-native";
 import {
   useTheme, useToast, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Tabs, TextField,
   Slider, Calendar, DatePicker, ColorPicker, FileInput, ImageInput, Repeater, Sortable,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 // ---------------------------------------------------------------- sample data
 const pad = (n) => String(n).padStart(2, "0");

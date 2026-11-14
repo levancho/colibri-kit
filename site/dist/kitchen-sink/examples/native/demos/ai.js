@@ -5,7 +5,7 @@ import {
   useToast, useTheme, Stack, Cluster, Text, Button, Card, Badge, Divider,
   AiMessage, Chat, ChainOfThought, Checkpoint, CitationPreview, Confirmation, Context, FileTree, InlineCitation, ModelSelector, Plan, PromptInput,
   Queue, Reasoning, Sources, StackTrace, Subagent, Suggestion, Task, Terminal, TestResults, Tool,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const SOURCES = [
   { title: "Tree View Pattern", url: "https://www.w3.org/WAI/ARIA/apg/patterns/treeview/", site: "w3.org", snippet: "A tree view widget presents a hierarchical list. Any item in the hierarchy may have child items, and items that have children may be expanded or collapsed." },

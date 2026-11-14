@@ -7,9 +7,13 @@
     "start": "expo start"
   },
   "dependencies": {
-    "@colibri-kit/native": "^0.1.0",
+    "@colibri-kit/native-full": "^0.1.0",
     "expo": "*",
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-gesture-handler": "*",
+    "react-native-reanimated": "*",
+    "react-native-safe-area-context": "*",
+    "react-native-svg": "*"
   }
 }

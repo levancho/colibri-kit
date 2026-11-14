@@ -5,7 +5,7 @@ import {
   useTheme, useToast, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch,
   Menu, Pagination, useScrollSpy, ScrollSpy, ScrollSpySection, ScrollTo, Sidebar, Stepper,
   TabView, TabNav,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 /** A fixed-height window with its own scrolling, so a demo can scroll inside the catalog page. */
 const Frame = ({ height = 380, children }) => {

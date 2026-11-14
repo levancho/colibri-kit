@@ -4,7 +4,7 @@ import {
   useToast, Stack, Cluster, Divider, Text, Button, Card, Badge,
   Input, Field, InputGroup, InputAddon, Textarea, PasswordInput, PinInput, Select, Combobox,
   CheckboxGroup, CheckboxCards, RadioCards, ToggleGroup, SegmentedControl,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const COUNTRIES = [
   { label: "Europe", options: [

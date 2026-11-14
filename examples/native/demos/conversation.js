@@ -4,7 +4,7 @@ import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Button, Card, Tabs,
   Bubble, BubbleGroup, Message, Marker, Trace, TraceStep, Attachment, Questionnaire, Chart, ChartLegend,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 // A 6 × 6 pixel sunset, scaled up: stands in for a photo so the demo needs no network.
 const PHOTO = { uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAIAAABvrngfAAAAfUlEQVR42gFyAI3/AEZ4yEp2yE50yFJyyFZwyFpuyABkhLJogrJsgLJwfrJ0fLJ4erIAgpCcho6cioycjoqckoicloacAKCchqSahqiYhqyWhrCUhrSShgC+qHDCpnDGpHDKonDOoHDSnnAA3LRa4LJa5LBa6K5a7Kxa8KpaUz8+lQF81RIAAAAASUVORK5CYII=" };

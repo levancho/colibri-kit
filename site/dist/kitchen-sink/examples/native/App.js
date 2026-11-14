@@ -4,7 +4,7 @@
 // { id, title, description, Demo, fullscreen? }.
 import { useEffect, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
-import { ColibriProvider, ToastProvider, useTheme, Screen, Stack, Cluster, Divider, Text, Heading, Card, Badge, Tabs, ListItem, Button } from "@colibri-kit/native";
+import { ColibriProvider, ToastProvider, useTheme, Screen, Stack, Cluster, Divider, Text, Heading, Card, Badge, Tabs, ListItem, Button } from "@colibri-kit/native-core";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GROUPS, DEMOS, LIBRARIES } from "./demos/index.js";
@@ -28,7 +28,7 @@ function Home({ open, look }) {
   return (
     <Screen scroll gap="l" testID="home">
       <Stack gap="xs">
-        <Badge tone="accent">@colibri-kit/native</Badge>
+        <Badge tone="accent">Colibri React Native</Badge>
         <Heading level={1}>Colibri for React Native</Heading>
         <Text tone="muted">{count} components and screens, themed from one hue.</Text>
       </Stack>
@@ -86,6 +86,12 @@ export default function App() {
     const sync = () => setRoute(readHash());
     globalThis.addEventListener("hashchange", sync);
     return () => globalThis.removeEventListener("hashchange", sync);
+  }, []);
+  // On the web the page that hosts the demo can set light or dark (the site's header switch does).
+  useEffect(() => {
+    if (!web) return undefined;
+    globalThis.ColibriNativeSetScheme = (choice) => setScheme(choice === "dark" || choice === "light" ? choice : "auto");
+    return () => { delete globalThis.ColibriNativeSetScheme; };
   }, []);
   const open = (id) => { if (web) globalThis.location.hash = id; else setRoute(id); };
   const demo = DEMOS[route];

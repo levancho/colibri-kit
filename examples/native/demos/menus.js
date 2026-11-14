@@ -4,7 +4,7 @@ import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, TextField, Checkbox, RadioGroup, ListItem,
   AlertDialog, Drawer, Popover, DropdownMenu, ContextMenu, Tooltip,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const FILES = [
   { id: "1", name: "Q3 roadmap.pdf", detail: "2.4 MB · edited yesterday" },

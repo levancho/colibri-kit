@@ -16,7 +16,9 @@
 </head>
 <body>
 <a class="skip visually-hidden" href="#main">Skip to content</a>
-<header class="kbar" data-active="native"></header>
+<header class="kbar" data-active="native">
+  <button class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Switch between light and dark">◐</button>
+</header>
 <nav class="np-sections" aria-label="Colibri React Native"><div class="center"><b>Colibri React Native</b><a href="/native/docs/" aria-current="page">Documentation</a><a href="/native/">Components</a></div></nav>
 
 <div class="center nd">
@@ -40,7 +42,7 @@
   <main id="main" class="nd-main prose">
     <section id="overview">
       <h1>Colibri React Native</h1>
-      <p class="lede">Components for React Native and Expo, themed from one hue. It comes in two editions that share the same names and props: <b>Core</b>, which needs nothing but React Native, and <b>Full</b>, which adds what a library is needed for.</p>
+      <p class="lede">Components for React Native and Expo, themed from one hue. It comes as two npm packages that share the same names and props: <b>Core</b> (<code>@colibri-kit/native-core</code>), which needs nothing but React Native, and <b>Full</b> (<code>@colibri-kit/native-full</code>), which includes Core and adds what a library is needed for. You install one or the other.</p>
       <p><a class="btn" href="/native/">Browse the components</a></p>
     </section>
 
@@ -49,18 +51,21 @@
       <div class="np-options">
         <section class="np-option" aria-labelledby="nd-core-h">
           <h3 id="nd-core-h">Colibri React Native Core <span class="badge">no dependencies</span></h3>
-          <p class="muted">Import from <code>@colibri-kit/native</code>. <b id="nd-core-count">The components</b> and building blocks that run on React Native alone: layout, text, buttons, forms, overlays, navigation, phone patterns, data display, AI elements, ready-made screens and application components. Works in any project and in Expo Go with nothing else to install.</p>
+          <pre class="np-code"><code>npm install @colibri-kit/native-core</code></pre>
+          <p class="muted">The package <code>@colibri-kit/native-core</code>. <b id="nd-core-count">The components</b> and building blocks that run on React Native alone: layout, text, buttons, forms, overlays, navigation, phone patterns, data display, AI elements, ready-made screens and application components. Works in any project and in Expo Go with nothing else to install.</p>
         </section>
         <section class="np-option" aria-labelledby="nd-full-h">
           <h3 id="nd-full-h">Colibri React Native Full <span class="badge" data-tone="accent">4 libraries</span></h3>
-          <p class="muted">Import from <code>@colibri-kit/native/full</code>. Everything in Core, plus <b id="nd-full-count">the components</b> and building blocks that need a library: finger-driven sheets, rows and lists, line and pie charts, an icon set, and bars that fit the notch.</p>
+          <pre class="np-code"><code>npm install @colibri-kit/native-full</code></pre>
+          <p class="muted">The package <code>@colibri-kit/native-full</code>. It installs Core for you and re-exports it, so you import everything from one place. Everything in Core, plus <b id="nd-full-count">the components</b> and building blocks that need a library: finger-driven sheets, rows and lists, line and pie charts, an icon set, and bars that fit the notch.</p>
         </section>
       </div>
       <h3>The difference</h3>
       <table>
         <thead><tr><th scope="col"></th><th scope="col">Core</th><th scope="col">Full</th></tr></thead>
         <tbody>
-          <tr><th scope="row">Import from</th><td><code>@colibri-kit/native</code></td><td><code>@colibri-kit/native/full</code></td></tr>
+          <tr><th scope="row">Package</th><td><code>@colibri-kit/native-core</code></td><td><code>@colibri-kit/native-full</code> (includes Core)</td></tr>
+          <tr><th scope="row">Install</th><td><code>npm install @colibri-kit/native-core</code></td><td><code>npm install @colibri-kit/native-full</code>, then the four libraries</td></tr>
           <tr><th scope="row">Needs</th><td><code>react</code>, <code>react-native</code></td><td>Core, plus Reanimated, Gesture Handler, SVG and Safe Area Context</td></tr>
           <tr><th scope="row">Works in Expo Go</th><td>Yes</td><td>Yes: all four libraries ship with Expo</td></tr>
           <tr><th scope="row">Sheets, swipe rows, sortable lists, sliders</th><td>Work; the drag is followed on the JavaScript thread</td><td>Followed on the UI thread, with swipe to dismiss and a sheet that hands over to its scrolling list</td></tr>
@@ -72,24 +77,25 @@
       </table>
       <h3>What Full adds, by library</h3>
       <div id="nd-full-lists"><p class="muted">Loading…</p></div>
-      <p>The two editions share names and props. A component that exists in both, such as <code>BottomSheet</code>, is the finger-driven version in Full, so moving from Core to Full is a change of import path and nothing else. You can also take one part at a time: <code>@colibri-kit/native/gestures</code>, <code>@colibri-kit/native/svg</code> or <code>@colibri-kit/native/safe-area</code>, each needing only its own library.</p>
+      <p>The two editions share names and props. A component that exists in both, such as <code>BottomSheet</code>, is the finger-driven version in Full, so moving from Core to Full means installing the Full package and changing the package name in your imports, and nothing else. If you want only one part of Full, import it by its own path, which needs only its own library: <code>@colibri-kit/native-full/gestures</code>, <code>@colibri-kit/native-full/svg</code> or <code>@colibri-kit/native-full/safe-area</code>.</p>
     </section>
 
     <section id="install-core">
       <h2>Install Core</h2>
-      <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+      <pre class="np-code"><code>npm install @colibri-kit/native-core</code></pre>
       <p>Requires React Native 0.71 or newer (Expo SDK 48 or newer). There is nothing to configure and no build step.</p>
-      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";</code></pre>
+      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native-core";</code></pre>
     </section>
 
     <section id="install-full">
       <h2>Install Full</h2>
-      <pre class="np-code"><code>npm install @colibri-kit/native
+      <pre class="np-code"><code>npm install @colibri-kit/native-full
 npx expo install react-native-reanimated react-native-gesture-handler react-native-svg react-native-safe-area-context</code></pre>
+      <p>The first line installs Full, and Core with it. The second installs the four libraries Full builds on.</p>
       <p><code>npx expo install</code> picks versions that match your Expo SDK. The gesture components need Reanimated 4 or newer (which brings <code>react-native-worklets</code> and the New Architecture) and Gesture Handler 3 or newer; the SVG and safe-area parts work with older versions. Without Expo, install the four libraries with npm and follow each one's setup page; Reanimated needs its Babel plugin.</p>
       <p>Wrap the app once at its root:</p>
       <pre class="np-code"><code>import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { ColibriProvider, SafeAreaRoot } from "@colibri-kit/native/full";
+import { ColibriProvider, SafeAreaRoot } from "@colibri-kit/native-full";
 
 export default function App() {
   return (
@@ -101,12 +107,12 @@ export default function App() {
   );
 }</code></pre>
       <p>Then import everything from one place:</p>
-      <pre class="np-code"><code>import { Button, BottomSheet, LineChart, Icon, SafeScreen } from "@colibri-kit/native/full";</code></pre>
+      <pre class="np-code"><code>import { Button, BottomSheet, LineChart, Icon, SafeScreen } from "@colibri-kit/native-full";</code></pre>
     </section>
 
     <section id="quick-start">
       <h2>Quick start</h2>
-      <pre class="np-code"><code>import { ColibriProvider, ToastProvider, Screen, Stack, Heading, Text, Button, useToast } from "@colibri-kit/native";
+      <pre class="np-code"><code>import { ColibriProvider, ToastProvider, Screen, Stack, Heading, Text, Button, useToast } from "@colibri-kit/native-core";
 
 function Home() {
   const toast = useToast();

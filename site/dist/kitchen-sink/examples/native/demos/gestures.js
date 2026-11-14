@@ -1,11 +1,11 @@
-// Demos for the optional gestures entry (@colibri-kit/native/gestures): finger-driven versions of the core
+// Demos for the optional gestures entry (@colibri-kit/native-full/gestures): finger-driven versions of the core
 // components, built on react-native-reanimated and react-native-gesture-handler. Each entry: { id, title, description, Demo }.
 // The app root must be wrapped in GestureHandlerRootView (examples/native/App.js does it); the demos do not add it again.
 import { memo, useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import Animated, { useAnimatedRef, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
-import { useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, ListItem, Switch, Tabs, TextField } from "@colibri-kit/native";
-import { BottomSheet, Sheet, Drawer, SwipeRow, SwipeGroup, Sortable, Slider, Carousel, AnimatedList, PressableScale } from "@colibri-kit/native/gestures";
+import { useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, ListItem, Switch, Tabs, TextField } from "@colibri-kit/native-full";
+import { BottomSheet, Sheet, Drawer, SwipeRow, SwipeGroup, Sortable, Slider, Carousel, AnimatedList, PressableScale } from "@colibri-kit/native-full";
 
 function Frame({ height = 560, children, testID }) {
   const theme = useTheme();

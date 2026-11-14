@@ -7,8 +7,8 @@
 import { useMemo, useState } from "react";
 import { Platform, View } from "react-native";
 import { SafeAreaInsetsContext } from "react-native-safe-area-context";
-import { useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, ListItem, Tabs, AppBarAction } from "@colibri-kit/native";
-import { SafeAreaRoot, SafeScreen, SafeAppBar, SafeBottomBar, SafeFab, SafeActionSheet, SafeBottomSheet, SafeBanner, useInsets } from "@colibri-kit/native/safe-area";
+import { useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, ListItem, Tabs, AppBarAction } from "@colibri-kit/native-full";
+import { SafeAreaRoot, SafeScreen, SafeAppBar, SafeBottomBar, SafeFab, SafeActionSheet, SafeBottomSheet, SafeBanner, useInsets } from "@colibri-kit/native-full";
 
 const DEVICES = {
   notch: { label: "iPhone", insets: { top: 47, bottom: 34, left: 0, right: 0 } },

@@ -5,7 +5,7 @@ import { Platform, ScrollView, View } from "react-native";
 import {
   useTheme, useToast, Screen, Stack, Cluster, Text, Heading, Button, Badge, Card, Callout, Avatar, ListItem, Divider, Switch, RadioGroup, Progress,
   NavBarButton, SectionedDrawer, NestedDrawer, WorkspaceDrawer, MailLayout, CalendarDrawer, FileTreeDrawer, SettingsSheet,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const USER = { name: "Jordan Lee", email: "jordan@example.com", actions: [{ id: "account", label: "Account", icon: "◉" }, { id: "billing", label: "Billing", icon: "▭" }, { id: "logout", label: "Log out", icon: "→", tone: "bad", separated: true }] };
 const MONO = Platform.select({ ios: "Menlo", android: "monospace", default: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" });

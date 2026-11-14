@@ -1,7 +1,7 @@
 // Demos for the blocks group: the ten sign-in and sign-up screens. Each entry: { id, title, description, Demo }.
 // Nothing here talks to a server: every callback waits a moment, like a request would, and reports in a toast.
 import { useState } from "react";
-import { Stack, Cluster, Button, Text, useToast, Login01, Login02, Login03, Login04, Login05, Signup01, Signup02, Signup03, Signup04, Signup05 } from "@colibri-kit/native";
+import { Stack, Cluster, Button, Text, useToast, Login01, Login02, Login03, Login04, Login05, Signup01, Signup02, Signup03, Signup04, Signup05 } from "@colibri-kit/native-core";
 
 const later = (work) => new Promise((resolve, reject) => setTimeout(() => { try { resolve(work?.()); } catch (problem) { reject(problem); } }, 700));
 
