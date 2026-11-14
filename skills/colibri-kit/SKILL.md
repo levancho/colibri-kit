@@ -1,7 +1,7 @@
 ---
 name: colibri-kit
 description: Build and maintain interfaces with Colibri Kit components, CSS tokens, layouts and themes. Use when the user requests Colibri or the project already uses Colibri CSS or UI. Covers HTML, React, FreeMarker and Thymeleaf without adding Tailwind.
-version: 1.3.0
+version: 1.4.0
 license: MIT
 ---
 # Colibri Kit
@@ -92,7 +92,11 @@ Same primitives and attributes as HTML (`className="stack card"`, `data-gap="m"`
 
 ### React Native
 
-React Native has no HTML or CSS, so it uses a separate package, `@colibri-kit/native` (`packages/colibri-native/`), with the same vocabulary as props: `<Stack gap="m">`, `<Button variant="soft" size="l">`, `<Badge tone="ok">`. Wrap the app in `<ColibriProvider hue={…} scheme="auto|light|dark" radius="sharp|soft|round">` (and `<ToastProvider>` for `useToast()`); read tokens with `useTheme()` (`theme.colors.accent`, `theme.space.m`, `theme.radius.l`). Components: Screen, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Callout, Avatar, TextField, Switch, Checkbox, RadioGroup, Tabs, ListItem, List, Spinner, Progress, Dialog, Sheet. Never use `className`, `data-*` attributes, Colibri CSS files or `@colibri-kit/ui` in React Native code. It has no dependencies beyond `react` and `react-native` and works in Expo Go. See `packages/colibri-native/README.md`.
+React Native has no HTML or CSS, so it uses a separate package, `@colibri-kit/native` (`packages/colibri-native/`), with the same vocabulary as props: `<Stack gap="m">`, `<Button variant="soft" size="l">`, `<Badge tone="ok">`. Wrap the app in `<ColibriProvider hue={…} scheme="auto|light|dark" radius="sharp|soft|round">` (and `<ToastProvider>` for `useToast()`); read tokens with `useTheme()` (`theme.colors.accent`, `theme.space.m`, `theme.radius.l`). Never use `className`, `data-*` attributes, Colibri CSS files or `@colibri-kit/ui` in React Native code. It has no dependencies beyond `react` and `react-native` and works in Expo Go.
+
+It covers the catalog in groups: basics (Screen, Stack, Cluster, Text, Heading, Button, Card, Badge, Callout, Avatar, TextField, Switch, Checkbox, RadioGroup, Tabs, ListItem, List, Spinner, Progress, Dialog, Sheet, toasts); phone patterns (BottomBar + TabScreens, AppBar, Fab, ActionSheet, BottomSheet, SwipeRow, PullToRefresh, SearchBar, Chip, PageDots, Banner); display (Accordion, Alert, Collapsible, Link, Inset, IconButton, Toggle, Item, ButtonGroup, Toolbar, ThemeSwitch, typography helpers); data (Table, DataTable, DataList, Carousel, MessageScroller, CodeBlock, Rating, Skeleton, Empty); overlays (AlertDialog, Drawer, Popover, DropdownMenu, ContextMenu, Tooltip); navigation (Menu, Pagination, Sidebar, Stepper, TabView, TabNav, ScrollSpy, ScrollTo); forms (Input, Field, InputGroup, Textarea, PasswordInput, PinInput, Select, Combobox, CheckboxGroup, CheckboxCards, RadioCards, ToggleGroup, SegmentedControl); pickers (Slider, Calendar, DatePicker, ColorPicker, FileInput, ImageInput, Repeater, Sortable); conversation (Bubble, Message, Marker, Trace, Attachment, Questionnaire, Chart); AI elements (Chat, AiMessage, PromptInput, Reasoning, Tool, Task, Plan, Sources, Terminal and the rest); motion (Enter, Presence, MotionPressable, MotionLoop, useMotion, Collapse, ThemeScope); screens (Login01–05, Signup01–05, Sidebar01–16 built on NavShell); and application components (ApplicationShell … ApplicationArticle, same `{ model, onAction, onSubmit }` contract as the web).
+
+Rules that differ from the web: file, image and clipboard actions are callbacks the app supplies (`onPick`, `onCopy`); charts are bar-based (no SVG); bars and sheets take `topInset` / `bottomInset`; these web entries have no native version, so do not look for them: kbd, hover-card, resizable, breadcrumb, command, navigation-menu, sticky, scroll-area, aspect-ratio, direction, accessible-icon, label, separator, native-select. See `packages/colibri-native/README.md` for the full list and `ARCHITECTURE.md` before adding a component.
 
 ## 6. FreeMarker (Spring)
 

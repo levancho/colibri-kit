@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Colibri for React Native</title>
-<meta name="description" content="Colibri for React Native and Expo: layout primitives, buttons, forms, lists, dialogs and toasts themed from one hue. No dependencies, no build step. Try every component live.">
-<meta property="og:title" content="Colibri for React Native"><meta property="og:description" content="Themed React Native components from one hue. No dependencies, no build step.">
+<title>Colibri for React Native — components</title>
+<meta name="description" content="Every Colibri component for React Native and Expo, by category, with a live demo of each. Themed from one hue. No dependencies, no build step.">
+<meta property="og:title" content="Colibri for React Native"><meta property="og:description" content="Every Colibri component for React Native, with a live demo of each. No dependencies, no build step.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
 <script>/* apply the saved light/dark choice before first paint */try{var d=localStorage.getItem("colibri.kit.theme");if(d)document.documentElement.dataset.theme=d}catch(_){}</script>
 <link rel="stylesheet" href="/css/colibri.css">
@@ -13,40 +13,37 @@
 <link rel="stylesheet" href="/native/native.css">
 <script type="module" src="/kitchen-sink/examples/kit-bar.js"></script>
 <script defer src="/native/demo.js"></script>
+<script type="module" src="/native/catalog.js"></script>
 </head>
 <body>
-<a class="skip visually-hidden" href="#main">Skip to content</a>
+<a class="skip visually-hidden" href="#catalog">Skip to the component list</a>
 <header class="kbar" data-active="native"></header>
 
 <main id="main" class="center np">
   <div class="np-copy stack">
-    <span class="pill"><span class="pill-dot" aria-hidden="true"></span>New · React Native and Expo</span>
-    <h1>Colibri for <span class="grad">React Native.</span></h1>
-    <p class="lede">The same idea as Colibri on the web: a small set of well-made pieces, themed from one hue, with variants as plain props. No dependencies beyond React Native, no build step, no configuration.</p>
-    <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
-    <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";
+    <div class="stack np-intro">
+      <span class="pill"><span class="pill-dot" aria-hidden="true"></span>React Native and Expo</span>
+      <h1>Components for <span class="grad">React Native.</span></h1>
+      <p class="lede">The Colibri catalog, rebuilt for phones: <b id="np-count">every</b> components and ready-made screens, themed from one hue. No dependencies beyond React Native, no build step, no configuration.</p>
+      <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";
 
-export default function App() {
-  return (
-    &lt;ColibriProvider hue={160}&gt;
-      &lt;Screen&gt;
-        &lt;Stack gap="m"&gt;
-          &lt;Heading&gt;Hello&lt;/Heading&gt;
-          &lt;Button title="Continue" onPress={next} /&gt;
-        &lt;/Stack&gt;
-      &lt;/Screen&gt;
-    &lt;/ColibriProvider&gt;
-  );
-}</code></pre>
-    <ul class="ticks">
-      <li><b>One hue, whole palette.</b> Light and dark are computed for you, and follow the device.</li>
-      <li><b>23 components, zero dependencies.</b> Layout, text, buttons, forms, lists, dialogs, sheets and toasts.</li>
-      <li><b>Same words as the web kit.</b> <code>gap="s"</code>, <code>variant="soft"</code>, <code>tone="ok"</code>.</li>
-      <li><b>Accessible by default.</b> Roles, states and 44-point touch targets are built in.</li>
-      <li><b>Typed.</b> TypeScript declarations ship in the package.</li>
-    </ul>
-    <p class="muted">The phone on this page is the real component code, running in your browser through react-native-web. Change the colour, switch to dark, open the dialog.</p>
-    <p><a class="btn" href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a></p>
+&lt;ColibriProvider hue={160}&gt;
+  &lt;Screen&gt;
+    &lt;Stack gap="m"&gt;
+      &lt;Heading&gt;Hello&lt;/Heading&gt;
+      &lt;Button title="Continue" variant="soft" onPress={next} /&gt;
+    &lt;/Stack&gt;
+  &lt;/Screen&gt;
+&lt;/ColibriProvider&gt;</code></pre>
+      <p class="muted">Pick a component below to try it on the phone. It is the real component code, running in your browser through react-native-web. <a href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a>.</p>
+    </div>
+    <div class="field np-search">
+      <label for="np-q" class="visually-hidden">Filter components</label>
+      <input id="np-q" type="search" placeholder="Filter components…" autocomplete="off">
+    </div>
+    <div id="catalog" class="stack np-catalog" aria-live="polite"><p class="muted">Loading the component list…</p></div>
+    <noscript><p class="callout" data-tone="warn">The component list and the live demo need JavaScript.</p></noscript>
   </div>
   <div class="np-phone" aria-label="Live React Native demo"><div class="np-screen" id="app"></div></div>
 </main>

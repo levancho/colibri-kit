@@ -24,45 +24,60 @@ try {
  }
  await css.close();
 
- // 2. The showcase: every control works and announces itself.
+ // 2. The site page lists every demo by category and opens the chosen one on the phone.
  const page=await browser.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>['error','warning'].includes(m.type())&&errors.push(m.text()));
  await page.setViewport({width:1280,height:900});
- await page.goto(server.origin+'/native/');await page.waitForFunction(()=>'nativeReady' in document.documentElement.dataset&&document.querySelector('#app [role=heading]'));
+ await page.goto(server.origin+'/native/');await page.waitForFunction(()=>'nativeReady' in document.documentElement.dataset&&document.querySelector('.np-card')&&document.querySelector('#app [data-testid=home]'));
  assert.equal(await page.$eval('header.kbar a[aria-current=page]',a=>a.textContent),'React Native');
- const bg=()=>page.$eval('[data-testid=showcase]',el=>getComputedStyle(el).backgroundColor);
- const byText=(role,text)=>page.evaluateHandle((role,text)=>[...document.querySelectorAll(`#app [role=${role}], body > div [role=${role}]`)].find(el=>(el.getAttribute("aria-label")??el.textContent.trim())===text),role,text);
- const press=async(role,text)=>{const el=await byText(role,text);assert.ok(el.asElement(),`${role} "${text}" exists`);await el.asElement().click();};
+ const catalog=await page.evaluate(()=>globalThis.ColibriNativeCatalog);
+ const total=catalog.reduce((sum,group)=>sum+group.demos.length,0);
+ assert.ok(total>=100,`the catalog has ${total} demos`);
+ assert.equal(new Set(catalog.flatMap(group=>group.demos.map(demo=>demo.id))).size,total,'demo ids are unique');
+ assert.equal(await page.$$eval('.np-card',cards=>cards.length),total);assert.equal(await page.$eval('#np-count',e=>e.textContent),String(total));
+ // Layout: the list and the phone sit side by side and the phone does not cover the cards.
+ const layout=await page.evaluate(()=>{document.querySelector('.np-card').scrollIntoView({block:'center'});const card=document.querySelector('.np-card').getBoundingClientRect(),phone=document.querySelector('.np-phone').getBoundingClientRect(),hit=document.elementFromPoint(card.x+card.width/2,card.y+card.height/2);return{cardRight:card.right,cardWidth:card.width,phoneLeft:phone.left,hitsCard:!!hit.closest('.np-card')};});
+ assert.ok(layout.hitsCard&&layout.cardWidth>=180&&layout.phoneLeft>=layout.cardRight,JSON.stringify(layout));
+ await page.type('#np-q','button');
+ const visible=await page.$$eval('.np-card:not([hidden])',cards=>cards.map(card=>card.dataset.id));
+ assert.ok(visible.includes('button')&&visible.length<total);
+ await page.click('.np-card[data-id=button]');
+ await page.waitForSelector('#app [data-testid=demo-button]');
+ assert.equal(await page.$eval('.np-card[aria-current]',card=>card.dataset.id),'button');
+
+ // 3. The basics behave: theme controls, buttons, form controls, overlays.
+ const open=async id=>{await page.evaluate(id=>{location.hash=id;},id);await page.waitForSelector(id?`#app [data-testid="demo-${id}"]`:'#app [data-testid=home]');};
+ const byText=(role,text)=>page.evaluateHandle((role,text)=>[...document.querySelectorAll(`[role=${role}]`)].find(el=>(el.getAttribute("aria-label")??el.textContent.trim())===text),role,text);
+ const press=async(role,text)=>{const el=await byText(role,text);assert.ok(el.asElement(),`${role} "${text}" exists`);await el.asElement().evaluate(node=>node.click());};
+ const tap=id=>page.$eval(`[data-testid=${id}]`,el=>el.click());
+ const alertSays=text=>page.waitForFunction(text=>[...document.querySelectorAll('[role=alert]')].some(a=>a.textContent===text),{},text);
+ await open('');
+ const bg=()=>page.$eval('[data-testid=home]',el=>getComputedStyle(el).backgroundColor);
  const light=await bg();
  await press('tab','Dark');assert.notEqual(await bg(),light);
  assert.equal(await (await byText('tab','Dark')).evaluate(el=>el.getAttribute('aria-selected')),'true');
  await press('tab','Light');assert.equal(await bg(),light);
- // Re-branding: a different hue changes the solid button.
- const solid=()=>byText('button','Solid').then(el=>el.evaluate(node=>getComputedStyle(node).backgroundColor));
- const blue=await solid();await page.click('[aria-label="Hue 150"]');assert.notEqual(await solid(),blue);
- // Form controls.
- await page.type('[data-testid=name]','Ada');assert.equal(await page.$eval('[data-testid=name]',i=>i.value),'Ada');
- const checkbox=await byText('checkbox','I agree to the terms');assert.equal(await checkbox.evaluate(el=>el.getAttribute('aria-checked')),'false');
- await checkbox.asElement().click();assert.equal(await (await byText('checkbox','I agree to the terms')).evaluate(el=>el.getAttribute('aria-checked')),'true');
- await press('radio','Free');assert.equal(await (await byText('radio','Free')).evaluate(el=>el.getAttribute('aria-checked')),'true');
- assert.equal(await (await byText('radio','Pro — $19 per month')).evaluate(el=>el.getAttribute('aria-checked')),'false');
+ await open('button');
+ const solid=()=>page.$eval('[data-testid=solid]',node=>getComputedStyle(node).backgroundColor);
+ const blue=await solid();
+ assert.ok(await page.$eval('[data-testid=solid]',el=>el.getBoundingClientRect().height>=40));
  assert.equal(await (await byText('button','Disabled')).evaluate(el=>el.getAttribute('aria-disabled')),'true');
- assert.ok(await page.$('#app [role=progressbar][aria-valuenow="62"]'));
- // Touch targets: every enabled button is at least 32px tall on screen and at least 40px in the default size.
- assert.ok(await (await byText('button','Solid')).evaluate(el=>el.getBoundingClientRect().height>=40));
- // Dialog → confirm → toast.
- await page.click('[data-testid=open-dialog]');
+ await tap('back');await page.waitForSelector('#app [data-testid=home]');
+ await page.click('[aria-label="Hue 150"]');await open('button');assert.notEqual(await solid(),blue,'a different hue re-brands the button');
+ await open('text-field');await page.type('[data-testid=name]','Ada');assert.equal(await page.$eval('[data-testid=name]',i=>i.value),'Ada');
+ await open('checkbox');
+ assert.equal(await (await byText('checkbox','I agree to the terms')).evaluate(el=>el.getAttribute('aria-checked')),'false');
+ await press('checkbox','I agree to the terms');assert.equal(await (await byText('checkbox','I agree to the terms')).evaluate(el=>el.getAttribute('aria-checked')),'true');
+ await open('radio-group');await press('radio','Free');
+ assert.equal(await (await byText('radio','Free')).evaluate(el=>el.getAttribute('aria-checked')),'true');
+ assert.equal(await (await byText('radio','Pro — $19 per month')).evaluate(el=>el.getAttribute('aria-checked')),'false');
+ await open('progress');assert.ok(await page.$('#app [role=progressbar][aria-valuenow="40"]'));
+ await open('dialog');await tap('open-dialog');
  await page.waitForFunction(()=>[...document.querySelectorAll('[role=dialog]')].some(d=>d.textContent.includes('Delete this project?')));
- await page.click('[data-testid=confirm-delete]');
- await page.waitForFunction(()=>[...document.querySelectorAll('[role=alert]')].some(a=>a.textContent==='Project deleted'));
- await page.waitForFunction(()=>![...document.querySelectorAll('[role=dialog]')].some(d=>d.textContent.includes('Delete this project?'))); // closes with a fade
- // Sheet opens and closes.
- // A toast may be showing over the bottom of the screen, so these presses go to the element itself rather than to a screen position.
- const tap=id=>page.$eval(`[data-testid=${id}]`,el=>el.click());
- await tap('open-sheet');await page.waitForFunction(()=>document.body.textContent.includes('Send by email'));
- await page.evaluate(()=>[...document.querySelectorAll('[role=button]')].filter(b=>b.textContent==='Cancel').at(-1).click());await page.waitForFunction(()=>!document.body.textContent.includes('Send by email'));
- // Saving shows a busy button, then a toast.
- await tap('save');
- await page.waitForFunction(()=>[...document.querySelectorAll('[role=alert]')].some(a=>a.textContent==='Profile saved'),{timeout:5000});
+ await tap('confirm-delete');await alertSays('Project deleted');
+ await page.waitForFunction(()=>![...document.querySelectorAll('[role=dialog]')].some(d=>d.textContent.includes('Delete this project?')));
+ await open('sheet');await tap('open-sheet');await page.waitForFunction(()=>document.body.textContent.includes('Send by email'));
+ await tap('sheet-cancel');await page.waitForFunction(()=>!document.body.textContent.includes('Send by email'));
+ await open('toast');await tap('show-toast');await alertSays('Copied to clipboard');
  assert.deepEqual(errors,[]);
  console.log('native e2e ok');
 } finally { await browser.close(); await server.close(); }
