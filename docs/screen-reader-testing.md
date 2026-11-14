@@ -205,12 +205,12 @@ Demo: "Accordion".
 
 | Step | Do | Expected |
 |---|---|---|
-| 1 | Tab to the first header | "What is Despani?, button, collapsed" (inside a heading: "heading level 3"); the open item says "expanded" |
+| 1 | Tab to the first header | "What is Colibri?, button, collapsed" (inside a heading: "heading level 3"); the open item says "expanded" |
 | 2 | Enter / Space | "expanded"; the panel content follows in reading order and is reachable with the arrow keys / next swipe |
 | 3 | Down / Up / Home / End on a header | focus moves between the headers; the disabled item is spoken as "dimmed"/"unavailable" |
 | 4 | Browse mode: H to jump between headings | each item's heading is spoken, so the list is navigable by headings |
 | 5 | Single-open demo: open another item | the first one reports "collapsed" when you return to it |
-| 6 | Panel region | the panel is a region named after its header ("What is Despani?, region") |
+| 6 | Panel region | the panel is a region named after its header ("What is Colibri?, region") |
 
 ### 13. Slider
 

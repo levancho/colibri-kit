@@ -769,8 +769,8 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 :where(.ui-root) [data-ui-part=shell] [data-ui=sidebar][data-state=collapsed][data-collapsible=icon]{width:var(--sb-w-icon,3rem)}
 :where(.ui-root) [data-ui=sidebar][data-state=collapsed][data-collapsible=icon] :is(.sb-text,[data-ui-part=group-label],[data-ui-part=menu-sub],[data-ui=collapsible]>[data-ui-part=content],[data-ui-part=trigger]::after,[data-ui-part=chevron],form[data-ui-part=search],.sb-card){display:none!important}
 :where(.ui-root) [data-ui=sidebar][data-state=collapsed][data-collapsible=icon] :is([data-ui-part=menu-button],.sb-mb,.sb-team){justify-content:center;padding-inline:0}
-:where(.ui-root) [data-ui=sidebar] [data-ui-part=header],:where(.ui-root) [data-ui=sidebar] [data-ui-part=footer]{display:grid;gap:.5rem;padding:.5rem}
-:where(.ui-root) [data-ui=sidebar] [data-ui-part=content]{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;padding:0 .5rem .5rem}
+:where(.ui-root) [data-ui=sidebar]>[data-ui-part=header],:where(.ui-root) [data-ui=sidebar]>[data-ui-part=footer]{display:grid;gap:.5rem;padding:.5rem}
+:where(.ui-root) [data-ui=sidebar]>[data-ui-part=content]{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;padding:0 .5rem .5rem}
 :where(.ui-root) [data-ui=sidebar] [data-ui-part=group]{display:grid;gap:2px;padding:.4rem 0}
 :where(.ui-root) [data-ui=sidebar] [data-ui-part=group][data-position=bottom]{margin-top:auto}
 :where(.ui-root) [data-ui=sidebar] [data-ui-part=group-label]{padding:0 .5rem;height:28px;display:flex;align-items:center;font-size:12px;font-weight:500;color:var(--ui-muted-foreground)}
@@ -983,7 +983,7 @@ body[data-log=bottom] [data-ui=toaster]{bottom:270px}body[data-log=right] [data-
 [data-ui=button-group]>:is(button,a,[data-ui-part=item]):focus-visible{outline:2px solid var(--ui-ring);outline-offset:2px;z-index:3}
 
 /* sidebar scroll never chains into the page */
-:where(.ui-root) [data-ui=sidebar],:where(.ui-root) [data-ui=sidebar] [data-ui-part=content]{overscroll-behavior:contain}
+:where(.ui-root) [data-ui=sidebar],:where(.ui-root) [data-ui=sidebar]>[data-ui-part=content]{overscroll-behavior:contain}
 
 /* touch: >=44px targets on coarse pointers (phones/tablets). Desktop density is untouched. */
 @media (pointer:coarse){

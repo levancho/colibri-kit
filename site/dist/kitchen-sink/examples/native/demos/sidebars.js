@@ -203,7 +203,7 @@ const MAIL = [
   { id: "m7", folder: "sent", from: "To: Alice Kim", time: "Yesterday", subject: "Project update", preview: "Attaching the latest numbers and the revised timeline for the launch.", body: "Hi Alice,\n\nAttaching the latest numbers and the revised timeline for the launch.\n\nJordan" },
 ];
 
-const ACCOUNTS = { title: "Mail", icon: "M", label: "Accounts", items: [{ id: "personal", name: "jordan@example.com" }, { id: "work", name: "levan@l3v.studio" }] };
+const ACCOUNTS = { title: "Mail", icon: "M", label: "Accounts", items: [{ id: "personal", name: "jordan@example.com" }, { id: "work", name: "jordan@studio.example" }] };
 
 function MailLayoutDemo() {
   const [folder, setFolder] = useState("inbox"), [open, setOpen] = useState(null), [read, setRead] = useState([]), toast = useToast();

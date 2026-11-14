@@ -5,7 +5,7 @@
 [@ui.button variant="outline"]Save[/@ui.button]
 [@ui.badge removable=true variant="outline"]Tag[/@ui.badge]
 [@ui.alert role="alert" variant="destructive"]<b>Error</b> & ok[/@ui.alert]
-[@ui.avatar src="/a.png" alt="Levan" fallback="LD"/]
+[@ui.avatar src="/a.png" alt="Jordan" fallback="JL"/]
 [@ui.dialog trigger="Open" title="Profile" description="Edit"]<p>Body</p>[@ui.close returnValue="ok"]OK[/@ui.close][/@ui.dialog]
 [@ui.dialog trigger="Delete" title="Sure?" kind="alert-dialog"/]
 [@ui.popover trigger="Open"]<p>Hi</p>[/@ui.popover]

@@ -11,10 +11,10 @@ MAIN = [("Playground", "terminal", ["History", "Starred", "Settings"]), ("Models
         ("Documentation", "book", ["Introduction", "Get started", "Tutorials"]), ("Settings", "settings", ["General", "Team", "Billing"])]
 
 def team(sid):
-    return (f'<div data-ui="dropdown-menu" data-ui-part="team"><button data-ui-part="trigger" class="sb-team"><span class="sb-logo">{I("logo",16)}</span><span class="sb-text"><b>Despani</b><small>Enterprise</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
-            f'<div data-ui-part="content"><div data-ui-part="label">Teams</div><button data-ui-part="item">Despani</button><button data-ui-part="item">L3V</button><hr data-ui-part="separator"><button data-ui-part="item">Add team</button></div></div>')
+    return (f'<div data-ui="dropdown-menu" data-ui-part="team"><button data-ui-part="trigger" class="sb-team"><span class="sb-logo">{I("logo",16)}</span><span class="sb-text"><b>Northstar</b><small>Enterprise</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
+            f'<div data-ui-part="content"><div data-ui-part="label">Teams</div><button data-ui-part="item">Northstar</button><button data-ui-part="item">L3V</button><hr data-ui-part="separator"><button data-ui-part="item">Add team</button></div></div>')
 def user():
-    return ('<div data-ui="dropdown-menu" data-ui-part="user"><button data-ui-part="trigger" class="sb-team"><span data-ui="avatar" data-ui-part="avatar"><span data-ui-part="fallback">LD</span></span><span class="sb-text"><b>levan</b><small>levan@despani.ge</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
+    return ('<div data-ui="dropdown-menu" data-ui-part="user"><button data-ui-part="trigger" class="sb-team"><span data-ui="avatar" data-ui-part="avatar"><span data-ui-part="fallback">JL</span></span><span class="sb-text"><b>Jordan Lee</b><small>jordan@example.com</small></span><i data-ui-part="chevron" aria-hidden="true"></i></button>'
             '<div data-ui-part="content"><button data-ui-part="item">Account</button><button data-ui-part="item">Billing</button><hr data-ui-part="separator"><button data-ui-part="item">Log out</button></div></div>')
 def mb(label, icon=None, cur=False, extra=""):
     return f'<a data-ui-part="menu-button" href="#"{" aria-current=page" if cur else ""} {extra}>{I(icon) if icon else ""}<span class="sb-text">{label}</span></a>'
@@ -132,14 +132,14 @@ def login_form(fid, title="Login to your account", desc="Enter your email below 
     f = f'<form data-ui="auth-form" id="{fid}" data-default-view="password" novalidate class="auth-form">{body}</form>'
     return f'<article data-ui-part="card" class="auth-card">{f}</article>' if card else f
 TERMS = '<p class="auth-terms muted">By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>'
-BRAND = f'<a href="#" class="auth-brand">{I("logo",18)} Despani</a>'
+BRAND = f'<a href="#" class="auth-brand">{I("logo",18)} Northstar</a>'
 COVER = '<div class="auth-cover" role="img" aria-label="Cover image"></div>'
 
 def signup_form(fid, social=("google",), social_first=False, card=True, title="Create an account", desc="Enter your information below to create your account"):
     soc = providers(social, "Sign up with") if social else ""
     body = (f'<div data-ui-part="view" data-view="signup" data-next="otp"><header class="auth-head"><h2 class="auth-h">{title}</h2><p class="muted">{desc}</p></header>'
             + (soc + OR if social_first and soc else "")
-            + field("Full name", "name", "text", "Levan Dvalishvili", ac="name") + field("Email", "email", "email", "m@example.com", ac="email", extra='aria-describedby=""')
+            + field("Full name", "name", "text", "Jordan Lee", ac="name") + field("Email", "email", "email", "m@example.com", ac="email", extra='aria-describedby=""')
             + '<div class="auth-grid2">' + pw("password", "Password", False, 'minlength="8"', "new-password") + pw("confirm", "Confirm password", False, f'data-match="#{fid} [name=password]"', "new-password") + "</div>"
             + '<p class="muted auth-small">Must be at least 8 characters long.</p>'
             + '<label class="auth-check"><input type="checkbox" data-ui="checkbox" name="terms" required> I agree to the terms</label>'

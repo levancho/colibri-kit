@@ -251,6 +251,6 @@ export function initDashboard() {
   if(pipeline){const selected=state.deals.find(d=>d.id===new URLSearchParams(location.search).get('deal'));if(selected)editDeal(selected);}
 }
 
-for(const el of document.querySelectorAll('.av')){const name=({NK:'Nino Kapanadze',GB:'Giorgi Beridze',AM:'Ana Meladze',DT:'Dato Tsiklauri',SL:'Salome Lomidze',LD:'Levan D.'})[el.textContent.trim()];if(name)el.outerHTML=avatar(name).replace('class="portrait','class="av portrait');}
+for(const el of document.querySelectorAll('.av')){const name=({NK:'Nino Kapanadze',GB:'Giorgi Beridze',AM:'Ana Meladze',DT:'Dato Tsiklauri',SL:'Salome Lomidze',AR:'Alex R.'})[el.textContent.trim()];if(name)el.outerHTML=avatar(name).replace('class="portrait','class="av portrait');}
 
 if(document.body.dataset.demo==='crm'){for(const a of document.querySelectorAll('.dash-nav a')){const target=a.getAttribute('href');const name=({'analytics.html':'overview','crm.html':'target','customers.html':'members','inbox.html':'open','reports.html':'activity','settings.html':'security','index.html':'overview','../kitchen-sink.html':'code'})[target]||'arrow';const glyph=a.querySelector('span');if(glyph)glyph.outerHTML=icon(name);}}
