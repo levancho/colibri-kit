@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
 <link rel="stylesheet" href="/native/native.css">
 <script type="module" src="/kitchen-sink/examples/kit-bar.js"></script>
-<script defer src="/native/demo.js"></script>
 <script type="module" src="/native/catalog.js"></script>
 </head>
 <body>
@@ -36,7 +35,7 @@
     &lt;/Stack&gt;
   &lt;/Screen&gt;
 &lt;/ColibriProvider&gt;</code></pre>
-      <p class="muted">Pick a component below to try it on the phone. It is the real component code, running in your browser through react-native-web. <a href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a>.</p>
+      <p class="muted">Pick a component below to try it on the phone, then switch to <b>Code</b> for a sample you can paste. The phone runs the real component code in your browser through react-native-web. <a href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a>.</p>
     </div>
     <div class="field np-search">
       <label for="np-q" class="visually-hidden">Filter components</label>
@@ -45,7 +44,14 @@
     <div id="catalog" class="stack np-catalog" aria-live="polite"><p class="muted">Loading the component list…</p></div>
     <noscript><p class="callout" data-tone="warn">The component list and the live demo need JavaScript.</p></noscript>
   </div>
-  <div class="np-phone" aria-label="Live React Native demo"><div class="np-screen" id="app"></div></div>
+  <div class="np-side">
+    <div class="np-tabs" role="group" aria-label="Show the demo or its code"><button type="button" data-view="demo" aria-pressed="true">Demo</button><button type="button" data-view="code" aria-pressed="false">Code</button></div>
+    <div class="np-phone"><iframe class="np-screen" id="np-frame" src="/native/app.html" title="Live React Native demo"></iframe></div>
+    <div class="np-codebox" hidden>
+      <div class="np-codebar"><span id="np-code-name">Pick a component to see its code</span><button class="btn" data-size="s" type="button" id="np-copy" disabled>Copy</button></div>
+      <pre class="np-source" tabindex="0" aria-label="Code sample"><code id="np-source"></code></pre>
+    </div>
+  </div>
 </main>
 </body>
 </html>

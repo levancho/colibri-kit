@@ -72,6 +72,7 @@
   },
   "license": "MIT",
   "devDependencies": {
+    "@babel/parser": "8.1.2",
     "@playwright/test": "1.64.1",
     "axe-core": "4.14.0",
     "esbuild": "0.25.10",
