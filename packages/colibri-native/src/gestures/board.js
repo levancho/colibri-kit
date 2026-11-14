@@ -139,7 +139,12 @@ export function ApplicationBoard({ model = {}, onAction, style }) {
   };
   const move = useStable((laneId) => { const id = open; setOpen(null); if (id != null) transfer(id, laneId); });
   const picked = useStable((id) => { carried.now = true; setLifted(id); auto.setActive(true); });
-  const dropped = useStable((id, laneIndex) => { carried.now = false; carried.until = Date.now() + 300; auto.setActive(false); setLifted(null); if (laneIndex >= 0 && lanes[laneIndex]) transfer(id, lanes[laneIndex].id); });
+  const dropped = useStable((id, laneIndex) => { carried.now = false; carried.until = Date.now() + 300; auto.setActive(false); setLifted(null);
+    if (laneIndex >= 0 && lanes[laneIndex]) transfer(id, lanes[laneIndex].id);
+    // The edge scrolling can leave the pager between two lanes: settle on the nearest one.
+    const nearest = clamp(Math.round(scrollX.value / pitch), 0, Math.max(0, lanes.length - 1));
+    if (Math.abs(scrollX.value - nearest * pitch) > 1) pager.current?.scrollTo({ x: nearest * pitch, animated: true });
+  });
 
   const drag = useMemo(() => {
     const aim = () => {
