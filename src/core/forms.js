@@ -1,5 +1,5 @@
 // Colibri UI form primitives. Native form elements stay the source of truth (they post with plain forms).
-import { uid, parts, part, emit, setState, btn, once, bag, isDisabled } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, owner } from "./util.js";
 
 /* Field (shadcn Field/Label, Metronic Input wrapper): wires label/description/error to the control.
    <div data-ui="field" [data-invalid]><label data-ui-part="label">Name</label>
@@ -41,7 +41,10 @@ export function createSlider(root, o = {}) {
     const name = root.dataset.name, minGap = num("minStepsBetween", 0) * step;
     const thumbs = parts(root, "thumb"), track = part(root, "track") || root, range = part(root, "range");
     let values = String(o.value ?? root.dataset.value ?? min).split(",").map(Number).slice(0, thumbs.length || 1);
-    const clamp = (v) => Math.min(max, Math.max(min, Math.round((v - min) / step) * step + min));
+    // round to the precision of step/min: 0.1 * 3 is 0.30000000000000004 in floating point
+    const decimals = (x) => { const m = /(?:\.(\d+))?(?:e-(\d+))?$/i.exec(String(x)); return Math.max(0, (m[1]?.length || 0) + Number(m[2] || 0)); };
+    const precision = Math.max(decimals(step), decimals(min));
+    const clamp = (v) => Math.min(max, Math.max(min, Number((Math.round((v - min) / step) * step + min).toFixed(precision))));
     const pct = (v) => ((v - min) / (max - min)) * 100;
     const inputs = values.map((_, i) => { if (!name) return null; const h = root.ownerDocument.createElement("input"); h.type = "hidden"; h.name = name; root.append(h); return h; });
     thumbs.forEach((t, i) => { t.setAttribute("role", "slider"); t.tabIndex = isDisabled(root) ? -1 : 0; t.setAttribute("aria-valuemin", min); t.setAttribute("aria-valuemax", max); t.setAttribute("aria-orientation", vertical ? "vertical" : "horizontal"); });
@@ -60,21 +63,29 @@ export function createSlider(root, o = {}) {
       o.onValueChange?.(out); emit(root, "input", { value: out }); if (commit) emit(root, "change", { value: out });
     };
     const fromPointer = (e) => { const r = track.getBoundingClientRect(); const f = vertical ? 1 - (e.clientY - r.top) / r.height : (e.clientX - r.left) / r.width; return min + Math.min(1, Math.max(0, f)) * (max - min); };
-    let drag = -1;
+    let drag = -1, pointer = null;
     b.on(root, "pointerdown", (e) => {
-      if (isDisabled(root) || e.button !== 0) return; const v = fromPointer(e);
-      drag = values.length > 1 ? (Math.abs(v - values[0]) <= Math.abs(v - values[1]) ? 0 : 1) : 0;
+      if (isDisabled(root) || e.button !== 0 || drag >= 0) return; const v = fromPointer(e);
+      drag = values.length > 1 ? (Math.abs(v - values[0]) <= Math.abs(v - values[1]) ? 0 : 1) : 0; pointer = e.pointerId;
       root.setPointerCapture?.(e.pointerId); setAt(drag, v); thumbs[drag]?.focus(); setState(root, "dragging"); e.preventDefault();
     });
-    b.on(root, "pointermove", (e) => drag >= 0 && setAt(drag, fromPointer(e)));
-    b.on(root, "pointerup", () => { if (drag >= 0) { emit(root, "change", { value: values.length > 1 ? [...values] : values[0] }); drag = -1; setState(root, "idle"); } });
+    b.on(root, "pointermove", (e) => drag >= 0 && e.pointerId === pointer && setAt(drag, fromPointer(e)));
+    // pointerup ends the drag; pointercancel (the browser took a touch for scrolling) and a lost capture end it
+    // too, so the next unrelated pointermove cannot move a thumb
+    const end = (e) => {
+      if (drag < 0 || (e && e.pointerId !== pointer)) return;
+      drag = -1; pointer = null; setState(root, "idle");
+      emit(root, "change", { value: values.length > 1 ? [...values] : values[0] });
+    };
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) b.on(root, type, end);
     thumbs.forEach((t, i) => b.on(t, "keydown", (e) => {
       const big = Math.max(step, (max - min) / 10); const m = { ArrowRight: step, ArrowUp: step, ArrowLeft: -step, ArrowDown: -step, PageUp: big, PageDown: -big };
       if (e.key in m) { e.preventDefault(); setAt(i, values[i] + m[e.key] * (e.shiftKey ? 10 : 1), true); }
       else if (e.key === "Home") { e.preventDefault(); setAt(i, min, true); } else if (e.key === "End") { e.preventDefault(); setAt(i, max, true); }
     }));
     render();
-    return { get value() { return values.length > 1 ? [...values] : values[0]; }, set value(v) { [].concat(v).forEach((x, i) => setAt(i, x, true)); }, destroy: b.off };
+    return { get value() { return values.length > 1 ? [...values] : values[0]; }, set value(v) { [].concat(v).forEach((x, i) => setAt(i, x, true)); },
+      destroy() { b.off(); drag = -1; inputs.forEach((h) => h?.remove()); } };
   });
 }
 
@@ -109,7 +120,9 @@ export function createPinInput(root, o = {}) {
       b.on(c, "paste", (e) => { e.preventDefault(); fill(i, (e.clipboardData || doc.defaultView.clipboardData).getData("text")); });
       b.on(c, "focus", () => c.select());
     });
-    return { get value() { return value(); }, clear() { cells.forEach((c) => (c.value = "")); sync(); cells[0].focus(); }, destroy: b.off };
+    return { get value() { return value(); }, clear() { cells.forEach((c) => (c.value = "")); sync(); cells[0].focus(); },
+      // the hidden input is this controller's own: a new controller makes another (generated cells are reused)
+      destroy() { b.off(); hidden?.remove(); } };
   });
 }
 
@@ -117,6 +130,7 @@ export function createPinInput(root, o = {}) {
 export function createTogglePassword(root) {
   return once(root, "__uiTogglePassword", () => {
     const b = bag(), input = part(root, "input") || root.querySelector("input"), t = btn(part(root, "toggle"));
+    if (!input || !t) return { destroy() {} }; // markup without its parts: nothing to wire
     t.setAttribute("aria-controls", input.id ||= uid("ui-pw"));
     const render = () => { const shown = input.type === "text"; t.setAttribute("aria-pressed", String(shown)); setState(root, shown ? "visible" : "hidden"); };
     b.on(t, "click", () => { input.type = input.type === "password" ? "text" : "password"; render(); emit(root, "change", { visible: input.type === "text" }); input.focus(); });
@@ -130,9 +144,19 @@ export function createTogglePassword(root) {
    Items render as <li data-ui-part="file"><span data-ui-part="name"> <span data-ui-part="size"> <button data-ui-part="remove">. */
 const sizeOf = (s) => { const m = /^([\d.]+)\s*(KB|MB|GB)?$/i.exec(s || ""); return m ? Number(m[1]) * ({ KB: 1e3, MB: 1e6, GB: 1e9 }[(m[2] || "").toUpperCase()] || 1) : Infinity; };
 const fmt = (n) => (n > 1e6 ? `${(n / 1e6).toFixed(1)} MB` : `${Math.ceil(n / 1e3)} KB`);
+/** Does `file` match an accept list ("image/*,.PDF,application/vnd.ms-excel,image/svg+xml")? Same rules as the
+    browser's picker: case-insensitive, "type/*" matches the type's family, ".ext" matches the name, other entries are
+    exact MIME types (never regular expressions: "+" and "." are literal). An empty list accepts everything. */
+export function accepts(accept, file) {
+  const list = String(accept || "").split(",").map((a) => a.trim().toLowerCase()).filter(Boolean);
+  if (!list.length) return true;
+  const name = (file.name || "").toLowerCase(), type = (file.type || "").toLowerCase().split(";")[0].trim();
+  return list.some((a) => a === "*" || a === "*/*" ? true : a.startsWith(".") ? name.endsWith(a) : a.endsWith("/*") ? !!type && type.startsWith(a.slice(0, -1)) : a === type);
+}
 export function createFileInput(root, o = {}) {
   return once(root, "__uiFileInput", () => {
-    const b = bag(), doc = root.ownerDocument, input = part(root, "input"), dz = part(root, "dropzone"), list = part(root, "list");
+    const b = bag(), doc = root.ownerDocument, input = part(root, "input") || root.querySelector("input[type=file]"), dz = part(root, "dropzone"), list = part(root, "list");
+    if (!input) return { get files() { return []; }, clear() {}, destroy() {} };
     const max = sizeOf(input.dataset.maxSize || root.dataset.maxSize);
     let files = [];
     const commit = () => {
@@ -143,7 +167,7 @@ export function createFileInput(root, o = {}) {
     };
     const add = (fl) => {
       const rejected = [];
-      for (const f of fl) { if (f.size > max) { rejected.push({ file: f, reason: "size" }); continue; } if (input.accept && !input.accept.split(",").some((a) => (a = a.trim()) && (a.startsWith(".") ? f.name.toLowerCase().endsWith(a.toLowerCase()) : f.type.match(new RegExp("^" + a.replace("*", ".*")))))) { rejected.push({ file: f, reason: "type" }); continue; } files = input.multiple ? [...files, f] : [f]; }
+      for (const f of fl) { if (f.size > max) { rejected.push({ file: f, reason: "size" }); continue; } if (!accepts(input.accept, f)) { rejected.push({ file: f, reason: "type" }); continue; } files = input.multiple ? [...files, f] : [f]; }
       if (rejected.length) emit(root, "reject", { files: rejected }); commit();
     };
     b.on(input, "change", (e) => { if (e.isTrusted !== false) { const fl = [...input.files]; files = input.multiple ? files : []; add(fl); } });
@@ -151,9 +175,9 @@ export function createFileInput(root, o = {}) {
       dz.tabIndex = 0; dz.setAttribute("role", "button");
       b.on(dz, "click", () => input.click()); b.on(dz, "keydown", (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), input.click()));
       b.on(dz, "dragover", (e) => { e.preventDefault(); setState(dz, "over"); }); b.on(dz, "dragleave", () => setState(dz, "idle"));
-      b.on(dz, "drop", (e) => { e.preventDefault(); setState(dz, "idle"); add([...e.dataTransfer.files]); });
+      b.on(dz, "drop", (e) => { e.preventDefault(); setState(dz, "idle"); add([...(e.dataTransfer?.files || [])]); });
     }
-    list && b.on(list, "click", (e) => { const r = e.target.closest('[data-ui-part="remove"]'); if (r) { files.splice(Number(r.closest("li").dataset.index), 1); commit(); } });
+    list && b.on(list, "click", (e) => { const r = e.target.closest('[data-ui-part="remove"]'); if (r && r.closest("li")) { files.splice(Number(r.closest("li").dataset.index), 1); commit(); } });
     setState(root, "empty");
     return { get files() { return [...files]; }, clear() { files = []; commit(); }, destroy: b.off };
   });
@@ -165,7 +189,8 @@ export function createFileInput(root, o = {}) {
      <input type="hidden" data-ui-part="removed" name="avatar_remove"></div> */
 export function createImageInput(root) {
   return once(root, "__uiImageInput", () => {
-    const b = bag(), img = part(root, "preview"), input = part(root, "input"), removed = part(root, "removed");
+    const b = bag(), img = part(root, "preview"), input = part(root, "input") || root.querySelector("input[type=file]"), removed = part(root, "removed");
+    if (!input) return { destroy() {} };
     const def = root.dataset.defaultSrc || img?.getAttribute("src") || ""; let url = null;
     const set = (src, state) => { if (img) { if (src) img.src = src; else img.removeAttribute("src"); } setState(root, state); };
     b.on(part(root, "change") || root, "click", (e) => { if (e.currentTarget !== root) input.click(); });
@@ -185,6 +210,7 @@ export function createImageInput(root) {
 export function createRepeater(root, o = {}) {
   return once(root, "__uiRepeater", () => {
     const b = bag(), tpl = part(root, "template"), list = part(root, "list") || root, addBtn = btn(part(root, "add"));
+    const proto = tpl?.content?.firstElementChild; // without a template row there is nothing to add
     const min = Number(root.dataset.min ?? 0), max = Number(root.dataset.max ?? Infinity);
     const rows = () => [...list.querySelectorAll(':scope > [data-ui-part="row"]')];
     const renumber = () => {
@@ -192,10 +218,10 @@ export function createRepeater(root, o = {}) {
       const n = rows().length; if (addBtn) addBtn.disabled = n >= max; rows().forEach((r) => { const rm = r.querySelector('[data-ui-part="remove"]'); if (rm) rm.disabled = n <= min; });
       root.dataset.count = n;
     };
-    const add = () => { if (rows().length >= max) return; const node = tpl.content.firstElementChild.cloneNode(true); list.append(node); node.querySelectorAll('[data-ui-part="remove"]').forEach(btn); renumber(); if (root.contains(root.ownerDocument.activeElement)) node.querySelector("input,select,textarea")?.focus(); emit(root, "add", { row: node, index: rows().length - 1 }); root.ownerDocument.dispatchEvent(new CustomEvent("ui:refresh", { bubbles: true })); };
+    const add = () => { if (!proto || rows().length >= max) return; const node = proto.cloneNode(true); list.append(node); node.querySelectorAll('[data-ui-part="remove"]').forEach(btn); renumber(); if (root.contains(root.ownerDocument.activeElement)) node.querySelector("input,select,textarea")?.focus(); emit(root, "add", { row: node, index: rows().length - 1 }); root.ownerDocument.dispatchEvent(new CustomEvent("ui:refresh", { bubbles: true })); };
     addBtn && b.on(addBtn, "click", add);
     b.on(root, "click", (e) => { const r = e.target.closest('[data-ui-part="remove"]'); if (!r) return; const row = r.closest('[data-ui-part="row"]'); if (rows().length <= min) return; row.remove(); renumber(); emit(root, "remove", { row }); });
-    while (rows().length < min) add();
+    while (proto && rows().length < min) add();
     renumber();
     return { add, get count() { return rows().length; }, destroy: b.off };
   });
@@ -224,14 +250,18 @@ export function createRating(root, o = {}) {
 }
 
 /* Textarea autosize: <textarea data-ui="textarea" data-autosize [data-max-rows]> ; also counts chars → data-count */
+//  The root may also wrap the textarea (<ui-textarea><textarea></textarea></ui-textarea>); options stay on the root.
 export function createTextarea(root) {
   return once(root, "__uiTextarea", () => {
     const b = bag(), max = Number(root.dataset.maxRows || 0);
+    const area = root.tagName === "TEXTAREA" ? root : root.querySelector("textarea");
+    if (!area) return { fit() {}, destroy() {} };
+    const view = root.ownerDocument.defaultView;
     const fit = () => {
-      if (root.hasAttribute("data-autosize")) { root.style.height = "auto"; const lh = parseFloat(getComputedStyle(root).lineHeight) || 20; const h = root.scrollHeight; root.style.height = `${max ? Math.min(h, lh * max + 16) : h}px`; root.style.overflowY = max && h > lh * max + 16 ? "auto" : "hidden"; }
-      root.dataset.count = root.value.length; if (root.maxLength > 0) root.dataset.remaining = root.maxLength - root.value.length;
+      if (root.hasAttribute("data-autosize")) { area.style.height = "auto"; const lh = parseFloat(view.getComputedStyle(area).lineHeight) || 20; const h = area.scrollHeight; area.style.height = `${max ? Math.min(h, lh * max + 16) : h}px`; area.style.overflowY = max && h > lh * max + 16 ? "auto" : "hidden"; }
+      root.dataset.count = area.value.length; if (area.maxLength > 0) root.dataset.remaining = area.maxLength - area.value.length;
     };
-    b.on(root, "input", fit); fit(); return { fit, destroy: b.off };
+    b.on(area, "input", fit); fit(); return { fit, destroy: b.off };
   });
 }
 
@@ -240,12 +270,13 @@ export function createTextarea(root) {
      <button data-ui-part="swatch" data-value="#e11d48"></button>…</div> */
 export function createColorPicker(root) {
   return once(root, "__uiColorPicker", () => {
-    const b = bag(), color = part(root, "input"), text = part(root, "text");
-    const set = (v) => { if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) return false; if (v.length === 4) v = "#" + [...v.slice(1)].map((c) => c + c).join(""); color.value = v.toLowerCase(); if (text) text.value = v.toLowerCase(); root.style.setProperty("--ui-color", v); root.dataset.value = v; parts(root, "swatch").forEach((s) => { s.setAttribute("aria-pressed", String(s.dataset.value.toLowerCase() === v.toLowerCase())); }); emit(root, "change", { value: v }); return true; };
+    const b = bag(), color = part(root, "input") || root.querySelector("input[type=color]"), text = part(root, "text");
+    if (!color) return { get value() { return ""; }, set value(v) {}, destroy() {} };
+    const set = (v) => { if (!/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v)) return false; if (v.length === 4) v = "#" + [...v.slice(1)].map((c) => c + c).join(""); color.value = v.toLowerCase(); if (text) text.value = v.toLowerCase(); root.style.setProperty("--ui-color", v); root.dataset.value = v; parts(root, "swatch").forEach((s) => { s.setAttribute("aria-pressed", String((s.dataset.value || "").toLowerCase() === v.toLowerCase())); }); emit(root, "change", { value: v }); return true; };
     b.on(color, "input", () => set(color.value));
     text && b.on(text, "change", () => { if (!set(text.value.trim())) text.setAttribute("aria-invalid", "true"); else text.removeAttribute("aria-invalid"); });
-    parts(root, "swatch").forEach((s) => { btn(s); s.setAttribute("aria-label", s.getAttribute("aria-label") || s.dataset.value); s.style.setProperty("--ui-swatch", s.dataset.value); });
-    b.on(root, "click", (e) => { const s = e.target.closest('[data-ui-part="swatch"]'); if (s) set(s.dataset.value); });
+    parts(root, "swatch").forEach((s) => { btn(s); if (!s.dataset.value) return; s.setAttribute("aria-label", s.getAttribute("aria-label") || s.dataset.value); s.style.setProperty("--ui-swatch", s.dataset.value); });
+    b.on(root, "click", (e) => { const s = e.target.closest('[data-ui-part="swatch"]'); if (s?.dataset.value) set(s.dataset.value); });
     set(color.value || "#000000"); return { get value() { return color.value; }, set value(v) { set(v); }, destroy: b.off };
   });
 }
@@ -262,7 +293,7 @@ export function createSortable(root, o = {}) {
     const name = root.dataset.name; const hidden = name ? Object.assign(doc.createElement("input"), { type: "hidden", name }) : null; hidden && root.after(hidden);
     const order = () => items().map((i) => i.dataset.value);
     const done = () => { if (hidden) hidden.value = order().join(","); o.onSort?.(order()); emit(root, "sort", { order: order() }); };
-    const grabbable = (i) => (useHandle ? i.querySelector('[data-ui-part="handle"]') : i);
+    const grabbable = (i) => (useHandle ? i.querySelector('[data-ui-part="handle"]') || i : i); // an item without its handle is its own grip
     items().forEach((i) => { const g = grabbable(i); g.tabIndex = 0; g.setAttribute("aria-roledescription", "sortable"); g.setAttribute("aria-label", g.getAttribute("aria-label") || `${(i.dataset.label || i.textContent).trim()} — Space to move`); });
     let lifted = null, drag = null;
     b.on(root, "keydown", (e) => {
@@ -271,10 +302,42 @@ export function createSortable(root, o = {}) {
       else if (lifted && (e.key === "ArrowDown" || e.key === "ArrowUp")) { e.preventDefault(); const sib = e.key === "ArrowDown" ? lifted.nextElementSibling : lifted.previousElementSibling; if (sib?.dataset.uiPart === "item") { e.key === "ArrowDown" ? sib.after(lifted) : sib.before(lifted); grabbable(lifted).focus(); live.textContent = `Position ${items().indexOf(lifted) + 1} of ${items().length}`; } }
       else if (lifted && e.key === "Escape") { const ref = items()[lifted._from]; if (ref && ref !== lifted) (lifted._from > items().indexOf(lifted) ? ref.after(lifted) : ref.before(lifted)); setState(lifted, "idle"); grabbable(lifted).focus(); lifted = null; live.textContent = "Move cancelled"; }
     });
-    b.on(root, "pointerdown", (e) => { const it = e.target.closest('[data-ui-part="item"]'); if (!it || (useHandle && !e.target.closest('[data-ui-part="handle"]')) || e.button !== 0) return; drag = it; setState(it, "dragging"); root.setPointerCapture?.(e.pointerId); e.preventDefault(); });
-    b.on(root, "pointermove", (e) => { if (!drag) return; const over = doc.elementFromPoint(e.clientX, e.clientY)?.closest('[data-ui-part="item"]'); if (over && over !== drag && root.contains(over)) { const r = over.getBoundingClientRect(); (e.clientY > r.top + r.height / 2 ? over.after(drag) : over.before(drag)); } });
-    b.on(root, "pointerup", () => { if (drag) { setState(drag, "idle"); drag = null; done(); } });
+    // Pointer: a press becomes a drag only after DRAG_THRESHOLD px of travel, and only then is the pointer captured.
+    // Capturing on press retargeted the click to the list, so buttons and checkboxes inside items did nothing.
+    // Controls inside an item never start a drag (a handle is the grip when data-handle is set).
+    const DRAG_THRESHOLD = 5;
+    const track = (on) => { for (const [t, fn] of [["pointermove", move], ["pointerup", up], ["pointercancel", cancel]]) doc[on ? "addEventListener" : "removeEventListener"](t, fn); };
+    function reset() { if (!press) return; track(false); if (drag) setState(drag, "idle"); drag = null; press = null; }
+    function move(e) {
+      if (!press || e.pointerId !== press.id) return;
+      if (!drag) {
+        if (Math.hypot(e.clientX - press.x, e.clientY - press.y) < DRAG_THRESHOLD) return;
+        drag = press.item; setState(drag, "dragging"); root.setPointerCapture?.(e.pointerId);
+      }
+      e.preventDefault();
+      const over = doc.elementFromPoint(e.clientX, e.clientY)?.closest('[data-ui-part="item"]');
+      if (over && over !== drag && root.contains(over) && owner(over) === root) { const r = over.getBoundingClientRect(); (e.clientY > r.top + r.height / 2 ? over.after(drag) : over.before(drag)); }
+    }
+    function up(e) { if (!press || e.pointerId !== press.id) return; const was = drag; reset(); if (was) done(); }
+    // the browser took the touch (scrolling) or the press was cancelled: put the item back where it was
+    function cancel(e) {
+      if (!press || (e && e.pointerId !== press.id)) return;
+      const { item, from } = press; const was = drag; reset();
+      if (was) { const rest = items().filter((i) => i !== item); const ref = rest[from]; ref ? ref.before(item) : rest.length && rest[rest.length - 1].after(item); }
+    }
+    const CONTROL = "button,a[href],input,select,textarea,label,summary,[contenteditable]:not([contenteditable=false]),[role=button],[role=checkbox],[role=switch],[data-ui]";
+    let press = null;
+    b.on(root, "pointerdown", (e) => {
+      if (press || e.button !== 0) return;
+      const it = e.target.closest('[data-ui-part="item"]'); if (!it || owner(it) !== root) return;
+      const handle = useHandle ? e.target.closest('[data-ui-part="handle"]') : null;
+      if (useHandle && (!handle || !it.contains(handle))) return;
+      const control = e.target.closest(CONTROL);
+      if (control && it.contains(control) && control !== it && control !== handle && !(handle && handle.contains(control))) return;
+      press = { item: it, id: e.pointerId, x: e.clientX, y: e.clientY, from: items().indexOf(it) }; track(true);
+      if (e.pointerType === "mouse") e.preventDefault(); // no text selection while dragging with a mouse
+    });
     if (hidden) hidden.value = order().join(",");
-    return { get order() { return order(); }, destroy() { b.off(); live.remove(); } };
+    return { get order() { return order(); }, destroy() { b.off(); reset(); live.remove(); hidden?.remove(); } };
   });
 }

@@ -1,12 +1,15 @@
 import { createElement as h, useId, useState } from 'react';
 import { area } from '../core/charts.js';
+import { parseNumber } from '../core/util.js';
 
 /** Data-driven chart. React owns range selection and the accessible data table. */
-export function ChartPanel({ title = 'Audience growth', description = '', rows = [], labels = ['Visitors', 'Signups'], ranges = [7, 14, 30], defaultRange = 30 }) {
+export function ChartPanel({ title = 'Audience growth', description = '', rows = [], labels = ['Visitors', 'Signups'], ranges = [7, 14, 30], defaultRange = 30, locale }) {
   const id = useId();
   const [range, setRange] = useState(defaultRange);
   const visible = rows.slice(-range);
-  const series = labels.map((_, column) => visible.map(row => Number(row.values[column])));
+  // values may be numbers or text written for people ("1,200"); text is read with `locale`, unreadable values are 0
+  const value = v => { const n = parseNumber(v, locale); return Number.isFinite(n) ? n : 0; };
+  const series = labels.map((_, column) => visible.map(row => value(row.values[column])));
   return h('section', { className: 'card panel chart-box', 'aria-labelledby': id },
     h('header', null, h('div', null, h('h3', { id }, title), description && h('p', null, description)),
       h('div', { className: 'seg', role: 'group', 'aria-label': 'Range' }, ranges.map(n =>

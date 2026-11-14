@@ -5,12 +5,13 @@
 //  <div data-ui="radio-group" [data-default-value] [data-orientation]><button data-ui-part="item" data-value="a">…</button>…</div>
 //     (native <input type=radio> inside also works: items are inputs, we only add data-state)
 //  Checkbox "select all": <input data-ui="checkbox" data-controls="#table [data-ui-part=row-select]"> → parent tri-state
-import { parts, emit, setState, btn, once, bag, roving, isDisabled } from "./util.js";
+import { parts, emit, setState, btn, once, bag, roving, isDisabled, pressable } from "./util.js";
 
 function checkable(root, o, role) {
   const b = bag(), native = root.tagName === "INPUT";
   let v = native ? (root.dataset.indeterminate != null ? "mixed" : root.checked) : (root.getAttribute("aria-checked") === "mixed" ? "mixed" : root.getAttribute("aria-checked") === "true");
-  if (!native) { btn(root); root.setAttribute("role", role); }
+  // a custom element (<ui-checkbox>, <ui-switch>) or other non-button root needs focus and Space itself
+  if (!native) { btn(root); root.setAttribute("role", role); pressable(root, b, { enter: false }); }
   else if (role === "switch") root.setAttribute("role", "switch");
   const render = () => {
     if (native) { root.indeterminate = v === "mixed"; root.checked = v === true; }
