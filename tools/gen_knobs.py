@@ -15,7 +15,7 @@ looks = {
  "soft": f"background:color-mix(in oklab,var(--ui-primary) 15%,var(--ui-background));color:{soft_fg};border:1px solid transparent;box-shadow:none",
  "surface": f"background:color-mix(in oklab,var(--ui-primary) 6%,var(--ui-background));color:{soft_fg};border:1px solid color-mix(in oklab,var(--ui-primary) 32%,var(--ui-background));box-shadow:none",
  "outline": f"background:transparent;color:{soft_fg};border:1px solid color-mix(in oklab,var(--ui-primary) 62%,var(--ui-background));box-shadow:none",
- "classic": "background:linear-gradient(180deg,color-mix(in oklab,var(--ui-primary) 82%,#fff),var(--ui-primary) 50%,color-mix(in oklab,var(--ui-primary) 88%,#000));color:var(--ui-primary-foreground);border:1px solid color-mix(in oklab,var(--ui-primary) 78%,#000);box-shadow:inset 0 1px 0 #ffffff47,0 1px 2px #0003,0 3px 8px -3px color-mix(in oklab,var(--ui-primary) 55%,transparent)",
+ "classic": "background:linear-gradient(180deg,var(--ui-primary),var(--ui-primary) 50%,color-mix(in oklab,var(--ui-primary) 88%,#000));color:var(--ui-primary-foreground);border:1px solid color-mix(in oklab,var(--ui-primary) 78%,#000);box-shadow:inset 0 1px 0 #ffffff47,0 1px 2px #0003,0 3px 8px -3px color-mix(in oklab,var(--ui-primary) 55%,transparent)",
  "ghost": f"background:transparent;color:{soft_fg};border:1px solid transparent;box-shadow:none",
 }
 for v, body in looks.items():

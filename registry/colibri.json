@@ -489,9 +489,12 @@
    ],
    "api": [
     "index",
+    "playing",
     "go",
     "next",
     "prev",
+    "play",
+    "pause",
     "destroy"
    ]
   },

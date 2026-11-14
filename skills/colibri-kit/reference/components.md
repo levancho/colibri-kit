@@ -687,7 +687,7 @@ Get a live controller with `controllers(el)[0]` (exported by `core/auto.js`, `co
 - `button` · events: none · controller: `loading`, `destroy`
 - `button-group` · events: `ui:action` detail `value`; `ui:change` detail `value` · controller: `value`, `toggle`, `destroy`
 - `calendar` · events: `ui:change` detail `value, complete` · controller: `value`, `focus`, `destroy`
-- `carousel` · events: `ui:change` detail `index` · controller: `index`, `go`, `next`, `prev`, `destroy`
+- `carousel` · events: `ui:change` detail `index` · controller: `index`, `playing`, `go`, `next`, `prev`, `play`, `pause`, `destroy`
 - `chain-of-thought` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`
 - `chart` · events: none · controller: `destroy`
 - `checkbox` · events: `ui:change` detail `checked` · controller: `checked`, `destroy`

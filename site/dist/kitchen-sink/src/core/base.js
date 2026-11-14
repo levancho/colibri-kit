@@ -99,16 +99,40 @@ export function createProgress(root, o = {}) {
 /* Carousel (shadcn/Metronic): scroll-snap based; CSS owns layout ([data-ui-part=viewport]{overflow-x:auto;scroll-snap-type:x mandatory}).
    <div data-ui="carousel" [data-loop] [data-autoplay="5000"] aria-label="Featured">
      <div data-ui-part="viewport"><div data-ui-part="slide">…</div>…</div>
-     <button data-ui-part="prev">‹</button><button data-ui-part="next">›</button><div data-ui-part="dots"></div></div> */
+     <button data-ui-part="prev">‹</button><button data-ui-part="next">›</button><div data-ui-part="dots"></div></div>
+   With data-autoplay a pause/play button (data-ui-part="play"; generated when absent) is added first in tab order. */
 export function createCarousel(root, o = {}) {
   return once(root, "__uiCarousel", () => {
-    const b = bag(), vp = part(root, "viewport"), slides = () => parts(root, "slide"), dots = part(root, "dots");
-    const loop = root.hasAttribute("data-loop"), auto = Number(root.dataset.autoplay || 0);
+    const b = bag(), doc = root.ownerDocument, view = doc.defaultView, vp = part(root, "viewport"), slides = () => parts(root, "slide"), dots = part(root, "dots");
+    const loop = root.hasAttribute("data-loop"), auto = Number(o.autoplay ?? root.dataset.autoplay ?? 0);
+    const rtl = () => (root.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" || view.getComputedStyle?.(root).direction === "rtl";
     root.setAttribute("role", "region"); root.setAttribute("aria-roledescription", "carousel");
     slides().forEach((s, i, a) => { s.setAttribute("role", "group"); s.setAttribute("aria-roledescription", "slide"); s.setAttribute("aria-label", `${i + 1} / ${a.length}`); });
     [part(root, "prev"), part(root, "next")].forEach(btn);
     if (dots) dots.innerHTML = slides().map((_, i) => `<button type="button" data-ui-part="dot" data-index="${i}" aria-label="Go to slide ${i + 1}"></button>`).join("");
-    let index = 0, timer;
+    let index = 0, timer = null;
+    // Autoplay (WAI-ARIA APG carousel; WCAG 2.2.2): a visible, labelled pause/play button comes first in tab order;
+    // rotation pauses while the pointer is over the carousel or focus is inside it, stays stopped once the user
+    // pauses it, and never starts when the user prefers reduced motion. Slides are announced only while stopped.
+    const reduced = !!view.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    let userPaused = reduced, hovering = false, focusWithin = false, playBtn = part(root, "play"), madePlay = false;
+    if (auto && !playBtn) {
+      playBtn = doc.createElement("button"); playBtn.type = "button"; playBtn.dataset.uiPart = "play"; madePlay = true;
+      root.prepend(playBtn);
+    }
+    const running = () => !!timer;
+    const sync = () => {
+      if (!auto) return;
+      const shouldRun = !userPaused && !hovering && !focusWithin;
+      if (shouldRun && !timer) timer = setInterval(() => go(index + 1), auto);
+      if (!shouldRun && timer) { clearInterval(timer); timer = null; }
+      if (vp) vp.setAttribute("aria-live", running() ? "off" : "polite");
+      if (playBtn) {
+        playBtn.setAttribute("aria-label", userPaused ? "Start slide rotation" : "Stop slide rotation");
+        if (madePlay) playBtn.textContent = userPaused ? "▶" : "❚❚";
+        setState(playBtn, userPaused ? "paused" : "playing"); root.dataset.autoplayState = userPaused ? "paused" : "playing";
+      }
+    };
     const render = () => {
       slides().forEach((s, i) => { setState(s, i === index ? "active" : "inactive"); s.toggleAttribute("inert", i !== index && root.dataset.inertInactive != null); });
       parts(root, "dot").forEach((d, i) => { setState(d, i === index ? "active" : "inactive"); d.setAttribute("aria-current", String(i === index)); });
@@ -117,15 +141,35 @@ export function createCarousel(root, o = {}) {
     };
     const go = (i, smooth = true) => {
       const n = slides().length; i = loop ? (i + n) % n : Math.max(0, Math.min(n - 1, i)); if (i === index && smooth) return;
-      index = i; const s = slides()[i]; vp?.scrollTo?.({ left: s.offsetLeft - vp.offsetLeft, behavior: smooth ? "smooth" : "auto" }); render(); emit(root, "change", { index });
+      index = i; const s = slides()[i];
+      // Scroll by the slide's offset from the viewport's start edge, which works in both directions (in RTL the start
+      // edge is the right one and scrollLeft runs negative).
+      if (vp?.scrollTo && s) {
+        const vr = vp.getBoundingClientRect(), sr = s.getBoundingClientRect();
+        vp.scrollTo({ left: vp.scrollLeft + (rtl() ? sr.right - vr.right : sr.left - vr.left), behavior: smooth && !reduced ? "smooth" : "auto" });
+      }
+      render(); emit(root, "change", { index });
     };
-    b.on(root, "click", (e) => { if (e.target.closest('[data-ui-part="prev"]')) go(index - 1); else if (e.target.closest('[data-ui-part="next"]')) go(index + 1); else { const d = e.target.closest('[data-ui-part="dot"]'); if (d) go(Number(d.dataset.index)); } });
-    b.on(root, "keydown", (e) => { if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1); } if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1); } });
+    b.on(root, "click", (e) => {
+      if (playBtn && e.target.closest('[data-ui-part="play"]') === playBtn) { userPaused = !userPaused; sync(); return; }
+      if (e.target.closest('[data-ui-part="prev"]')) go(index - 1); else if (e.target.closest('[data-ui-part="next"]')) go(index + 1); else { const d = e.target.closest('[data-ui-part="dot"]'); if (d) go(Number(d.dataset.index)); }
+    });
+    b.on(root, "keydown", (e) => {
+      if (e.target.closest("input,textarea,select,[contenteditable]")) return;
+      const k = rtl() ? { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[e.key] || e.key : e.key;
+      if (k === "ArrowRight") { e.preventDefault(); go(index + 1); } if (k === "ArrowLeft") { e.preventDefault(); go(index - 1); }
+    });
     if (vp && typeof IntersectionObserver !== "undefined") { const io = new IntersectionObserver((ents) => ents.forEach((en) => { if (en.isIntersecting && en.intersectionRatio > 0.6) { const i = slides().indexOf(en.target); if (i !== index) { index = i; render(); emit(root, "change", { index }); } } }), { root: vp, threshold: [0.6] }); slides().forEach((s) => io.observe(s)); b.on(root, "ui:destroy", () => io.disconnect()); }
-    if (auto) { const play = () => { clearInterval(timer); timer = setInterval(() => go(index + 1), auto); }; const stop = () => clearInterval(timer); b.on(root, "pointerenter", stop); b.on(root, "pointerleave", play); b.on(root, "focusin", stop); b.on(root, "focusout", play); play(); }
-    if (!root.hasAttribute("tabindex")) root.tabIndex = 0;
-    render();
-    return { get index() { return index; }, go, next: () => go(index + 1), prev: () => go(index - 1), destroy() { clearInterval(timer); b.off(); } };
+    if (auto) {
+      b.on(root, "pointerenter", () => { hovering = true; sync(); }); b.on(root, "pointerleave", () => { hovering = false; sync(); });
+      b.on(root, "focusin", (e) => { focusWithin = e.target !== playBtn; sync(); }); b.on(root, "focusout", (e) => { if (!root.contains(e.relatedTarget)) { focusWithin = false; sync(); } });
+    }
+    // The scrolling viewport is the keyboard stop (a scrollable region must be focusable); arrow keys bubble to root.
+    const stop = vp || root; if (!stop.hasAttribute("tabindex") && !root.hasAttribute("tabindex")) stop.tabIndex = 0;
+    render(); sync();
+    return { get index() { return index; }, get playing() { return running(); }, go, next: () => go(index + 1), prev: () => go(index - 1),
+      play() { userPaused = false; sync(); }, pause() { userPaused = true; sync(); },
+      destroy() { clearInterval(timer); timer = null; b.off(); if (madePlay) playBtn.remove(); } };
   });
 }
 

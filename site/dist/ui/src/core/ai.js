@@ -6,7 +6,9 @@ import { uid, parts, part, emit, setState, btn, once, bag } from "./util.js";
 
 const setText = (el, v) => { if (el && el.textContent !== String(v)) el.textContent = v; };
 const setData = (el, k, v) => { if (el && el.dataset[k] !== String(v)) el.dataset[k] = v; };
-const copyText = async (txt, b) => { try { await navigator.clipboard.writeText(txt); } catch {} if (b) { b.dataset.copied = ""; setTimeout(() => delete b.dataset.copied, 1500); } };
+/** Timers owned by one controller; destroy() clears them so nothing fires into a torn-down component. */
+const timerSet = () => { const ids = new Set(); return { later(fn, ms) { const id = setTimeout(() => { ids.delete(id); fn(); }, ms); ids.add(id); return id; }, clear() { ids.forEach(clearTimeout); ids.clear(); } }; };
+const copyText = async (txt, b, timers) => { try { await navigator.clipboard.writeText(txt); } catch {} if (b) { b.dataset.copied = ""; (timers ? timers.later : setTimeout)(() => delete b.dataset.copied, 1500); } };
 
 /** Disclosure shared by every collapsible AI element: part trigger toggles part content. */
 function disclosure(root, b, { defaultOpen = root.hasAttribute("data-default-open") } = {}) {
@@ -44,18 +46,18 @@ export function createBubble(root) {
 }
 export function createMessage(root) {
   return once(root, "__uiMessage", () => {
-    const b = bag();
+    const b = bag(), timers = timerSet();
     root.setAttribute("role", root.getAttribute("role") || "article");
     root.dataset.from ||= "assistant";
     b.on(root, "click", (e) => {
       const a = e.target.closest("[data-ui-part=action]"); if (!a || a.closest("[data-ui=message]") !== root) return;
       const kind = a.dataset.action;
-      if (kind === "copy") copyText((part(root, "content") || root).innerText.trim(), a);
+      if (kind === "copy") copyText((part(root, "content") || root).innerText.trim(), a, timers);
       if (kind === "like" || kind === "dislike") { const on = a.getAttribute("aria-pressed") !== "true"; parts(root, "action").filter((x) => /like/.test(x.dataset.action)).forEach((x) => x.setAttribute("aria-pressed", "false")); a.setAttribute("aria-pressed", String(on)); }
       emit(root, "action", { action: kind });
     });
     parts(root, "action").forEach((a) => { btn(a); if (/like/.test(a.dataset.action)) a.setAttribute("aria-pressed", "false"); });
-    return { destroy: b.off };
+    return { destroy() { timers.clear(); b.off(); } };
   });
 }
 export function createMarker(root) {
@@ -166,7 +168,7 @@ export function createQuestionnaire(root) {
 // ---------- AI elements: collapsible run blocks ----------
 function agentBlock(kind) {
   return (root) => once(root, "__uiAgent", () => {
-    const b = bag(); root.dataset.status ||= "done";
+    const b = bag(), timers = timerSet(); root.dataset.status ||= "done";
     const d = disclosure(root, b, { defaultOpen: root.hasAttribute("data-default-open") || root.dataset.status === "running" || root.dataset.status === "streaming" });
     const live = part(root, "status"); if (live) live.setAttribute("aria-live", "polite");
     let started = Date.now();
@@ -190,7 +192,7 @@ function agentBlock(kind) {
         if (s === "streaming") { started = started || Date.now(); d.set(true, "stream"); if (part(root, "trigger")) part(root, "trigger").dataset.shimmer = ""; }
         else { const t = part(root, "trigger"); if (t) delete t.dataset.shimmer; const sec = Math.max(1, Math.round((Date.now() - started) / 1000));
           const lab = part(root, "label"); if (lab && root.dataset.prevStatus === "streaming") lab.textContent = `Thought for ${root.dataset.duration || sec}s`;
-          if (root.dataset.prevStatus === "streaming" && root.dataset.autoClose !== "false") setTimeout(() => d.set(false, "done"), 600); }
+          if (root.dataset.prevStatus === "streaming" && root.dataset.autoClose !== "false") timers.later(() => d.set(false, "done"), 600); }
         setData(root, "prevStatus", s);
       }
     };
@@ -198,8 +200,8 @@ function agentBlock(kind) {
     mo.observe(root, { attributes: true, attributeFilter: ["data-status"], subtree: true });
     if (kind === "reasoning") started = root.dataset.status === "streaming" ? Date.now() : 0;
     update();
-    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=copy]"); if (a) copyText((part(root, "output") || part(root, "content") || root).innerText, a); });
-    const api = { open: () => d.set(true), close: () => d.set(false), toggle: () => d.set(!d.open), setStatus(s) { root.dataset.status = s; }, destroy() { mo.disconnect(); b.off(); } };
+    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=copy]"); if (a) copyText((part(root, "output") || part(root, "content") || root).innerText, a, timers); });
+    const api = { open: () => d.set(true), close: () => d.set(false), toggle: () => d.set(!d.open), setStatus(s) { root.dataset.status = s; }, destroy() { timers.clear(); mo.disconnect(); b.off(); } };
     if (kind === "terminal") {
       const out = part(root, "output");
       api.write = (txt) => { if (!out) return; const stick = out.scrollHeight - out.scrollTop - out.clientHeight < 8; out.append(document.createTextNode(txt)); if (stick) out.scrollTop = out.scrollHeight; };
