@@ -1,5 +1,5 @@
 /* Page chrome for the gallery (always on, even with demo styling off). */
-:root{--s-bg:#fff;--s-fg:#09090b;--s-muted:#71717a;--s-line:#e4e4e7;--s-soft:#f4f4f5;--s-acc:#18181b;--s-ring:#a1a1aa;color-scheme:light}
+:root{--s-bg:#fff;--s-fg:#09090b;--s-muted:#6a6a73;--s-line:#e4e4e7;--s-soft:#f4f4f5;--s-acc:#18181b;--s-ring:#a1a1aa;color-scheme:light}
 html[data-theme=dark]{--s-bg:#09090b;--s-fg:#fafafa;--s-muted:#a1a1aa;--s-line:#27272a;--s-soft:#18181b;--s-acc:#fafafa;--s-ring:#52525b;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 html{scroll-padding-top:72px}
@@ -81,6 +81,7 @@ html[data-theme=dark] .sink-st[data-status=done]{background:#052e16;color:#86efa
 .sink-code-tabs>[data-ui-part=panel][hidden]{display:none}
 .sink-pre{margin:0;padding:1rem 1.1rem;max-height:340px;overflow:auto;font:12.5px/1.6 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--s-fg);tab-size:2}
 .sink-pre code{background:none;padding:0;font:inherit;white-space:pre}
+.sink-pre:focus-visible{outline:2px solid var(--s-acc);outline-offset:-2px}
 .sink-copy{position:absolute;top:.5rem;right:.6rem;display:inline-flex;align-items:center;gap:.35rem;height:28px;padding:0 .6rem;border:1px solid var(--s-line);border-radius:6px;background:var(--s-bg);color:var(--s-fg);font:500 12px/1 inherit;cursor:pointer;z-index:1}
 .sink-copy::before{content:"";width:14px;height:14px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2'/%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'/%3E%3C/svg%3E") center/contain no-repeat}
 .sink-copy:hover{background:var(--s-soft)}.sink-copy[data-state=copied]{color:#16a34a;border-color:#16a34a}

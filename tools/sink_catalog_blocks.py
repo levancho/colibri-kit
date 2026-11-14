@@ -117,8 +117,8 @@ def otp_view():
             '<button data-ui="button" type="submit" class="auth-full">Verify</button><p class="muted auth-small">Didn\'t receive it? <button type="button" class="auth-link" data-ui-auth-view="password">Resend</button></p></div>')
 DONE = '<div data-ui-part="view" data-view="done"><h2 class="auth-h">You\'re in 🎉</h2><p class="muted">This is where the app would redirect.</p><button type="button" class="auth-link" data-ui-auth-view="password">Start over</button></div>'
 REMEMBER = '<label class="auth-check"><input type="checkbox" data-ui="checkbox" name="remember"> Remember me</label>'
-def login_form(fid, title="Login to your account", desc="Enter your email below to login to your account", social=("google",), social_first=False, card=True, extra_views=True, header=True):
-    soc = providers(social) if social else ""
+def login_form(fid, title="Login to your account", desc="Enter your email below to login to your account", social=("google",), social_first=False, card=True, extra_views=True, header=True, icons_only=False):
+    soc = providers(social, icons_only=icons_only) if social else ""
     body = (f'<div data-ui-part="view" data-view="password" data-next="otp">'
             + (f'<header class="auth-head"><h2 class="auth-h">{title}</h2><p class="muted">{desc}</p></header>' if header else "")
             + (soc + OR if social_first and soc else "")
@@ -157,7 +157,7 @@ AUTH["login-02"] = ("Login", "Two columns with cover", "A two column login page:
 AUTH["login-03"] = ("Login", "Muted background", "A login card on a muted page with Apple and Google first, then email.",
   f'<div class="auth-page auth-center-page auth-muted"><div class="auth-stack">{BRAND}{login_form("lg03", "Welcome back", "Login with your Apple or Google account", ("apple", "google"), True)}{TERMS}</div></div>')
 AUTH["login-04"] = ("Login", "Form and image in a card", "A wide card split into the login form and an image.",
-  f'<div class="auth-page auth-center-page auth-muted"><div class="auth-stack auth-wide"><article data-ui-part="card" class="auth-card auth-card-split">{login_form("lg04", "Welcome back", "Login to your Acme Inc account", ("apple", "google", "github"), card=False).replace("<span>Login with Apple</span>","").replace("<span>Login with Google</span>","").replace("<span>Login with GitHub</span>","")}{COVER}</article>{TERMS}</div></div>')
+  f'<div class="auth-page auth-center-page auth-muted"><div class="auth-stack auth-wide"><article data-ui-part="card" class="auth-card auth-card-split">{login_form("lg04", "Welcome back", "Login to your Acme Inc account", ("apple", "google", "github"), card=False, icons_only=True)}{COVER}</article>{TERMS}</div></div>')
 AUTH["login-05"] = ("Login", "Email only (magic link)", "An email-only login: enter your email, get a link (or code); social buttons below.",
   '<div class="auth-page auth-center-page"><div class="auth-stack">' + f'<form data-ui="auth-form" id="lg05" data-default-view="magic-link" novalidate class="auth-form"><div data-ui-part="view" data-view="magic-link" data-next="otp"><header class="auth-head auth-center">{BRAND}<h2 class="auth-h">Welcome to Acme Inc.</h2><p class="muted">Don\'t have an account? <a href="#signup-01">Sign up</a></p></header>'
   + field("Email", "email", "email", "m@example.com", ac="email") + '<button data-ui="button" type="submit" class="auth-full">Login</button>' + OR.replace("Or continue with", "Or") + providers(("apple", "google"), "Continue with") + "</div>" + otp_view().replace('data-ui-auth-view="password"', 'data-ui-auth-view="magic-link"') + DONE.replace('data-ui-auth-view="password"', 'data-ui-auth-view="magic-link"') + STATUS + "</form>" + TERMS + "</div></div>")

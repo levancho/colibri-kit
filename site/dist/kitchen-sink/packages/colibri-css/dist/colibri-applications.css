@@ -46,6 +46,12 @@
 :where(.colibri-application) .panel header p{margin:0;color:var(--c-muted);font-size:var(--c-text-sm)}
 :where(.colibri-application) .chart-box .chart{inline-size:100%;block-size:220px;display:block}
 :where(.colibri-application) .legend{display:flex;flex-wrap:wrap;gap:var(--c-space-s);font-size:var(--c-text-sm);color:var(--c-muted);list-style:none;margin:0;padding:0}
+/* Legend dots follow the series order (the charts use --chart-1..4, then the accent), so templates need no style attribute (CSP). */
+:where(.colibri-application) .legend li{--dot:var(--c-accent)}
+:where(.colibri-application) .legend li:nth-child(1){--dot:var(--chart-1)}
+:where(.colibri-application) .legend li:nth-child(2){--dot:var(--chart-2)}
+:where(.colibri-application) .legend li:nth-child(3){--dot:var(--chart-3)}
+:where(.colibri-application) .legend li:nth-child(4){--dot:var(--chart-4)}
 :where(.colibri-application) .legend li::before{content:"";display:inline-block;inline-size:.65rem;block-size:.65rem;border-radius:3px;margin-inline-end:.4rem;background:var(--dot)}
 :where(.colibri-application) .donut-wrap{display:flex;align-items:center;gap:var(--c-space-m)}
 :where(.colibri-application) .donut-wrap .chart{inline-size:140px;block-size:140px;flex:none}

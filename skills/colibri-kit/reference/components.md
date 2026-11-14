@@ -687,7 +687,7 @@ Get a live controller with `controllers(el)[0]` (exported by `core/auto.js`, `co
 - `button` · events: none · controller: `loading`, `destroy`
 - `button-group` · events: `ui:action` detail `value`; `ui:change` detail `value` · controller: `value`, `toggle`, `destroy`
 - `calendar` · events: `ui:change` detail `value, complete` · controller: `value`, `focus`, `destroy`
-- `carousel` · events: `ui:change` detail `index` · controller: `index`, `go`, `next`, `prev`, `destroy`
+- `carousel` · events: `ui:change` detail `index` · controller: `index`, `playing`, `go`, `next`, `prev`, `play`, `pause`, `destroy`
 - `chain-of-thought` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`
 - `chart` · events: none · controller: `destroy`
 - `checkbox` · events: `ui:change` detail `checked` · controller: `checked`, `destroy`
@@ -704,7 +704,7 @@ Get a live controller with `controllers(el)[0]` (exported by `core/auto.js`, `co
 - `context-menu` · events: `ui:close` detail `reason`; `ui:open` detail `reason`; `ui:select` detail `item, value, checked` (cancelable) · controller: `open`, `show`, `hide`, `trigger`, `destroy`
 - `data-table` · events: `ui:query` detail `sort, page, search, pageSize`; `ui:select` detail `ids`; `ui:sort` detail `sort` · controller: `selected`, `filter`, `setPageSize`, `setColumnVisible`, `refresh`, `destroy`
 - `datatable` · events: `ui:query` detail `sort, page, search, pageSize`; `ui:select` detail `ids`; `ui:sort` detail `sort` · controller: `selected`, `filter`, `setPageSize`, `setColumnVisible`, `refresh`, `destroy`
-- `date-picker` · events: `ui:change` detail `value, complete`; `ui:close`; `ui:open` · controller: `value`, `show`, `hide`, `destroy`
+- `date-picker` · events: `ui:change` detail `value, valid, complete`; `ui:close`; `ui:open` · controller: `value`, `show`, `hide`, `destroy`
 - `dialog` · events: `ui:beforeclose` detail `returnValue` (cancelable); `ui:close` detail `returnValue`; `ui:open` · controller: `open`, `show`, `close`, `toggle`, `destroy`
 - `dismiss` · events: `ui:beforedismiss` (cancelable); `ui:dismiss` · controller: `destroy`
 - `drawer` · events: `ui:beforeclose` detail `returnValue` (cancelable); `ui:close` detail `returnValue`; `ui:open` · controller: `open`, `show`, `close`, `toggle`, `destroy`
@@ -721,7 +721,7 @@ Get a live controller with `controllers(el)[0]` (exported by `core/auto.js`, `co
 - `message` · events: `ui:action` detail `action` · controller: `destroy`
 - `message-scroller` · events: none · controller: `scrollToBottom`, `destroy`
 - `navigation-menu` · events: `ui:close` detail `index`; `ui:open` detail `index` · controller: `close`, `destroy`
-- `pagination` · events: `ui:change` detail `page` · controller: `page`, `setTotal`, `destroy`
+- `pagination` · events: `ui:change` detail `page` · controller: `page`, `setTotal`, `sync`, `destroy`
 - `pin-input` · events: `ui:change` detail `value`; `ui:complete` detail `value` · controller: `value`, `clear`, `destroy`
 - `plan` · events: `ui:openchange` detail `open, why` · controller: `open`, `close`, `toggle`, `setStatus`, `destroy`
 - `popover` · events: `ui:close` detail `reason`; `ui:open` detail `reason` · controller: `open`, `show`, `hide`, `toggle`, `reposition`, `destroy`

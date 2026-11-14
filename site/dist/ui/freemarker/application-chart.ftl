@@ -14,6 +14,6 @@
       <tbody>[#list rows as row]<tr><th scope="row">${row.label}</th>[#list row.values as value]<td>${value?c}</td>[/#list]</tr>[/#list]</tbody>
     </table>
   </details>
-  <ul class="legend">[#list labels as label]<li style="--dot:var(--chart-${label?index + 1})">${label}</li>[/#list]</ul>
+  <ul class="legend">[#list labels as label]<li>${label}</li>[/#list]</ul>
 </section>
 [/#macro]

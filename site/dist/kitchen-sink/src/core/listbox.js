@@ -70,6 +70,15 @@ export function createSelect(root, o = {}) {
     const sel = selection(root, o), name = o.name || root.dataset.name, ph = root.dataset.placeholder || "";
     wireList(box, id, sel.multiple); box.hidden = true; box.tabIndex = -1;
     trigger.setAttribute("role", "combobox"); trigger.setAttribute("aria-haspopup", "listbox"); trigger.setAttribute("aria-controls", box.id); trigger.setAttribute("aria-expanded", "false");
+    // A combobox is not named by its content: move a name given on the root (where aria-label is not allowed on a
+    // plain div) to the trigger, or fall back to the visible value.
+    if (!trigger.hasAttribute("aria-label") && !trigger.hasAttribute("aria-labelledby") && !trigger.labels?.length) {
+      const rootLabel = root.getAttribute("aria-label"), rootBy = root.getAttribute("aria-labelledby");
+      if (valueEl) valueEl.id ||= `${id}-value`;
+      if (rootLabel) { trigger.setAttribute("aria-label", rootLabel); if (!root.hasAttribute("role")) root.removeAttribute("aria-label"); }
+      else if (rootBy) { trigger.setAttribute("aria-labelledby", [rootBy, valueEl?.id].filter(Boolean).join(" ")); if (!root.hasAttribute("role")) root.removeAttribute("aria-labelledby"); }
+      else if (valueEl) trigger.setAttribute("aria-labelledby", valueEl.id);
+    }
     let open = false, hl = null, unlayer = null;
     const render = () => {
       renderSelected(box, sel);

@@ -7,7 +7,7 @@
     &:hover { background: color-mix(in oklch, var(--c-accent) 88%, black); }
     &:active { transform: scale(0.97); }
     &:disabled, &[aria-disabled=true] { opacity: 0.5; pointer-events: none; }
-    &[data-variant=soft] { background: var(--c-accent-soft); color: var(--c-accent); }
+    &[data-variant=soft] { background: var(--c-accent-soft); color: var(--c-accent-ink); }
     &[data-variant=outline] { background: transparent; color: var(--c-fg); border-color: var(--c-line); &:hover { background: var(--c-sunken); } }
     &[data-variant=ghost] { background: transparent; color: var(--c-fg); &:hover { background: var(--c-sunken); } }
     /* canonical: danger. `destructive` (the Colibri UI word) is accepted so the two layers share one vocabulary. */
@@ -15,7 +15,9 @@
     &[data-size=s] { min-block-size: 2rem; padding-inline: 0.75em; }
     &[data-size=l] { min-block-size: 3rem; padding-inline: 1.4em; font-size: var(--c-text-md); } }
 
-  .card { container-type: inline-size; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); box-shadow: var(--c-shadow-s);
+  /* Not a size container: container-type: inline-size made a card in a flex row or a fit-content parent collapse to
+     one word per line. Add .container (layout layer) to a card whose children use container queries. */
+  .card { padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface); box-shadow: var(--c-shadow-s);
     transition: box-shadow var(--c-dur) var(--c-ease), border-color var(--c-dur) var(--c-ease);
     /* :has() — a card containing a checked checkbox looks selected; one with a link inside lifts on hover */
     &:has(:checked) { border-color: var(--c-accent); box-shadow: 0 0 0 3px var(--c-accent-soft); }
@@ -26,7 +28,7 @@
 
   .badge { display: inline-flex; inline-size: fit-content; align-items: center; gap: 0.3em; padding: 0.15em 0.6em; border-radius: var(--c-radius-full); font-size: var(--c-text-xs); font-weight: 600;
     background: var(--tone-soft, var(--c-sunken)); color: var(--tone, var(--c-fg));
-    &[data-tone=accent] { --tone: var(--c-accent); --tone-soft: var(--c-accent-soft); }
+    &[data-tone=accent] { --tone: var(--c-accent-ink); --tone-soft: var(--c-accent-soft); }
     /* canonical: ok | warn | bad. The Colibri UI words success | warning | danger are accepted as aliases. */
     &:is([data-tone=ok], [data-tone=success]) { --tone: var(--c-ok); --tone-soft: color-mix(in oklch, var(--c-ok) 15%, transparent); }
     &:is([data-tone=warn], [data-tone=warning]) { --tone: var(--c-warn); --tone-soft: color-mix(in oklch, var(--c-warn) 18%, transparent); }

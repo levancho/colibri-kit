@@ -16,20 +16,22 @@
 //  data-ui="navigation-menu": <ul data-ui-part="list"><li data-ui-part="menu"><button data-ui-part="trigger">…
 //      <div data-ui-part="content">links</div></li>…</ul>  (hover or click; disclosure, not role=menu)
 // Events: ui:open / ui:close / ui:select {item, value, checked}. Cancel ui:select to keep menu open.
-import { uid, emit, setState, btn, once, bag, roving, typeahead, place, layer, isDisabled, owner } from "./util.js";
+import { uid, emit, setState, btn, once, bag, roving, typeahead, place, layer, isDisabled, owner, isRTL, logicalKey } from "./util.js";
 
 const Q = (el, p) => [...el.querySelectorAll(`:scope [data-ui-part="${p}"]`)];
-// items belonging to this content level only (not nested sub-contents)
-const levelItems = (content) => [...content.querySelectorAll('[data-ui-part="item"],[data-ui-part="sub-trigger"]')]
-  .filter((i) => i.closest('[data-ui-part="content"],[data-ui-part="sub-content"]') === content && !isDisabled(i));
+// items belonging to this content level only (not nested sub-contents). Disabled items keep their menu role (so a
+// screen reader announces them as unavailable) but are skipped by arrow keys and typeahead.
+const allLevelItems = (content) => [...content.querySelectorAll('[data-ui-part="item"],[data-ui-part="sub-trigger"]')]
+  .filter((i) => i.closest('[data-ui-part="content"],[data-ui-part="sub-content"]') === content);
+const levelItems = (content) => allLevelItems(content).filter((i) => !isDisabled(i));
 
-function menuLevel(content, { onClose, side = "bottom", align = "start", anchor, point, onSelect, onArrowOut }) {
+function menuLevel(content, { onClose, side = "bottom", align = "start", anchor, point, onSelect, onArrowOut, ignore = [] }) {
   const b = bag(), ta = typeahead();
   content.setAttribute("role", "menu"); content.tabIndex = -1;
   content.querySelectorAll('[data-ui-part="separator"]').forEach((s) => s.setAttribute("role", "separator"));
   content.querySelectorAll('[data-ui-part="radio-group"]').forEach((g) => g.setAttribute("role", "group"));
   const items = () => levelItems(content);
-  items().forEach((i) => {
+  allLevelItems(content).forEach((i) => {
     btn(i);
     const ty = i.dataset.type;
     i.setAttribute("role", ty === "checkbox" ? "menuitemcheckbox" : ty === "radio" ? "menuitemradio" : "menuitem");
@@ -37,7 +39,7 @@ function menuLevel(content, { onClose, side = "bottom", align = "start", anchor,
     if (i.dataset.uiPart === "sub-trigger") { i.setAttribute("aria-haspopup", "menu"); i.setAttribute("aria-expanded", "false"); }
     i.tabIndex = -1;
   });
-  content.querySelectorAll('[data-ui-part="item"][disabled]').forEach((i) => i.setAttribute("aria-disabled", "true"));
+  allLevelItems(content).forEach((i) => { if (isDisabled(i)) i.setAttribute("aria-disabled", "true"); });
   let sub = null;
   const closeSub = () => { sub?.close(); sub = null; };
   function openSub(st, focusFirst) {
@@ -45,8 +47,11 @@ function menuLevel(content, { onClose, side = "bottom", align = "start", anchor,
     closeSub();
     const sc = st.parentElement.querySelector('[data-ui-part="sub-content"]'); if (!sc) return;
     sc.hidden = false; setState(sc, "open"); st.setAttribute("aria-expanded", "true"); setState(st, "open");
-    const lvl = menuLevel(sc, { anchor: st, side: "right", align: "start", onSelect, onClose: () => {}, onArrowOut: () => { closeSub(); st.focus(); } });
-    sub = { trigger: st, close() { lvl.destroy(); sc.hidden = true; setState(sc, "closed"); st.setAttribute("aria-expanded", "false"); setState(st, "closed"); } };
+    const back = () => { closeSub(); st.focus(); };
+    const lvl = menuLevel(sc, { anchor: st, side: isRTL(st) ? "left" : "right", align: "start", onSelect, onClose, onArrowOut: back, ignore: [content, ...ignore] });
+    // A submenu is its own dismissable layer: Escape closes only the submenu and returns focus to its parent item.
+    const unlayer = layer(sc, (r) => (r === "escape" ? back() : onClose(r)), { ignore: [content, ...ignore] });
+    sub = { trigger: st, close() { unlayer(); lvl.destroy(); sc.hidden = true; setState(sc, "closed"); st.setAttribute("aria-expanded", "false"); setState(st, "closed"); } };
     if (focusFirst) items0(sc)?.focus();
   }
   const items0 = (c) => levelItems(c)[0];
@@ -74,9 +79,9 @@ function menuLevel(content, { onClose, side = "bottom", align = "start", anchor,
   b.on(content, "keydown", (e) => {
     const cur = e.target.closest('[data-ui-part="item"],[data-ui-part="sub-trigger"]');
     if (cur && cur.closest('[data-ui-part="content"],[data-ui-part="sub-content"]') !== content) return; // let sub handle
-    const list = items();
-    if (e.key === "ArrowRight" && cur?.dataset.uiPart === "sub-trigger") { e.preventDefault(); return openSub(cur, true); }
-    if (e.key === "ArrowLeft" && onArrowOut) { e.preventDefault(); e.stopPropagation(); return onArrowOut(); }
+    const list = items(), k = logicalKey(content, e.key);
+    if (k === "ArrowRight" && cur?.dataset.uiPart === "sub-trigger") { e.preventDefault(); e.stopPropagation(); return openSub(cur, true); }
+    if (k === "ArrowLeft" && onArrowOut) { e.preventDefault(); e.stopPropagation(); return onArrowOut(); }
     if ((e.key === "Enter" || e.key === " ") && cur) { e.preventDefault(); return activate(cur); }
     if (e.key === "Tab") { onClose("tab"); return; }
     const n = roving(list, cur, e.key, { orientation: "vertical" }) ||
@@ -94,7 +99,7 @@ function dropdown(root, o, kind) {
   const content = Q(root, "content").find((c) => owner(c) === root);
   content.id ||= `${id}-content`; content.hidden = true;
   if (trigger) { btn(trigger); trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-controls", content.id); trigger.setAttribute("aria-expanded", "false"); }
-  let open = false, lvl = null, unlayer = null;
+  let open = false, lvl = null, unlayer = null, returnTo = null;
   const side = o.side || root.dataset.side || "bottom", align = o.align || root.dataset.align || "start";
   function set(v, { point, focus = "first", reason } = {}) {
     if (v === open) return; open = v;
@@ -102,6 +107,8 @@ function dropdown(root, o, kind) {
     trigger?.setAttribute("aria-expanded", String(open));
     content.hidden = !open;
     if (open) {
+      const active = root.ownerDocument.activeElement;
+      returnTo = trigger || (active && active !== root.ownerDocument.body && !content.contains(active) ? active : area);
       lvl = menuLevel(content, {
         anchor: trigger || area, point, side, align,
         onClose: (r) => set(false, { reason: r }),
@@ -110,13 +117,14 @@ function dropdown(root, o, kind) {
           o.onSelect?.(i);
           if (ok && !i.dataset.type && root.dataset.closeOnSelect !== "false") set(false, { reason: "select" });
         },
-        onArrowOut: o.onArrowOut,
+        onArrowOut: o.onArrowOut, ignore: [trigger],
       });
       const list = lvl.items(); (focus === "last" ? list[list.length - 1] : list[0])?.focus();
       unlayer = layer(content, (r) => set(false, { reason: r }), { ignore: [trigger] });
     } else {
       lvl?.destroy(); lvl = null; unlayer?.(); unlayer = null;
-      if (reason !== "outside" && trigger) trigger.focus();
+      if (reason !== "outside" && returnTo?.isConnected) returnTo.focus();
+      returnTo = null;
     }
     o.onOpenChange?.(open); emit(root, open ? "open" : "close", { reason });
   }
@@ -140,36 +148,48 @@ export const createContextMenu = (r, o = {}) => once(r, "__uiContextMenu", () =>
 
 export function createMenubar(root, o = {}) {
   return once(root, "__uiMenubar", () => {
+    const b = bag();
     root.setAttribute("role", "menubar");
     const menus = [...root.querySelectorAll('[data-ui-part="menu"]')].filter((m) => m.parentElement.closest('[data-ui="menubar"]') === root);
     const apis = [];
-    const move = (i, d) => { const n = apis[(i + d + apis.length) % apis.length]; apis[i].hide(); n.show(); };
+    // One tab stop for the whole bar (roving tabindex); arrow keys, Home and End move between the menubar items.
+    const focusTrigger = (n) => { apis.forEach((a, k) => { if (a.trigger) a.trigger.tabIndex = k === n ? 0 : -1; }); apis[n]?.trigger?.focus(); };
+    const move = (i, d) => { const n = (i + d + apis.length) % apis.length; apis[i].hide(); focusTrigger(n); apis[n].show(); };
     menus.forEach((m, i) => {
       m.dataset.ui = "menubar-menu";
       const api = dropdown(m, { onArrowOut: () => move(i, -1) }, "menubar-menu");
-      api.trigger?.setAttribute("role", "menuitem"); api.trigger.tabIndex = i === 0 ? 0 : -1;
+      api.trigger?.setAttribute("role", "menuitem"); if (api.trigger) api.trigger.tabIndex = i === 0 ? 0 : -1;
       apis.push(api);
-      m.addEventListener("keydown", (e) => {
-        if (e.key === "ArrowRight" && !e.target.closest('[data-ui-part="sub-trigger"]')) { e.preventDefault(); move(i, 1); }
-        if (e.target === api.trigger && e.key === "ArrowLeft") { e.preventDefault(); apis[(i - 1 + apis.length) % apis.length].trigger.focus(); }
-        if (e.target === api.trigger && e.key === "ArrowRight") { e.preventDefault(); e.stopPropagation(); apis[(i + 1) % apis.length].trigger.focus(); }
+      b.on(m, "keydown", (e) => {
+        const k = logicalKey(root, e.key);
+        if (e.target === api.trigger) {
+          const n = k === "ArrowRight" ? (i + 1) % apis.length : k === "ArrowLeft" ? (i - 1 + apis.length) % apis.length
+            : e.key === "Home" ? 0 : e.key === "End" ? apis.length - 1 : null;
+          if (n !== null) { e.preventDefault(); e.stopPropagation(); focusTrigger(n); }
+          return;
+        }
+        if (k === "ArrowRight" && !e.target.closest('[data-ui-part="sub-trigger"]')) { e.preventDefault(); move(i, 1); }
       });
-      // hover switches menus while one is open
-      api.trigger.addEventListener("pointerenter", () => { if (apis.some((a) => a.open) && !api.open) { apis.forEach((a) => a.hide()); api.show(); } });
+      if (api.trigger) {
+        b.on(api.trigger, "focus", () => apis.forEach((a, k) => { if (a.trigger) a.trigger.tabIndex = k === i ? 0 : -1; }));
+        // hover switches menus while one is open
+        b.on(api.trigger, "pointerenter", () => { if (apis.some((a) => a.open) && !api.open) { apis.forEach((a) => a.hide()); api.show(); } });
+      }
     });
-    return { menus: apis, destroy() { apis.forEach((a) => a.destroy()); } };
+    return { menus: apis, destroy() { apis.forEach((a) => a.destroy()); b.off(); } };
   });
 }
 
 export function createNavigationMenu(root, o = {}) {
   return once(root, "__uiNavigationMenu", () => {
     const b = bag(), hover = root.dataset.openOn !== "click";
+    const base = root.id || uid("ui-nav"); // one prefix per instance: "ui-nav-0" was shared by every menu without an id
     const menus = [...root.querySelectorAll('[data-ui-part="menu"]')];
     let cur = null, t;
     const items = menus.map((m, i) => {
       const tr = m.querySelector('[data-ui-part="trigger"]'), c = m.querySelector('[data-ui-part="content"]');
       if (!tr) return null; btn(tr);
-      if (c) { c.id ||= `${root.id || "ui-nav"}-${i}`; tr.setAttribute("aria-controls", c.id); tr.setAttribute("aria-expanded", "false"); c.hidden = true; }
+      if (c) { c.id ||= `${base}-${i}`; tr.setAttribute("aria-controls", c.id); tr.setAttribute("aria-expanded", "false"); c.hidden = true; }
       return { m, tr, c };
     }).filter(Boolean);
     const set = (it) => {
@@ -181,13 +201,14 @@ export function createNavigationMenu(root, o = {}) {
       b.on(it.tr, "click", () => set(cur === it ? null : it));
       if (hover) { b.on(it.m, "pointerenter", () => { clearTimeout(t); t = setTimeout(() => set(it), cur ? 0 : 150); }); b.on(it.m, "pointerleave", () => { clearTimeout(t); t = setTimeout(() => set(null), 300); }); }
       b.on(it.tr, "keydown", (e) => {
-        const n = roving(items.map((x) => x.tr), it.tr, e.key, { orientation: "horizontal" });
+        const n = roving(items.map((x) => x.tr), it.tr, logicalKey(root, e.key), { orientation: "horizontal" });
         if (n) { e.preventDefault(); n.focus(); }
         if (e.key === "ArrowDown" && it.c) { e.preventDefault(); set(it); it.c.querySelector("a,button")?.focus(); }
       });
     });
     b.on(root.ownerDocument, "keydown", (e) => { if (e.key === "Escape" && cur) { const tr = cur.tr; set(null); tr.focus(); } });
     b.on(root.ownerDocument, "pointerdown", (e) => { if (cur && !root.contains(e.target)) set(null); });
-    return { close: () => set(null), destroy: b.off };
+    // Pending hover timers must not fire into a destroyed controller.
+    return { close: () => set(null), destroy() { clearTimeout(t); b.off(); } };
   });
 }

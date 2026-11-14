@@ -5,12 +5,13 @@
 //  <div data-ui="radio-group" [data-default-value] [data-orientation]><button data-ui-part="item" data-value="a">…</button>…</div>
 //     (native <input type=radio> inside also works: items are inputs, we only add data-state)
 //  Checkbox "select all": <input data-ui="checkbox" data-controls="#table [data-ui-part=row-select]"> → parent tri-state
-import { parts, emit, setState, btn, once, bag, roving, isDisabled } from "./util.js";
+import { parts, emit, setState, btn, once, bag, roving, isDisabled, pressable, logicalKey } from "./util.js";
 
 function checkable(root, o, role) {
   const b = bag(), native = root.tagName === "INPUT";
   let v = native ? (root.dataset.indeterminate != null ? "mixed" : root.checked) : (root.getAttribute("aria-checked") === "mixed" ? "mixed" : root.getAttribute("aria-checked") === "true");
-  if (!native) { btn(root); root.setAttribute("role", role); }
+  // a custom element (<ui-checkbox>, <ui-switch>) or other non-button root needs focus and Space itself
+  if (!native) { btn(root); root.setAttribute("role", role); pressable(root, b, { enter: false }); }
   else if (role === "switch") root.setAttribute("role", "switch");
   const render = () => {
     if (native) { root.indeterminate = v === "mixed"; root.checked = v === true; }
@@ -58,7 +59,7 @@ export function createRadioGroup(root, o = {}) {
     b.on(root, "keydown", (e) => {
       if (native()) return; const i = e.target.closest('[data-ui-part="item"]'); if (!i) return;
       if (e.key === " ") { e.preventDefault(); return set(val(i)); }
-      const n = roving(items(), i, e.key, { orientation }); if (n) { e.preventDefault(); n.focus(); set(val(n)); }
+      const n = roving(items(), i, logicalKey(root, e.key), { orientation }); if (n) { e.preventDefault(); n.focus(); set(val(n)); } // rtl: Left is next
     });
     render();
     return { get value() { return value; }, set value(v) { set(v); }, destroy: b.off };

@@ -12,6 +12,16 @@ export const emit = (el, name, detail, cancelable = false) =>
   el.dispatchEvent(new CustomEvent(`ui:${name}`, { bubbles: true, cancelable, detail }));
 export const setState = (el, s) => el && (el.dataset.state = s);
 export const btn = (el) => { if (el && el.tagName === "BUTTON" && !el.hasAttribute("type")) el.type = "button"; return el; };
+/** Make a non-button element (a custom element such as <ui-checkbox>, a div) behave like a button for the keyboard:
+    in the tab order, and Space (plus Enter when `enter`) clicks it. Native buttons and inputs already do this. */
+export function pressable(el, b, { enter = true } = {}) {
+  if (el.tagName === "BUTTON" || el.tagName === "INPUT") return;
+  if (!el.hasAttribute("tabindex")) el.tabIndex = isDisabled(el) ? -1 : 0;
+  b.on(el, "keydown", (e) => {
+    if (e.target !== el || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.key === " " || e.key === "Spacebar" || (enter && e.key === "Enter")) { e.preventDefault(); if (!isDisabled(el)) el.click(); }
+  });
+}
 export const isDisabled = (el) => el.disabled || el.dataset.disabled != null || el.getAttribute("aria-disabled") === "true";
 // Track controller ownership without retaining detached DOM trees.
 const instances = new WeakMap();
@@ -153,3 +163,50 @@ export function observeRemovals(root = document) {
   const api = { disconnect() { observer.disconnect(); observers.delete(root); } };
   observers.set(root, api); return api;
 }
+
+/** The language that applies to `el` (nearest [lang], then the document's), or undefined. */
+export const langOf = (el) => (el?.closest?.("[lang]")?.getAttribute("lang") || el?.ownerDocument?.documentElement.getAttribute("lang") || undefined);
+const separators = new Map();
+function localeSeparators(locale) {
+  if (!locale) return null;
+  if (!separators.has(locale)) {
+    let out = null;
+    try { const p = new Intl.NumberFormat(locale).formatToParts(12345.6); out = { group: p.find((x) => x.type === "group")?.value, decimal: p.find((x) => x.type === "decimal")?.value }; } catch {}
+    separators.set(locale, out);
+  }
+  return separators.get(locale);
+}
+/** Parse a number written for people: "1,200", "1.200,50" (de), "1 200,5" (fr), "1'200" (de-CH), "$1,200.00", "(300)", "−4".
+    When both "," and "." appear, the last one is the decimal separator. A single separator is read with `locale` when
+    given ("1,200" is 1.2 in German and 1200 in English); without one, "." is decimal and "," groups thousands when
+    exactly three digits follow it. Returns NaN when there are no digits. parseFloat("1,200") is 1, which is the bug
+    this replaces. */
+export function parseNumber(text, locale) {
+  if (typeof text === "number") return text;
+  let s = String(text ?? "").trim();
+  const negative = /^\(.*\)$/.test(s) || /^[^\d]*[-−]/.test(s) || /[-−]$/.test(s);
+  s = s.replace(/[^\d.,]/g, ""); // spaces, NBSP, apostrophes, currency and units are not part of the value
+  if (!/\d/.test(s)) return NaN;
+  const lastComma = s.lastIndexOf(","), lastDot = s.lastIndexOf(".");
+  let decimal = null;
+  if (lastComma >= 0 && lastDot >= 0) decimal = lastComma > lastDot ? "," : ".";
+  else if (lastComma >= 0 || lastDot >= 0) {
+    const sep = lastComma >= 0 ? "," : ".", count = s.split(sep).length - 1, after = s.length - s.lastIndexOf(sep) - 1;
+    const loc = localeSeparators(locale);
+    if (count > 1) decimal = null;
+    else if (loc?.decimal === sep) decimal = sep;
+    else if (loc?.group === sep) decimal = after === 3 ? null : sep;
+    else decimal = sep === "," && after === 3 ? null : sep;
+  }
+  s = s.split(decimal === "," ? "." : decimal === "." ? "," : /[.,]/).join("");
+  if (decimal) s = s.replace(decimal, ".");
+  const n = Number(s);
+  return Number.isFinite(n) ? (negative ? -n : n) : NaN;
+}
+
+/** Right-to-left: the horizontal arrow keys swap meaning (WAI-ARIA APG, "Keyboard navigation in RTL"). The nearest
+    dir attribute wins; otherwise the computed direction (CSS `direction`). */
+export const isRTL = (el) => (el.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" ||
+  el.ownerDocument.defaultView?.getComputedStyle?.(el).direction === "rtl";
+/** The key as a left-to-right reader means it: ArrowLeft and ArrowRight are swapped inside rtl. */
+export const logicalKey = (el, key) => (isRTL(el) ? { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[key] || key : key);

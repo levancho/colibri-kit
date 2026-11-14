@@ -56,7 +56,7 @@
 .billing [data-ui-part=item] { all: unset; cursor: pointer; padding: .45rem 1rem; border-radius: 999px; font-size: var(--c-text-sm); font-weight: 600; color: var(--c-muted); display: inline-flex; gap: .4rem; align-items: center; }
 .billing [data-ui-part=item][aria-checked=true] { background: var(--c-fg); color: var(--c-bg); }
 .billing [data-ui-part=item]:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
-.billing small { font-size: .7rem; padding: .05rem .4rem; border-radius: 999px; background: color-mix(in oklch, oklch(65% .15 150) 20%, transparent); color: oklch(55% .15 150); }
+.billing small { font-size: .7rem; padding: .05rem .4rem; border-radius: 999px; background: color-mix(in oklch, var(--c-ok) 15%, transparent); color: var(--c-ok); }
 .tiers { display: grid; gap: var(--c-space-m); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); align-items: stretch; }
 .tier { position: relative; display: flex; flex-direction: column; gap: var(--c-space-m); padding: clamp(1.4rem, 3cqi, 2rem); border: 1px solid var(--c-line);
   border-radius: var(--c-radius-l, 1rem); background: var(--c-surface); box-shadow: var(--c-shadow-s, none); }
@@ -70,7 +70,8 @@
 .tier ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .6rem; font-size: var(--c-text-sm); border-top: 1px solid var(--c-line); padding-block-start: var(--c-space-m); flex: 1; align-content: start; }
 .tier li { display: flex; gap: .55rem; } .tier li::before { content: "✓"; flex: none; display: grid; place-items: center; inline-size: 1.15rem; block-size: 1.15rem; border-radius: 50%;
   font-size: .65rem; font-weight: 800; background: color-mix(in oklch, var(--c-accent) 16%, transparent); color: var(--c-accent); }
-.tier li[data-off] { color: var(--c-muted); opacity: .6; } .tier li[data-off]::before { content: "–"; background: var(--c-bg); color: var(--c-muted); }
+/* Excluded features: muted text at full opacity (4.5:1); the marker also says so to screen readers. */
+.tier li[data-off] { color: var(--c-muted); } .tier li[data-off]::before { content: "–"; content: "–" / "Not included: "; background: var(--c-bg); color: var(--c-muted); }
 .tier > .btn { inline-size: 100%; justify-content: center; }
 .fineprint { text-align: center; margin-block-start: var(--c-space-l); color: var(--c-muted); font-size: var(--c-text-sm); }
 

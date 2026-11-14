@@ -73,14 +73,14 @@ css_add("css-layout", "Layout primitives", "Seven primitives configured by custo
 </div>''',
  css='.box { padding: var(--c-space-s); border: 1px dashed var(--c-line); border-radius: var(--c-radius-s); background: var(--c-surface); font-size: var(--c-text-sm); }', h=400)
 
-css_add("css-container", "Container queries", "Components respond to the width of their container, not the viewport. .card is a container by default.",
+css_add("css-container", "Container queries", "Components respond to the width of their container, not the viewport. Add .container to the element whose width counts (a card is not a container by default).",
  "The same card in a narrow sidebar and a wide main column.",
- "Resize the preview or compare the two columns: the card switches to a horizontal layout once it is wider than 22rem.",
+ "Resize the preview or compare the two columns: the card's content switches to a horizontal layout once the card is wider than 22rem. A container query measures an ancestor, never the element itself, so the layout sits on a child of the .container card.",
  '''<div class="split" style="--side:13rem">
-  <div class="card profile"><div class="avatar"></div><div class="stack" style="--gap:var(--c-space-3xs)"><b>Narrow card</b><span class="muted">Stacks vertically</span></div><button class="btn" data-size="s" type="button" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.ariaPressed !== 'true'); this.textContent = this.ariaPressed === 'true' ? 'Following' : 'Follow'">Follow</button></div>
-  <div class="card profile"><div class="avatar"></div><div class="stack" style="--gap:var(--c-space-3xs)"><b>Wide card</b><span class="muted">Same markup, goes horizontal</span></div><button class="btn" data-size="s" type="button" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.ariaPressed !== 'true'); this.textContent = this.ariaPressed === 'true' ? 'Following' : 'Follow'">Follow</button></div>
+  <div class="card container"><div class="profile"><div class="avatar"></div><div class="stack" style="--gap:var(--c-space-3xs)"><b>Narrow card</b><span class="muted">Stacks vertically</span></div><button class="btn" data-size="s" type="button" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.ariaPressed !== 'true'); this.textContent = this.ariaPressed === 'true' ? 'Following' : 'Follow'">Follow</button></div></div>
+  <div class="card container"><div class="profile"><div class="avatar"></div><div class="stack" style="--gap:var(--c-space-3xs)"><b>Wide card</b><span class="muted">Same markup, goes horizontal</span></div><button class="btn" data-size="s" type="button" aria-pressed="false" onclick="this.setAttribute('aria-pressed', this.ariaPressed !== 'true'); this.textContent = this.ariaPressed === 'true' ? 'Following' : 'Follow'">Follow</button></div></div>
 </div>''',
- css='''.profile { display: grid; gap: var(--c-space-s) var(--c-space-m); justify-items: start; padding: var(--c-space-m); }
+ css='''.profile { display: grid; gap: var(--c-space-s) var(--c-space-m); justify-items: start; }
 .profile .stack { --gap: var(--c-space-2xs); }
 .avatar { inline-size: 3rem; aspect-ratio: 1; border-radius: var(--c-radius-full); background: var(--c-accent); }
 @container (inline-size > 22rem) {

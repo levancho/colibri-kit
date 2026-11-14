@@ -1,5 +1,7 @@
 // Colibri UI: Calendar (shadcn Calendar) + DatePicker (shadcn Date Picker, Metronic Date Picker).
-// Pure DOM grid with ARIA grid semantics; Intl for month/weekday names (Georgian works: data-locale="ka").
+// Pure DOM grid with ARIA grid semantics (WAI-ARIA APG date grid: the gridcell carries aria-selected/aria-disabled,
+// the focusable day button inside it carries the full date as its name and aria-current="date" for today); Intl for
+// month/weekday names (Georgian works: data-locale="ka"). Arrow keys follow the reading direction (dir="rtl").
 //  <div data-ui="calendar" data-mode="single|range|multiple" [data-value="2026-10-30"] [data-min] [data-max]
 //       [data-locale="ka"] [data-week-start="1"] [data-months="1|2"]></div>   (markup generated inside)
 //  Generated parts: header(prev,title,next) + grid(table[role=grid]) + day buttons
@@ -8,6 +10,10 @@
 //     <input data-ui-part="input" placeholder="YYYY-MM-DD"> <button data-ui-part="trigger">📅</button>
 //     <div data-ui-part="content" hidden><div data-ui="calendar"></div></div></div>
 import { uid, part, emit, setState, btn, once, bag, place, layer } from "./util.js";
+import { nameLayer } from "./popover.js";
+
+const rtl = (el) => (el.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" ||
+  el.ownerDocument.defaultView?.getComputedStyle?.(el).direction === "rtl";
 
 const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 const parse = (s) => { const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s || ""); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null; };
@@ -28,6 +34,8 @@ export function createCalendar(root, o = {}) {
     const fmtFull = new Intl.DateTimeFormat(locale, { dateStyle: "full" });
     const isDis = (d) => (min && d < min) || (max && d > max) || disabledDays.includes(d.getDay()) || o.isDisabled?.(d);
     const same = (a, c) => a && c && iso(a) === iso(c);
+    sel = sel.filter((d) => !isDis(d)); // a date outside data-min/data-max or on a disabled day is never selected
+    if (sel[0] && !same(sel[0], focus)) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); }
     root.setAttribute("role", "application"); root.setAttribute("aria-roledescription", "calendar");
     root.innerHTML = `<div data-ui-part="header"><button type="button" data-ui-part="prev" aria-label="Previous month">‹</button><div data-ui-part="title" aria-live="polite"></div><button type="button" data-ui-part="next" aria-label="Next month">›</button></div><div data-ui-part="months"></div>`;
     const title = part(root, "title"), monthsEl = part(root, "months");
@@ -38,17 +46,19 @@ export function createCalendar(root, o = {}) {
       for (let m = 0; m < months; m++) {
         const first = addM(view, m), start = add(first, -((first.getDay() - ws + 7) % 7));
         const t = doc.createElement("table"); t.setAttribute("role", "grid"); t.setAttribute("aria-labelledby", `${id}-title`); t.dataset.uiPart = "grid";
+        if (mode !== "single") t.setAttribute("aria-multiselectable", "true");
         const head = Array.from({ length: 7 }, (_, i) => { const d = add(start, i); return `<th scope="col" abbr="${new Intl.DateTimeFormat(locale, { weekday: "long" }).format(d)}">${fmtDay.format(d)}</th>`; }).join("");
         let rows = "";
         for (let w = 0; w < 6; w++) {
           rows += "<tr>";
           for (let i = 0; i < 7; i++) {
             const d = add(start, w * 7 + i), out = d.getMonth() !== first.getMonth();
-            const a = []; if (same(d, new Date())) a.push("data-today"); if (out) a.push("data-outside"); if (isDis(d)) a.push('data-disabled aria-disabled="true"');
+            const a = [], cell = []; if (same(d, new Date())) a.push('data-today aria-current="date"'); if (out) a.push("data-outside");
+            if (isDis(d)) { a.push('data-disabled aria-disabled="true"'); cell.push('aria-disabled="true"'); }
             let selected = sel.some((s) => same(s, d));
             if (mode === "range" && sel.length === 2) { const [x, y] = sel; if (d > x && d < y) { a.push("data-range-middle"); selected = true; } if (same(d, x)) a.push("data-range-start"); if (same(d, y)) a.push("data-range-end"); }
-            if (selected) a.push('data-selected aria-selected="true"');
-            rows += `<td role="gridcell"><button type="button" data-ui-part="day" data-date="${iso(d)}" tabindex="${same(d, focus) ? 0 : -1}" aria-label="${fmtFull.format(d)}" ${a.join(" ")}>${d.getDate()}</button></td>`;
+            if (selected) { a.push("data-selected"); cell.push('aria-selected="true"'); }
+            rows += `<td role="gridcell" ${cell.join(" ")}><button type="button" data-ui-part="day" data-date="${iso(d)}" tabindex="${same(d, focus) ? 0 : -1}" aria-label="${fmtFull.format(d)}" ${a.join(" ")}>${d.getDate()}</button></td>`;
           }
           rows += "</tr>";
         }
@@ -75,7 +85,7 @@ export function createCalendar(root, o = {}) {
     });
     b.on(root, "keydown", (e) => {
       if (!e.target.closest('[data-ui-part="day"]')) return;
-      const k = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key];
+      const k = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[e.key] * (e.key.startsWith("ArrowL") || e.key.startsWith("ArrowR") ? (rtl(root) ? -1 : 1) : 1);
       if (k) { e.preventDefault(); return move(add(focus, k)); }
       if (e.key === "PageUp") { e.preventDefault(); return move(e.shiftKey ? addM(focus, -12) : addM(focus, -1)); }
       if (e.key === "PageDown") { e.preventDefault(); return move(e.shiftKey ? addM(focus, 12) : addM(focus, 1)); }
@@ -85,7 +95,7 @@ export function createCalendar(root, o = {}) {
     });
     render();
     return { get value() { return mode === "single" ? (sel[0] ? iso(sel[0]) : null) : sel.map(iso); },
-      set value(v) { sel = [].concat(v ?? []).map(parse).filter(Boolean); if (sel[0]) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); } render(); },
+      set value(v) { sel = [].concat(v ?? []).map(parse).filter((d) => d && !isDis(d)); if (sel[0]) { focus = sel[0]; view = new Date(focus.getFullYear(), focus.getMonth(), 1); } render(); },
       focus: () => render(true), destroy: b.off };
   });
 }
@@ -98,6 +108,10 @@ export function createDatePicker(root, o = {}) {
     if (input?.value) calEl.dataset.value = input.value.replace(/\s*–\s*/g, ",");
     if (root.dataset.name && input) input.name ||= root.dataset.name;
     const cal = createCalendar(calEl, o); content.hidden = true; content.setAttribute("role", "dialog"); content.setAttribute("aria-modal", "false");
+    content.id ||= uid("ui-date-picker-content"); trigger?.setAttribute("aria-controls", content.id);
+    // The dialog is named by the control that opens it, or by the field's label when there is no trigger.
+    if (trigger) nameLayer(content, trigger, content.id, { title: false });
+    else if (!content.hasAttribute("aria-label")) content.setAttribute("aria-label", input?.getAttribute("aria-label") || input?.labels?.[0]?.textContent.trim() || "Choose date");
     trigger?.setAttribute("aria-haspopup", "dialog"); trigger?.setAttribute("aria-expanded", "false");
     let open = false, unlayer = null;
     const set = (v) => { if (v === open) return; open = v; content.hidden = !open; trigger?.setAttribute("aria-expanded", String(open)); [root, content].forEach((e) => setState(e, open ? "open" : "closed"));
@@ -105,8 +119,13 @@ export function createDatePicker(root, o = {}) {
       emit(root, open ? "open" : "close"); };
     trigger && b.on(trigger, "click", () => set(!open));
     input && b.on(input, "keydown", (e) => { if (e.key === "ArrowDown" && e.altKey) { e.preventDefault(); set(true); } });
-    input && b.on(input, "change", () => { cal.value = input.value.split(/\s*[–,]\s*/); emit(root, "change", { value: cal.value }); });
-    b.on(calEl, "ui:change", (e) => { e.stopPropagation(); const v = e.detail.value; if (input) input.value = Array.isArray(v) ? v.join(" – ") : v || ""; emit(root, "change", { value: v }); if (e.detail.complete && mode !== "multiple") { set(false); (trigger || input)?.focus(); } });
-    return { get value() { return cal.value; }, set value(v) { cal.value = v; if (input) input.value = [].concat(v).join(" – "); }, show: () => set(true), hide: () => set(false), destroy() { unlayer?.(); b.off(); cal.destroy(); } };
+    // A typed date the calendar cannot select (unparseable, out of range, a disabled day) is kept in the field but
+    // marked aria-invalid, and the change event says valid: false.
+    const typed = () => (input?.value || "").split(/\s*[–,]\s*/).filter(Boolean);
+    const check = (n) => { const ok = [].concat(cal.value ?? []).length === n; if (input) { if (ok) input.removeAttribute("aria-invalid"); else input.setAttribute("aria-invalid", "true"); } return ok; };
+    if (input?.value) check(typed().length);
+    input && b.on(input, "change", () => { const t = typed(); cal.value = t; const valid = check(t.length); emit(root, "change", { value: cal.value, valid }); });
+    b.on(calEl, "ui:change", (e) => { e.stopPropagation(); const v = e.detail.value; if (input) { input.value = Array.isArray(v) ? v.join(" – ") : v || ""; input.removeAttribute("aria-invalid"); } emit(root, "change", { value: v, valid: true }); if (e.detail.complete && mode !== "multiple") { set(false); (trigger || input)?.focus(); } });
+    return { get value() { return cal.value; }, set value(v) { cal.value = v; if (input) { input.value = [].concat(cal.value ?? []).join(" – "); input.removeAttribute("aria-invalid"); } }, show: () => set(true), hide: () => set(false), destroy() { unlayer?.(); b.off(); cal.destroy(); } };
   });
 }

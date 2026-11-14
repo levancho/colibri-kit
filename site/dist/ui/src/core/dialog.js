@@ -1,8 +1,8 @@
-import { owner, trackController } from "./util.js";
+import { owner, trackController, layer } from "./util.js";
 // @colibri-kit/ui core: Dialog controller. Headless; built on the native <dialog> element.
 //
 //   <div data-ui="dialog" [data-modal="true|false"] [data-default-open] [data-dismissible="true|false"]
-//        [data-close-on-backdrop="true|false"]>
+//        [data-close-on-backdrop="true|false"] [data-close-on-outside="true|false"]>
 //     <button data-ui-part="trigger">Open</button>          (optional, can be anywhere inside root)
 //     <dialog data-ui-part="content">
 //       <h2 data-ui-part="title">Title</h2>
@@ -15,8 +15,14 @@ import { owner, trackController } from "./util.js";
 // State out: root/trigger/content get data-state="open|closed"; trigger gets aria-expanded.
 // Events (bubble from root): "ui:open", "ui:close" detail {returnValue}.  Cancellable "ui:beforeclose".
 // Focus: native <dialog> focuses [autofocus] or first focusable; focus returns to the opener on close.
+// Escape: handled on keydown (and the keydown is cancelled), so a non-dismissible dialog or a vetoed
+// ui:beforeclose stays open however often Esc is pressed. Chrome closes a modal dialog itself after
+// repeated cancelled `cancel` events; cancelling the keydown means it never gets that far.
+// Non-modal (data-modal="false"): Esc closes it, and so does a pointer press outside it unless
+// data-close-on-outside="false" (defaults to data-close-on-backdrop). Nested layers close first.
 
 let uid = 0;
+const stack = []; // open dialogs, most recent last: Escape goes to the topmost only
 const bool = (v, d) => (v == null ? d : v !== "false");
 
 export function createDialog(root, options = {}) {
@@ -33,10 +39,12 @@ export function createDialog(root, options = {}) {
   const variant = options.variant || root.dataset.variant || (root.dataset.ui === "alert-dialog" ? "alert" : root.dataset.ui === "sheet" || root.dataset.ui === "drawer" ? "sheet" : "default");
   const dismissible = () => opt("dismissible", variant !== "alert");
   const closeOnBackdrop = () => opt("closeOnBackdrop", variant !== "alert");
+  const closeOnOutside = () => opt("closeOnOutside", closeOnBackdrop());
   if (variant === "alert") content.setAttribute("role", "alertdialog");
   if (variant === "sheet") content.dataset.side = root.dataset.side || "right";   // CSS positions it; behaviour = modal dialog
   content.dataset.variant = variant;
-  let opener = null;
+  let opener = null, offLayer = null;
+  const doc = root.ownerDocument;
 
   // wiring
   const title = parts("title")[0], desc = parts("description")[0];
@@ -62,9 +70,14 @@ export function createDialog(root, options = {}) {
     if (isOpen()) return;
     // explicit trigger wins: Safari (and scripted clicks) don't focus buttons on click
     opener = from || root.ownerDocument.activeElement;
-    if (modal() && typeof content.showModal === "function") content.showModal();
+    const asModal = modal() && typeof content.showModal === "function";
+    if (asModal) content.showModal();
     else if (typeof content.show === "function") content.show();
     else content.setAttribute("open", "");           // very old browsers / test DOMs
+    stack.push(api);
+    doc.addEventListener("keydown", onKey);
+    // non-modal: a press outside closes it (topmost layer only; the triggers toggle it themselves)
+    if (!asModal) offLayer = layer(content, (why) => { if (dismissible() && closeOnOutside()) close(why); }, { escape: false, ignore: parts("trigger") });
     render(true);
     options.onOpenChange?.(true);
     root.dispatchEvent(new CustomEvent("ui:open", { bubbles: true }));
@@ -78,10 +91,21 @@ export function createDialog(root, options = {}) {
     finishClose(returnValue);
   }
 
+  function detach() {
+    const i = stack.indexOf(api); if (i >= 0) stack.splice(i, 1);
+    doc.removeEventListener("keydown", onKey);
+    offLayer?.(); offLayer = null;
+  }
+
   function finishClose(returnValue) {
+    detach();
     render(false);
-    if (opener && typeof opener.focus === "function" && opener.isConnected) opener.focus();
-    opener = null;
+    const back = opener; opener = null;
+    const refocus = () => { if (back && typeof back.focus === "function" && back.isConnected) back.focus(); };
+    refocus();
+    // an outside press then moves focus to what was pressed; if that is nothing focusable, the browser
+    // leaves focus on <body> after this event: put it back on the opener
+    if (returnValue === "outside") setTimeout(() => { const a = doc.activeElement; if (!a || a === doc.body) refocus(); });
     options.onOpenChange?.(false);
     root.dispatchEvent(new CustomEvent("ui:close", { bubbles: true, detail: { returnValue } }));
   }
@@ -101,7 +125,15 @@ export function createDialog(root, options = {}) {
     }
   }
 
-  // Esc -> native "cancel" event
+  // Esc: decide on keydown. A handled (default-prevented) Escape belongs to a nested layer (menu, popover,
+  // inner dialog), and only the topmost open dialog reacts. Bubble phase, so inner handlers run first.
+  function onKey(e) {
+    if (e.key !== "Escape" || e.defaultPrevented || e.isComposing || stack[stack.length - 1] !== api || !isOpen()) return;
+    e.preventDefault();
+    if (dismissible()) close("escape");
+  }
+  // Native "cancel" (Esc that reached the dialog, Android back, close requests): never let it close the
+  // dialog by itself; go through close() so dismissible and ui:beforeclose apply.
   function onCancel(e) { e.preventDefault(); if (dismissible()) close("escape"); }
   // <form method="dialog"> submits close the dialog natively -> keep state in sync
   function onNativeClose() { if (root.dataset.state === "open") finishClose(content.returnValue); }
@@ -110,14 +142,12 @@ export function createDialog(root, options = {}) {
   content.addEventListener("cancel", onCancel);
   content.addEventListener("close", onNativeClose);
 
-  render(false);
-  if (options.defaultOpen ?? root.hasAttribute("data-default-open")) open();
-
   const api = {
     get open() { return isOpen(); },
     show: () => open(), close,
     toggle: () => (isOpen() ? close() : open()),
     destroy() {
+      detach();
       root.removeEventListener("click", onClick);
       content.removeEventListener("cancel", onCancel);
       content.removeEventListener("close", onNativeClose);
@@ -127,5 +157,7 @@ export function createDialog(root, options = {}) {
     },
   };
   root.__uiDialog = trackController(root, api);
+  render(false);
+  if (options.defaultOpen ?? root.hasAttribute("data-default-open")) open();
   return api;
 }

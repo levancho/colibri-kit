@@ -2,11 +2,13 @@
 // and AI Elements: chain-of-thought, task, plan, tool, reasoning, sources, subagent, stack-trace, test-results,
 // terminal, checkpoint, confirmation, context, file-tree, prompt-input, queue, suggestion).
 // Headless: JS sets roles, ARIA, data-state/data-status and emits ui:* events; CSS lives in the theme.
-import { uid, parts, part, emit, setState, btn, once, bag } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, parseNumber, langOf } from "./util.js";
 
 const setText = (el, v) => { if (el && el.textContent !== String(v)) el.textContent = v; };
 const setData = (el, k, v) => { if (el && el.dataset[k] !== String(v)) el.dataset[k] = v; };
-const copyText = async (txt, b) => { try { await navigator.clipboard.writeText(txt); } catch {} if (b) { b.dataset.copied = ""; setTimeout(() => delete b.dataset.copied, 1500); } };
+/** Timers owned by one controller; destroy() clears them so nothing fires into a torn-down component. */
+const timerSet = () => { const ids = new Set(); return { later(fn, ms) { const id = setTimeout(() => { ids.delete(id); fn(); }, ms); ids.add(id); return id; }, clear() { ids.forEach(clearTimeout); ids.clear(); } }; };
+const copyText = async (txt, b, timers) => { try { await navigator.clipboard.writeText(txt); } catch {} if (b) { b.dataset.copied = ""; (timers ? timers.later : setTimeout)(() => delete b.dataset.copied, 1500); } };
 
 /** Disclosure shared by every collapsible AI element: part trigger toggles part content. */
 function disclosure(root, b, { defaultOpen = root.hasAttribute("data-default-open") } = {}) {
@@ -30,32 +32,41 @@ function statusLabel(root) { const s = part(root, "status"); if (s && !s.dataset
 export function createBubble(root) {
   return once(root, "__uiBubble", () => {
     const b = bag();
-    for (const r of parts(root, "reaction")) { btn(r); r.setAttribute("aria-pressed", r.getAttribute("aria-pressed") || "false");
+    // A reaction named by aria-label ("Thumbs up") must still contain its visible text, the count (WCAG 2.5.3 Label in
+    // Name): the name becomes "Thumbs up 2" and follows the count. The author's label is kept in data-label.
+    const named = (r) => { if (r.dataset.label == null) return; const n = r.querySelector("[data-ui-part=count]")?.textContent.trim();
+      const v = n ? `${r.dataset.label} ${n}` : r.dataset.label; if (r.getAttribute("aria-label") !== v) r.setAttribute("aria-label", v); };
+    const reactions = parts(root, "reaction");
+    for (const r of reactions) { btn(r); r.setAttribute("aria-pressed", r.getAttribute("aria-pressed") || "false");
+      if (r.hasAttribute("aria-label") && r.dataset.label == null) r.dataset.label = r.getAttribute("aria-label"); named(r);
       b.on(r, "click", () => { const on = r.getAttribute("aria-pressed") !== "true"; r.setAttribute("aria-pressed", String(on));
-        const n = r.querySelector("[data-ui-part=count]"); if (n) n.textContent = Math.max(0, (+n.textContent || 0) + (on ? 1 : -1));
+        const n = r.querySelector("[data-ui-part=count]"); if (n) n.textContent = Math.max(0, (+n.textContent || 0) + (on ? 1 : -1)); named(r);
         emit(root, "react", { value: r.dataset.value || r.textContent.trim(), on }); }); }
     const tg = part(root, "toggle"), content = part(root, "content");
     if (tg && content) { btn(tg); content.id ||= uid("ui-bubble");
       tg.setAttribute("aria-controls", content.id);
       const set = (x) => { root.dataset.expanded = String(x); tg.setAttribute("aria-expanded", String(x)); tg.textContent = x ? (tg.dataset.less || "Show less") : (tg.dataset.more || "Show more"); };
       set(false); b.on(tg, "click", () => set(root.dataset.expanded !== "true")); }
-    return { destroy: b.off };
+    // counts changed by the application (a re-render, a live update) rename their button too
+    const mo = reactions.some((r) => r.dataset.label != null) ? new MutationObserver(() => reactions.forEach(named)) : null;
+    reactions.forEach((r) => mo?.observe(r, { childList: true, subtree: true, characterData: true }));
+    return { destroy() { mo?.disconnect(); b.off(); } };
   });
 }
 export function createMessage(root) {
   return once(root, "__uiMessage", () => {
-    const b = bag();
+    const b = bag(), timers = timerSet();
     root.setAttribute("role", root.getAttribute("role") || "article");
     root.dataset.from ||= "assistant";
     b.on(root, "click", (e) => {
       const a = e.target.closest("[data-ui-part=action]"); if (!a || a.closest("[data-ui=message]") !== root) return;
       const kind = a.dataset.action;
-      if (kind === "copy") copyText((part(root, "content") || root).innerText.trim(), a);
+      if (kind === "copy") copyText((part(root, "content") || root).innerText.trim(), a, timers);
       if (kind === "like" || kind === "dislike") { const on = a.getAttribute("aria-pressed") !== "true"; parts(root, "action").filter((x) => /like/.test(x.dataset.action)).forEach((x) => x.setAttribute("aria-pressed", "false")); a.setAttribute("aria-pressed", String(on)); }
       emit(root, "action", { action: kind });
     });
     parts(root, "action").forEach((a) => { btn(a); if (/like/.test(a.dataset.action)) a.setAttribute("aria-pressed", "false"); });
-    return { destroy: b.off };
+    return { destroy() { timers.clear(); b.off(); } };
   });
 }
 export function createMarker(root) {
@@ -83,7 +94,8 @@ export function createAttachment(root) {
     const sync = () => {
       const p = root.dataset.progress, bar = part(root, "progress");
       root.dataset.state = root.dataset.error != null ? "error" : p != null && +p < 100 ? "uploading" : "done";
-      if (bar) { bar.setAttribute("role", "progressbar"); bar.setAttribute("aria-valuemin", "0"); bar.setAttribute("aria-valuemax", "100"); bar.setAttribute("aria-valuenow", p ?? 100); bar.style.setProperty("--ui-value", `${p ?? 100}%`); bar.hidden = root.dataset.state !== "uploading"; }
+      if (bar) { bar.setAttribute("role", "progressbar");
+        if (!bar.hasAttribute("aria-label") && !bar.hasAttribute("aria-labelledby")) { if (title) bar.setAttribute("aria-labelledby", title.id); else bar.setAttribute("aria-label", "Upload progress"); } bar.setAttribute("aria-valuemin", "0"); bar.setAttribute("aria-valuemax", "100"); bar.setAttribute("aria-valuenow", p ?? 100); bar.style.setProperty("--ui-value", `${p ?? 100}%`); bar.hidden = root.dataset.state !== "uploading"; }
     };
     const mo = new MutationObserver(sync); mo.observe(root, { attributes: true, attributeFilter: ["data-progress", "data-error"] }); sync();
     parts(root, "action").forEach(btn);
@@ -134,7 +146,7 @@ export function createQuestionnaire(root) {
       items.forEach((it, k) => { it.hidden = k !== i; it.dataset.state = k < i ? "answered" : k === i ? "current" : "upcoming"; });
       const done = i >= items.length;
       root.dataset.state = done ? "complete" : "active";
-      if (prog) { prog.setAttribute("role", "progressbar"); prog.setAttribute("aria-valuemin", "0"); prog.setAttribute("aria-valuemax", items.length); prog.setAttribute("aria-valuenow", Math.min(i + 1, items.length)); prog.setAttribute("aria-valuetext", `Question ${Math.min(i + 1, items.length)} of ${items.length}`); prog.style.setProperty("--ui-value", `${(Math.min(i + 1, items.length) / items.length) * 100}%`); const l = prog.querySelector("[data-ui-part=label]"); if (l) l.textContent = `${Math.min(i + 1, items.length)} / ${items.length}`; }
+      if (prog) { prog.setAttribute("role", "progressbar"); if (!prog.hasAttribute("aria-label") && !prog.hasAttribute("aria-labelledby")) prog.setAttribute("aria-label", root.dataset.progressLabel || "Progress"); prog.setAttribute("aria-valuemin", "0"); prog.setAttribute("aria-valuemax", items.length); prog.setAttribute("aria-valuenow", Math.min(i + 1, items.length)); prog.setAttribute("aria-valuetext", `Question ${Math.min(i + 1, items.length)} of ${items.length}`); prog.style.setProperty("--ui-value", `${(Math.min(i + 1, items.length) / items.length) * 100}%`); const l = prog.querySelector("[data-ui-part=label]"); if (l) l.textContent = `${Math.min(i + 1, items.length)} / ${items.length}`; }
       const cur = items[i];
       const show = (p, v) => { const el = part(root, p); if (el) el.hidden = !v; };
       show("previous", i > 0 && !done); show("skip", !!cur && cur.dataset.skippable != null); show("next", !!cur && i < items.length - 1); show("submit", !!cur && i === items.length - 1);
@@ -166,7 +178,7 @@ export function createQuestionnaire(root) {
 // ---------- AI elements: collapsible run blocks ----------
 function agentBlock(kind) {
   return (root) => once(root, "__uiAgent", () => {
-    const b = bag(); root.dataset.status ||= "done";
+    const b = bag(), timers = timerSet(); root.dataset.status ||= "done";
     const d = disclosure(root, b, { defaultOpen: root.hasAttribute("data-default-open") || root.dataset.status === "running" || root.dataset.status === "streaming" });
     const live = part(root, "status"); if (live) live.setAttribute("aria-live", "polite");
     let started = Date.now();
@@ -190,7 +202,7 @@ function agentBlock(kind) {
         if (s === "streaming") { started = started || Date.now(); d.set(true, "stream"); if (part(root, "trigger")) part(root, "trigger").dataset.shimmer = ""; }
         else { const t = part(root, "trigger"); if (t) delete t.dataset.shimmer; const sec = Math.max(1, Math.round((Date.now() - started) / 1000));
           const lab = part(root, "label"); if (lab && root.dataset.prevStatus === "streaming") lab.textContent = `Thought for ${root.dataset.duration || sec}s`;
-          if (root.dataset.prevStatus === "streaming" && root.dataset.autoClose !== "false") setTimeout(() => d.set(false, "done"), 600); }
+          if (root.dataset.prevStatus === "streaming" && root.dataset.autoClose !== "false") timers.later(() => d.set(false, "done"), 600); }
         setData(root, "prevStatus", s);
       }
     };
@@ -198,8 +210,8 @@ function agentBlock(kind) {
     mo.observe(root, { attributes: true, attributeFilter: ["data-status"], subtree: true });
     if (kind === "reasoning") started = root.dataset.status === "streaming" ? Date.now() : 0;
     update();
-    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=copy]"); if (a) copyText((part(root, "output") || part(root, "content") || root).innerText, a); });
-    const api = { open: () => d.set(true), close: () => d.set(false), toggle: () => d.set(!d.open), setStatus(s) { root.dataset.status = s; }, destroy() { mo.disconnect(); b.off(); } };
+    b.on(root, "click", (e) => { const a = e.target.closest("[data-ui-part=copy]"); if (a) copyText((part(root, "output") || part(root, "content") || root).innerText, a, timers); });
+    const api = { open: () => d.set(true), close: () => d.set(false), toggle: () => d.set(!d.open), setStatus(s) { root.dataset.status = s; }, destroy() { timers.clear(); mo.disconnect(); b.off(); } };
     if (kind === "terminal") {
       const out = part(root, "output");
       api.write = (txt) => { if (!out) return; const stick = out.scrollHeight - out.scrollTop - out.clientHeight < 8; out.append(document.createTextNode(txt)); if (stick) out.scrollTop = out.scrollHeight; };
@@ -214,7 +226,11 @@ export const createChainOfThought = agentBlock("chain-of-thought"), createTask =
 
 // ---------- AI elements: interactive ----------
 export function createCheckpoint(root) {
-  return once(root, "__uiCheckpoint", () => { const b = bag(); root.setAttribute("role", "separator"); const r = part(root, "restore");
+  return once(root, "__uiCheckpoint", () => { const b = bag(), r = part(root, "restore"), label = part(root, "label");
+    // A separator's children are presentational, so a restore button inside one is hidden from assistive technology:
+    // with a button the checkpoint is a named group; without one it stays a (named) separator. The line is CSS.
+    root.setAttribute("role", r ? "group" : "separator");
+    if (label && !root.hasAttribute("aria-label") && !root.hasAttribute("aria-labelledby")) { label.id ||= uid("ui-checkpoint"); root.setAttribute("aria-labelledby", label.id); }
     if (r) { btn(r); b.on(r, "click", () => { if (emit(root, "restore", { id: root.dataset.id }, true)) { root.dataset.state = "restored"; } }); }
     return { destroy: b.off }; });
 }
@@ -323,7 +339,7 @@ export function createChart(root) {
     const b = bag(), table = root.querySelector("table"); if (!table) return { destroy() {} };
     const NS = "http://www.w3.org/2000/svg", head = [...(table.tHead?.rows[0]?.cells || [])].map((c) => c.textContent.trim());
     const rows = [...table.tBodies[0].rows].map((r) => [...r.cells].map((c) => c.textContent.trim()));
-    const series = head.slice(1), labels = rows.map((r) => r[0]), data = series.map((_, s) => rows.map((r) => parseFloat(r[s + 1]) || 0));
+    const series = head.slice(1), labels = rows.map((r) => r[0]), data = series.map((_, s) => rows.map((r) => parseNumber(r[s + 1], langOf(root)) || 0));
     const max = Math.max(1, ...data.flat()), W = 600, H = 220, P = 28, cw = (W - P * 2) / labels.length;
     const svg = document.createElementNS(NS, "svg"); svg.setAttribute("viewBox", `0 0 ${W} ${H + 24}`); svg.dataset.uiPart = "plot"; svg.setAttribute("role", "img");
     svg.setAttribute("aria-label", `${root.querySelector("figcaption")?.textContent.trim() || "Chart"}: ${root.dataset.type || "bar"} chart, data in the table below`);

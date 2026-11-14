@@ -18,9 +18,44 @@ export const cx = (...a) => a.flat(Infinity).filter(Boolean).join(" ");
 
 const setRef = (r, v) => { if (typeof r === "function") r(v); else if (r) r.current = v; };
 
+// Kinds that are styles only (Colibri CSS reads data-ui), with no controller to build.
+const PRESENTATIONAL = new Set(["data-list", "callout", "inset"]);
+// Kinds whose controller removes its own root (a dismissed alert, a removed badge or attachment). In React the DOM
+// belongs to React: removing the node behind its back made the next commit or the unmount throw ("The node to be
+// removed is not a child of this node"). Under React the node is hidden instead and the event still fires, so the
+// app drops it from its state (on={{ remove: … }} / onDismiss), and React removes it.
+const SELF_REMOVING = { alert: "dismiss", dismiss: "dismiss", badge: "remove", attachment: "remove" };
+
+/** Options are compared by value: an inline object literal (a new object on every render) with the same values keeps
+ *  the controller; a changed value rebuilds it. Functions are not compared: the latest one is always called. */
+function sameValue(a, b, depth = 0) {
+  if (Object.is(a, b)) return true;
+  if (typeof a === "function" && typeof b === "function") return true;
+  if (!a || !b || typeof a !== "object" || typeof b !== "object" || depth > 4) return false;
+  if (Array.isArray(a) !== Array.isArray(b) || Object.getPrototypeOf(a) !== Object.getPrototypeOf(b)) return false;
+  if (Object.getPrototypeOf(a) !== Object.prototype && !Array.isArray(a)) return false; // DOM nodes, dates, maps: identity only
+  const ka = Object.keys(a), kb = Object.keys(b);
+  return ka.length === kb.length && ka.every((k) => Object.hasOwn(b, k) && sameValue(a[k], b[k], depth + 1));
+}
+function useStableOptions(options) {
+  const latest = useRef(options), stable = useRef(null), last = useRef(undefined);
+  latest.current = options;
+  if (stable.current === null || !sameValue(last.current, options)) {
+    last.current = options;
+    // functions read the latest render's options, so a new inline callback needs no rebuild
+    stable.current = options && typeof options === "object" && Object.getPrototypeOf(options) === Object.prototype
+      ? Object.fromEntries(Object.entries(options).map(([k, v]) => [k, typeof v === "function" ? (...args) => latest.current?.[k]?.(...args) : v]))
+      : options;
+  }
+  return stable.current;
+}
+
 /** Hook: wire a Colibri component onto a DOM element. Returns a callback ref and a ref holding the component API.
- *  `on` maps Colibri events (without the "ui:" prefix) to handlers, e.g. { change: (e) => … }. */
-export function useColibri(kind, { on = {}, options, apiRef } = {}) {
+ *  `on` maps Colibri events (without the "ui:" prefix) to handlers, e.g. { change: (e) => … }.
+ *  `options` is compared by value, so `options: { min: 0, onValueChange: fn }` written inline is fine: the controller
+ *  is rebuilt only when a value changes, and callbacks always call the latest function. */
+export function useColibri(kind, { on = {}, options: rawOptions, apiRef } = {}) {
+  const options = useStableOptions(rawOptions);
   const api = useRef(null), handlers = useRef(on), attached = useRef(null), owned = useRef(new Map());
   const [node, setNode] = useState(null);
   handlers.current = on;
@@ -55,11 +90,25 @@ export function useColibri(kind, { on = {}, options, apiRef } = {}) {
   useEffect(() => {
     if (!node) return;
     const factory = registry[kind];
-    if (!factory) { console.error(`[colibri-ui/react] unknown component "${kind}"`); return; }
+    if (!factory) { if (!PRESENTATIONAL.has(kind)) console.error(`[colibri-ui/react] unknown component "${kind}"`); syncChildren(); return () => { for (const childApi of owned.current.values()) childApi.destroy?.(); owned.current.clear(); }; }
     syncChildren();
-    api.current = factory(node, options) ?? null;
+    // keep a self-removing root in React's tree (see SELF_REMOVING)
+    const selfRemove = SELF_REMOVING[kind];
+    if (selfRemove === "dismiss" && node.dataset.remove == null) node.dataset.remove = "false";
+    const keep = (event) => {
+      if (event.target !== node || event.defaultPrevented) return;
+      event.preventDefault(); // the controller then leaves the node alone
+      const focused = node.contains(node.ownerDocument.activeElement);
+      node.hidden = true; node.dataset.state = "removed";
+      if (focused) (node.nextElementSibling?.querySelector?.("button") || node.previousElementSibling?.querySelector?.("button"))?.focus();
+    };
+    // registered after the app's own listeners (the effect above), so a handler can still veto with preventDefault()
+    if (selfRemove === "remove") node.addEventListener("ui:remove", keep);
+    // a toaster wraps its list in a region by moving it: React renders that wrapper itself instead
+    api.current = factory(node, kind === "toaster" ? { wrap: false, ...options } : options) ?? null;
     setRef(apiRef, api.current);
     return () => {
+      if (selfRemove === "remove") node.removeEventListener("ui:remove", keep);
       for (const childApi of owned.current.values()) childApi.destroy?.();
       owned.current.clear(); api.current?.destroy?.(); api.current = null; setRef(apiRef, null);
     };
