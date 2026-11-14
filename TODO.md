@@ -38,30 +38,33 @@ found by reading.
 
 ## Accessibility
 
-- [ ] **Focus is invisible in forced-colors mode** for most themed controls (verified in Chrome emulation).
-      `themes/colibri.css` uses `outline:none` plus a box-shadow ring in about 25 places and has no
-      `forced-colors` rule. Add `@media (forced-colors: active)` with a `Highlight` outline.
-      `docs/quality-review.md` lists this as done; correct it.
-- [ ] **Theme packs and accent presets fail text contrast** (verified). Ember dark primary button 2.45:1, Ember
-      light 3.97, Glacier light 4.35, orange preset 3.56. `--c-brand-fg` is not scheme-aware in Ember/Midnight.
-      Add the contrast script to CI for every pack and scheme.
-- [ ] **Control borders are 1.3:1** against surfaces in both schemes (3:1 needed); some badges on sunken
-      surfaces are 4.27–4.44:1 (verified). Consider a separate `--c-control-line`.
-- [ ] **Theme packs override `prefers-reduced-motion` and `prefers-contrast`** (verified). Wrap pack motion tokens
-      in `@media (prefers-reduced-motion: no-preference)`.
-- [ ] **UI theme without the bridge** fails several checks: focus ring 2.56:1, success/warning used as text at
-      3.30 and 2.15 (verified).
-- [ ] **Bridge does not map `--ui-destructive-foreground`**: white on light red (2.72:1) in OS dark mode (verified).
-- [ ] **Menu**: disabled items get no menu role (`src/core/menu.js:23`).
-- [ ] **Popover, hover-card, date-picker** content is `role="dialog"` with no accessible name; popover does not
-      move focus inside.
-- [ ] **Non-modal dialog** ignores Esc and outside click (verified).
-- [ ] **Tooltip** closes when the pointer leaves the trigger, so it is not hoverable (WCAG 1.4.13).
-- [ ] **Stepper** `data-clickable` steps are click-only; **calendar** uses `aria-selected` on buttons;
-      **carousel** autoplay ignores reduced motion and has no pause control.
+- [x] **Focus is invisible in forced-colors mode** (fixed on `phase1-a11y`): `@media (forced-colors: active)` in
+      `themes/colibri.css` gives every focusable themed control a `Highlight` outline and draws selected states in
+      system colours; `docs/quality-review.md` corrected. Tested in `test/e2e/a11y-rtl-media.e2e.mjs`.
+- [x] **Theme packs and accent presets fail text contrast** (fixed): darker light accents (Ember, Glacier, Midnight),
+      scheme-aware `--c-brand-fg`, text-safe presets with dark-mode foregrounds, Midnight follows the OS scheme.
+      `npm run check:contrast` (`tools/check-contrast.mjs`, in CI) measures every stack, pack, preset and scheme.
+- [x] **Control borders / badges on sunken surfaces** (fixed): new `--c-control-line` (3:1) for inputs, `--ui-input`
+      raised to 3:1, `--c-line`/`--ui-border` stay light for dividers; `--c-accent-ink` for text on accent tints.
+- [x] **Theme packs override `prefers-reduced-motion` and `prefers-contrast`** (fixed): pack motion tokens sit in
+      `@media (prefers-reduced-motion: no-preference)`; packs repeat the `prefers-contrast: more` tokens.
+- [x] **UI theme without the bridge**: ring, success, warning, destructive and muted text now pass (fixed).
+- [x] **Bridge maps `--ui-destructive-foreground`** to `--c-brand-fg` (fixed).
+- [x] **Menu**: disabled items keep their role with `aria-disabled`; submenu Escape, RTL Left/Right, menubar roving
+      tab stop with Home/End, context-menu focus return (fixed).
+- [x] **Popover, hover-card, date-picker** dialogs are named; popover moves focus inside and back (fixed).
+- [ ] **Non-modal dialog** ignores Esc and outside click (verified). `src/core/dialog.js`, outside this change set.
+- [x] **Tooltip** is hoverable, persistent and dismissable with Esc (WCAG 1.4.13) (fixed).
+- [x] **Stepper** clickable steps are buttons; **calendar** uses the APG date grid (`aria-selected` on gridcells);
+      **carousel** has a pause/play button, pauses on hover and focus, no autoplay under reduced motion (fixed).
 - [ ] **Screen-reader testing has never been done.** Either do it or soften the homepage line
       "Keyboard & screen-reader support built in".
-- [ ] **RTL**: only tabs and button-group handle it; the theme uses physical properties throughout.
+- [x] **RTL** (mostly fixed): the theme uses logical properties; tabs, menu, menubar, navigation menu, carousel,
+      calendar and button group follow `dir="rtl"`. Still open: radio group (`src/core/checkbox.js`), toolbar
+      (`src/core/extras.js`) and slider (`src/core/forms.js`, whose CSS stays physical until its pointer maths is).
+- [ ] **axe findings outside the themed components** (`test/e2e/a11y-axe.e2e.mjs`, KNOWN list): unnamed progress bars,
+      checkpoint separator with a button, reaction labels (`src/core/ai.js`); theme-switch label and message-scroller
+      tab stop (`src/core/base.js`); gallery chrome contrast and scrollable code panels (`tools/`); demo markup.
 
 ## Component bugs
 

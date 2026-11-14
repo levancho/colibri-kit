@@ -57,8 +57,21 @@ export function createStepper(root, o = {}) {
     const b = bag(), steps = () => parts(root, "step"), panels = () => parts(root, "panel");
     const linear = root.hasAttribute("data-linear"); let i = Number(root.dataset.step ?? 0);
     [part(root, "prev"), part(root, "next"), part(root, "finish")].forEach(btn);
+    // data-clickable: each step's label is wrapped in a real <button> so steps are reachable and operable from the
+    // keyboard (Tab, Enter, Space). Steps a linear stepper cannot jump to are aria-disabled. destroy() unwraps them.
+    const clickable = root.dataset.clickable != null, made = [];
+    const stepButton = (s) => [...s.children].find((c) => c.dataset.uiPart === "step-trigger");
+    if (clickable) steps().forEach((s) => {
+      if (stepButton(s)) return;
+      const b = root.ownerDocument.createElement("button"); b.type = "button"; b.dataset.uiPart = "step-trigger";
+      b.append(...s.childNodes); s.append(b); made.push(b);
+    });
+    const reachable = (k) => k !== i && (!linear || k < i);
     const render = () => {
-      steps().forEach((s, k) => { setState(s, k < i ? "completed" : k === i ? "active" : "pending"); if (k === i) s.setAttribute("aria-current", "step"); else s.removeAttribute("aria-current"); });
+      steps().forEach((s, k) => {
+        setState(s, k < i ? "completed" : k === i ? "active" : "pending"); if (k === i) s.setAttribute("aria-current", "step"); else s.removeAttribute("aria-current");
+        const sb = clickable && stepButton(s); if (sb) { if (k > i && !reachable(k)) sb.setAttribute("aria-disabled", "true"); else sb.removeAttribute("aria-disabled"); }
+      });
       panels().forEach((p, k) => { p.hidden = k !== i; setState(p, k === i ? "active" : "inactive"); });
       const n = panels().length; const pv = part(root, "prev"), nx = part(root, "next"), fin = part(root, "finish");
       if (pv) pv.disabled = i === 0; if (nx) nx.hidden = i === n - 1; if (fin) fin.hidden = i !== n - 1;
@@ -76,10 +89,11 @@ export function createStepper(root, o = {}) {
       if (e.target.closest('[data-ui-part="next"]')) go(i + 1);
       else if (e.target.closest('[data-ui-part="prev"]')) go(i - 1);
       else if (e.target.closest('[data-ui-part="finish"]')) { if (valid()) emit(root, "finish", { step: i }); }
-      else { const s = e.target.closest('[data-ui-part="step"]'); if (s && root.dataset.clickable != null) { const k = steps().indexOf(s); if (!linear || k < i) go(k); } }
+      else { const s = e.target.closest('[data-ui-part="step"]'); if (s && clickable) { const k = steps().indexOf(s); if (reachable(k)) go(k); } }
     });
     render();
-    return { get step() { return i; }, next: () => go(i + 1), prev: () => go(i - 1), goTo: go, destroy: b.off };
+    const unwrap = () => made.splice(0).forEach((sb) => { sb.replaceWith(...sb.childNodes); });
+    return { get step() { return i; }, next: () => go(i + 1), prev: () => go(i - 1), goTo: go, destroy() { b.off(); unwrap(); } };
   });
 }
 
