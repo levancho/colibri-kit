@@ -54,7 +54,9 @@ group files should not import from each other unless the dependency is listed he
 ## Demos
 
 Each component has a demo in `examples/native/demos/<group>.js`: an array of
-`{ id, title, description, Demo }`. `id` is the web catalog name (`dropdown-menu`); `description` is one plain
+`{ id, title, description, Demo, fullscreen? }`. Set `fullscreen: true` for a whole screen (an app frame, a navigation
+layout): the demo then fills the phone below the title bar instead of sitting in the padded, scrolling page, so it
+must use `flex: 1` and never a fixed height. `id` is the web catalog name (`dropdown-menu`); `description` is one plain
 sentence; `Demo` is a component that shows realistic content and lets the reader operate it. See
 `examples/native/demos/core.js` for the style. The catalog app and the site page are generated from these arrays.
 
