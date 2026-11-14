@@ -27,6 +27,9 @@ jobs:
           REACT_VERSION: 18.3.1
       - run: npm run build
       - run: npm run check:architecture
+      - run: npm run check:contrast
+        env:
+          CHROME: /usr/bin/google-chrome
       - run: npm run test:consumer
         env:
           CHROME: /usr/bin/google-chrome
