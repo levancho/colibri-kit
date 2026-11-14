@@ -3,20 +3,80 @@
 Colibri for React Native and Expo. The Colibri catalog for phones: layout, controls, overlays, forms, phone patterns, AI elements, ready-made screens and dashboard pieces, themed from one hue.
 
 - **One hue, whole palette.** The colours are the same ones Colibri CSS produces for that hue, in light and dark.
-- **No dependencies** beyond `react` and `react-native`. No native modules, so it works in Expo Go.
+- **Light or Full.** Light has no dependencies beyond `react` and `react-native`. Full adds gestures, SVG charts, icons and safe areas through four optional libraries.
 - **No build step and no configuration.** Plain JavaScript, with TypeScript declarations included.
 - **The same words as the web kit:** `gap="s"`, `variant="soft"`, `tone="ok"`, `size="l"`.
 - **Accessible by default:** roles, states, labels and 44-point touch targets.
 
 Live demo (the real components, running through react-native-web): https://colibri-kit.io/native/
 
-## Install
+## Install: Light or Full
+
+There are two ways to use the package. They share names and props, so you can start with Light and move to Full later
+by changing the import path.
+
+| | Light | Full |
+|---|---|---|
+| Import from | `@colibri-kit/native` | `@colibri-kit/native/full` |
+| Needs | `react`, `react-native` | Light plus `react-native-reanimated`, `react-native-gesture-handler`, `react-native-svg`, `react-native-safe-area-context` |
+| Works in Expo Go | yes | yes (all four ship with Expo) |
+| Drags (sheets, swipe rows, sortable, slider) | tracked on the JavaScript thread | tracked on the UI thread, with swipe-to-dismiss and drag and drop |
+| Charts | bar-based, drawn with views | line, area, bar, pie, donut, sparkline, ring, gauge |
+| Icons | text glyphs | a 66-icon outline set |
+| Notch and home indicator | pass `topInset` / `bottomInset` yourself | read automatically |
+
+**Light**
 
 ```sh
 npm install @colibri-kit/native
 ```
 
-Requires React Native 0.71 or newer (Expo SDK 48 or newer).
+```jsx
+import { Button, BottomSheet } from "@colibri-kit/native";
+```
+
+**Full**
+
+```sh
+npm install @colibri-kit/native
+npx expo install react-native-reanimated react-native-gesture-handler react-native-svg react-native-safe-area-context
+```
+
+```jsx
+import { Button, BottomSheet, LineChart, SafeScreen } from "@colibri-kit/native/full";
+```
+
+Without Expo, install the four libraries with npm and follow each one's setup page (Reanimated needs its Babel
+plugin; Gesture Handler needs `GestureHandlerRootView` at the root of the app; Safe Area Context needs
+`SafeAreaProvider` there too):
+
+```jsx
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaRoot } from "@colibri-kit/native/full";
+
+export default function App() {
+  return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaRoot>
+        <ColibriProvider>{/* your app */}</ColibriProvider>
+      </SafeAreaRoot>
+    </GestureHandlerRootView>
+  );
+}
+```
+
+**One piece at a time.** Each optional part is also its own entry and needs only its own library:
+
+| Entry | Needs | Adds |
+|---|---|---|
+| `@colibri-kit/native/gestures` | `react-native-reanimated`, `react-native-gesture-handler` | finger-driven `BottomSheet`, `Sheet`, `Drawer`, `SwipeRow`, `Sortable`, `Slider`, `Carousel`, the drag-and-drop board, `AnimatedList`, `PressableScale` |
+| `@colibri-kit/native/svg` | `react-native-svg` | `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `Sparkline`, `ProgressRing`, `Gauge`, `Icon` |
+| `@colibri-kit/native/safe-area` | `react-native-safe-area-context` | `SafeScreen`, `SafeBottomBar`, `SafeAppBar`, `SafeFab`, `SafeActionSheet`, `SafeBottomSheet`, `SafeBanner`, `useInsets` |
+
+In Full, a component that exists in both (for example `BottomSheet`) is the gesture version. The
+[live catalog](https://colibri-kit.io/native/) marks every component that needs a library and names it.
+
+Requires React Native 0.71 or newer (Expo SDK 48 or newer) for Light. Full follows the versions its libraries support.
 
 ## Use
 

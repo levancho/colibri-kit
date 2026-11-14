@@ -18,7 +18,12 @@ import gestures from "./gestures.js";
 import svg from "./svg.js";
 import safeArea from "./safe-area.js";
 
-const group = (id, title, description, demos) => ({ id, title, description, demos });
+// requires: the optional libraries a group needs. Groups without it are the Light set (no dependencies).
+const group = (id, title, description, demos, requires = []) => ({ id, title, description, demos, requires });
+export const LIBRARIES = {
+  "react-native-reanimated": "Reanimated", "react-native-gesture-handler": "Gesture Handler",
+  "react-native-svg": "SVG", "react-native-safe-area-context": "Safe Area Context",
+};
 export const GROUPS = [
   group("core", "Basics", "Layout, text, buttons and the everyday controls.", core),
   group("base", "Display", "Surfaces, typography and small building blocks.", base),
@@ -34,9 +39,9 @@ export const GROUPS = [
   group("blocks", "Auth blocks", "Ready-made sign-in and sign-up screens.", blocks),
   group("sidebars", "Nav layouts", "Ready-made navigation layouts with a slide-in panel.", sidebars),
   group("applications", "App components", "Dashboard pieces: metrics, charts, tables, boards.", applications),
-  group("gestures", "Gestures (optional)", "Smoother, finger-driven versions built on Reanimated and Gesture Handler.", gestures),
-  group("svg", "Charts and icons (optional)", "Line, area and pie charts, rings and an icon set, built on react-native-svg.", svg),
-  group("safe-area", "Safe areas (optional)", "Screens and bars that fit the notch and home indicator, built on react-native-safe-area-context.", safeArea),
+  group("gestures", "Gestures", "Smoother, finger-driven versions built on Reanimated and Gesture Handler.", gestures, ["react-native-reanimated", "react-native-gesture-handler"]),
+  group("svg", "Charts and icons", "Line, area and pie charts, rings and an icon set, built on react-native-svg.", svg, ["react-native-svg"]),
+  group("safe-area", "Safe areas", "Screens and bars that fit the notch and home indicator, built on react-native-safe-area-context.", safeArea, ["react-native-safe-area-context"]),
 ].filter((entry) => entry.demos.length);
 
-export const DEMOS = Object.fromEntries(GROUPS.flatMap((entry) => entry.demos.map((demo) => [demo.id, { ...demo, group: entry.title }])));
+export const DEMOS = Object.fromEntries(GROUPS.flatMap((entry) => entry.demos.map((demo) => [demo.id, { ...demo, group: entry.title, requires: entry.requires }])));

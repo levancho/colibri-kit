@@ -22,6 +22,7 @@ await build({
   alias: {
     "react-native": path.join(root, "tools/native-web/react-native.js"),
     "@react-native/assets-registry/registry": path.join(root, "tools/native-web/assets-registry.js"),
+    "@colibri-kit/native/full": path.join(root, "packages/colibri-native/src/full/index.js"),
     "@colibri-kit/native/gestures": path.join(root, "packages/colibri-native/src/gestures/index.js"),
     "@colibri-kit/native/svg": path.join(root, "packages/colibri-native/src/svg/index.js"),
     "@colibri-kit/native/safe-area": path.join(root, "packages/colibri-native/src/safe-area/index.js"),

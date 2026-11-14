@@ -88,6 +88,24 @@ try {
  const menu=await app.waitForSelector('[aria-expanded=false][role=button]');await menu.evaluate(node=>node.click());
  await app.waitForSelector('[aria-expanded=true]');
 
+ // Light and Full: the page says which components need a library and names it; the filter separates them.
+ const fullIds=catalog.filter(group=>group.requires.length).flatMap(group=>group.demos.map(demo=>demo.id));
+ assert.ok(fullIds.length>=15&&fullIds.length<total,`${fullIds.length} components need a library`);
+ assert.equal(await page.$eval('#np-light-count',e=>e.textContent),`${total-fullIds.length} components`);
+ assert.equal(await page.$eval('#np-full-count',e=>e.textContent),`${fullIds.length} components`);
+ assert.deepEqual((await page.$$eval('.np-card[data-tier=full]',cards=>cards.map(card=>card.dataset.id))).sort(),[...fullIds].sort());
+ assert.match(await page.$eval('.np-card[data-id=svg-line-chart] .np-req',e=>e.textContent),/Needs SVG/);
+ assert.match(await page.$eval('.np-card[data-id=gesture-bottom-sheet] .np-req',e=>e.textContent),/Reanimated \+ Gesture Handler/);
+ assert.equal(await page.$('.np-card[data-id=button] .np-req'),null,'a Light component carries no requirement');
+ await page.click('#np-tier [data-tier=light]');
+ assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),total-fullIds.length);
+ await page.click('#np-tier [data-tier=full]');
+ assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),fullIds.length);
+ await page.click('#np-tier [data-tier=all]');
+ await open('svg-line-chart');await page.click('.np-tabs [data-view=code]');
+ assert.match(await page.$eval('#np-source',e=>e.textContent),/^\/\/ Full: needs react-native-svg\n\/\/ npx expo install react-native-svg\n/);
+ await page.click('.np-tabs [data-view=demo]');
+
  // 4. Code samples: one per demo, generated from the demo source.
  const samples=await page.evaluate(()=>fetch('/native/code.json').then(r=>r.json()));
  for (const group of catalog) for (const demo of group.demos) assert.ok(samples[demo.id]?.includes('export default'),`code sample for ${demo.id}`);
