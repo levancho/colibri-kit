@@ -5,13 +5,15 @@
 import { useEffect, useState } from "react";
 import { Platform, Pressable, View } from "react-native";
 import { ColibriProvider, ToastProvider, useTheme, Screen, Stack, Cluster, Divider, Text, Heading, Card, Badge, Tabs, ListItem, Button } from "@colibri-kit/native";
-import { GROUPS, DEMOS } from "./demos/index.js";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GROUPS, DEMOS, LIBRARIES } from "./demos/index.js";
 
 const HUES = [255, 285, 330, 20, 75, 150, 190];
 const web = Platform.OS === "web";
 // On the web the open demo lives in the address (#button), so the site can link to one and the back button works.
 const readHash = () => (web ? decodeURIComponent(globalThis.location?.hash.slice(1) ?? "") : "");
-if (web) globalThis.ColibriNativeCatalog = GROUPS.map((group) => ({ id: group.id, title: group.title, description: group.description, demos: group.demos.map(({ id, title, description }) => ({ id, title, description })) }));
+if (web) globalThis.ColibriNativeCatalog = GROUPS.map((group) => ({ id: group.id, title: group.title, description: group.description, requires: group.requires.map((name) => ({ name, label: LIBRARIES[name] })), demos: group.demos.map(({ id, title, description }) => ({ id, title, description })) }));
 
 function Swatch({ hue, selected, onPress }) {
   const theme = useTheme();
@@ -45,7 +47,7 @@ function Home({ open, look }) {
             {group.demos.map((demo, index) => (
               <View key={demo.id}>
                 {index ? <Divider /> : null}
-                <ListItem title={demo.title} subtitle={demo.description} trailing="›" onPress={() => open(demo.id)} />
+                <ListItem title={demo.title} subtitle={demo.description} trailing={group.requires.length ? <Badge tone="accent">Full</Badge> : "›"} onPress={() => open(demo.id)} />
               </View>
             ))}
           </Card>
@@ -88,10 +90,13 @@ export default function App() {
   const open = (id) => { if (web) globalThis.location.hash = id; else setRoute(id); };
   const demo = DEMOS[route];
   return (
+    // The two wrappers are only needed for the optional entries (gestures, safe areas).
+    <GestureHandlerRootView style={{ flex: 1 }}><SafeAreaProvider>
     <ColibriProvider hue={hue} scheme={scheme} radius={radius}>
       <ToastProvider>
         {demo ? <DemoScreen key={demo.id} demo={demo} back={() => open("")} /> : <Home open={open} look={{ hue, setHue, scheme, setScheme, radius, setRadius }} />}
       </ToastProvider>
     </ColibriProvider>
+    </SafeAreaProvider></GestureHandlerRootView>
   );
 }

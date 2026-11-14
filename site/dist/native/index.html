@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Colibri for React Native — components</title>
+<title>Colibri React Native — components</title>
 <meta name="description" content="Every Colibri component for React Native and Expo, by category, with a live demo of each. Themed from one hue. No dependencies, no build step.">
 <meta property="og:title" content="Colibri for React Native"><meta property="og:description" content="Every Colibri component for React Native, with a live demo of each. No dependencies, no build step.">
 <link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
@@ -18,28 +18,33 @@
 <a class="skip visually-hidden" href="#catalog">Skip to the component list</a>
 <header class="kbar" data-active="native"></header>
 
+<nav class="np-sections" aria-label="Colibri React Native"><div class="center"><b>Colibri React Native</b><a href="/native/docs/">Documentation</a><a href="/native/" aria-current="page">Components</a></div></nav>
+
 <main id="main" class="center np">
   <div class="np-copy stack">
     <div class="stack np-intro">
-      <span class="pill"><span class="pill-dot" aria-hidden="true"></span>React Native and Expo</span>
-      <h1>Components for <span class="grad">React Native.</span></h1>
-      <p class="lede">The Colibri catalog, rebuilt for phones: <b id="np-count">every</b> components and ready-made screens, themed from one hue. No dependencies beyond React Native, no build step, no configuration.</p>
-      <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
-      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";
-
-&lt;ColibriProvider hue={160}&gt;
-  &lt;Screen&gt;
-    &lt;Stack gap="m"&gt;
-      &lt;Heading&gt;Hello&lt;/Heading&gt;
-      &lt;Button title="Continue" variant="soft" onPress={next} /&gt;
-    &lt;/Stack&gt;
-  &lt;/Screen&gt;
-&lt;/ColibriProvider&gt;</code></pre>
-      <p class="muted">Pick a component below to try it on the phone, then switch to <b>Code</b> for a sample you can paste. The phone runs the real component code in your browser through react-native-web. <a href="https://github.com/levancho/colibri-kit/tree/main/packages/colibri-native">Documentation on GitHub</a>.</p>
+      <h1>Components</h1>
+      <p class="lede"><b id="np-count">Every</b> components and ready-made screens. Pick one to try it on the phone, then switch to <b>Code</b> for a sample you can paste.</p>
+      <div class="np-options" role="group" aria-label="The two editions">
+        <section class="np-option" aria-labelledby="np-core-h">
+          <h2 id="np-core-h">Colibri React Native Core <span class="badge">no dependencies</span></h2>
+          <p class="muted"><b id="np-core-count">Most</b> of the catalog. Needs only React Native.</p>
+          <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+        </section>
+        <section class="np-option" aria-labelledby="np-full-h">
+          <h2 id="np-full-h">Colibri React Native Full <span class="badge" data-tone="accent">4 libraries</span></h2>
+          <p class="muted">Core plus <b id="np-full-count">the components</b> that need Reanimated, Gesture Handler, SVG or Safe Area Context.</p>
+          <pre class="np-code"><code>import { … } from "@colibri-kit/native/full"</code></pre>
+        </section>
+      </div>
+      <p class="muted">Cards marked <span class="badge" data-tone="accent">Full</span> name the library they need; unmarked cards are Core. <a href="/native/docs/#editions">What is the difference?</a> · <a href="/native/docs/#install-full">How to install Full</a> · <a href="/native/docs/#reference">API reference</a></p>
     </div>
-    <div class="field np-search">
-      <label for="np-q" class="visually-hidden">Filter components</label>
-      <input id="np-q" type="search" placeholder="Filter components…" autocomplete="off">
+    <div class="np-filter">
+      <div class="field np-search">
+        <label for="np-q" class="visually-hidden">Filter components</label>
+        <input id="np-q" type="search" placeholder="Filter components…" autocomplete="off">
+      </div>
+      <div class="np-tabs" id="np-tier" role="group" aria-label="Show Core or Full components"><button type="button" data-tier="all" aria-pressed="true">All</button><button type="button" data-tier="core" aria-pressed="false">Core</button><button type="button" data-tier="full" aria-pressed="false">Full only</button></div>
     </div>
     <div id="catalog" class="stack np-catalog" aria-live="polite"><p class="muted">Loading the component list…</p></div>
     <noscript><p class="callout" data-tone="warn">The component list and the live demo need JavaScript.</p></noscript>

@@ -88,14 +88,57 @@ try {
  const menu=await app.waitForSelector('[aria-expanded=false][role=button]');await menu.evaluate(node=>node.click());
  await app.waitForSelector('[aria-expanded=true]');
 
+ // Core and Full: the page says which components need a library and names it; the filter separates them.
+ const fullIds=catalog.filter(group=>group.requires.length).flatMap(group=>group.demos.map(demo=>demo.id));
+ assert.ok(fullIds.length>=15&&fullIds.length<total,`${fullIds.length} components need a library`);
+ assert.equal(await page.$eval('#np-core-count',e=>e.textContent),`${total-fullIds.length} components`);
+ assert.equal(await page.$eval('#np-full-count',e=>e.textContent),`${fullIds.length} components`);
+ assert.deepEqual((await page.$$eval('.np-card[data-tier=full]',cards=>cards.map(card=>card.dataset.id))).sort(),[...fullIds].sort());
+ assert.match(await page.$eval('.np-card[data-id=svg-line-chart] .np-req',e=>e.textContent),/Full · needs SVG/);
+ assert.match(await page.$eval('.np-card[data-id=gesture-bottom-sheet] .np-req',e=>e.textContent),/Full · needs Reanimated \+ Gesture Handler/);
+ assert.equal(await page.$('.np-card[data-id=button] .np-req'),null,'a Core component carries no requirement');
+ await page.$eval('#np-q',input=>{input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));}); // an earlier step typed a filter
+ await page.$eval('#np-tier [data-tier=core]',button=>button.click());
+ assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),total-fullIds.length);
+ await page.$eval('#np-tier [data-tier=full]',button=>button.click());
+ assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),fullIds.length);
+ await page.$eval('#np-tier [data-tier=all]',button=>button.click());
+ await open('svg-line-chart');await page.click('.np-tabs [data-view=code]');
+ assert.match(await page.$eval('#np-source',e=>e.textContent),/^\/\/ Full: needs react-native-svg\n\/\/ npx expo install react-native-svg\n/);
+ await page.click('.np-tabs [data-view=demo]');
+
  // 4. Code samples: one per demo, generated from the demo source.
  const samples=await page.evaluate(()=>fetch('/native/code.json').then(r=>r.json()));
  for (const group of catalog) for (const demo of group.demos) assert.ok(samples[demo.id]?.includes('export default'),`code sample for ${demo.id}`);
  assert.match(samples.button,/^import \{ [^}]*\bButton\b[^}]*\} from "@colibri-kit\/native";/);
  await open('button');await page.click('.np-tabs [data-view=code]');
  assert.equal(await page.$eval('.np-phone',e=>e.hidden),true);
- assert.equal(await page.$eval('#np-source',e=>e.textContent),samples.button);assert.equal(await page.$eval('#np-code-name',e=>e.textContent),'Button');
+ assert.equal(await page.$eval('#np-source',e=>e.textContent),samples.button);assert.equal(await page.$eval('#np-code-name',e=>e.textContent),'Button · Core');
  await page.click('.np-tabs [data-view=demo]');assert.equal(await page.$eval('.np-codebox',e=>e.hidden),true);
+ // 5. Documentation: its own section beside Components, with the two editions explained and an API reference.
+ assert.deepEqual(await page.$$eval('.np-sections a',links=>links.map(a=>[a.textContent,a.getAttribute('href'),a.getAttribute('aria-current')])),[['Documentation','/native/docs/',null],['Components','/native/','page']]);
+ assert.deepEqual(await page.$$eval('.np-option h2',heads=>heads.map(h=>h.firstChild.textContent.trim())),['Colibri React Native Core','Colibri React Native Full']);
+ await page.click('.np-sections a[href="/native/docs/"]');
+ await page.waitForFunction(()=>'docsReady' in document.documentElement.dataset);
+ assert.equal(await page.$eval('.np-sections a[aria-current]',a=>a.textContent),'Documentation');
+ assert.deepEqual(await page.$$eval('#editions .np-option h3',heads=>heads.map(h=>h.firstChild.textContent.trim())),['Colibri React Native Core','Colibri React Native Full']);
+ const docs=await page.evaluate(()=>fetch('/native/reference.json').then(r=>r.json()));
+ assert.equal(await page.$eval('#nd-core-count',e=>e.textContent),`${docs.counts.core} exports`);
+ assert.equal(await page.$eval('#nd-full-count',e=>e.textContent),`${docs.counts.full} exports`);
+ assert.ok(docs.counts.core>150&&docs.counts.full>=20);
+ assert.equal(await page.$$eval('.nd-item',items=>items.length),docs.groups.reduce((sum,group)=>sum+group.components.filter(item=>item.kind!=='value').length,0));
+ // A Core component lists its props; the Full version says what it needs and links to its demo.
+ const buttonProps=await page.$$eval('#api-core-Button .nd-props tbody tr td:first-child code',cells=>cells.map(cell=>cell.textContent));
+ for (const prop of ['title','variant','size','loading','onPress']) assert.ok(buttonProps.includes(prop)||prop==='onPress',`Button documents ${prop}`);
+ assert.match(await page.$eval('#api-gestures > p',e=>e.textContent),/Needs react-native-reanimated and react-native-gesture-handler/);
+ assert.equal(await page.$eval('#api-gestures-BottomSheet .nd-demo',a=>a.getAttribute('href')),'/native/#gesture-bottom-sheet');
+ assert.ok((await page.$$eval('#nd-full-lists tbody tr',rows=>rows.length))===3);
+ const sheetProps=await page.$$eval('#api-gestures-BottomSheet .nd-props tbody tr td:first-child code',cells=>cells.map(cell=>cell.textContent));
+ for (const prop of ['keyboardAware','snapPoints','visible','onClose']) assert.ok(sheetProps.includes(prop),`the Full BottomSheet documents ${prop}`);
+ await page.type('#nd-q','keyboardAware');
+ assert.deepEqual(await page.$$eval('.nd-item:not([hidden])',items=>items.map(item=>item.id)),['api-gestures-BottomSheet']);
+ for (const id of ['editions','install-core','install-full','theming','reference']) assert.ok(await page.$('#'+id),`the documentation has #${id}`);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
  assert.deepEqual(errors,[]);
  console.log('native e2e ok');
 } finally { await browser.close(); await server.close(); }

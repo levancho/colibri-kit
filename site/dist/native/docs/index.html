@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colibri React Native — documentation</title>
+<meta name="description" content="Documentation for Colibri React Native: Core and Full editions, installation, setup, theming, conventions and the API reference for every component.">
+<meta property="og:title" content="Colibri React Native documentation"><meta property="og:description" content="Core and Full editions, installation, theming and the API reference for every component.">
+<link rel="icon" type="image/svg+xml" href="/colibri-mark.svg">
+<script>/* apply the saved light/dark choice before first paint */try{var d=localStorage.getItem("colibri.kit.theme");if(d)document.documentElement.dataset.theme=d}catch(_){}</script>
+<link rel="stylesheet" href="/css/colibri.css">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
+<link rel="stylesheet" href="/native/native.css">
+<script type="module" src="/kitchen-sink/examples/kit-bar.js"></script>
+<script type="module" src="/native/docs/docs.js"></script>
+</head>
+<body>
+<a class="skip visually-hidden" href="#main">Skip to content</a>
+<header class="kbar" data-active="native"></header>
+<nav class="np-sections" aria-label="Colibri React Native"><div class="center"><b>Colibri React Native</b><a href="/native/docs/" aria-current="page">Documentation</a><a href="/native/">Components</a></div></nav>
+
+<div class="center nd">
+  <nav class="nd-toc" aria-label="On this page">
+    <b>Guide</b>
+    <a href="#overview">Overview</a>
+    <a href="#editions">Core and Full</a>
+    <a href="#install-core">Install Core</a>
+    <a href="#install-full">Install Full</a>
+    <a href="#quick-start">Quick start</a>
+    <a href="#theming">Theming</a>
+    <a href="#conventions">Conventions</a>
+    <a href="#accessibility">Accessibility</a>
+    <a href="#limits">What to supply yourself</a>
+    <a href="#not-ported">Not ported from the web</a>
+    <a href="#status">Testing status</a>
+    <b>API reference</b>
+    <div id="nd-toc-groups"></div>
+  </nav>
+
+  <main id="main" class="nd-main prose">
+    <section id="overview">
+      <h1>Colibri React Native</h1>
+      <p class="lede">Components for React Native and Expo, themed from one hue. It comes in two editions that share the same names and props: <b>Core</b>, which needs nothing but React Native, and <b>Full</b>, which adds what a library is needed for.</p>
+      <p><a class="btn" href="/native/">Browse the components</a></p>
+    </section>
+
+    <section id="editions">
+      <h2>Core and Full</h2>
+      <div class="np-options">
+        <section class="np-option" aria-labelledby="nd-core-h">
+          <h3 id="nd-core-h">Colibri React Native Core <span class="badge">no dependencies</span></h3>
+          <p class="muted">Import from <code>@colibri-kit/native</code>. <b id="nd-core-count">The components</b> and building blocks that run on React Native alone: layout, text, buttons, forms, overlays, navigation, phone patterns, data display, AI elements, ready-made screens and application components. Works in any project and in Expo Go with nothing else to install.</p>
+        </section>
+        <section class="np-option" aria-labelledby="nd-full-h">
+          <h3 id="nd-full-h">Colibri React Native Full <span class="badge" data-tone="accent">4 libraries</span></h3>
+          <p class="muted">Import from <code>@colibri-kit/native/full</code>. Everything in Core, plus <b id="nd-full-count">the components</b> and building blocks that need a library: finger-driven sheets, rows and lists, line and pie charts, an icon set, and bars that fit the notch.</p>
+        </section>
+      </div>
+      <h3>The difference</h3>
+      <table>
+        <thead><tr><th scope="col"></th><th scope="col">Core</th><th scope="col">Full</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Import from</th><td><code>@colibri-kit/native</code></td><td><code>@colibri-kit/native/full</code></td></tr>
+          <tr><th scope="row">Needs</th><td><code>react</code>, <code>react-native</code></td><td>Core, plus Reanimated, Gesture Handler, SVG and Safe Area Context</td></tr>
+          <tr><th scope="row">Works in Expo Go</th><td>Yes</td><td>Yes: all four libraries ship with Expo</td></tr>
+          <tr><th scope="row">Sheets, swipe rows, sortable lists, sliders</th><td>Work; the drag is followed on the JavaScript thread</td><td>Followed on the UI thread, with swipe to dismiss and a sheet that hands over to its scrolling list</td></tr>
+          <tr><th scope="row">Charts</th><td>Bar, stacked, sparkline and share charts drawn with views</td><td>Adds line, area, pie and donut charts, progress ring and gauge</td></tr>
+          <tr><th scope="row">Icons</th><td>Text glyphs, or your own icon elements</td><td>A 66-icon outline set</td></tr>
+          <tr><th scope="row">Notch and home indicator</th><td>You pass <code>topInset</code> and <code>bottomInset</code></td><td>Read from the device automatically</td></tr>
+          <tr><th scope="row">List changes</th><td>Appear at once</td><td>Rows animate in, out and to new positions</td></tr>
+        </tbody>
+      </table>
+      <h3>What Full adds, by library</h3>
+      <div id="nd-full-lists"><p class="muted">Loading…</p></div>
+      <p>The two editions share names and props. A component that exists in both, such as <code>BottomSheet</code>, is the finger-driven version in Full, so moving from Core to Full is a change of import path and nothing else. You can also take one part at a time: <code>@colibri-kit/native/gestures</code>, <code>@colibri-kit/native/svg</code> or <code>@colibri-kit/native/safe-area</code>, each needing only its own library.</p>
+    </section>
+
+    <section id="install-core">
+      <h2>Install Core</h2>
+      <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+      <p>Requires React Native 0.71 or newer (Expo SDK 48 or newer). There is nothing to configure and no build step.</p>
+      <pre class="np-code"><code>import { ColibriProvider, Screen, Stack, Heading, Button } from "@colibri-kit/native";</code></pre>
+    </section>
+
+    <section id="install-full">
+      <h2>Install Full</h2>
+      <pre class="np-code"><code>npm install @colibri-kit/native
+npx expo install react-native-reanimated react-native-gesture-handler react-native-svg react-native-safe-area-context</code></pre>
+      <p><code>npx expo install</code> picks versions that match your Expo SDK. The gesture components need Reanimated 4 or newer (which brings <code>react-native-worklets</code> and the New Architecture) and Gesture Handler 3 or newer; the SVG and safe-area parts work with older versions. Without Expo, install the four libraries with npm and follow each one's setup page; Reanimated needs its Babel plugin.</p>
+      <p>Wrap the app once at its root:</p>
+      <pre class="np-code"><code>import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { ColibriProvider, SafeAreaRoot } from "@colibri-kit/native/full";
+
+export default function App() {
+  return (
+    &lt;GestureHandlerRootView style={{ flex: 1 }}&gt;
+      &lt;SafeAreaRoot&gt;
+        &lt;ColibriProvider&gt;{/* your app */}&lt;/ColibriProvider&gt;
+      &lt;/SafeAreaRoot&gt;
+    &lt;/GestureHandlerRootView&gt;
+  );
+}</code></pre>
+      <p>Then import everything from one place:</p>
+      <pre class="np-code"><code>import { Button, BottomSheet, LineChart, Icon, SafeScreen } from "@colibri-kit/native/full";</code></pre>
+    </section>
+
+    <section id="quick-start">
+      <h2>Quick start</h2>
+      <pre class="np-code"><code>import { ColibriProvider, ToastProvider, Screen, Stack, Heading, Text, Button, useToast } from "@colibri-kit/native";
+
+function Home() {
+  const toast = useToast();
+  return (
+    &lt;Screen scroll&gt;
+      &lt;Stack gap="m"&gt;
+        &lt;Heading level={1}&gt;Hello&lt;/Heading&gt;
+        &lt;Text tone="muted"&gt;Built with Colibri.&lt;/Text&gt;
+        &lt;Button title="Save" onPress={() =&gt; toast.show("Saved", { tone: "ok" })} /&gt;
+      &lt;/Stack&gt;
+    &lt;/Screen&gt;
+  );
+}
+
+export default function App() {
+  return (
+    &lt;ColibriProvider hue={160}&gt;
+      &lt;ToastProvider&gt;
+        &lt;Home /&gt;
+      &lt;/ToastProvider&gt;
+    &lt;/ColibriProvider&gt;
+  );
+}</code></pre>
+      <p>Every component on the <a href="/native/">Components</a> page has a live demo and a code sample you can paste.</p>
+    </section>
+
+    <section id="theming">
+      <h2>Theming</h2>
+      <p><code>ColibriProvider</code> sets the theme for everything inside it. Components also work without a provider, using the default light theme.</p>
+      <table>
+        <thead><tr><th scope="col">Prop</th><th scope="col">Default</th><th scope="col">Meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>hue</code></td><td><code>255</code></td><td>Accent hue, 0 to 360. Every colour follows it.</td></tr>
+          <tr><td><code>chroma</code></td><td><code>0.16</code></td><td>Colour strength of the accent.</td></tr>
+          <tr><td><code>scheme</code></td><td><code>"auto"</code></td><td><code>"auto"</code> follows the device; <code>"light"</code> or <code>"dark"</code> forces one.</td></tr>
+          <tr><td><code>radius</code></td><td><code>"soft"</code></td><td><code>"sharp"</code>, <code>"soft"</code> or <code>"round"</code> corners.</td></tr>
+        </tbody>
+      </table>
+      <p><code>useTheme()</code> returns the values for your own styles:</p>
+      <pre class="np-code"><code>const theme = useTheme();
+&lt;View style={{ padding: theme.space.m, backgroundColor: theme.colors.surface, borderRadius: theme.radius.l }} /&gt;</code></pre>
+      <table>
+        <thead><tr><th scope="col">Group</th><th scope="col">Tokens</th></tr></thead>
+        <tbody>
+          <tr><td><code>theme.colors</code></td><td><code>bg</code>, <code>surface</code>, <code>sunken</code>, <code>fg</code>, <code>muted</code>, <code>line</code>, <code>accent</code>, <code>accentSoft</code>, <code>brandFg</code>, <code>ok</code>, <code>warn</code>, <code>bad</code></td></tr>
+          <tr><td><code>theme.space</code></td><td><code>3xs</code> <code>2xs</code> <code>xs</code> <code>s</code> <code>m</code> <code>l</code> <code>xl</code> <code>2xl</code> (2 to 48)</td></tr>
+          <tr><td><code>theme.text</code></td><td><code>xs</code> <code>sm</code> <code>md</code> <code>lg</code> <code>xl</code> <code>2xl</code> <code>3xl</code> (12 to 36)</td></tr>
+          <tr><td><code>theme.radius</code></td><td><code>s</code> <code>m</code> <code>l</code> <code>full</code></td></tr>
+          <tr><td><code>theme.shadow</code></td><td><code>s</code> <code>m</code> <code>l</code></td></tr>
+        </tbody>
+      </table>
+      <p>The colours are the ones Colibri CSS produces for the same hue, so a web app and a phone app can share a brand. Text and buttons meet WCAG AA contrast for every hue in both schemes. <code>ThemeScope</code> gives one part of a screen its own hue or scheme, and <code>createTheme()</code> builds the same theme object outside React.</p>
+    </section>
+
+    <section id="conventions">
+      <h2>Conventions</h2>
+      <ul>
+        <li><code>gap</code> takes a space token (<code>"3xs"</code> to <code>"2xl"</code>) or a number.</li>
+        <li><code>variant</code> is <code>solid</code>, <code>soft</code>, <code>outline</code>, <code>ghost</code> or <code>danger</code>; <code>size</code> is <code>s</code>, <code>m</code> or <code>l</code>.</li>
+        <li><code>tone</code> is <code>accent</code>, <code>ok</code>, <code>warn</code> or <code>bad</code>; <code>success</code>, <code>warning</code> and <code>danger</code> also work.</li>
+        <li>Controls take <code>value</code> and <code>onChange</code>, and most also work uncontrolled with <code>defaultValue</code>. Overlays take <code>visible</code> and <code>onClose</code>, or <code>open</code> and <code>onOpenChange</code>.</li>
+        <li>Every component takes <code>style</code> for one-off changes.</li>
+      </ul>
+    </section>
+
+    <section id="accessibility">
+      <h2>Accessibility</h2>
+      <p>Components set their role, label and state for VoiceOver and TalkBack, and pass the same state to the web. Touch targets are at least 44 points. Animations respect the device's reduce-motion setting in the motion helpers, the SVG charts and the gesture components.</p>
+    </section>
+
+    <section id="limits">
+      <h2>What to supply yourself</h2>
+      <ul>
+        <li><b>Pickers and clipboard.</b> React Native has no file picker, image picker or clipboard built in. <code>FileInput</code>, <code>ImageInput</code> and the copy buttons take a callback (<code>onPick</code>, <code>onCopy</code>) that you connect to your own library.</li>
+        <li><b>Insets, in Core.</b> Bars and sheets take <code>topInset</code> and <code>bottomInset</code>. Full reads them for you.</li>
+        <li><b>Icons, in Core.</b> Every component that shows an icon accepts your own element.</li>
+        <li><b>Navigation between screens.</b> Use your router (React Navigation, Expo Router). Colibri supplies the bars, drawers and tabs, not the routing.</li>
+      </ul>
+    </section>
+
+    <section id="not-ported">
+      <h2>Not ported from the web</h2>
+      <p>These exist in the Colibri web catalog and were left out on purpose, because they do not fit a phone or React Native already does the job.</p>
+      <table>
+        <thead><tr><th scope="col">Web component</th><th scope="col">Reason</th></tr></thead>
+        <tbody>
+          <tr><td>Keyboard key, command palette</td><td>Keyboard-driven desktop patterns</td></tr>
+          <tr><td>Hover card</td><td>There is no hover on a touch screen</td></tr>
+          <tr><td>Resizable panes, navigation menu, breadcrumb</td><td>Desktop layouts; phones use a back button and the vertical <code>Menu</code></td></tr>
+          <tr><td>Nine of the sixteen sidebar blocks</td><td>They differed only by desktop traits; seven phone navigation layouts replace all sixteen</td></tr>
+          <tr><td>Sticky, scroll area, aspect ratio, direction</td><td>Built into React Native</td></tr>
+          <tr><td>Accessible icon, label, separator, native select</td><td>Covered by <code>accessibilityLabel</code>, <code>Field</code>, <code>Divider</code> and <code>Select</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="status">
+      <h2>Testing status</h2>
+      <p>Every component is tested in a real browser through react-native-web: each demo is opened and must produce no errors or warnings, the interactive ones are operated, the colours are compared with Colibri CSS, and the type declarations are compiled against React Native's own types.</p>
+      <p class="callout" data-tone="warn">The package has not yet been run on iOS or Android devices by its maintainers. The gesture components in Full are where a device matters most. Please report device-specific problems on <a href="https://github.com/levancho/colibri-kit/issues">GitHub</a>.</p>
+    </section>
+
+    <section id="reference">
+      <h2>API reference</h2>
+      <p>Every exported component and hook with its props, read from the TypeScript declarations that ship in the package. <span class="badge">Core</span> needs nothing extra; <span class="badge" data-tone="accent">Full</span> names the library it needs.</p>
+      <div class="field"><label for="nd-q" class="visually-hidden">Filter the reference</label><input id="nd-q" type="search" placeholder="Filter components and props…" autocomplete="off"></div>
+      <div id="nd-reference" aria-live="polite"><p class="muted">Loading the reference…</p></div>
+      <noscript><p class="callout" data-tone="warn">The API reference needs JavaScript. The same information is in the package's TypeScript declarations.</p></noscript>
+    </section>
+  </main>
+</div>
+</body>
+</html>
