@@ -1,0 +1,88 @@
+{
+  "name": "@colibri-kit/native-full",
+  "version": "0.1.0",
+  "description": "Colibri React Native Full: everything in Core, plus finger-driven sheets, rows and lists (Reanimated, Gesture Handler), SVG charts and icons, and safe-area aware bars.",
+  "homepage": "https://colibri-kit.io/native/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/levancho/colibri-kit.git",
+    "directory": "packages/colibri-native-full"
+  },
+  "bugs": {
+    "url": "https://github.com/levancho/colibri-kit/issues"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "ui",
+    "components",
+    "design-system",
+    "design-tokens",
+    "oklch",
+    "dark-mode",
+    "theme"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "main": "src/index.js",
+  "react-native": "src/index.js",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./src/index.js"
+    },
+    "./gestures": {
+      "types": "./types/gestures.d.ts",
+      "default": "./src/gestures/index.js"
+    },
+    "./svg": {
+      "types": "./types/svg.d.ts",
+      "default": "./src/svg/index.js"
+    },
+    "./safe-area": {
+      "types": "./types/safe-area.d.ts",
+      "default": "./src/safe-area/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "files": [
+    "src",
+    "types",
+    "README.md",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "react": ">=18",
+    "react-native": ">=0.71",
+    "react-native-gesture-handler": ">=3",
+    "react-native-reanimated": ">=4",
+    "react-native-safe-area-context": ">=4",
+    "react-native-svg": ">=13",
+    "react-native-worklets": ">=0.5"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@colibri-kit/native-core": "0.1.0"
+  },
+  "peerDependenciesMeta": {
+    "react-native-gesture-handler": {
+      "optional": true
+    },
+    "react-native-reanimated": {
+      "optional": true
+    },
+    "react-native-safe-area-context": {
+      "optional": true
+    },
+    "react-native-svg": {
+      "optional": true
+    },
+    "react-native-worklets": {
+      "optional": true
+    }
+  }
+}

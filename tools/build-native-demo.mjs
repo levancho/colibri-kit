@@ -22,11 +22,12 @@ await build({
   alias: {
     "react-native": path.join(root, "tools/native-web/react-native.js"),
     "@react-native/assets-registry/registry": path.join(root, "tools/native-web/assets-registry.js"),
-    "@colibri-kit/native/full": path.join(root, "packages/colibri-native/src/full/index.js"),
-    "@colibri-kit/native/gestures": path.join(root, "packages/colibri-native/src/gestures/index.js"),
-    "@colibri-kit/native/svg": path.join(root, "packages/colibri-native/src/svg/index.js"),
-    "@colibri-kit/native/safe-area": path.join(root, "packages/colibri-native/src/safe-area/index.js"),
-    "@colibri-kit/native": path.join(root, "packages/colibri-native/src/index.js"),
+    "@colibri-kit/native-core/internal": path.join(root, "packages/colibri-native-core/src/internal-public.js"),
+    "@colibri-kit/native-core": path.join(root, "packages/colibri-native-core/src/index.js"),
+    "@colibri-kit/native-full/gestures": path.join(root, "packages/colibri-native-full/src/gestures/index.js"),
+    "@colibri-kit/native-full/svg": path.join(root, "packages/colibri-native-full/src/svg/index.js"),
+    "@colibri-kit/native-full/safe-area": path.join(root, "packages/colibri-native-full/src/safe-area/index.js"),
+    "@colibri-kit/native-full": path.join(root, "packages/colibri-native-full/src/index.js"),
   },
   define: { "process.env.NODE_ENV": '"production"', __DEV__: "false", global: "globalThis" },
 });

@@ -5,7 +5,7 @@ import { View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Text, Heading, Button, Card, Badge, Avatar, Switch,
   Table, DataTable, DataList, Carousel, MessageScroller, CodeBlock, Rating, Skeleton, SkeletonText, Empty,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const INVOICES = [
   { id: "INV-1042", customer: "Northwind Traders", status: "Paid", tone: "ok", due: "12 Nov 2026", amount: "$1,280.00" },
@@ -65,8 +65,8 @@ const ChatBubble = ({ from, text }) => {
   );
 };
 
-const INSTALL = "npm install @colibri-kit/native";
-const SNIPPET = `import { ColibriProvider, Screen, Heading, Button } from "@colibri-kit/native";
+const INSTALL = "npm install @colibri-kit/native-core";
+const SNIPPET = `import { ColibriProvider, Screen, Heading, Button } from "@colibri-kit/native-core";
 
 export default function App() {
   return (

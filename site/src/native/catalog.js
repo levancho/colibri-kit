@@ -1,5 +1,6 @@
 // Lists every React Native demo by category and drives the phone. The list comes from the demo app itself (which
 // runs in the frame), so the page cannot drift from the package. Each demo's code sample is generated from its source.
+import { themeSwitch } from "/native/theme.js";
 const list = document.getElementById("catalog"), query = document.getElementById("np-q"), count = document.getElementById("np-count");
 const frame = document.getElementById("np-frame"), side = document.querySelector(".np-side");
 const el = (tag, props = {}, ...children) => { const node = Object.assign(document.createElement(tag), props); node.append(...children); return node; };
@@ -48,7 +49,7 @@ function code() {
   document.getElementById("np-code-name").textContent = sample ? `${titles[id] ?? id} · ${(requirements[id] ?? []).length ? "Full" : "Core"}` : samples ? "Pick a component to see its code" : "Loading the code samples…";
   // A Full component's sample starts with what to install, so it can be pasted into a fresh project.
   const needs = (requirements[id] ?? []).map((library) => library.name);
-  document.getElementById("np-source").textContent = sample ? (needs.length ? `// Full: needs ${needs.join(", ")}\n// npx expo install ${needs.join(" ")}\n\n` : "") + sample : "";
+  document.getElementById("np-source").textContent = sample ? (needs.length ? `// Colibri React Native Full\n// npm install @colibri-kit/native-full\n// npx expo install ${needs.join(" ")}\n\n` : "// Colibri React Native Core\n// npm install @colibri-kit/native-core\n\n") + sample : "";
   document.getElementById("np-copy").disabled = !sample;
 }
 function filter() {
@@ -92,6 +93,9 @@ fetch("/native/code.json").then((response) => response.json()).then((data) => { 
   if (inside?.ColibriNativeCatalog) {
     inside.addEventListener("hashchange", () => { const id = decodeURIComponent(inside.location.hash.slice(1)); if (id !== current()) location.hash = id; });
     render(inside.ColibriNativeCatalog);
+    // The phone follows the page's light/dark switch, so both can be checked from the header button.
+    const follow = (choice) => { if (choice) inside.ColibriNativeSetScheme?.(choice); };
+    follow(themeSwitch(follow));
     document.documentElement.dataset.nativeReady = "";
   } else if (tries < 300) setTimeout(wait, 50, tries + 1);
   else list.replaceChildren(el("p", { className: "muted", textContent: "The demo could not be loaded. Reload the page to try again." }));

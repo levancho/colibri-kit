@@ -6,7 +6,7 @@ import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, ListItem, Tabs,
   BottomBar, TabScreens, useTabActive, AppBar, AppBarAction, useAppBarScroll, Fab, ActionSheet, BottomSheet,
   SwipeRow, SwipeGroup, PullToRefresh, SearchBar, Chip, ChipGroup, PageDots, Banner,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const NATIVE = Platform.OS !== "web";
 

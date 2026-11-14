@@ -5,7 +5,7 @@ import {
   ColibriProvider, useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, TextField, Switch, Spinner,
   Accordion, Alert, Collapsible, Link, Inset, IconButton,
   Blockquote, Code, Lead, Small, Muted, ThemeSwitch, Toggle, Item, ItemGroup, ButtonGroup, Toolbar, ToolbarSeparator, ToolbarSpacer,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 // Text glyphs stand in for icons: the package ships no icon font.
 const ICON = { undo: "↶", redo: "↷", link: "∞", close: "×", plus: "+", more: "⋯", star: "★", bell: "♪", file: "▤", lock: "⚙\uFE0E" };

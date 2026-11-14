@@ -1,5 +1,5 @@
 // Writes the API reference for the React Native documentation page (site/dist/native/reference.json).
-// It is read from the TypeScript declarations (index.d.ts, types/*.d.ts), so the documented props are the declared
+// It is read from the TypeScript declarations of both packages, so the documented props are the declared
 // props: every exported component and hook, its props with types and comments, which edition it belongs to
 // (Core or Full), the libraries it needs, and the demo that shows it.
 import { parse } from "@babel/parser";
@@ -8,16 +8,16 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const pkg = path.join(root, "packages/colibri-native");
+const pkg = path.join(root, "packages");
 const FULL = { gestures: ["react-native-reanimated", "react-native-gesture-handler"], svg: ["react-native-svg"], "safe-area": ["react-native-safe-area-context"] };
 // [declaration file, group id used by the catalog, title]
 const FILES = [
-  ["index.d.ts", "core", "Basics"], ["types/mobile.d.ts", "mobile", "Phone patterns"], ["types/base.d.ts", "base", "Display"],
-  ["types/data.d.ts", "data", "Data display"], ["types/menus.d.ts", "menus", "Overlays"], ["types/navigation.d.ts", "navigation", "Navigation"],
-  ["types/forms.d.ts", "forms", "Forms"], ["types/pickers.d.ts", "pickers", "Pickers"], ["types/conversation.d.ts", "conversation", "Conversation"],
-  ["types/ai.d.ts", "ai", "AI elements"], ["types/motion.d.ts", "motion", "Motion and theming"], ["types/blocks.d.ts", "blocks", "Auth blocks"],
-  ["types/sidebars.d.ts", "sidebars", "Nav layouts"], ["types/applications.d.ts", "applications", "App components"],
-  ["types/gestures.d.ts", "gestures", "Gestures"], ["types/svg.d.ts", "svg", "Charts and icons"], ["types/safe-area.d.ts", "safe-area", "Safe areas"],
+  ["colibri-native-core/index.d.ts", "core", "Basics"], ["colibri-native-core/types/mobile.d.ts", "mobile", "Phone patterns"], ["colibri-native-core/types/base.d.ts", "base", "Display"],
+  ["colibri-native-core/types/data.d.ts", "data", "Data display"], ["colibri-native-core/types/menus.d.ts", "menus", "Overlays"], ["colibri-native-core/types/navigation.d.ts", "navigation", "Navigation"],
+  ["colibri-native-core/types/forms.d.ts", "forms", "Forms"], ["colibri-native-core/types/pickers.d.ts", "pickers", "Pickers"], ["colibri-native-core/types/conversation.d.ts", "conversation", "Conversation"],
+  ["colibri-native-core/types/ai.d.ts", "ai", "AI elements"], ["colibri-native-core/types/motion.d.ts", "motion", "Motion and theming"], ["colibri-native-core/types/blocks.d.ts", "blocks", "Auth blocks"],
+  ["colibri-native-core/types/sidebars.d.ts", "sidebars", "Nav layouts"], ["colibri-native-core/types/applications.d.ts", "applications", "App components"],
+  ["colibri-native-full/types/gestures.d.ts", "gestures", "Gestures"], ["colibri-native-full/types/svg.d.ts", "svg", "Charts and icons"], ["colibri-native-full/types/safe-area.d.ts", "safe-area", "Safe areas"],
 ];
 const clean = (comments) => (comments ?? []).filter((c) => c.type === "CommentBlock" && c.value.startsWith("*")).map((c) => c.value.replace(/^\*+/, "").split("\n").map((line) => line.replace(/^\s*\* ?/, "").trim()).join(" ").trim()).join(" ").replace(/\s+/g, " ");
 const kebab = (name) => name.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase();
@@ -77,7 +77,7 @@ for (const pass of ["collect", "build"]) for (const { file, id, title, source, a
     if (!isComponent) item.signature = value.fn ? `${value.name}(${value.params.join(", ")}): ${value.returns}` : value.annotation;
     components.push(item);
   }
-  groups.push({ id, title, edition: FULL[id] ? "full" : "core", requires: FULL[id] ?? [], importFrom: FULL[id] ? `@colibri-kit/native/${id}` : "@colibri-kit/native", components });
+  groups.push({ id, title, edition: FULL[id] ? "full" : "core", requires: FULL[id] ?? [], importFrom: FULL[id] ? "@colibri-kit/native-full" : "@colibri-kit/native-core", part: FULL[id] ? `@colibri-kit/native-full/${id}` : null, components });
 }
 const count = (edition, kind) => groups.filter((group) => group.edition === edition).reduce((sum, group) => sum + group.components.filter((item) => item.kind === kind).length, 0);
 const out = { counts: { core: count("core", "component"), full: count("full", "component"), coreHooks: count("core", "hook"), fullHooks: count("full", "hook") }, groups };

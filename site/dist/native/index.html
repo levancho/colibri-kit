@@ -16,7 +16,9 @@
 </head>
 <body>
 <a class="skip visually-hidden" href="#catalog">Skip to the component list</a>
-<header class="kbar" data-active="native"></header>
+<header class="kbar" data-active="native">
+  <button class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Switch between light and dark">◐</button>
+</header>
 
 <nav class="np-sections" aria-label="Colibri React Native"><div class="center"><b>Colibri React Native</b><a href="/native/docs/">Documentation</a><a href="/native/" aria-current="page">Components</a></div></nav>
 
@@ -25,19 +27,19 @@
     <div class="stack np-intro">
       <h1>Components</h1>
       <p class="lede"><b id="np-count">Every</b> components and ready-made screens. Pick one to try it on the phone, then switch to <b>Code</b> for a sample you can paste.</p>
-      <div class="np-options" role="group" aria-label="The two editions">
+      <div class="np-options" role="group" aria-label="The two packages">
         <section class="np-option" aria-labelledby="np-core-h">
           <h2 id="np-core-h">Colibri React Native Core <span class="badge">no dependencies</span></h2>
           <p class="muted"><b id="np-core-count">Most</b> of the catalog. Needs only React Native.</p>
-          <pre class="np-code"><code>npm install @colibri-kit/native</code></pre>
+          <pre class="np-code"><code>npm install @colibri-kit/native-core</code></pre>
         </section>
         <section class="np-option" aria-labelledby="np-full-h">
           <h2 id="np-full-h">Colibri React Native Full <span class="badge" data-tone="accent">4 libraries</span></h2>
           <p class="muted">Core plus <b id="np-full-count">the components</b> that need Reanimated, Gesture Handler, SVG or Safe Area Context.</p>
-          <pre class="np-code"><code>import { … } from "@colibri-kit/native/full"</code></pre>
+          <pre class="np-code"><code>npm install @colibri-kit/native-full</code></pre>
         </section>
       </div>
-      <p class="muted">Cards marked <span class="badge" data-tone="accent">Full</span> name the library they need; unmarked cards are Core. <a href="/native/docs/#editions">What is the difference?</a> · <a href="/native/docs/#install-full">How to install Full</a> · <a href="/native/docs/#reference">API reference</a></p>
+      <p class="muted">Two packages, one set of names and props. Install one of them: Full already includes Core. Cards marked <span class="badge" data-tone="accent">Full</span> are only in <code>@colibri-kit/native-full</code> and name the library they need; unmarked cards are in both. <a href="/native/docs/#editions">What is the difference?</a> · <a href="/native/docs/#install-full">How to install Full</a> · <a href="/native/docs/#reference">API reference</a></p>
     </div>
     <div class="np-filter">
       <div class="field np-search">

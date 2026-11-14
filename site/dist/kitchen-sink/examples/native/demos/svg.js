@@ -1,8 +1,8 @@
 // Demos for the optional svg entry. Each entry: { id, title, description, Demo }.
 import { useState } from "react";
 import { View } from "react-native";
-import { useTheme, Stack, Cluster, Divider, Text, Button, Card, Tabs, Switch } from "@colibri-kit/native";
-import { LineChart, AreaChart, BarChart, PieChart, DonutChart, Sparkline, ProgressRing, Gauge, Icon, iconNames } from "@colibri-kit/native/svg";
+import { useTheme, Stack, Cluster, Divider, Text, Button, Card, Tabs, Switch } from "@colibri-kit/native-full";
+import { LineChart, AreaChart, BarChart, PieChart, DonutChart, Sparkline, ProgressRing, Gauge, Icon, iconNames } from "@colibri-kit/native-full";
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const REVENUE = [

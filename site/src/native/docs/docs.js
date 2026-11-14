@@ -1,5 +1,7 @@
 // Fills the generated parts of the React Native documentation page from reference.json (built by
 // tools/native-docs.mjs from the type declarations): the counts, what Full adds, and the API reference.
+import { themeSwitch } from "/native/theme.js";
+themeSwitch();
 const el = (tag, props = {}, ...children) => { const node = Object.assign(document.createElement(tag), props); node.append(...children.filter((child) => child !== null && child !== "")); return node; };
 const code = (text) => el("code", { textContent: text });
 const LIBRARY = { "react-native-reanimated": "Reanimated", "react-native-gesture-handler": "Gesture Handler", "react-native-svg": "SVG", "react-native-safe-area-context": "Safe Area Context" };
@@ -33,13 +35,13 @@ else {
   document.getElementById("nd-full-lists").replaceChildren(el("table", {},
     el("thead", {}, el("tr", {}, ...["Part", "Needs", "Components"].map((text) => { const th = el("th", { textContent: text }); th.scope = "col"; return th; }))),
     el("tbody", {}, ...data.groups.filter((group) => group.edition === "full").map((group) => el("tr", {},
-      el("td", {}, el("b", { textContent: group.title }), el("br"), code(group.importFrom)),
+      el("td", {}, el("b", { textContent: group.title }), el("br"), code(group.part)),
       el("td", { textContent: group.requires.map((name) => LIBRARY[name]).join(" and ") }),
       el("td", {}, ...group.components.filter((item) => item.kind !== "value").flatMap((item, index) => [index ? ", " : "", el("a", { href: `#api-${group.id}-${item.name}` }, code(item.name))])))))));
   reference.replaceChildren(...data.groups.map((group) => {
     const section = el("section", { className: "nd-group", id: "api-" + group.id },
       el("h3", {}, group.title + " ", badge(group)),
-      el("p", { className: "muted" }, "Import from ", code(group.edition === "full" ? group.importFrom : "@colibri-kit/native"), group.edition === "full" ? ` or @colibri-kit/native/full. Needs ${group.requires.join(" and ")}.` : " (or @colibri-kit/native/full)."),
+      el("p", { className: "muted" }, "In ", code(group.importFrom), group.edition === "full" ? `, or on its own from ${group.part}. Needs ${group.requires.join(" and ")}.` : " and in @colibri-kit/native-full."),
       ...group.components.filter((item) => item.kind !== "value").map((item) => entry(item, group)));
     return section;
   }));

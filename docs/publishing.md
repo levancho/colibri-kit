@@ -1,12 +1,14 @@
 # Publishing to npm
 
-Three packages are published from this repository. `@colibri-kit/css` and `@colibri-kit/ui` always share a version;
-`@colibri-kit/native` is versioned on its own and is published by hand (the workflow below does not publish it yet):
+Four packages are published from this repository. `@colibri-kit/css` and `@colibri-kit/ui` always share a version;
+`@colibri-kit/native-core` and `@colibri-kit/native-full` share a version of their own, are published by hand (the
+workflow below does not publish them yet), and go out in that order, because Full depends on Core:
 
 | Package | Directory | Contents |
 |---|---|---|
 | `@colibri-kit/css` | `packages/colibri-css` | the stylesheet, the prefixed build, the bridge, application components |
-| `@colibri-kit/native` | `packages/colibri-native` | React Native and Expo components; plain source, nothing to build |
+| `@colibri-kit/native-core` | `packages/colibri-native-core` | Colibri React Native Core; plain source, nothing to build |
+| `@colibri-kit/native-full` | `packages/colibri-native-full` | Colibri React Native Full; depends on the same version of Core |
 | `@colibri-kit/ui` | repository root | controllers, custom elements, React adapter, themes, minified and lazy bundles, CLI, MCP server, templates |
 
 ## One-time setup
@@ -42,7 +44,8 @@ a token without bypass uploads the version, and a maintainer approves it with 2F
 ```sh
 (cd packages/colibri-css && npm stage publish --access public)
 npm stage publish --access public
-(cd packages/colibri-native && npm stage publish --access public)
+(cd packages/colibri-native-core && npm stage publish --access public)
+(cd packages/colibri-native-full && npm stage publish --access public)
 ```
 
 Each command prints a stage id. The maintainer then signs in and approves both, stylesheet package first:

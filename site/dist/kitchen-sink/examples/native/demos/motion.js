@@ -4,7 +4,7 @@ import { Animated, View } from "react-native";
 import {
   useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Callout, Avatar, TextField, Switch, Progress, Tabs, ListItem, Dialog, Sheet,
   Enter, Presence, MotionPressable, MotionLoop, useMotion, Collapse, ThemeScope, useReducedMotion, ENTER_MOTIONS, PLAY_MOTIONS,
-} from "@colibri-kit/native";
+} from "@colibri-kit/native-core";
 
 const INBOX = [
   { name: "Maya Okafor", note: "Can you review the onboarding copy?" },

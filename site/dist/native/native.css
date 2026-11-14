@@ -38,7 +38,8 @@
 /* Light and Full: the two ways to install, side by side */
 .np-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: var(--c-space-s); }
 .np-option { display: grid; align-content: start; gap: var(--c-space-xs); min-inline-size: 0; padding: var(--c-space-m); border: 1px solid var(--c-line); border-radius: var(--c-radius-l); background: var(--c-surface);
-  & h2 { display: flex; align-items: center; gap: .5em; font-size: var(--c-text-lg); letter-spacing: -.015em; }
+  & h2 { display: flex; flex-wrap: wrap; align-items: center; gap: .35em .5em; font-size: var(--c-text-lg); letter-spacing: -.015em; }
+  & .badge { white-space: nowrap; }
   & p { font-size: var(--c-text-sm); }
   & .np-code { white-space: pre-wrap; overflow-wrap: anywhere; } }
 .np-filter { display: flex; flex-wrap: wrap; align-items: center; gap: var(--c-space-xs); & .np-search { flex: 1 1 14rem; } & .np-tabs { justify-self: auto; } }
