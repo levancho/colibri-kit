@@ -1,0 +1,110 @@
+// Browser regressions for the "Component bugs" list in TODO.md. Runs against the built site (npm run build first).
+// Each check loads a small fixture page that imports the built core modules from /ui/src/core/.
+// Usage: node test/e2e/bugs-browser.e2e.mjs [name-filter]
+import fs from "node:fs";
+import path from "node:path";
+import http from "node:http";
+import assert from "node:assert/strict";
+import puppeteer from "puppeteer-core";
+
+const dist = path.resolve("site/dist");
+if (!fs.existsSync(path.join(dist, "ui/src/core/dialog.js"))) throw new Error("site/dist is missing: run npm run build first");
+const fixtures = new Map();
+const mime = { ".html": "text/html", ".css": "text/css", ".js": "text/javascript", ".svg": "image/svg+xml" };
+const server = http.createServer((req, res) => {
+  const url = new URL(req.url, "http://localhost");
+  const fixture = fixtures.get(url.pathname);
+  if (fixture) { res.writeHead(200, { "Content-Type": "text/html", ...(fixture.headers || {}) }); res.end(fixture.html); return; }
+  const file = path.resolve(dist, "." + url.pathname);
+  if (path.relative(dist, file).startsWith("..") || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404).end(); return; }
+  res.setHeader("Content-Type", mime[path.extname(file)] || "application/octet-stream");
+  fs.createReadStream(file).pipe(res);
+});
+await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
+const origin = `http://127.0.0.1:${server.address().port}`;
+let n = 0;
+/** Serve `body` with `script` (a module importing from /ui/src/core/) and return its URL. */
+function page(body, script = "", { head = "", headers } = {}) {
+  const p = `/__bugs/${++n}.html`;
+  fixtures.set(p, { headers, html: `<!doctype html><html lang="en"><head><meta charset="utf-8">${head}<link rel="stylesheet" href="/ui/themes/colibri.css"></head><body>${body}<script type="module">${script}\nwindow.__ready = true;</script></body></html>` });
+  return origin + p;
+}
+const chrome = process.env.CHROME || ["/usr/bin/google-chrome", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"].find(fs.existsSync);
+const browser = await puppeteer.launch({ executablePath: chrome, args: ["--no-sandbox"] });
+const filter = process.argv[2] || "";
+const checks = [];
+const check = (name, fn) => checks.push({ name, fn });
+async function open(url, viewport = { width: 1000, height: 800 }) {
+  const p = await browser.newPage(); await p.setViewport(viewport);
+  const errors = []; p.on("pageerror", (e) => errors.push(e.message));
+  await p.goto(url); await p.waitForFunction(() => window.__ready);
+  p.errors = errors; return p;
+}
+
+/* 1. Confirm dialogs cannot be escaped by repeated Esc (Chrome closes a dialog after repeated cancelled `cancel`s). */
+const dialogFixture = (attrs) => page(`<div data-ui="dialog" id="d" ${attrs}><button data-ui-part="trigger" id="t">Open</button>
+  <dialog data-ui-part="content"><h2 data-ui-part="title">Sure?</h2><button id="inside">Inside</button><button data-ui-part="close">Cancel</button></dialog></div>`,
+  `import { createDialog } from "/ui/src/core/dialog.js"; const d = document.getElementById("d"); window.api = createDialog(d);
+   window.closes = 0; d.addEventListener("ui:close", () => window.closes++);
+   if (d.dataset.veto) d.addEventListener("ui:beforeclose", (e) => e.preventDefault());`);
+for (const [label, attrs] of [["alert-dialog", 'data-variant="alert"'], ["vetoed ui:beforeclose", 'data-veto="1"']]) {
+  check(`dialog: ${label} survives repeated Escape`, async () => {
+    const p = await open(dialogFixture(attrs));
+    await p.click("#t");
+    for (let i = 0; i < 6; i++) { await p.keyboard.press("Escape"); await new Promise((r) => setTimeout(r, 30)); }
+    assert.equal(await p.$eval("dialog", (d) => d.open), true, "dialog closed by Escape");
+    assert.equal(await p.evaluate(() => window.closes), 0);
+    // focus on the body (click inside the dialog's padding) must not let Escape through either
+    await p.evaluate(() => document.activeElement.blur());
+    for (let i = 0; i < 4; i++) await p.keyboard.press("Escape");
+    assert.equal(await p.$eval("dialog", (d) => d.open), true, "dialog closed by Escape with nothing focused");
+    await p.click('[data-ui-part="close"]');
+    if (label.startsWith("alert")) assert.equal(await p.$eval("dialog", (d) => d.open), false, "explicit close still works");
+    await p.close();
+  });
+}
+check("dialog: dismissible modal still closes on one Escape and returns focus", async () => {
+  const p = await open(dialogFixture(""));
+  await p.click("#t"); await p.keyboard.press("Escape");
+  assert.equal(await p.$eval("dialog", (d) => d.open), false);
+  assert.equal(await p.evaluate(() => document.activeElement.id), "t");
+  await p.close();
+});
+
+/* 2. Non-modal dialog: Escape and outside click close it; focus returns to the trigger. */
+const nonModal = (attrs = "") => page(`<button id="before">Before</button><div data-ui="dialog" data-modal="false" id="d" ${attrs}><button data-ui-part="trigger" id="t">Open</button>
+  <dialog data-ui-part="content"><h2 data-ui-part="title">Panel</h2><input id="field"><button data-ui-part="close">Close</button></dialog></div><p id="out" style="margin-top:400px">outside</p>`,
+  `import { createDialog } from "/ui/src/core/dialog.js"; window.api = createDialog(document.getElementById("d"));`);
+check("dialog: non-modal closes on Escape, focus returns to trigger", async () => {
+  const p = await open(nonModal());
+  await p.click("#t"); await p.focus("#field"); await p.keyboard.press("Escape");
+  assert.equal(await p.$eval("dialog", (d) => d.open), false, "Escape did not close the non-modal dialog");
+  assert.equal(await p.evaluate(() => document.activeElement.id), "t");
+  await p.close();
+});
+check("dialog: non-modal closes on outside click unless data-close-on-outside=false", async () => {
+  let p = await open(nonModal());
+  await p.click("#t"); await p.click("#out");
+  assert.equal(await p.$eval("dialog", (d) => d.open), false, "outside click did not close the non-modal dialog");
+  await new Promise((r) => setTimeout(r, 50));
+  assert.equal(await p.evaluate(() => document.activeElement.tagName + "#" + document.activeElement.id), "BUTTON#t");
+  await p.click("#t"); assert.equal(await p.$eval("dialog", (d) => d.open), true, "trigger reopens");
+  await p.click("#field"); assert.equal(await p.$eval("dialog", (d) => d.open), true, "inside click keeps it open");
+  await p.click("#t"); assert.equal(await p.$eval("dialog", (d) => d.open), true, "trigger click while open keeps it open");
+  await p.close();
+  p = await open(nonModal('data-close-on-outside="false"'));
+  await p.click("#t"); await p.click("#out");
+  assert.equal(await p.$eval("dialog", (d) => d.open), true, "data-close-on-outside=false was ignored");
+  await p.close();
+});
+
+/* run */
+let failed = 0;
+try {
+  for (const { name, fn } of checks) {
+    if (filter && !name.includes(filter)) continue;
+    try { await fn(); console.log(`ok ${name}`); } catch (e) { failed++; console.log(`not ok ${name}\n  ${e.message.split("\n").join("\n  ")}`); }
+  }
+} finally { await browser.close(); server.close(); }
+if (failed) { console.log(`${failed} browser bug check(s) failed`); process.exit(1); }
+console.log("ok bug regressions in Chrome");
