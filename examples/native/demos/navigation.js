@@ -194,7 +194,7 @@ export default [
       </Stack>
     );
   } },
-  { id: "tabs", title: "TabView", description: "Content tabs: a bar with a sliding underline and the selected tab's panel. The bar scrolls sideways when there are many tabs.", Demo: () => {
+  { id: "tab-view", title: "TabView", description: "Content tabs: a bar with a sliding underline and the selected tab's panel. The bar scrolls sideways when there are many tabs.", Demo: () => {
     const [tab, setTab] = useState("activity");
     return (
       <Stack gap="l">

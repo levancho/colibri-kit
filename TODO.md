@@ -19,10 +19,17 @@ found by reading.
 
 - [ ] **Publish `@colibri-kit/native` 0.1.0 to npm** (staged publishing, see `docs/publishing.md`). The site and README
       already show `npm install @colibri-kit/native`.
-- [ ] **Run the example on real iOS and Android devices.** The package is tested through react-native-web only.
+- [ ] **Run the catalog on real iOS and Android devices.** The package is tested through react-native-web only.
+      Check first: bottom sheet versus scroll view on Android, swipe rows inside lists, native-driver animations,
+      Android elevation, and the default safe-area insets.
+- [ ] **Decide on optional peer dependencies**: `react-native-reanimated` + `react-native-gesture-handler` (swipe to
+      dismiss, drag to reorder, drag and drop on the board, layout animations), `react-native-svg` (line, area and pie
+      charts, real icons), `react-native-safe-area-context` (automatic insets).
+- [ ] `mobile.js` does not honour reduce-motion; move `useReducedMotion` from `motion.js` into `internal.js`.
+- [ ] `Tabs` (basics) and `SegmentedControl` (forms) overlap; keep one.
 - [ ] Add it to the publish workflow; decide whether it shares the version of the other two packages.
-- [ ] Not built yet: Select/picker, Slider, date picker, swipe-to-dismiss on Sheet, toast queue, RTL review,
-      reduced-motion handling for toasts, safe-area helper.
+- [ ] Not built: indeterminate progress bar, multi-column sort and column visibility in `DataTable`, arrow-key roving
+      focus in several components on the web target, a toast queue, an RTL review.
 
 ## Accessibility
 

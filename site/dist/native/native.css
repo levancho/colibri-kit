@@ -1,10 +1,25 @@
-/* React Native page: copy on one side, a phone running the real components on the other. */
-.np { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--c-space-xl); align-items: start; padding-block: var(--c-space-xl) var(--c-space-2xl); }
-@media (width < 60rem) { .np { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
-.np-copy { --gap: var(--c-space-m); min-inline-size: 0;
-  & h1 { font-size: clamp(2.2rem, 1.4rem + 3.2vw, 3.8rem); line-height: 1.04; letter-spacing: -.04em; }
-  & .lede { font-size: var(--c-text-lg); color: var(--c-muted); max-inline-size: 52ch; } }
+/* React Native page: the component list by category on one side, a phone running the chosen demo on the other. */
+/* The phone column has a fixed width: an auto track would grow to the demo's intrinsic width and squeeze the list out. */
+.np { display: grid; grid-template-columns: minmax(0, 1fr) min(24.5rem, 42vw); gap: var(--c-space-xl); align-items: start; padding-block: var(--c-space-l) var(--c-space-2xl); }
+@media (width < 60rem) { .np { grid-template-columns: minmax(0, 1fr); justify-items: center; } .np-copy { justify-self: stretch; } }
+.np-copy { --gap: var(--c-space-l); min-inline-size: 0; }
+.np-intro { --gap: var(--c-space-s);
+  & h1 { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.2rem); line-height: 1.05; letter-spacing: -.035em; }
+  & .lede { font-size: var(--c-text-md); color: var(--c-muted); max-inline-size: 60ch; }
+  & .lede b { color: var(--c-fg); } }
 .np-code { margin: 0; padding: var(--c-space-s) var(--c-space-m); overflow-x: auto; border-radius: var(--c-radius); border: 1px solid oklch(30% .03 280); background: oklch(17% .025 280); color: oklch(88% .05 190); font-family: var(--c-font-mono); font-size: var(--c-text-xs); line-height: 1.7; }
-.np-phone { position: sticky; inset-block-start: calc(var(--kb-h, 56px) + var(--c-space-m)); inline-size: min(24.5rem, 100%); block-size: min(50rem, calc(100svh - var(--kb-h, 56px) - 2 * var(--c-space-m))); min-block-size: 32rem; padding: .7rem; border-radius: 3rem; background: oklch(20% .02 280); box-shadow: var(--c-shadow-l), inset 0 0 0 2px oklch(38% .02 280); }
-@media (width < 60rem) { .np-phone { position: static; block-size: 46rem; } }
+.np-search input { inline-size: 100%; }
+.np-catalog { --gap: var(--c-space-l); }
+.np-group { display: grid; gap: var(--c-space-2xs);
+  & h2 { font-size: var(--c-text-lg); letter-spacing: -.015em; scroll-margin-block-start: calc(var(--kb-h, 56px) + var(--c-space-m)); }
+  & > p { font-size: var(--c-text-sm); } }
+.np-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(13.5rem, 100%), 1fr)); gap: var(--c-space-xs); padding-block-start: var(--c-space-2xs); }
+.np-card { display: grid; align-content: start; gap: .2em; padding: var(--c-space-s); border: 1px solid var(--c-line); border-radius: var(--c-radius); background: var(--c-surface); color: var(--c-fg); text-decoration: none;
+  transition: border-color var(--c-dur-fast) var(--c-ease), box-shadow var(--c-dur) var(--c-ease), transform var(--c-dur-fast) var(--c-ease);
+  & b { font-size: var(--c-text-sm); color: var(--c-accent); }
+  & span { font-size: var(--c-text-xs); line-height: 1.45; color: var(--c-muted); }
+  &:hover { border-color: color-mix(in oklch, var(--c-accent) 50%, var(--c-line)); box-shadow: var(--c-shadow); transform: translateY(-1px); }
+  &[aria-current] { border-color: var(--c-accent); background: var(--c-accent-soft); box-shadow: 0 0 0 3px var(--c-accent-soft); } }
+.np-phone { position: sticky; inset-block-start: calc(var(--kb-h, 56px) + var(--c-space-m)); inline-size: 100%; min-inline-size: 0; block-size: min(50rem, calc(100svh - var(--kb-h, 56px) - 2 * var(--c-space-m))); min-block-size: 32rem; padding: .7rem; border-radius: 3rem; background: oklch(20% .02 280); box-shadow: var(--c-shadow-l), inset 0 0 0 2px oklch(38% .02 280); }
+@media (width < 60rem) { .np-phone { position: static; inline-size: min(24.5rem, 100%); block-size: 46rem; scroll-margin-block-start: calc(var(--kb-h, 56px) + var(--c-space-s)); } }
 .np-screen { display: flex; block-size: 100%; overflow: hidden; border-radius: 2.35rem; isolation: isolate; }

@@ -34,6 +34,9 @@ try {
  assert.ok(total>=100,`the catalog has ${total} demos`);
  assert.equal(new Set(catalog.flatMap(group=>group.demos.map(demo=>demo.id))).size,total,'demo ids are unique');
  assert.equal(await page.$$eval('.np-card',cards=>cards.length),total);assert.equal(await page.$eval('#np-count',e=>e.textContent),String(total));
+ // Layout: the list and the phone sit side by side and the phone does not cover the cards.
+ const layout=await page.evaluate(()=>{document.querySelector('.np-card').scrollIntoView({block:'center'});const card=document.querySelector('.np-card').getBoundingClientRect(),phone=document.querySelector('.np-phone').getBoundingClientRect(),hit=document.elementFromPoint(card.x+card.width/2,card.y+card.height/2);return{cardRight:card.right,cardWidth:card.width,phoneLeft:phone.left,hitsCard:!!hit.closest('.np-card')};});
+ assert.ok(layout.hitsCard&&layout.cardWidth>=180&&layout.phoneLeft>=layout.cardRight,JSON.stringify(layout));
  await page.type('#np-q','button');
  const visible=await page.$$eval('.np-card:not([hidden])',cards=>cards.map(card=>card.dataset.id));
  assert.ok(visible.includes('button')&&visible.length<total);

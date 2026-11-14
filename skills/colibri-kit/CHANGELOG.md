@@ -1,4 +1,6 @@
 # Changelog
+## 1.4.0 (2026-11-14)
+- React Native: `@colibri-kit/native` now covers the catalog (about 200 components and hooks in twelve groups, including phone-only patterns, ready-made screens and application components); lists what has no native version and the callback rules for pickers and clipboard.
 ## 1.3.0 (2026-11-12)
 - React Native: `@colibri-kit/native` (provider, `useTheme`, 23 components) with the same gap/variant/tone/size vocabulary as props; never mix it with Colibri CSS or `@colibri-kit/ui`.
 ## 1.2.0 (2026-11-10)
