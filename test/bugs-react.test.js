@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { JSDOM } from "jsdom";
 const dom = new JSDOM('<main id="app"></main>', { url: "https://example.test/", pretendToBeVisual: true });
 Object.assign(globalThis, { window: dom.window, document: dom.window.document, CustomEvent: dom.window.CustomEvent, HTMLElement: dom.window.HTMLElement,
-  MutationObserver: dom.window.MutationObserver, IS_REACT_ACT_ENVIRONMENT: true });
+  MutationObserver: dom.window.MutationObserver, requestAnimationFrame: dom.window.requestAnimationFrame, getComputedStyle: dom.window.getComputedStyle, IS_REACT_ACT_ENVIRONMENT: true });
 const { createElement: h, StrictMode, act, createRef, useState } = await import("react");
 const { createRoot } = await import("react-dom/client");
 const { UI, Part, DataList, Callout, Inset, useColibri, ChartPanel } = await import("../src/react/index.js");
@@ -82,4 +82,19 @@ test("React ChartPanel accepts values written as text (1,200)", async () => {
   await act(async () => root.render(h(ChartPanel, { rows: [{ label: "d1", values: ["1,200", 3] }, { label: "d2", values: ["950", 4] }], ranges: [2], defaultRange: 2 })));
   assert.ok(app.querySelector("svg"));
   await act(async () => root.unmount());
+});
+
+test("React: a toaster rendered by React is not moved out of React's tree", async () => {
+  const root = createRoot(app);
+  const view = (n) => h(StrictMode, null, h("section", { role: "region", "aria-label": "Notifications" }, h(UI, { kind: "toaster", as: "ol", id: "toasts" })), h("p", null, n));
+  await act(async () => root.render(view("a")));
+  const ol = document.getElementById("toasts");
+  assert.equal(ol.parentElement.getAttribute("aria-label"), "Notifications");
+  assert.equal(app.querySelectorAll("[role=region]").length, 1);
+  await act(async () => ol.toast("Saved"));
+  // without a region of its own, React's list is still left where React put it
+  await act(async () => root.render(h(UI, { kind: "toaster", as: "ol", id: "bare" })));
+  const bare = document.getElementById("bare"); assert.equal(bare.parentElement, app);
+  let error = null; try { await act(async () => root.unmount()); } catch (e) { error = e; }
+  assert.equal(error, null, error?.message);
 });

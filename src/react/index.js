@@ -104,7 +104,8 @@ export function useColibri(kind, { on = {}, options: rawOptions, apiRef } = {}) 
     };
     // registered after the app's own listeners (the effect above), so a handler can still veto with preventDefault()
     if (selfRemove === "remove") node.addEventListener("ui:remove", keep);
-    api.current = factory(node, options) ?? null;
+    // a toaster wraps its list in a region by moving it: React renders that wrapper itself instead
+    api.current = factory(node, kind === "toaster" ? { wrap: false, ...options } : options) ?? null;
     setRef(apiRef, api.current);
     return () => {
       if (selfRemove === "remove") node.removeEventListener("ui:remove", keep);

@@ -24,21 +24,24 @@ export function createDismiss(root) {
    Each toast: <li data-ui-part="toast" data-variant data-state="open|closing"> title/description/action/close parts. Pauses on hover/focus.
    Landmark: the list stays a list; the named role="region" is a wrapper. If the toaster's parent is already a
    [role=region] it is used; otherwise the controller wraps the list in <section data-ui-part="region"> (and unwraps it
-   on destroy). Frameworks that own the DOM (React) should render that wrapper themselves. Each new toast (and each
+   on destroy). data-wrap="false" (or { wrap: false }) never moves the list: frameworks that own the DOM (React)
+   render the wrapper themselves, and the React adapter sets it. Each new toast (and each
    update that changes its text) is announced once, through a polite or, for error/warning, an assertive live region. */
 let defaultToaster = null;
-export function createToaster(root) {
+export function createToaster(root, o = {}) {
   return once(root, "__uiToaster", () => {
     const doc = root.ownerDocument, max = Number(root.dataset.max ?? 3); defaultToaster = root;
     const label = root.getAttribute("aria-label") || "Notifications";
     if (root.getAttribute("role") === "region") root.removeAttribute("role"); // markup from older versions
     let region = root.parentElement?.getAttribute("role") === "region" ? root.parentElement : null, wrapped = false;
-    if (!region) {
+    if (!region && (o.wrap ?? root.dataset.wrap !== "false")) {
       region = doc.createElement("section"); region.dataset.uiPart = "region"; region.setAttribute("role", "region");
       root.before(region); region.append(root); wrapped = true;
     }
-    if (!region.hasAttribute("aria-label") && !region.hasAttribute("aria-labelledby")) region.setAttribute("aria-label", label);
-    if (!region.hasAttribute("tabindex")) region.tabIndex = -1;
+    if (region) {
+      if (!region.hasAttribute("aria-label") && !region.hasAttribute("aria-labelledby")) region.setAttribute("aria-label", label);
+      if (!region.hasAttribute("tabindex")) region.tabIndex = -1;
+    }
     const live = { polite: mk("polite"), assertive: mk("assertive") };
     function mk(p) { const r = doc.createElement("div"); r.setAttribute("aria-live", p); r.setAttribute("aria-atomic", "true"); r.dataset.uiPart = "announcer"; r.style.cssText = "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)"; root.after(r); return r; }
     const text = (o) => `${o.title || ""} ${o.description || ""}`.trim();

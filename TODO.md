@@ -65,33 +65,48 @@ found by reading.
 
 ## Component bugs
 
-- [ ] **Confirm dialogs can be escaped**: three presses of Esc close an `alert-dialog` or a vetoed
-      `ui:beforeclose` in Chrome (verified). `src/core/dialog.js:105`. Prevent the Escape keydown as well.
-- [ ] **Sortable** captures the pointer on press: buttons and checkboxes inside items cannot be clicked
-      (verified). `src/core/forms.js:274`. Apply the same threshold fix as the drawer.
-- [ ] **Accordion** toggles when a nested component's trigger is clicked (verified). `src/core/collapsible.js:70`.
-- [ ] **Datatable and pager desynchronise** after search or sort (verified). `src/core/base.js:192`.
+Regression tests: `test/bugs-forms.test.js`, `test/bugs-base.test.js`, `test/bugs-react.test.js` and
+`test/e2e/bugs-browser.e2e.mjs` (Chrome; add it to the `test:e2e` script in `package.json`).
+
+- [x] **Confirm dialogs can be escaped**: three presses of Esc closed an `alert-dialog` or a vetoed
+      `ui:beforeclose` in Chrome. Escape is now handled (and cancelled) on keydown for the topmost dialog only, after
+      nested layers, so Chrome's close request never runs. `src/core/dialog.js`.
+- [x] **Non-modal dialog** (`data-modal="false"`) closes on Escape and on a press outside
+      (`data-close-on-outside`, default `data-close-on-backdrop`); focus returns to the trigger.
+- [x] **Sortable** captured the pointer on press, so controls inside items could not be clicked. A drag now starts
+      after 5px of travel, never from a control inside an item; `pointercancel` puts the item back.
+- [x] **Accordion** toggled when a nested component's trigger was clicked; only an item's own trigger counts now.
+- [x] **Datatable and pager desynchronised** after search or sort. The table owns page, filter and sort and keeps
+      the pager on its page (without moving focus). Pagination should get a silent `sync({page,total})` so the
+      datatable need not clamp it with `setTotal()` (proposed for `navigation.js`).
 - [ ] **Tooltip / hover-card timers survive destroy**, leaving a stuck layer that blocks a parent popover
       (verified). `src/core/popover.js:57`. Same omission in navigation-menu, reasoning, clipboard.
-- [ ] **React**: components that remove their own root (alert, badge, attachment) crash on unmount (verified);
-      `DataList`, `Callout`, `Inset` name kinds that are not registered; an inline `options` object recreates
-      the controller on every render.
-- [ ] **Destroy then re-create leaks** hidden inputs (slider, pin-input, sortable) and listeners (menubar,
-      scrollspy) (verified).
-- [ ] **Slider**: a cancelled touch leaves the drag armed; float steps post `0.30000000000000004` (verified).
-      Same missing `pointercancel` in resizable and sortable.
-- [ ] **Custom elements**: `<ui-checkbox>` and `<ui-toggle>` are not focusable; `<ui-textarea>` throws (verified).
-- [ ] **Toast**: renders into a removed toaster; action click uses stale options; `role="region"` on the `<ol>`.
-- [ ] **`.card` collapses** to one word per line inside flex or `.cluster` because of `container-type`, while the
-      kit ships no `@container` rules (verified). Remove it from `.card` or document it.
-- [ ] **CSP**: `motion.register()` injects a `<style>` element, which a strict policy blocks silently (verified).
-      Use `adoptedStyleSheets` or accept a nonce; add a CSP section to the docs.
+- [x] **React**: alert, badge and attachment no longer remove React's node (hidden; the app removes it on
+      `dismiss`/`remove`); `DataList`, `Callout`, `Inset` are CSS-only kinds; `options` are compared by value and
+      callbacks always call the latest function. A React-rendered toaster is never moved into a wrapper.
+- [x] **Destroy then re-create leaked** hidden inputs (slider, pin-input, sortable): fixed in `forms.js`.
+- [ ] Menubar and scrollspy leak listeners on destroy (verified): fix proposed for `menu.js` and `navigation.js`.
+- [x] **Slider**: `pointercancel`/`lostpointercapture` end the drag; float steps are rounded to the step's precision.
+      Resizable and sortable handle `pointercancel` too.
+- [x] **Custom elements**: `<ui-checkbox>`, `<ui-switch>` and `<ui-toggle>` are focusable and work with Space/Enter;
+      `<ui-textarea>` wraps a `<textarea>` instead of throwing.
+- [x] **Toast**: never renders into a removed toaster; the action uses the latest options; the list stays a list
+      inside a named `role="region"` wrapper; each toast is announced once through a live region.
+- [ ] **`.card` collapses** to one word per line inside flex or `.cluster` because of `container-type: inline-size`
+      (reproduced: 41px wide, one word per line). Fix proposed for `packages/colibri-css`: make the container opt-in
+      (`.card.container`).
+- [x] **CSP**: `motion.register()` uses a constructed stylesheet (`adoptedStyleSheets`), with a `<style>` fallback
+      that takes a nonce. See `docs/csp.md`.
 - [ ] **Lazy loader**: one slow chunk delays every component in the pass; a failed chunk cannot be retried
       without a reload (browser caches the failure). Both are documented; consider per-module initialisation.
-- [ ] Smaller items: duplicate ids across instances (navigation-menu, tabs with spaces in values); carousel and
-      toolbar swallowing keys meant for nested inputs; file-input MIME matching; theme-switch trusting stored
-      values; date-picker accepting out-of-range dates; sidebar hijacking Ctrl/Cmd+B; null dereferences when
-      parts are missing; chart `parseFloat("1,200")`.
+- [x] Smaller items fixed: toolbar no longer takes keys from nested fields and popups; file-input matches `accept`
+      like the browser (wildcards, extensions, case, literal `+` and `.`); theme-switch validates stored and submitted
+      modes; no null dereferences when parts are missing; chart panels and datatable read localised numbers
+      (`parseNumber`).
+- [ ] Smaller items in other files, fixes proposed: duplicate ids in navigation-menu and in tabs with spaces in
+      values (`menu.js`, `tabs.js`); sidebar Ctrl/Cmd+B from text fields and a configurable key (`navigation.js`);
+      date-picker accepting out-of-range dates (`calendar.js`); `parseFloat("1,200")` in the conversation chart
+      (`ai.js`); carousel swallowing keys meant for nested inputs.
 
 ## Stylesheets
 

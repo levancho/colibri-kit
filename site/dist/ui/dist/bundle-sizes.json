@@ -1,10 +1,10 @@
 {
   "src/core (unminified, all modules)": {
-    "bytes": 254674
+    "bytes": 254842
   },
   "colibri-ui.min.js": {
-    "bytes": 122320,
-    "gzip": 40142
+    "bytes": 122367,
+    "gzip": 40162
   },
   "lazy/auto-lazy.js": {
     "bytes": 10689,
@@ -12,8 +12,8 @@
   },
   "lazy/chunks": {
     "files": 18,
-    "bytes": 123348,
-    "gzip": 49474
+    "bytes": 123395,
+    "gzip": 49498
   },
   "themes/colibri.css": {
     "bytes": 130376,
