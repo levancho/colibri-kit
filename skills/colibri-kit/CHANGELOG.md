@@ -1,4 +1,6 @@
 # Changelog
+## 1.5.0 (2026-11-14)
+- React Native: Light (`@colibri-kit/native`, no dependencies) and Full (`@colibri-kit/native/full`: gestures, SVG charts and icons, safe areas) with the same names and props; which libraries each needs; phone navigation layouts replace the numbered sidebar blocks.
 ## 1.4.0 (2026-11-14)
 - React Native: `@colibri-kit/native` now covers the catalog (about 200 components and hooks in twelve groups, including phone-only patterns, ready-made screens and application components); lists what has no native version and the callback rules for pickers and clipboard.
 ## 1.3.0 (2026-11-12)

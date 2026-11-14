@@ -32,8 +32,7 @@
       "SwipeGroup",
       "Sortable",
       "Slider",
-      "Carousel",
-      "ApplicationBoard"
+      "Carousel"
     ],
     "added": [
       "AnimatedList",

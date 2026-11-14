@@ -20,7 +20,7 @@ by changing the import path.
 | Import from | `@colibri-kit/native` | `@colibri-kit/native/full` |
 | Needs | `react`, `react-native` | Light plus `react-native-reanimated`, `react-native-gesture-handler`, `react-native-svg`, `react-native-safe-area-context` |
 | Works in Expo Go | yes | yes (all four ship with Expo) |
-| Drags (sheets, swipe rows, sortable, slider) | tracked on the JavaScript thread | tracked on the UI thread, with swipe-to-dismiss and drag and drop |
+| drags (sheets, swipe rows, sortable, slider) | tracked on the JavaScript thread | tracked on the UI thread, with swipe-to-dismiss |
 | Charts | bar-based, drawn with views | line, area, bar, pie, donut, sparkline, ring, gauge |
 | Icons | text glyphs | a 66-icon outline set |
 | Notch and home indicator | pass `topInset` / `bottomInset` yourself | read automatically |
@@ -69,14 +69,16 @@ export default function App() {
 
 | Entry | Needs | Adds |
 |---|---|---|
-| `@colibri-kit/native/gestures` | `react-native-reanimated`, `react-native-gesture-handler` | finger-driven `BottomSheet`, `Sheet`, `Drawer`, `SwipeRow`, `Sortable`, `Slider`, `Carousel`, the drag-and-drop board, `AnimatedList`, `PressableScale` |
+| `@colibri-kit/native/gestures` | `react-native-reanimated`, `react-native-gesture-handler` | finger-driven `BottomSheet`, `Sheet`, `Drawer`, `SwipeRow`, `Sortable`, `Slider`, `Carousel`, `AnimatedList`, `PressableScale` |
 | `@colibri-kit/native/svg` | `react-native-svg` | `LineChart`, `AreaChart`, `BarChart`, `PieChart`, `DonutChart`, `Sparkline`, `ProgressRing`, `Gauge`, `Icon` |
 | `@colibri-kit/native/safe-area` | `react-native-safe-area-context` | `SafeScreen`, `SafeBottomBar`, `SafeAppBar`, `SafeFab`, `SafeActionSheet`, `SafeBottomSheet`, `SafeBanner`, `useInsets` |
 
 In Full, a component that exists in both (for example `BottomSheet`) is the gesture version. The
 [live catalog](https://colibri-kit.io/native/) marks every component that needs a library and names it.
 
-Requires React Native 0.71 or newer (Expo SDK 48 or newer) for Light. Full follows the versions its libraries support.
+Requires React Native 0.71 or newer (Expo SDK 48 or newer) for Light. Full, and the gestures entry on its own, need
+Reanimated 4 or newer (which brings `react-native-worklets` and the New Architecture) and Gesture Handler 3 or newer;
+use `npx expo install` so the versions match your Expo SDK. The SVG and safe-area entries work with older versions.
 
 ## Use
 

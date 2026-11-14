@@ -5,16 +5,16 @@ import type { ColorValue, StyleProp, ViewProps, ViewStyle } from "react-native";
 import type { Tone } from "../index";
 
 /** A series colour override: a theme tone, or "muted". Without one, colours come from the theme hue in series order. */
-export type ChartTone = Tone | "muted";
+export type SvgChartTone = Tone | "muted";
 /** Turns a number into the text shown on axes, in tooltips, legends and the spoken summary. */
 export type FormatValue = (value: number) => string;
 
-export interface ChartPoint { label?: string; value: number | null | undefined; /** Colours this point when the chart has one series (bars, slices). */ tone?: ChartTone }
-export interface ChartSeries {
+export interface ChartPoint { label?: string; value: number | null | undefined; /** Colours this point when the chart has one series (bars, slices). */ tone?: SvgChartTone }
+export interface SvgChartSeries {
   name?: string;
   /** One value per label. null or undefined leaves a gap in a line and no bar. */
   values: Array<number | null | undefined>;
-  tone?: ChartTone;
+  tone?: SvgChartTone;
 }
 
 interface ChartBase extends Omit<ViewProps, "style" | "children"> {
@@ -23,13 +23,13 @@ interface ChartBase extends Omit<ViewProps, "style" | "children"> {
   /** Several series: the labels of the x axis … */
   labels?: string[];
   /** … and a list of values per series. */
-  series?: ChartSeries[];
+  series?: SvgChartSeries[];
   /** A heading above the plot; also the start of the spoken summary. */
   title?: string;
   /** Height of the plot in points, without the x labels and the legend. Default 200. */
   height?: number;
   /** The tone of the series when data is used. */
-  tone?: ChartTone;
+  tone?: SvgChartTone;
   /** Horizontal grid lines. Default true. */
   showGrid?: boolean;
   /** Tick labels on both axes. Default true. */
@@ -92,7 +92,7 @@ export interface BarChartProps extends ChartBase {
 export const BarChart: ComponentType<BarChartProps>;
 
 // ---------------------------------------------------------------- pie
-export interface PieSlice { label: string; value: number; tone?: ChartTone; /** Any colour; wins over tone. */ color?: string }
+export interface PieSlice { label: string; value: number; tone?: SvgChartTone; /** Any colour; wins over tone. */ color?: string }
 export interface PieChartProps extends Omit<ViewProps, "style" | "children"> {
   /** Values of zero or less are left out: a pie cannot show them. */
   data?: PieSlice[];
@@ -141,7 +141,7 @@ export interface SparklineProps extends Omit<ViewProps, "style" | "children"> {
   /** Default 32. */
   height?: number;
   /** Default "accent". */
-  tone?: ChartTone;
+  tone?: SvgChartTone;
   /** Any colour; wins over tone. */
   color?: string;
   /** Fill under the line. Default false. */
@@ -188,7 +188,7 @@ export const ProgressRing: ComponentType<ProgressRingProps>;
 export interface GaugeRange {
   /** The upper end of this band; it starts where the one before ends (or at min). */
   to: number;
-  tone?: ChartTone;
+  tone?: SvgChartTone;
   /** Shown under the value while it is in this band ("Good"). */
   label?: string;
 }
@@ -229,7 +229,7 @@ export interface IconProps {
   /** Side in points. Default 24. The stroke scales with it. */
   size?: number;
   /** A theme colour. Default: the text colour. */
-  tone?: ChartTone;
+  tone?: SvgChartTone;
   /** Any colour; wins over tone. */
   color?: ColorValue;
   /** In units of the 24-point grid. Default 1.75. */

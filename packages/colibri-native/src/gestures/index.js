@@ -22,4 +22,3 @@ export { Sortable } from "./sortable.js";
 export { Slider } from "./slider.js";
 export { Carousel } from "./carousel.js";
 export { AnimatedList, PressableScale } from "./motion.js";
-export { ApplicationBoard } from "./board.js";

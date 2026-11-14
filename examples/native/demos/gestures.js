@@ -5,7 +5,7 @@ import { memo, useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import Animated, { useAnimatedRef, useAnimatedStyle, useSharedValue } from "react-native-reanimated";
 import { useToast, useTheme, Stack, Cluster, Divider, Text, Heading, Button, Card, Badge, Avatar, ListItem, Switch, Tabs, TextField } from "@colibri-kit/native";
-import { BottomSheet, Sheet, Drawer, SwipeRow, SwipeGroup, Sortable, Slider, Carousel, AnimatedList, PressableScale, ApplicationBoard } from "@colibri-kit/native/gestures";
+import { BottomSheet, Sheet, Drawer, SwipeRow, SwipeGroup, Sortable, Slider, Carousel, AnimatedList, PressableScale } from "@colibri-kit/native/gestures";
 
 function Frame({ height = 560, children, testID }) {
   const theme = useTheme();
@@ -216,28 +216,6 @@ function CarouselDemo() {
 }
 
 // ---------------------------------------------------------------- application board
-const BOARD = {
-  title: "Sales pipeline", description: "Press and hold a card to drag it to another stage, or press it to choose the stage from a list.",
-  lanes: [
-    { id: "new", title: "New", deals: [
-      { id: "atlas", company: "Atlas Studio", value: "$12,000", owner: "Maya Chen", next: "Intro call on Thursday" },
-      { id: "lumen", company: "Lumen Health", value: "$38,500", owner: "Jordan Lee", next: "Send security questionnaire" },
-    ] },
-    { id: "proposal", title: "Proposal", deals: [{ id: "north", company: "North & Co", value: "$24,000", owner: "Alex Rivera", next: "Proposal review on Nov 9" }] },
-    { id: "negotiation", title: "Negotiation", deals: [{ id: "harbor", company: "Blue Harbor", value: "$61,000", owner: "Priya Nair", next: "Legal review of the contract" }] },
-    { id: "won", title: "Won", deals: [] },
-  ],
-};
-function BoardDemo() {
-  const toast = useToast(), [last, setLast] = useState("Nothing moved yet");
-  return (
-    <Stack>
-      <ApplicationBoard model={BOARD} onAction={({ action, id, value }) => { if (action === "move-deal") { setLast(`Moved ${id} to ${value}`); toast.show(`Moved ${id} to ${value}`, { tone: "ok" }); } }} />
-      <Text size="sm" tone="muted" testID="board-last">{last}</Text>
-    </Stack>
-  );
-}
-
 // ---------------------------------------------------------------- animated list
 const GUESTS = ["Maya Okafor", "Alex Rivera", "Sam Chen", "Priya Nair", "Jonas Weber", "Lucía Gómez", "Tariq Aziz", "Hana Sato", "Owen Clarke", "Zofia Nowak"];
 function AnimatedListDemo() {
@@ -302,7 +280,6 @@ export default [
   { id: "gesture-sortable", title: "Sortable", description: "Drag a row to reorder; its neighbours slide out of the way and the list scrolls near its edges.", Demo: SortableDemo },
   { id: "gesture-slider", title: "Slider", description: "A single or range slider whose thumb tracks the finger without re-rendering.", Demo: SliderDemo },
   { id: "gesture-carousel", title: "Carousel", description: "A pager whose marker and parallax follow the scroll position.", Demo: CarouselDemo },
-  { id: "gesture-application-board", title: "ApplicationBoard", description: "Kanban lanes where a card is dragged from one stage to another, or moved from a sheet.", Demo: BoardDemo },
   { id: "gesture-animated-list", title: "AnimatedList", description: "A list whose rows fade in, fade out and glide to new places when the data changes.", Demo: AnimatedListDemo },
   { id: "gesture-pressable-scale", title: "PressableScale", description: "Press feedback that starts on the UI thread: the target shrinks under the finger.", Demo: PressableScaleDemo },
 ];

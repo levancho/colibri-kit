@@ -22,9 +22,14 @@ found by reading.
 - [ ] **Run the catalog on real iOS and Android devices.** The package is tested through react-native-web only.
       Check first: bottom sheet versus scroll view on Android, swipe rows inside lists, native-driver animations,
       Android elevation, and the default safe-area insets.
-- [ ] **Decide on optional peer dependencies**: `react-native-reanimated` + `react-native-gesture-handler` (swipe to
-      dismiss, drag to reorder, drag and drop on the board, layout animations), `react-native-svg` (line, area and pie
-      charts, real icons), `react-native-safe-area-context` (automatic insets).
+- [x] **Optional libraries.** Done as Light (`@colibri-kit/native`) and Full (`@colibri-kit/native/full`), with separate
+      `/gestures`, `/svg` and `/safe-area` entries. See the package README.
+- [ ] **Full on a device.** Highest risk first: `BottomSheet` scroll hand-off with real touch scrolling, gestures
+      inside `Modal` on Android, long-press drags against native scroll views, keyboard handling in the sheet.
+- [ ] Drag and drop between stages for `ApplicationBoard` in the gestures entry. A first version was removed because
+      it used the old side-by-side lanes; it needs a design for the stage-tab layout.
+- [ ] Not in the gestures entry yet: `ActionSheet`, scroll hand-off for the bottom `Drawer`, virtualised `Sortable`
+      and `AnimatedList`. Not in the SVG entry: a time scale, horizontal bars, animated value changes.
 - [ ] `mobile.js` does not honour reduce-motion; move `useReducedMotion` from `motion.js` into `internal.js`.
 - [ ] `Tabs` (basics) and `SegmentedControl` (forms) overlap; keep one.
 - [ ] Add it to the publish workflow; decide whether it shares the version of the other two packages.

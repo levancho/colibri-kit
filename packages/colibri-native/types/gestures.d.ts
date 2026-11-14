@@ -12,10 +12,8 @@ import type { DrawerProps } from "./menus";
 import type { SliderProps } from "./pickers";
 import type { SortableProps as CoreSortableProps } from "./pickers";
 import type { CarouselProps as CoreCarouselProps } from "./data";
-import type { ApplicationBoard as CoreApplicationBoard } from "./applications";
 
 export type { SwipeAction, DrawerProps, SliderProps, SingleSliderProps, RangeSliderProps } from "../index";
-export type { ApplicationBoardModel, ApplicationLane, ApplicationDeal } from "./applications";
 
 // ---------------------------------------------------------------- BottomSheet
 export interface BottomSheetProps extends CoreBottomSheetProps {
@@ -110,14 +108,6 @@ export interface CarouselProps extends CoreCarouselProps {
 }
 /** A pager whose marker (and parallax) follow the scroll position on the UI thread. */
 export const Carousel: ComponentType<CarouselProps>;
-
-// ---------------------------------------------------------------- ApplicationBoard
-/**
- * The core kanban board, plus drag and drop: press and hold a card, carry it over another lane and let go.
- * Pressing a card still opens the sheet that moves it, which is the way for assistive technology.
- * onAction: "edit-deal" when a card is pressed, "move-deal" with value = the new lane id (from the sheet or a drop).
- */
-export const ApplicationBoard: typeof CoreApplicationBoard;
 
 // ---------------------------------------------------------------- AnimatedList
 /** Any Reanimated layout animation: FadeIn, SlideInLeft.duration(300), LinearTransition.springify() … */

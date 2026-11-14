@@ -97,6 +97,7 @@ try {
  assert.match(await page.$eval('.np-card[data-id=svg-line-chart] .np-req',e=>e.textContent),/Needs SVG/);
  assert.match(await page.$eval('.np-card[data-id=gesture-bottom-sheet] .np-req',e=>e.textContent),/Reanimated \+ Gesture Handler/);
  assert.equal(await page.$('.np-card[data-id=button] .np-req'),null,'a Light component carries no requirement');
+ await page.$eval('#np-q',input=>{input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));}); // an earlier step typed a filter
  await page.click('#np-tier [data-tier=light]');
  assert.equal(await page.$$eval('.np-card:not([hidden])',cards=>cards.length),total-fullIds.length);
  await page.click('#np-tier [data-tier=full]');
