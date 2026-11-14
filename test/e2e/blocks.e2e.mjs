@@ -42,7 +42,7 @@ await t("sidebar-11 file tree keyboard", async () => {
 await t("login-01: invalid → errors; valid → OTP view → verify → done", async () => {
   await go("login-01"); await p.click("#lg01 [data-view=password] button[type=submit]"); await wait(50);
   eq(await q('#lg01 [name=email]', (e) => e.getAttribute("aria-invalid")), "true", "email invalid"); eq(await q("#lg01 [data-ui-part=status]", (e) => e.dataset.tone), "error", "status");
-  await p.type("#lg01 [name=email]", "levan@despani.ge"); await p.type("#lg01 [name=password]", "admin1");
+  await p.type("#lg01 [name=email]", "jordan@example.com"); await p.type("#lg01 [name=password]", "admin1");
   await p.click("#lg01 [data-view=password] button[type=submit]"); await wait(80);
   eq(await q("#lg01 [data-view=otp]", (e) => e.hidden), false, "otp shown");
   await p.click("#lg01 [data-view=otp] button[type=submit]"); await wait(50); eq(await q("#lg01 [data-view=otp]", (e) => e.hidden), false, "needs code");
@@ -55,7 +55,7 @@ await t("login-01: forgot password view and back", async () => {
   await p.click("#lg01 [data-view=forgot] [data-ui-auth-view=password]"); eq(await q("#lg01 [data-view=password]", (e) => e.hidden), false, "back");
 });
 await t("signup-01: password confirmation mismatch", async () => {
-  await go("signup-01"); await p.type("#su01 [name=name]", "Levan"); await p.type("#su01 [name=email]", "taken@example.com");
+  await go("signup-01"); await p.type("#su01 [name=name]", "Jordan"); await p.type("#su01 [name=email]", "taken@example.com");
   await p.type("#su01 [name=password]", "longpassword"); await p.type("#su01 [name=confirm]", "different1"); await p.click("#su01 [name=terms]");
   await p.click("#su01 [data-view=signup] button[type=submit]"); await wait(50);
   eq(await q("#su01 [name=confirm]", (e) => e.getAttribute("aria-invalid")), "true", "confirm invalid");

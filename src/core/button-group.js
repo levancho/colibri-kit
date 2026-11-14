@@ -12,7 +12,8 @@ export function createButtonGroup(root, o = {}) {
     const items = () => [...root.querySelectorAll(":scope > button, :scope > [data-ui-part=item], :scope > a")];
     root.setAttribute("role", "group");
     if (root.dataset.label && !root.hasAttribute("aria-label")) root.setAttribute("aria-label", root.dataset.label);
-    if (vertical) root.setAttribute("aria-orientation", "vertical");
+    // No aria-orientation: it is not allowed on role=group (axe aria-allowed-attr). Vertical groups use Up/Down keys.
+    root.removeAttribute("aria-orientation");
     items().forEach((el, i) => { if (el.tagName === "BUTTON" && !el.hasAttribute("type")) el.type = "button"; el.dataset.value ??= el.textContent.trim() || String(i); });
     let value = new Set(String(o.value ?? root.dataset.value ?? "").split(",").map((s) => s.trim()).filter(Boolean));
     if (type === "single" && value.size > 1) value = new Set([[...value][0]]);
@@ -50,7 +51,7 @@ export function createButtonGroup(root, o = {}) {
     b.on(root, "keydown", (e) => {
       const cur = e.target.closest("button, [data-ui-part=item], a"); if (!cur || cur.parentElement !== root) return;
       let key = e.key;
-      if (document.documentElement.dir === "rtl" || getComputedStyle(root).direction === "rtl") key = { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[key] || key;
+      if ((root.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" || root.ownerDocument.defaultView.getComputedStyle(root).direction === "rtl") key = { ArrowLeft: "ArrowRight", ArrowRight: "ArrowLeft" }[key] || key;
       const next = roving(items(), cur, key, { orientation: vertical ? "vertical" : "horizontal" });
       if (next) { e.preventDefault(); setTab(next); next.focus(); }
     });
@@ -59,7 +60,7 @@ export function createButtonGroup(root, o = {}) {
     return {
       get value() { return getValue(); },
       set value(v) { value = new Set((Array.isArray(v) ? v : v == null ? [] : [v]).map(String)); render(); setTab(firstTab()); },
-      toggle, destroy: b.off,
+      toggle, destroy() { items().forEach((el) => clearTimeout(el.__bgT)); b.off(); },
     };
   });
 }

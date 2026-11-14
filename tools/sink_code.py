@@ -1,11 +1,11 @@
 """FreeMarker usage per component (macros from freemarker/ui.ftl). The HTML tab shows each demo's own markup."""
 IMP = '[#ftl output_format="HTML"]\n[#import "/colibri/freemarker/ui.ftl" as ui]\n'
 FTL = {
-"accordion": '[@ui.accordion default="a" items=[\n  {"value":"a", "title":"What is Despani?", "content":"Portal."},\n  {"value":"b", "title":"Colibri UI?", "content":"Headless UI."}\n]/]',
+"accordion": '[@ui.accordion default="a" items=[\n  {"value":"a", "title":"What is Colibri?", "content":"A UI kit."},\n  {"value":"b", "title":"Colibri UI?", "content":"Headless UI."}\n]/]',
 "alert": '[@ui.alert role="status"]<strong>Information:</strong> Changes saved.[/@ui.alert]\n[@ui.alert role="alert" variant="destructive"]Something went wrong.[/@ui.alert]',
 "alert-dialog": '[@ui.dialog kind="alert-dialog" trigger="Delete article…" title="Are you sure?"\n           description="This action cannot be undone."]\n  [@ui.close returnValue="cancel" autofocus=true]Cancel[/@ui.close]\n  [@ui.close returnValue="ok" variant="destructive"]Delete[/@ui.close]\n[/@ui.dialog]',
 "aspect-ratio": '[@ui.c ui="aspect-ratio" attrs={"style":"aspect-ratio:16/9"}]<img src="${cover}" alt="">[/@ui.c]',
-"avatar": '[@ui.avatar src=user.avatarUrl! alt=user.name fallback="LD"/]',
+"avatar": '[@ui.avatar src=user.avatarUrl! alt=user.name fallback="JL"/]',
 "badge": '[@ui.badge]Default[/@ui.badge]\n[@ui.badge variant="secondary"]Secondary[/@ui.badge]\n[@ui.badge variant="outline" removable=true]Tag[/@ui.badge]',
 "button": '[@ui.button]Save[/@ui.button]\n[@ui.button variant="outline"]Cancel[/@ui.button]\n[@ui.button variant="destructive"]Delete[/@ui.button]\n[@ui.button type="submit" loading=saving]Submit[/@ui.button]',
 "spinner": '[@ui.spinner /]\n[@ui.spinner size="lg" variant="dots" label="Loading messages…" /]\n[@ui.button disabled=true][@ui.spinner size="sm" label="Saving…" /] Saving…[/@ui.button]',
@@ -20,7 +20,7 @@ FTL = {
 "dropdown-menu": '[@ui.dropdown trigger="Actions" items=[\n  {"type":"label", "label":"Article"},\n  {"label":"Edit", "shortcut":"⌘E"},\n  {"type":"separator"},\n  {"label":"Published", "type":"checkbox", "checked":true},\n  {"label":"Share", "items":[{"label":"Facebook"}, {"label":"Email"}]},\n  {"label":"Delete", "variant":"destructive"}\n]/]',
 "context-menu": '[@ui.dropdown kind="context-menu" trigger="Right-click here" items=[\n  {"label":"Back"}, {"label":"Reload"}, {"type":"separator"},\n  {"label":"Show bookmarks", "type":"checkbox"}\n]/]',
 "empty": '<div data-ui-part="empty-state">\n  <h3>No articles yet</h3><p>Create your first article.</p>\n  [@ui.button]New article[/@ui.button]\n</div>',
-"hover-card": '[@ui.popover kind="hover-card" triggerTag="a" trigger="@levancho"]\n  [@ui.avatar fallback="LD"/] <strong>Levan Dvalishvili</strong>\n[/@ui.popover]',
+"hover-card": '[@ui.popover kind="hover-card" triggerTag="a" trigger="@levancho"]\n  [@ui.avatar fallback="JL"/] <strong>Jordan Lee</strong>\n[/@ui.popover]',
 "item": '[@ui.itemGroup label="Notification settings"]\n  [@ui.item title="Notifications" description="Email and push" media="🔔"]\n    [@ui.switch name="notify" checked=user.notify/]\n  [/@ui.item]\n  [@ui.item title="Profile" description="Opens a page" href="/profile"/]\n[/@ui.itemGroup]',
 "kbd": 'Press <kbd>Ctrl</kbd> + <kbd>K</kbd>',
 "label": '<label for="email">Email</label> <input id="email" name="email" type="email">',

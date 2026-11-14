@@ -25,7 +25,12 @@ const q = (root, part) =>
 
 export function createTabs(root, options = {}) {
   if (root.__uiTabs) return root.__uiTabs;
-  const id = root.id || `ui-tabs-${++uid}`;
+  // One prefix per instance, never one already in the document (two copies of this module, a lazy chunk and a
+  // direct import, each count from 1). Values are escaped for ids: aria-controls is a space-separated IDREF list, so
+  // a value "a b" pointed at two ids. "_" only ever starts an escape ("_20_"), which keeps the mapping one-to-one.
+  let id = root.id;
+  if (!id) do id = `ui-tabs-${++uid}`; while (root.ownerDocument.getElementById(id));
+  const key = (v) => String(v).replace(/[^A-Za-z0-9-]/g, (c) => `_${c.codePointAt(0).toString(16)}_`);
   const orientation = options.orientation || root.dataset.orientation || "horizontal";
   const activation = options.activation || root.dataset.activation || "auto";
   const onChange = options.onChange;
@@ -44,10 +49,10 @@ export function createTabs(root, options = {}) {
     }
     triggers().forEach((t) => {
       const v = t.dataset.value;
-      t.id ||= `${id}-trigger-${v}`;
+      t.id ||= `${id}-trigger-${key(v)}`;
       t.setAttribute("role", "tab");
       const panel = panels().find((p) => p.dataset.value === v);
-      if (panel) { panel.id ||= `${id}-panel-${v}`; t.setAttribute("aria-controls", panel.id); }
+      if (panel) { panel.id ||= `${id}-panel-${key(v)}`; t.setAttribute("aria-controls", panel.id); }
       else t.removeAttribute("aria-controls");
       if (generatedDisabled.has(t)) { t.removeAttribute("aria-disabled"); generatedDisabled.delete(t); }
       if (!t.hasAttribute("aria-disabled") && (t.disabled || t.dataset.disabled != null)) {
@@ -58,7 +63,7 @@ export function createTabs(root, options = {}) {
     });
     panels().forEach((p) => {
       const v = p.dataset.value;
-      p.id ||= `${id}-panel-${v}`;
+      p.id ||= `${id}-panel-${key(v)}`;
       p.setAttribute("role", "tabpanel");
       const trigger = triggers().find((t) => t.dataset.value === v);
       if (trigger) p.setAttribute("aria-labelledby", trigger.id);
@@ -106,7 +111,7 @@ export function createTabs(root, options = {}) {
     const list = enabled();
     if (!list.length || isDisabled(t)) return;
     const i = list.indexOf(t);
-    const rtl = root.ownerDocument.defaultView.getComputedStyle(root).direction === "rtl";
+    const rtl = (root.closest("[dir]")?.getAttribute("dir") || "").toLowerCase() === "rtl" || root.ownerDocument.defaultView.getComputedStyle(root).direction === "rtl";
     const prev = orientation === "vertical" ? "ArrowUp" : rtl ? "ArrowRight" : "ArrowLeft";
     const next = orientation === "vertical" ? "ArrowDown" : rtl ? "ArrowLeft" : "ArrowRight";
     let target = null;

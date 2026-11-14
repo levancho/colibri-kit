@@ -23,7 +23,9 @@
 [#macro card title="" description="" attrs={}]<article data-ui-part="card"${a(attrs)}>[#if title?has_content]<header><h3 data-ui-part="title">${title?esc}</h3>[#if description?has_content]<p data-ui-part="description">${description?esc}</p>[/#if]</header>[/#if]<div data-ui-part="content">[#nested]</div></article>[/#macro]
 [#macro progress value="" label="" attrs={}]<div data-ui="progress"${d("value",value)}[#if label?has_content] aria-label="${label?esc}"[/#if]${a(attrs)}><div data-ui-part="indicator"></div></div>[/#macro]
 [#macro separator vertical=false decorative=false]<div data-ui="separator"[#if vertical] data-orientation="vertical"[/#if][#if decorative] data-decorative[/#if]></div>[/#macro]
-[#macro skeleton w="100%" h="1rem"]<div data-ui-part="skeleton" aria-hidden="true" style="width:${w};height:${h}"></div>[/#macro]
+[#-- skeleton: the theme sizes it 100% x 1rem. w/h write a style attribute (blocked by a strict CSP style-src); under
+     a strict policy size it with a class through attrs instead. --]
+[#macro skeleton w="" h="" attrs={}]<div data-ui-part="skeleton" aria-hidden="true"[#if w?has_content || h?has_content] style="[#if w?has_content]width:${w?esc};[/#if][#if h?has_content]height:${h?esc}[/#if]"[/#if]${a(attrs)}></div>[/#macro]
 [#macro toaster position="bottom-right" max=3]<ol data-ui="toaster" data-position="${position}" data-max="${s(max)}" aria-label="Notifications"></ol>[/#macro]
 [#macro clipboard text="" target="" attrs={}]<button type="button" data-ui="clipboard"${d("text",text)}${d("target",target)}${a(attrs)}>[#nested]</button>[/#macro]
 [#macro themeSwitch key="colibri.theme" attrs={}]<button type="button" data-ui="theme-switch" data-storage-key="${key}"${a(attrs)}>[#nested]</button>[/#macro]

@@ -12,18 +12,18 @@ html[data-kit-theme=glacier]{
   --c-fg:light-dark(oklch(22% .02 255),oklch(96% .006 240));
   --c-muted:light-dark(oklch(50% .02 250),oklch(72% .018 245));
   --c-line:light-dark(oklch(91% .008 245),oklch(28% .016 255));
-  --c-accent:light-dark(oklch(55% .16 calc(var(--c-hue))),oklch(72% .13 calc(var(--c-hue))));
+  --c-control-line:light-dark(oklch(60% .02 250),oklch(56% .018 255));
+  --c-accent:light-dark(oklch(50% .15 calc(var(--c-hue))),oklch(72% .13 calc(var(--c-hue))));
   --c-brand:var(--c-accent); --c-brand-fg:light-dark(#fff,oklch(18% .03 250));
   --c-font:"Inter","Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
   --c-radius-s:4px; --c-radius:6px; --c-radius-l:10px;
   --c-shadow-color:light-dark(oklch(30% .03 250 / .08),oklch(0% 0 0 / .5));
   --c-shadow-s:0 1px 2px var(--c-shadow-color); --c-shadow:0 1px 2px var(--c-shadow-color),0 4px 12px -4px var(--c-shadow-color); --c-shadow-l:0 12px 32px -12px var(--c-shadow-color);
-  --c-dur:140ms; --c-ease:cubic-bezier(.2,0,0,1);
   /* Colibri UI tokens */
   --ui-background:#fff; --ui-foreground:#0f172a; --ui-card:#fff; --ui-popover:#fff;
   --ui-muted:#f1f5f9; --ui-muted-foreground:#5b6b82; --ui-accent:#eef4ff; --ui-accent-foreground:#0f172a;
-  --ui-primary:#2563eb; --ui-primary-foreground:#fff; --ui-ring:#60a5fa; --ui-border:#e3e8ef; --ui-input:#d5dce6;
-  --ui-success:#059669; --ui-warning:#d97706; --ui-destructive:#dc2626;
+  --ui-primary:#2563eb; --ui-primary-foreground:#fff; --ui-ring:#2563eb; --ui-border:#e3e8ef; --ui-input:#7a8699;
+  --ui-success:#047857; --ui-warning:#b45309; --ui-destructive:#b91c1c; --ui-destructive-foreground:#fff;
   --ui-font:"Inter","Geist",ui-sans-serif,system-ui,sans-serif;
   --ui-radius:6px; --ui-radius-sm:4px; --ui-radius-lg:10px; --ui-control-h:34px;
   --ui-shadow-sm:0 1px 2px #0f172a14; --ui-shadow:0 8px 24px -10px #0f172a2e;
@@ -33,10 +33,15 @@ html[data-kit-theme=glacier]{
 html[data-kit-theme=glacier][data-theme=dark]{
   --ui-background:#0c111b; --ui-foreground:#e8edf5; --ui-card:#111827; --ui-popover:#111827;
   --ui-muted:#172033; --ui-muted-foreground:#94a3b8; --ui-accent:#16233b; --ui-accent-foreground:#e8edf5;
-  --ui-primary:#60a5fa; --ui-primary-foreground:#0b1220; --ui-ring:#93c5fd; --ui-border:#1f2a3d; --ui-input:#2a3650;
+  --ui-primary:#60a5fa; --ui-primary-foreground:#0b1220; --ui-ring:#93c5fd; --ui-border:#1f2a3d; --ui-input:#6f7f9c;
+  --ui-success:#34d399; --ui-warning:#fbbf24; --ui-destructive:#f87171; --ui-destructive-foreground:#18181b;
   --ui-shadow-sm:0 1px 2px #0008; --ui-shadow:0 10px 30px -10px #000c;
   --s-bg:#0a0f18; --s-fg:#e8edf5; --s-muted:#94a3b8; --s-line:#1f2a3d; --s-soft:#111827; --s-acc:#93c5fd; --s-ring:#3b82f6;
 }
+/* Motion tokens apply only when the user has not asked for reduced motion, so the core tokens' reduced-motion
+   values (0ms) still win. More contrast: dividers and control borders darken, as in the core tokens. */
+@media (prefers-reduced-motion: no-preference){html[data-kit-theme=glacier]{--c-dur:140ms; --c-ease:cubic-bezier(.2,0,0,1);}}
+@media (prefers-contrast: more){html[data-kit-theme=glacier],html[data-kit-theme=glacier][data-theme]{--c-line:var(--c-muted);--c-control-line:var(--c-fg);--ui-border:var(--ui-muted-foreground);--ui-input:var(--ui-foreground)}}
 /* Component geometry and surfaces are tokens; core owns all part styling. */
 html[data-kit-theme=glacier] [data-ui=tabs]{--ui-tabs-background:transparent;--ui-tabs-padding:0;--ui-tabs-gap:.75rem;--ui-tabs-radius:0;--ui-tabs-rail:1px solid var(--ui-border);--ui-tabs-indicator:2px solid transparent;--ui-tabs-trigger-radius:0;--ui-tabs-active-background:transparent;--ui-tabs-active-shadow:none;--ui-tabs-active-line:var(--ui-primary);}
 html[data-kit-theme=glacier] [data-ui=accordion]{--ui-acc-border:1px solid var(--ui-border);--ui-acc-radius:var(--ui-radius-lg);--ui-acc-padding:.85rem 1rem;--ui-acc-content-padding:0 1rem 1rem;--ui-acc-hover:var(--ui-muted);}

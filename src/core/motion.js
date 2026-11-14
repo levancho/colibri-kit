@@ -50,15 +50,41 @@ export function play(el, name, { duration } = {}) {
 }
 
 /** Register a preset at runtime: register("swing", { in: [{transform:"rotate(-8deg)",opacity:0},{}], out: [{},{opacity:0}] })
-    Frames are Web-Animations-style objects (camelCase or kebab-case keys). Afterwards data-ui-motion="swing" works. */
-export function register(name, { in: inFrames, out: outFrames } = {}, doc = document) {
+    Frames are Web-Animations-style objects (camelCase or kebab-case keys). Afterwards data-ui-motion="swing" works.
+    Content-Security-Policy: the rules go into a constructed stylesheet (document.adoptedStyleSheets), which a strict
+    style-src allows. Browsers without constructable stylesheets get a <style> element instead; under a strict policy
+    pass the page's nonce, register(name, frames, document, { nonce }), or put it on <meta property="csp-nonce" nonce="…">.
+    See docs/csp.md. */
+export function register(name, { in: inFrames, out: outFrames } = {}, doc = document, { nonce } = {}) {
   const css = (frames) => frames.map((f, i) => `${f.offset != null ? f.offset * 100 : (i / Math.max(1, frames.length - 1)) * 100}%{${Object.entries(f).filter(([k]) => k !== "offset").map(([k, v]) => `${k.replace(/[A-Z]/g, (m) => "-" + m.toLowerCase())}:${v}`).join(";")}}`).join("");
-  let s = doc.getElementById("ui-motion-registry"); if (!s) { s = doc.createElement("style"); s.id = "ui-motion-registry"; doc.head.append(s); }
-  const map = [];
-  if (inFrames) { s.append(`@keyframes ui-${name}-in{${css(inFrames)}}\n`); map.push(`--ui-motion-in:ui-${name}-in`); }
-  if (outFrames) { s.append(`@keyframes ui-${name}-out{${css(outFrames)}}\n`); map.push(`--ui-motion-out:ui-${name}-out`); }
-  s.append(`[data-ui-motion="${name}"]{${map.join(";")}}\n[data-ui-motion-exit="${name}"]{--ui-motion-out:ui-${name}-out}\n`);
+  const rules = [];
+  if (inFrames) rules.push(`@keyframes ui-${name}-in{${css(inFrames)}}`);
+  if (outFrames) rules.push(`@keyframes ui-${name}-out{${css(outFrames)}}`);
+  const map = [inFrames && `--ui-motion-in:ui-${name}-in`, outFrames && `--ui-motion-out:ui-${name}-out`].filter(Boolean);
+  rules.push(`[data-ui-motion="${name}"]{${map.join(";")}}`, `[data-ui-motion-exit="${name}"]{--ui-motion-out:ui-${name}-out}`);
+  addRules(doc, rules, nonce);
   return name;
+}
+
+/** The document's motion registry: a constructed, adopted stylesheet when the browser has them, else a <style>. */
+function addRules(doc, rules, nonce) {
+  const view = doc.defaultView;
+  if (!doc.__uiMotionSheet && view?.CSSStyleSheet && "adoptedStyleSheets" in doc) {
+    try { const sheet = new view.CSSStyleSheet(); doc.adoptedStyleSheets = [...doc.adoptedStyleSheets, sheet]; doc.__uiMotionSheet = sheet; } catch { /* no constructor: fall back */ }
+  }
+  const sheet = doc.__uiMotionSheet;
+  if (sheet) {
+    for (const rule of rules) { try { sheet.insertRule(rule, sheet.cssRules.length); } catch { /* invalid frames: skipped, as a <style> would */ } }
+    return;
+  }
+  let s = doc.getElementById("ui-motion-registry");
+  if (!s) {
+    s = doc.createElement("style"); s.id = "ui-motion-registry";
+    const n = nonce || doc.querySelector('meta[property="csp-nonce"]')?.nonce || doc.querySelector('meta[property="csp-nonce"]')?.getAttribute("content");
+    if (n) s.nonce = n;
+    doc.head.append(s);
+  }
+  s.append(rules.join("\n") + "\n");
 }
 
 /** Turn all motion on/off for the page (persists nothing; set data-ui-motion="off" on <html> yourself to persist). */

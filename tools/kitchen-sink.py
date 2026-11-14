@@ -28,7 +28,7 @@ def code(c):
     if not tabs: return ""
     cid = c["id"]
     trig = "".join(f'<button data-ui-part="trigger" data-value="{k}">{lab}</button>' for k, lab, _ in tabs)
-    pan = "".join(f'<div data-ui-part="panel" data-value="{k}"><button class="sink-copy" data-ui="clipboard" data-target="#code-{cid}-{k}" aria-label="Copy {lab} code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre"><code id="code-{cid}-{k}">{E(src)}</code></pre></div>' for k, lab, src in tabs)
+    pan = "".join(f'<div data-ui-part="panel" data-value="{k}"><button class="sink-copy" data-ui="clipboard" data-target="#code-{cid}-{k}" aria-label="Copy {lab} code"><span class="sink-copy-l">Copy</span></button><pre class="sink-pre" tabindex="0"><code id="code-{cid}-{k}">{E(src)}</code></pre></div>' for k, lab, src in tabs)
     return '<p class="sink-dim">Framework support: '+E(' · '.join(k+': '+v for k,v in support.items()))+'</p>'+f'<details class="sink-code" open><summary>Code</summary><div data-ui="tabs" class="sink-code-tabs" data-default-value="{tabs[0][0]}"><div data-ui-part="list" aria-label="Code for {E(INFO[cid][0])}">{trig}</div>{pan}</div></details>'
 
 def section(c):

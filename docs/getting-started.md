@@ -166,6 +166,7 @@ Run `colibri diff` (or `node path/to/bin/colibri.mjs diff`) from the folder cont
 | Inserted component is inactive | Call `init(container)` after insertion; avoid double ownership with React. |
 | Java import cannot resolve | Install the template JAR and host engine; check the template resolver paths. |
 | Assets 404 below an application prefix | Match URLs to the host's static-resource mount, not a filesystem path. |
+| Blocked styles or scripts under a Content-Security-Policy | The kit needs no `'unsafe-inline'` or `'unsafe-eval'`; see [Content Security Policy](csp.md) for the policy, motion presets and template helpers. |
 
 The modern CSS requires browsers supporting cascade layers, `:has()`, OKLCH and `light-dark()`. Test your supported browser versions; this is not a legacy-browser stylesheet. Repository CI exercises Chromium, Firefox and WebKit, plus a consumer test that installs packed archives and runs the standalone starter. Accessibility also depends on the labels, content and application behavior you supply.
 

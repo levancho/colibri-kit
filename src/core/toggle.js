@@ -2,11 +2,13 @@
 //  <button data-ui="toggle" [aria-pressed="true"]>B</button>
 //  <div data-ui="toggle-group" data-type="single|multiple" [data-default-value="b,i"] [data-orientation]>
 //     <button data-ui-part="item" data-value="b">B</button>…</div>
-import { parts, emit, setState, btn, once, bag, roving, isDisabled } from "./util.js";
+import { parts, emit, setState, btn, once, bag, roving, isDisabled, pressable } from "./util.js";
 
 export function createToggle(root, o = {}) {
   return once(root, "__uiToggle", () => {
     const b = bag(); btn(root);
+    // <ui-toggle> (or any non-button root): a button for assistive technology and the keyboard
+    if (root.tagName !== "BUTTON") { if (!root.hasAttribute("role")) root.setAttribute("role", "button"); pressable(root, b); }
     let on = o.defaultPressed ?? root.getAttribute("aria-pressed") === "true";
     const render = () => { root.setAttribute("aria-pressed", String(on)); setState(root, on ? "on" : "off"); };
     const set = (v) => { if (isDisabled(root) || v === on) return; on = v; render(); o.onPressedChange?.(on); emit(root, "change", { pressed: on }); };

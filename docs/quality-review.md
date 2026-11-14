@@ -23,7 +23,7 @@ The implementation did not consistently fulfill that direction. The optional UI 
 | Combobox chips interpolate labels/custom values into HTML | DOM construction with `textContent` and attribute setters; injection regression test |
 | Core dark primary buttons use nearly white text on a light accent | Scheme-aware foreground token |
 | Scoped hue claims do not match inherited derived-token behavior | Explicit `data-colibri-theme` boundary recomputes the local palette |
-| Forced-colors input focus relies on suppressed shadows | System-color outline fallback |
+| Forced-colors input focus relies on suppressed shadows | System-color outline fallback for Colibri CSS inputs only. Correction (November 2026): the Colibri UI theme was not covered; about 25 themed controls used `outline:none` with a box-shadow ring and lost their focus indicator in forced-colors mode. Fixed in `phase1-a11y`: a `forced-colors` block in `themes/colibri.css` (Highlight outline on every focusable themed control, system colours for selected states), plus `themes/motion.css` and `30-base.css`; covered by `test/e2e/a11y-rtl-media.e2e.mjs` |
 | Code highlighting covers landing-page Copy buttons | Explicit button stacking; clipboard error feedback |
 | Storage exceptions can break landing-page controls | Optional storage; validated language/theme values |
 | Gallery `content-visibility` changes floating-layer positioning | Disable containment while an owned layer is open |
@@ -36,7 +36,8 @@ The implementation did not consistently fulfill that direction. The optional UI 
 
 - Unit suite: 60 tests covering existing behavior plus added tab and chip regressions.
 - Existing browser flows: component gallery, conversation/auth/sidebar blocks and rendered FreeMarker output.
-- New browser foundations: built landing page at 320/768/1440px; modal hiding/placement/focus; full and minified CSS palette behavior; forced-colors focus; denied storage/clipboard.
+- New browser foundations: built landing page at 320/768/1440px; modal hiding/placement/focus; full and minified CSS palette behavior; forced-colors focus (Colibri CSS inputs only; the UI theme was added later, see above); denied storage/clipboard.
+- Accessibility (phase1-a11y): `npm run check:contrast` measures rendered colours for Colibri CSS, the UI theme and the bridge, every pack, accent preset and scheme; `test/a11y-behaviour.test.js` (keyboard models, names, timers); `test/e2e/a11y-rtl-media.e2e.mjs` (RTL, forced colors, reduced motion, more contrast, hoverable tooltip); `test/e2e/a11y-axe.e2e.mjs` (axe over the kitchen sink and blocks pages, light and dark). Screen-reader testing has still not been done.
 - New style matrix: core, Glacier, Ember and Midnight; light/dark; 320/1100px; default plus three accordion and three tab looks. Checks include typography, target dimensions, bounded rails and nested component isolation. Screenshots were inspected for the revised core and Ember defaults.
 - Package dry run excludes site/build/test artifacts. npm audit after the browser dependency update reported zero known vulnerabilities; the initial development tree reported nine high-severity entries. This does not establish absence of application vulnerabilities.
 - CI configuration is included; local results do not establish that remote CI has run.

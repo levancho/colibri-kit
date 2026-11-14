@@ -11,17 +11,18 @@ html[data-kit-theme=ember]{
   --c-fg:light-dark(oklch(24% .02 40),oklch(96% .006 75));
   --c-muted:light-dark(oklch(50% .025 50),oklch(73% .012 70));
   --c-line:light-dark(oklch(91.5% .014 70),oklch(29% .006 60));
-  --c-accent:light-dark(oklch(62% .19 calc(var(--c-hue))),oklch(74% .16 calc(var(--c-hue) + 8)));
-  --c-brand:var(--c-accent); --c-brand-fg:#fff;
+  --c-control-line:light-dark(oklch(60% .03 50),oklch(56% .012 60));
+  /* light accent is dark enough for white text and for links on the sunken surface (4.5:1); dark buttons use dark text */
+  --c-accent:light-dark(oklch(53% .18 calc(var(--c-hue))),oklch(74% .16 calc(var(--c-hue) + 8)));
+  --c-brand:var(--c-accent); --c-brand-fg:light-dark(#fff,oklch(18% .03 calc(var(--c-hue))));
   --c-font:"Nunito","Figtree","Quicksand",ui-rounded,ui-sans-serif,system-ui,sans-serif;
   --c-radius-s:10px; --c-radius:16px; --c-radius-l:22px;
   --c-shadow-color:light-dark(oklch(45% .08 40 / .14),oklch(0% 0 0 / .55));
   --c-shadow-s:0 2px 6px -1px var(--c-shadow-color); --c-shadow:0 10px 30px -12px var(--c-shadow-color); --c-shadow-l:0 30px 60px -22px var(--c-shadow-color);
-  --c-dur:280ms; --c-ease:cubic-bezier(.34,1.56,.64,1);
   --ui-background:#fffdfa; --ui-foreground:#2b1a12; --ui-card:#fff; --ui-popover:#fff;
   --ui-muted:#f8f1e9; --ui-muted-foreground:#7a6355; --ui-accent:#fff0e6; --ui-accent-foreground:#2b1a12;
-  --ui-primary:#ea580c; --ui-primary-foreground:#fff; --ui-ring:#fdba74; --ui-border:#efe4d8; --ui-input:#e7d8c8;
-  --ui-success:#16a34a; --ui-warning:#d97706; --ui-destructive:#e11d48;
+  --ui-primary:#c2410c; --ui-primary-foreground:#fff; --ui-ring:#c2410c; --ui-border:#efe4d8; --ui-input:#9c8572;
+  --ui-success:#116b33; --ui-warning:#a8500a; --ui-destructive:#be123c; --ui-destructive-foreground:#fff;
   --ui-font:"Nunito","Figtree",ui-rounded,ui-sans-serif,system-ui,sans-serif;
   --ui-radius:16px; --ui-radius-sm:12px; --ui-radius-lg:22px; --ui-control-h:42px;
   --ui-shadow-sm:0 2px 6px -1px #9a341214; --ui-shadow:0 20px 44px -18px #9a34122e;
@@ -30,10 +31,15 @@ html[data-kit-theme=ember]{
 html[data-kit-theme=ember][data-theme=dark]{
   --ui-background:#141414; --ui-foreground:#f5f1ec; --ui-card:#1c1c1c; --ui-popover:#1f1f1f;
   --ui-muted:#232323; --ui-muted-foreground:#a8a29e; --ui-accent:#2a1d16; --ui-accent-foreground:#f5f1ec;
-  --ui-primary:#fb7a3c; --ui-primary-foreground:#1a0c05; --ui-ring:#fdba74; --ui-border:#2c2c2c; --ui-input:#383838;
+  --ui-primary:#fb7a3c; --ui-primary-foreground:#1a0c05; --ui-ring:#fdba74; --ui-border:#2c2c2c; --ui-input:#7c7671;
+  --ui-success:#4ade80; --ui-warning:#fbbf24; --ui-destructive:#fb7185; --ui-destructive-foreground:#1f0a10;
   --ui-shadow-sm:0 2px 6px #0008; --ui-shadow:0 24px 50px -20px #000d;
   --s-bg:#111111; --s-fg:#f5f1ec; --s-muted:#a8a29e; --s-line:#2a2a2a; --s-soft:#1a1a1a; --s-acc:#fb923c; --s-ring:#c2410c;
 }
+/* Motion tokens apply only when the user has not asked for reduced motion, so the core tokens' reduced-motion
+   values (0ms) still win. More contrast: dividers and control borders darken, as in the core tokens. */
+@media (prefers-reduced-motion: no-preference){html[data-kit-theme=ember]{--c-dur:280ms; --c-ease:cubic-bezier(.34,1.56,.64,1);}}
+@media (prefers-contrast: more){html[data-kit-theme=ember],html[data-kit-theme=ember][data-theme]{--c-line:var(--c-muted);--c-control-line:var(--c-fg);--ui-border:var(--ui-muted-foreground);--ui-input:var(--ui-foreground)}}
 /* Component geometry and surfaces are tokens; core owns all part styling. */
 html[data-kit-theme=ember] [data-ui=tabs]{--ui-tabs-radius:999px;--ui-tabs-trigger-radius:999px;--ui-tabs-padding:.3rem;--ui-tabs-active-background:var(--ui-primary);--ui-tabs-active-color:var(--ui-primary-foreground);--ui-tabs-active-shadow:none;}
 html[data-kit-theme=ember] [data-ui=accordion]{--ui-acc-gap:.75rem;--ui-acc-divider:1px solid var(--ui-border);--ui-acc-item-border:1px solid var(--ui-border);--ui-acc-item-radius:var(--ui-radius);--ui-acc-item-background:var(--ui-card);--ui-acc-padding:1rem 1.1rem;--ui-acc-content-padding:0 1.1rem 1.1rem;}

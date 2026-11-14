@@ -42,17 +42,19 @@ export function createAccordion(root, o = {}) {
     const collapsible = o.collapsible ?? root.dataset.collapsible !== "false";
     const orientation = root.dataset.orientation || "vertical";
     const items = () => parts(root, "item");
+    // an item's own parts: the first trigger/content that belongs to this accordion and to this item
+    // (a nested collapsible, tabs or accordion inside the content keeps its own triggers)
+    const own = (it, p) => [...it.querySelectorAll(`[data-ui-part="${p}"]`)].find((el) => owner(el) === root && el.parentElement.closest('[data-ui-part="item"]') === it) || null;
+    const trig = (it) => own(it, "trigger"), cont = (it) => own(it, "content");
     let value = new Set(String(o.defaultValue ?? root.dataset.defaultValue ?? "").split(",").filter(Boolean));
     items().forEach((it, i) => {
-      const t = part(it, "trigger") || it.querySelector('[data-ui-part="trigger"]');
-      const c = it.querySelector('[data-ui-part="content"]');
+      const t = trig(it), c = cont(it);
       it.dataset.value ||= String(i);
       if (t && c) { wirePair(t, c, `${id}-${it.dataset.value}`); c.setAttribute("role", "region"); c.setAttribute("aria-labelledby", t.id); }
       if (it.dataset.disabled != null && t) t.setAttribute("aria-disabled", "true");
     });
-    const trig = (it) => it.querySelector('[data-ui-part="trigger"]');
     const render = () => items().forEach((it) => {
-      const on = value.has(it.dataset.value), t = trig(it), c = it.querySelector('[data-ui-part="content"]');
+      const on = value.has(it.dataset.value), t = trig(it), c = cont(it);
       show([it, t, c], on, t, c);
       if (t && type === "single" && on && !collapsible) t.setAttribute("aria-disabled", "true");
       else if (t && it.dataset.disabled == null) t.removeAttribute("aria-disabled");
@@ -69,7 +71,7 @@ export function createAccordion(root, o = {}) {
     };
     b.on(root, "click", (e) => {
       const t = e.target.closest('[data-ui-part="trigger"]'); const it = t?.closest('[data-ui-part="item"]');
-      if (it && owner(it) === root) toggle(it.dataset.value);
+      if (it && owner(it) === root && trig(it) === t) toggle(it.dataset.value);
     });
     b.on(root, "keydown", (e) => {
       const t = e.target.closest('[data-ui-part="trigger"]'); if (!t) return;

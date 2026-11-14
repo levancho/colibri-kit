@@ -1,6 +1,6 @@
 // Colibri UI: primitives added after the Radix audit (Toolbar, Segmented control, Checkbox/Radio cards,
 // Checkbox group, Tab nav, Accessible icon). Headless: state lives in ARIA + data-state, styling is the theme's job.
-import { parts, emit, setState, btn, once, bag, roving, isDisabled, uid } from "./util.js";
+import { parts, emit, setState, btn, once, bag, roving, isDisabled, uid, logicalKey } from "./util.js";
 
 // <div data-ui="toolbar" aria-label="Formatting" [data-orientation=vertical]> buttons, links, toggle-groups, separators </div>
 // One tab stop for the whole bar; arrows/Home/End move between controls (WAI-ARIA toolbar pattern).
@@ -8,12 +8,19 @@ export function createToolbar(root, o = {}) {
   return once(root, "__uiToolbar", () => {
     const b = bag(), orientation = o.orientation || root.dataset.orientation || "horizontal";
     root.setAttribute("role", "toolbar"); root.setAttribute("aria-orientation", orientation);
-    const items = () => [...root.querySelectorAll("button,a[href],input,select")].filter((el) => !el.closest("[hidden]") && el.closest("[data-ui=toolbar]") === root);
+    // Toolbar controls: not hidden, not in a nested toolbar, and not inside a popup that a control in the bar opened
+    // (menu, listbox, popover or dialog content), whose own keyboard handling must keep its keys.
+    const POPUP = "[role=menu],[role=listbox],[role=dialog],[role=tree],[role=grid],dialog,[data-ui-part=content]";
+    const items = () => [...root.querySelectorAll("button,a[href],input,select")].filter((el) => !el.closest("[hidden]") && el.closest("[data-ui=toolbar]") === root && !root.contains(el.parentElement?.closest(POPUP) || null));
+    // Fields that use the arrow keys themselves keep every key. Checkboxes, radios and buttons do not.
+    const editable = (el) => el.isContentEditable || el.matches("textarea,select,input:not([type=checkbox],[type=radio],[type=button],[type=submit],[type=reset],[type=image],[type=color],[type=file])");
     let cur = null;
     const render = () => { const l = items(); if (!cur || !l.includes(cur)) cur = l.find((i) => !isDisabled(i)); l.forEach((i) => (i.tabIndex = i === cur ? 0 : -1)); };
     b.on(root, "focusin", (e) => { if (items().includes(e.target)) { cur = e.target; render(); } });
-    b.on(root, "keydown", (e) => { if (e.target.matches("input,select") && ["ArrowLeft", "ArrowRight", "Home", "End"].includes(e.key)) return;
-      const n = roving(items(), document.activeElement, e.key, { orientation }); if (n) { e.preventDefault(); e.stopPropagation(); cur = n; render(); n.focus(); } }, true);
+    b.on(root, "keydown", (e) => {
+      // only keys pressed on one of the bar's own controls; never a field's, a popup's or a nested component's
+      if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || editable(e.target) || !items().includes(e.target)) return;
+      const n = roving(items(), e.target, logicalKey(root, e.key), { orientation }); if (n) { e.preventDefault(); e.stopPropagation(); cur = n; render(); n.focus(); } }, true);
     queueMicrotask(render); render();
     return { refresh: render, destroy: b.off };
   });
@@ -27,7 +34,7 @@ export function createSegmentedControl(root, o = {}) {
     let value = o.defaultValue ?? root.dataset.defaultValue ?? items()[0]?.dataset.value;
     root.setAttribute("role", "radiogroup");
     let thumb = root.querySelector(":scope>[data-ui-part=thumb]");
-    if (!thumb) { thumb = document.createElement("span"); thumb.dataset.uiPart = "thumb"; thumb.setAttribute("aria-hidden", "true"); root.prepend(thumb); }
+    if (!thumb) { thumb = root.ownerDocument.createElement("span"); thumb.dataset.uiPart = "thumb"; thumb.setAttribute("aria-hidden", "true"); root.prepend(thumb); }
     const place = () => { const on = items().find((i) => i.dataset.value === value); if (!on) return;
       root.style.setProperty("--seg-x", on.offsetLeft + "px"); root.style.setProperty("--seg-w", on.offsetWidth + "px"); root.style.setProperty("--seg-y", on.offsetTop + "px"); root.style.setProperty("--seg-h", on.offsetHeight + "px"); };
     const render = () => { items().forEach((i) => { btn(i); i.setAttribute("role", "radio"); const on = i.dataset.value === value; i.setAttribute("aria-checked", String(on)); setState(i, on ? "on" : "off"); i.tabIndex = on ? 0 : -1; });
@@ -79,7 +86,7 @@ export function createTabNav(root, o = {}) {
 export function createAccessibleIcon(root) {
   return once(root, "__uiAccIcon", () => {
     root.querySelectorAll("svg,img,i").forEach((s) => { s.setAttribute("aria-hidden", "true"); s.setAttribute("focusable", "false"); });
-    let l = root.querySelector(":scope>.sr-only"); if (!l && root.dataset.label) { l = document.createElement("span"); l.className = "sr-only"; l.textContent = root.dataset.label; root.append(l); }
+    let l = root.querySelector(":scope>.sr-only"); if (!l && root.dataset.label) { l = root.ownerDocument.createElement("span"); l.className = "sr-only"; l.textContent = root.dataset.label; root.append(l); }
     return { destroy() {} };
   });
 }

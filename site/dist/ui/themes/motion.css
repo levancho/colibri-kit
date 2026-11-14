@@ -109,6 +109,7 @@
 [data-ui-motion-hover=wiggle]:hover{animation:ui-wiggle 300ms ease-in-out}
 [data-ui-motion-hover=glow]:hover{box-shadow:0 0 0 4px color-mix(in srgb,var(--ui-primary,#18181b) 25%,transparent)}
 [data-ui-motion-focus=ring]:focus-visible{box-shadow:0 0 0 4px color-mix(in srgb,var(--ui-ring,#a1a1aa) 50%,transparent);outline:none}
+@media (forced-colors:active){[data-ui-motion-focus=ring]:focus-visible{outline:2px solid Highlight;outline-offset:2px}}
 [data-ui-motion-loop=spin]{animation:ui-spin 1s linear infinite}
 [data-ui-motion-loop=pulse]{animation:ui-pulse 2s cubic-bezier(.4,0,.6,1) infinite}
 [data-ui-motion-loop=bounce]{animation:ui-bounce 1s infinite}

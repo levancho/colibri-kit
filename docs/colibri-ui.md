@@ -3,10 +3,10 @@
 The core controllers provide behavior and ARIA wiring without importing styles. Optional themes ship separately under `themes/`. Works in FreeMarker pages, plain HTML, HTMX swaps, and React wrappers over the same core code.
 
 ## Naming scheme (decision)
-Brand = **Colibri UI**, package = **`@colibri-kit/ui`**, folder = `~/dev/despani/colibri-ui`.
+Brand = **Colibri UI**, package = **`@colibri-kit/ui`**, folder = `~/dev/colibri-ui`.
 Markup attributes stay short and generic: **`data-ui` / `data-ui-part`**, events **`ui:*`**, custom elements **`<ui-*>`**.
 Reason: brevity in templates and no brand lock-in in stored content/markup; the `ui` namespace is
-owned by Colibri UI inside Despani apps. (If a clash ever appears, a codemod `data-ui` → `data-colibri` is trivial.)
+owned by Colibri UI inside host apps. (If a clash ever appears, a codemod `data-ui` → `data-colibri` is trivial.)
 
 ## Architecture (3 layers, only the first is required)
 
@@ -39,7 +39,7 @@ touches parts whose nearest `[data-ui]` ancestor is its own root.
 
 ## Try it
 ```
-cd ~/dev/despani/colibri-ui
+cd ~/dev/colibri-ui
 python3 -m http.server 8395        # (npm run serve)
 open http://localhost:8395/examples/        # index → Tabs, Dialog
 ```

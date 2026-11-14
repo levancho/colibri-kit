@@ -52,7 +52,7 @@ Re-brand: `:root { --c-hue: 160; }`. Force dark: `<html data-theme="dark">`.
 | `colibri.tokens` | `src/20-tokens.css` | OKLCH colours via `light-dark()`, fluid `clamp()` type and space, radius, shadow, motion (spring `linear()`), reduced-motion and contrast handling |
 | `colibri.base` | `src/30-base.css` | typography, links, code/kbd/pre, forms (`:user-invalid`), tables, focus-visible, selection, scrollbars |
 | `colibri.layout` | `src/40-layout.css` | `.stack .cluster .grid .split .switcher .center .bleed .cover .frame .reel .container .prose`, configured with custom properties (`--gap`, `--min`, `--side`, `--at`, …) |
-| `colibri.components` | `src/50-components.css` | `.btn .card .badge .field .callout .enter`; variants are `data-variant`, `data-size`, `data-tone`; `:has()` and container queries built in |
+| `colibri.components` | `src/50-components.css` | `.btn .card .badge .field .callout .enter`; variants are `data-variant`, `data-size`, `data-tone`; `:has()` built in; add `.container` to a card whose content uses container queries |
 | `colibri.utilities` | `src/60-utilities.css` | only `.visually-hidden .muted .flow .truncate` |
 
 Your own unlayered CSS beats normal declarations in every layer. Visibility and touch-target safeguards use `!important`; override those deliberately.

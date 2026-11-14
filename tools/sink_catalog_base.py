@@ -7,7 +7,7 @@ G = "Base"
 add(G, "accordion", "Accordion", "done", "Accordion", "Accordion",
  "Trigger = button[aria-expanded][aria-controls]; content role=region. Up/Down/Home/End move between triggers. data-type=single|multiple, data-collapsible.",
  """<h4>single</h4><div data-ui="accordion" data-type="single" data-default-value="a">
-<div data-ui-part="item" data-value="a"><h3><button data-ui-part="trigger">What is Despani?</button></h3><div data-ui-part="content">Georgian community portal.</div></div>
+<div data-ui-part="item" data-value="a"><h3><button data-ui-part="trigger">What is Colibri?</button></h3><div data-ui-part="content">A UI kit: modern CSS and small behaviours for any app.</div></div>
 <div data-ui-part="item" data-value="b"><h3><button data-ui-part="trigger">Colibri UI?</button></h3><div data-ui-part="content">Headless UI primitives.</div></div>
 <div data-ui-part="item" data-value="c" data-disabled><h3><button data-ui-part="trigger">Disabled item</button></h3><div data-ui-part="content">-</div></div></div>
 <h4>multiple</h4><div data-ui="accordion" data-type="multiple" data-default-value="x,y">
@@ -24,7 +24,7 @@ add(G, "alert-dialog", "Alert Dialog", "done", "Modal (confirm)", "Alert Dialog"
 add(G, "aspect-ratio", "Aspect Ratio", "css", "-", "Aspect Ratio", "Structure only: native CSS aspect-ratio.",
  """<div data-ui-part="aspect-ratio" style="aspect-ratio:16/9;max-width:320px;background:var(--muted)">16 / 9</div>""")
 add(G, "avatar", "Avatar", "done", "Avatar", "Avatar", "Image with fallback while loading / on error. data-state=loading|loaded|error.",
- """<span data-ui="avatar"><img data-ui-part="image" src="https://avatars.githubusercontent.com/u/1?v=4" alt="User"><span data-ui-part="fallback">LD</span></span>
+ """<span data-ui="avatar"><img data-ui-part="image" src="https://avatars.githubusercontent.com/u/1?v=4" alt="User"><span data-ui-part="fallback">JL</span></span>
 <span data-ui="avatar"><img data-ui-part="image" src="data:image/png;base64,AAAA" alt="Broken"><span data-ui-part="fallback">AB</span></span> <span data-ui="avatar"><span data-ui-part="fallback">GR</span></span>""")
 add(G, "badge", "Badge", "done", "Badge", "Badge", "Presentational; with a remove button the badge deletes itself (ui:remove, cancellable) and focus moves on.",
  """<span data-ui-part="badge">Default</span> <span data-ui-part="badge" data-variant="secondary">Secondary</span> <span data-ui-part="badge" data-variant="destructive">New</span> <span data-ui="badge" data-ui-part="badge" data-variant="outline">Tag <button data-ui-part="remove">×</button></span> <span data-ui="badge" data-ui-part="badge" data-variant="outline">Sports <button data-ui-part="remove">×</button></span>""")
@@ -59,7 +59,7 @@ add(G, "datatable", "Data Table / Datatable", "done", "Datatable", "Data Table",
 add(G, "dialog", "Dialog / Modal", "done", "Modal", "Dialog",
  "Native dialog showModal (focus trap, inert page), Esc/backdrop close, focus returns to opener, aria-labelledby/-describedby, cancellable ui:beforeclose, form method=dialog.",
  """<div data-ui="dialog"><button data-ui-part="trigger">Edit profile</button><dialog data-ui-part="content"><h2 data-ui-part="title">Profile</h2><p data-ui-part="description">Update your details.</p>
-<form method="dialog"><label>Name <input value="Levan" autofocus></label><div class="row"><button value="cancel">Cancel</button><button value="save">Save</button></div></form></dialog></div>
+<form method="dialog"><label>Name <input value="Alex" autofocus></label><div class="row"><button value="cancel">Cancel</button><button value="save">Save</button></div></form></dialog></div>
 <div data-ui="dialog" data-modal="false"><button data-ui-part="trigger">Non-modal</button><dialog data-ui-part="content"><h2 data-ui-part="title">Non-modal</h2><button data-ui-part="close">Close</button></dialog></div>""")
 add(G, "drawer", "Drawer / Sheet", "partial", "Drawer", "Sheet, Drawer",
  "Dialog variant: data-ui=sheet|drawer + data-side=left|right|top|bottom; CSS positions by [data-side]. Drag-to-dismiss (shadcn Drawer/vaul): planned.",
@@ -79,7 +79,7 @@ add(G, "context-menu", "Context Menu", "done", "Menu (right-click)", "Context Me
 add(G, "empty", "Empty", "css", "-", "Empty", "Structure: media/title/description/actions.",
  """<div data-ui-part="empty-state"><div>📭</div><h3>No articles yet</h3><p>Create your first article.</p><button>New article</button></div>""")
 add(G, "hover-card", "Hover Card", "done", "Tooltip (rich)", "Hover Card", "Opens after hovering 300 ms or on keyboard focus; stays open while the pointer is over the card; Esc closes. The trigger stays a normal link.",
- """<p>Hover or Tab to the username: <span data-ui="hover-card"><a href="#hover-card" data-ui-part="trigger">@levancho</a><span data-ui-part="content" class="hc"><span data-ui="avatar"><span data-ui-part="fallback">LD</span></span><span><strong>Levan Dvalishvili</strong><br><small>Despani founder. Building Colibri CMS.</small><br><small class="muted">📅 Joined 2007</small></span></span></span></p>""")
+ """<p>Hover or Tab to the username: <span data-ui="hover-card"><a href="#hover-card" data-ui-part="trigger">@levancho</a><span data-ui-part="content" class="hc"><span data-ui="avatar"><span data-ui-part="fallback">JL</span></span><span><strong>Jordan Lee</strong><br><small>Product designer. Building Colibri CMS.</small><br><small class="muted">📅 Joined 2007</small></span></span></span></p>""")
 add(G, "item", "Item", "done", "-", "Item", "role=list / listitem. One Tab stop for the whole list; Up/Down/Home/End move between rows; Enter or click opens a clickable row (ui:activate); Right arrow goes into the row's controls, Left/Esc goes back to the row.",
  """<div data-ui="item-group" aria-label="Notification settings" class="demo-w">
 <div data-ui-part="item"><span data-ui-part="media">🔔</span><div data-ui-part="content"><div data-ui-part="title">Notifications</div><div data-ui-part="description">Email and push notifications</div></div><div data-ui-part="actions"><button data-ui="switch" aria-checked="true" aria-label="Notifications"></button></div></div>
@@ -107,7 +107,7 @@ add(G, "skeleton", "Skeleton", "css", "Skeleton", "Skeleton", "Decorative skelet
  """<div style="display:flex;gap:.9rem;align-items:center" aria-hidden="true"><div data-ui-part="skeleton" style="width:44px;height:44px;border-radius:50%"></div><div style="display:grid;gap:.5rem"><div data-ui-part="skeleton" style="width:220px;height:14px"></div><div data-ui-part="skeleton" style="width:160px;height:14px"></div></div></div>
 <div data-ui-part="card" aria-hidden="true" style="width:240px;padding:1rem;display:grid;gap:.6rem"><div data-ui-part="skeleton" style="height:110px"></div><div data-ui-part="skeleton" style="height:14px;width:70%"></div><div data-ui-part="skeleton" style="height:14px;width:45%"></div></div>""")
 add(G, "table", "Table", "css", "Table", "Table", "Native table with caption/thead/scope; behaviour in Data Table.",
- """<table><caption>Recent articles</caption><thead><tr><th scope="col">Title</th><th scope="col">Author</th></tr></thead><tbody><tr><td>Hello</td><td>Levan</td></tr></tbody></table>""")
+ """<table><caption>Recent articles</caption><thead><tr><th scope="col">Title</th><th scope="col">Author</th></tr></thead><tbody><tr><td>Hello</td><td>Alex</td></tr></tbody></table>""")
 add(G, "theme-switch", "Theme Switch", "done", "Theme Switch", "(dark mode)", "Cycles light, dark, system; sets html data-theme + color-scheme; persisted; follows prefers-color-scheme.",
  """<button data-ui="theme-switch" data-storage-key="colibri.sink.theme">Theme: <span class="mode-label"></span></button>""")
 add(G, "toast", "Toast / Sonner", "done", "Toast", "Toast, Sonner", "Region + polite/assertive announcer; pause on hover/focus; action button; toast.promise(); max stack.",

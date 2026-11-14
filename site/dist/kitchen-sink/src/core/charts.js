@@ -1,5 +1,5 @@
 // Dependency-free, token-styled SVG charts. Public renderers accept finite numbers only.
-import { cleanupController } from "./util.js";
+import { cleanupController, parseNumber, langOf } from "./util.js";
 const escapeLabel = value => String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");
 const dimension = (value, name) => { if (typeof value !== 'number' || !Number.isFinite(value) || value <= 0) throw new TypeError(`Invalid chart ${name}`); return value; };
 const numbers = data => { if (!Array.isArray(data) || data.some(v => typeof v !== 'number' || !Number.isFinite(v))) throw new TypeError('Chart data must contain finite numbers'); return data; };
@@ -74,9 +74,13 @@ export function createChartRanges(root = document) {
 export function createChartPanel(root) {
   if(root.__colibriChartPanel)return root.__colibriChartPanel;
   const chart = root.querySelector('[data-chart]');
+  if(!chart)return cleanupController(root,'__colibriChartPanel',()=>{});
   const rows = [...root.querySelectorAll('tbody tr')];
   const labels = [...root.querySelectorAll('thead th')].slice(1);
-  const series = labels.map((_, column) => rows.map(row => Number(row.querySelectorAll('td')[column].textContent)));
+  // table cells are written for people ("1,200", "1.200,5" in German): read them with the cell's language.
+  // A missing or unreadable cell is 0, so one bad cell does not blank the whole chart.
+  const cellNumber = cell => { const n = cell ? parseNumber(cell.dataset.value ?? cell.textContent, cell.dataset.value != null ? 'en' : langOf(cell)) : NaN; return Number.isFinite(n) ? n : 0; };
+  const series = labels.map((_, column) => rows.map(row => cellNumber(row.querySelectorAll('td')[column])));
   chart.dataset.values = JSON.stringify(series);
   const update = () => {
     const n = JSON.parse(chart.dataset.values)[0]?.length || 0;
