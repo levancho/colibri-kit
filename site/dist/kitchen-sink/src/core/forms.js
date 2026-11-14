@@ -1,5 +1,5 @@
 // Colibri UI form primitives. Native form elements stay the source of truth (they post with plain forms).
-import { uid, parts, part, emit, setState, btn, once, bag, isDisabled } from "./util.js";
+import { uid, parts, part, emit, setState, btn, once, bag, isDisabled, owner } from "./util.js";
 
 /* Field (shadcn Field/Label, Metronic Input wrapper): wires label/description/error to the control.
    <div data-ui="field" [data-invalid]><label data-ui-part="label">Name</label>
@@ -41,7 +41,10 @@ export function createSlider(root, o = {}) {
     const name = root.dataset.name, minGap = num("minStepsBetween", 0) * step;
     const thumbs = parts(root, "thumb"), track = part(root, "track") || root, range = part(root, "range");
     let values = String(o.value ?? root.dataset.value ?? min).split(",").map(Number).slice(0, thumbs.length || 1);
-    const clamp = (v) => Math.min(max, Math.max(min, Math.round((v - min) / step) * step + min));
+    // round to the precision of step/min: 0.1 * 3 is 0.30000000000000004 in floating point
+    const decimals = (x) => { const m = /(?:\.(\d+))?(?:e-(\d+))?$/i.exec(String(x)); return Math.max(0, (m[1]?.length || 0) + Number(m[2] || 0)); };
+    const precision = Math.max(decimals(step), decimals(min));
+    const clamp = (v) => Math.min(max, Math.max(min, Number((Math.round((v - min) / step) * step + min).toFixed(precision))));
     const pct = (v) => ((v - min) / (max - min)) * 100;
     const inputs = values.map((_, i) => { if (!name) return null; const h = root.ownerDocument.createElement("input"); h.type = "hidden"; h.name = name; root.append(h); return h; });
     thumbs.forEach((t, i) => { t.setAttribute("role", "slider"); t.tabIndex = isDisabled(root) ? -1 : 0; t.setAttribute("aria-valuemin", min); t.setAttribute("aria-valuemax", max); t.setAttribute("aria-orientation", vertical ? "vertical" : "horizontal"); });
@@ -60,21 +63,29 @@ export function createSlider(root, o = {}) {
       o.onValueChange?.(out); emit(root, "input", { value: out }); if (commit) emit(root, "change", { value: out });
     };
     const fromPointer = (e) => { const r = track.getBoundingClientRect(); const f = vertical ? 1 - (e.clientY - r.top) / r.height : (e.clientX - r.left) / r.width; return min + Math.min(1, Math.max(0, f)) * (max - min); };
-    let drag = -1;
+    let drag = -1, pointer = null;
     b.on(root, "pointerdown", (e) => {
-      if (isDisabled(root) || e.button !== 0) return; const v = fromPointer(e);
-      drag = values.length > 1 ? (Math.abs(v - values[0]) <= Math.abs(v - values[1]) ? 0 : 1) : 0;
+      if (isDisabled(root) || e.button !== 0 || drag >= 0) return; const v = fromPointer(e);
+      drag = values.length > 1 ? (Math.abs(v - values[0]) <= Math.abs(v - values[1]) ? 0 : 1) : 0; pointer = e.pointerId;
       root.setPointerCapture?.(e.pointerId); setAt(drag, v); thumbs[drag]?.focus(); setState(root, "dragging"); e.preventDefault();
     });
-    b.on(root, "pointermove", (e) => drag >= 0 && setAt(drag, fromPointer(e)));
-    b.on(root, "pointerup", () => { if (drag >= 0) { emit(root, "change", { value: values.length > 1 ? [...values] : values[0] }); drag = -1; setState(root, "idle"); } });
+    b.on(root, "pointermove", (e) => drag >= 0 && e.pointerId === pointer && setAt(drag, fromPointer(e)));
+    // pointerup ends the drag; pointercancel (the browser took a touch for scrolling) and a lost capture end it
+    // too, so the next unrelated pointermove cannot move a thumb
+    const end = (e) => {
+      if (drag < 0 || (e && e.pointerId !== pointer)) return;
+      drag = -1; pointer = null; setState(root, "idle");
+      emit(root, "change", { value: values.length > 1 ? [...values] : values[0] });
+    };
+    for (const type of ["pointerup", "pointercancel", "lostpointercapture"]) b.on(root, type, end);
     thumbs.forEach((t, i) => b.on(t, "keydown", (e) => {
       const big = Math.max(step, (max - min) / 10); const m = { ArrowRight: step, ArrowUp: step, ArrowLeft: -step, ArrowDown: -step, PageUp: big, PageDown: -big };
       if (e.key in m) { e.preventDefault(); setAt(i, values[i] + m[e.key] * (e.shiftKey ? 10 : 1), true); }
       else if (e.key === "Home") { e.preventDefault(); setAt(i, min, true); } else if (e.key === "End") { e.preventDefault(); setAt(i, max, true); }
     }));
     render();
-    return { get value() { return values.length > 1 ? [...values] : values[0]; }, set value(v) { [].concat(v).forEach((x, i) => setAt(i, x, true)); }, destroy: b.off };
+    return { get value() { return values.length > 1 ? [...values] : values[0]; }, set value(v) { [].concat(v).forEach((x, i) => setAt(i, x, true)); },
+      destroy() { b.off(); drag = -1; inputs.forEach((h) => h?.remove()); } };
   });
 }
 
@@ -109,7 +120,9 @@ export function createPinInput(root, o = {}) {
       b.on(c, "paste", (e) => { e.preventDefault(); fill(i, (e.clipboardData || doc.defaultView.clipboardData).getData("text")); });
       b.on(c, "focus", () => c.select());
     });
-    return { get value() { return value(); }, clear() { cells.forEach((c) => (c.value = "")); sync(); cells[0].focus(); }, destroy: b.off };
+    return { get value() { return value(); }, clear() { cells.forEach((c) => (c.value = "")); sync(); cells[0].focus(); },
+      // the hidden input is this controller's own: a new controller makes another (generated cells are reused)
+      destroy() { b.off(); hidden?.remove(); } };
   });
 }
 
@@ -271,10 +284,42 @@ export function createSortable(root, o = {}) {
       else if (lifted && (e.key === "ArrowDown" || e.key === "ArrowUp")) { e.preventDefault(); const sib = e.key === "ArrowDown" ? lifted.nextElementSibling : lifted.previousElementSibling; if (sib?.dataset.uiPart === "item") { e.key === "ArrowDown" ? sib.after(lifted) : sib.before(lifted); grabbable(lifted).focus(); live.textContent = `Position ${items().indexOf(lifted) + 1} of ${items().length}`; } }
       else if (lifted && e.key === "Escape") { const ref = items()[lifted._from]; if (ref && ref !== lifted) (lifted._from > items().indexOf(lifted) ? ref.after(lifted) : ref.before(lifted)); setState(lifted, "idle"); grabbable(lifted).focus(); lifted = null; live.textContent = "Move cancelled"; }
     });
-    b.on(root, "pointerdown", (e) => { const it = e.target.closest('[data-ui-part="item"]'); if (!it || (useHandle && !e.target.closest('[data-ui-part="handle"]')) || e.button !== 0) return; drag = it; setState(it, "dragging"); root.setPointerCapture?.(e.pointerId); e.preventDefault(); });
-    b.on(root, "pointermove", (e) => { if (!drag) return; const over = doc.elementFromPoint(e.clientX, e.clientY)?.closest('[data-ui-part="item"]'); if (over && over !== drag && root.contains(over)) { const r = over.getBoundingClientRect(); (e.clientY > r.top + r.height / 2 ? over.after(drag) : over.before(drag)); } });
-    b.on(root, "pointerup", () => { if (drag) { setState(drag, "idle"); drag = null; done(); } });
+    // Pointer: a press becomes a drag only after DRAG_THRESHOLD px of travel, and only then is the pointer captured.
+    // Capturing on press retargeted the click to the list, so buttons and checkboxes inside items did nothing.
+    // Controls inside an item never start a drag (a handle is the grip when data-handle is set).
+    const DRAG_THRESHOLD = 5;
+    const track = (on) => { for (const [t, fn] of [["pointermove", move], ["pointerup", up], ["pointercancel", cancel]]) doc[on ? "addEventListener" : "removeEventListener"](t, fn); };
+    function reset() { if (!press) return; track(false); if (drag) setState(drag, "idle"); drag = null; press = null; }
+    function move(e) {
+      if (!press || e.pointerId !== press.id) return;
+      if (!drag) {
+        if (Math.hypot(e.clientX - press.x, e.clientY - press.y) < DRAG_THRESHOLD) return;
+        drag = press.item; setState(drag, "dragging"); root.setPointerCapture?.(e.pointerId);
+      }
+      e.preventDefault();
+      const over = doc.elementFromPoint(e.clientX, e.clientY)?.closest('[data-ui-part="item"]');
+      if (over && over !== drag && root.contains(over) && owner(over) === root) { const r = over.getBoundingClientRect(); (e.clientY > r.top + r.height / 2 ? over.after(drag) : over.before(drag)); }
+    }
+    function up(e) { if (!press || e.pointerId !== press.id) return; const was = drag; reset(); if (was) done(); }
+    // the browser took the touch (scrolling) or the press was cancelled: put the item back where it was
+    function cancel(e) {
+      if (!press || (e && e.pointerId !== press.id)) return;
+      const { item, from } = press; const was = drag; reset();
+      if (was) { const rest = items().filter((i) => i !== item); const ref = rest[from]; ref ? ref.before(item) : rest.length && rest[rest.length - 1].after(item); }
+    }
+    const CONTROL = "button,a[href],input,select,textarea,label,summary,[contenteditable]:not([contenteditable=false]),[role=button],[role=checkbox],[role=switch],[data-ui]";
+    let press = null;
+    b.on(root, "pointerdown", (e) => {
+      if (press || e.button !== 0) return;
+      const it = e.target.closest('[data-ui-part="item"]'); if (!it || owner(it) !== root) return;
+      const handle = useHandle ? e.target.closest('[data-ui-part="handle"]') : null;
+      if (useHandle && (!handle || !it.contains(handle))) return;
+      const control = e.target.closest(CONTROL);
+      if (control && it.contains(control) && control !== it && control !== handle && !(handle && handle.contains(control))) return;
+      press = { item: it, id: e.pointerId, x: e.clientX, y: e.clientY, from: items().indexOf(it) }; track(true);
+      if (e.pointerType === "mouse") e.preventDefault(); // no text selection while dragging with a mouse
+    });
     if (hidden) hidden.value = order().join(",");
-    return { get order() { return order(); }, destroy() { b.off(); live.remove(); } };
+    return { get order() { return order(); }, destroy() { b.off(); reset(); live.remove(); hidden?.remove(); } };
   });
 }

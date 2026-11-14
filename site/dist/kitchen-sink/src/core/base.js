@@ -226,19 +226,23 @@ export function createResizable(root) {
     try { const s = key && JSON.parse(localStorage.getItem(key)); if (Array.isArray(s) && s.length === sizes.length) sizes = s; } catch {}
     const render = () => { panels.forEach((p, i) => { p.style.flex = `${sizes[i]} 1 0`; p.dataset.size = sizes[i].toFixed(1); }); handles.forEach((h, i) => { h.setAttribute("aria-valuenow", Math.round(sizes[i])); }); };
     const resize = (i, delta) => { const a = panels[i], c = panels[i + 1]; const minA = Number(a.dataset.min ?? 5), minC = Number(c.dataset.min ?? 5); let x = Math.max(minA - sizes[i], Math.min(delta, sizes[i + 1] - minC)); sizes[i] += x; sizes[i + 1] -= x; render(); try { key && localStorage.setItem(key, JSON.stringify(sizes)); } catch {} emit(root, "resize", { sizes: [...sizes] }); };
+    let stop = null; // ends the drag in progress
     handles.forEach((h, i) => {
       h.setAttribute("role", "separator"); h.setAttribute("aria-orientation", vertical ? "horizontal" : "vertical"); h.tabIndex = 0; h.setAttribute("aria-valuemin", "0"); h.setAttribute("aria-valuemax", "100");
       panels[i].id ||= uid("ui-panel"); h.setAttribute("aria-controls", panels[i].id);
       b.on(h, "keydown", (e) => { const s = e.shiftKey ? 10 : 2; const m = vertical ? { ArrowUp: -s, ArrowDown: s } : { ArrowLeft: -s, ArrowRight: s }; if (e.key in m) { e.preventDefault(); resize(i, m[e.key]); } if (e.key === "Home") resize(i, -100); if (e.key === "End") resize(i, 100); });
       b.on(h, "pointerdown", (e) => {
+        if (e.button !== 0 || stop) return;
         e.preventDefault(); h.setPointerCapture?.(e.pointerId); setState(h, "dragging"); const r = root.getBoundingClientRect(); let last = vertical ? e.clientY : e.clientX;
-        const mv = (ev) => { const cur = vertical ? ev.clientY : ev.clientX; resize(i, ((cur - last) / (vertical ? r.height : r.width)) * 100); last = cur; };
-        const up = () => { setState(h, "idle"); h.removeEventListener("pointermove", mv); h.removeEventListener("pointerup", up); };
-        h.addEventListener("pointermove", mv); h.addEventListener("pointerup", up);
+        const id = e.pointerId;
+        const mv = (ev) => { if (ev.pointerId !== id) return; const cur = vertical ? ev.clientY : ev.clientX; resize(i, ((cur - last) / (vertical ? r.height : r.width)) * 100); last = cur; };
+        // pointerup, pointercancel (touch taken over by the browser) and a lost capture all end the drag
+        const up = (ev) => { if (ev && ev.pointerId !== id) return; stop = null; setState(h, "idle"); for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) h.removeEventListener(t, up); h.removeEventListener("pointermove", mv); };
+        stop = up; h.addEventListener("pointermove", mv); for (const t of ["pointerup", "pointercancel", "lostpointercapture"]) h.addEventListener(t, up);
       });
     });
     root.style.display ||= "flex"; root.style.flexDirection ||= vertical ? "column" : "row"; render();
-    return { get sizes() { return [...sizes]; }, destroy: b.off };
+    return { get sizes() { return [...sizes]; }, destroy() { stop?.(); b.off(); } };
   });
 }
 

@@ -98,6 +98,25 @@ check("dialog: non-modal closes on outside click unless data-close-on-outside=fa
   await p.close();
 });
 
+/* 3. Sortable: controls inside items are clickable; a real mouse drag still reorders. */
+check("sortable: buttons and checkboxes inside items can be clicked; drag still reorders", async () => {
+  const p = await open(page(`<ul data-ui="sortable" id="s" style="list-style:none;padding:0;width:300px">${["a", "b", "c"].map((v) =>
+    `<li data-ui-part="item" data-value="${v}" style="height:40px;border:1px solid">${v.toUpperCase()} <button type="button" id="b-${v}">Edit</button> <input type="checkbox" id="c-${v}"></li>`).join("")}</ul>`,
+  `import { createSortable } from "/ui/src/core/forms.js"; window.api = createSortable(document.getElementById("s"));
+   window.clicked = []; document.addEventListener("click", (e) => window.clicked.push(e.target.id));`));
+  await p.click("#b-a"); await p.click("#c-b");
+  assert.deepEqual(await p.evaluate(() => window.clicked), ["b-a", "c-b"], "clicks inside items were swallowed");
+  assert.equal(await p.$eval("#c-b", (c) => c.checked), true, "checkbox inside an item did not toggle");
+  const a = await p.$eval("[data-value=a]", (el) => { const r = el.getBoundingClientRect(); return { x: r.x + 10, y: r.y + 20 }; });
+  await p.mouse.move(a.x, a.y); await p.mouse.down();
+  const end = await p.$eval("[data-value=c]", (el) => { const r = el.getBoundingClientRect(); return r.bottom - 4; });
+  for (let y = a.y; y <= end; y += 10) await p.mouse.move(a.x, y);
+  await p.mouse.move(a.x, end);
+  await p.mouse.up();
+  assert.deepEqual(await p.evaluate(() => window.api.order), ["b", "c", "a"]);
+  await p.close();
+});
+
 /* run */
 let failed = 0;
 try {
