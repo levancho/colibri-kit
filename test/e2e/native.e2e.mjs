@@ -84,7 +84,7 @@ try {
  await tap('sheet-cancel');await app.waitForFunction(()=>!document.body.textContent.includes('Send by email'));
  await open('toast');await tap('show-toast');await alertSays('Copied to clipboard');
  // A navigation layout uses its phone form (menu button and slide-in panel), because the frame is phone-sized.
- await open('sidebar-01');
+ await open('sectioned-drawer');
  const menu=await app.waitForSelector('[aria-expanded=false][role=button]');await menu.evaluate(node=>node.click());
  await app.waitForSelector('[aria-expanded=true]');
 

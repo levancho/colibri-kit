@@ -79,7 +79,7 @@ const theme = useTheme();
 
 ## Components
 
-203 components and hooks, grouped as in the [live catalog](https://colibri-kit.io/native/), where each one has a demo. Props are documented in the TypeScript declarations (`index.d.ts`, `types/`) and in the source comments.
+207 components and hooks, grouped as in the [live catalog](https://colibri-kit.io/native/), where each one has a demo. Props are documented in the TypeScript declarations (`index.d.ts`, `types/`) and in the source comments.
 
 | Group | Components and hooks |
 |---|---|
@@ -95,7 +95,7 @@ const theme = useTheme();
 | AI elements | `Reasoning`, `ChainOfThought`, `Task`, `Plan`, `Subagent`, `Tool`, `Terminal`, `StackTrace`, `TestResults`, `Queue`, `Checkpoint`, `Confirmation`, `Context`, `FileTree`, `InlineCitation`, `CitationPreview`, `Sources`, `Suggestion`, `ModelSelector`, `PromptInput`, `AiMessage`, `Chat` |
 | Motion and theming | `useReducedMotion`, `Enter`, `Presence`, `MotionPressable`, `MotionLoop`, `useMotion`, `Collapse`, `ThemeScope` |
 | Sign-in and sign-up blocks | `AuthLink`, `AuthBrand`, `AuthHeader`, `AuthCard`, `OrDivider`, `SocialButton`, `AuthLegal`, `AuthCover`, `AuthField`, `AuthCodeInput`, `Login01`, `Login02`, `Login03`, `Login04`, `Login05`, `Signup01`, `Signup02`, `Signup03`, `Signup04`, `Signup05` |
-| Navigation layouts | `useNav`, `NavPopover`, `NavMenuItem`, `NavItem`, `NavCheckItem`, `NavSection`, `NavList`, `NavSearch`, `NavSwitcher`, `NavUser`, `NavCalendar`, `NavShell`, `Sidebar01`, `Sidebar02`, `Sidebar03`, `Sidebar04`, `Sidebar05`, `Sidebar06`, `Sidebar07`, `Sidebar08`, `Sidebar10`, `Sidebar14`, `Sidebar16`, `Sidebar15`, `Sidebar09`, `Sidebar11`, `Sidebar12`, `Sidebar13` |
+| Navigation layouts | `useNav`, `NavBarButton`, `NavPopover`, `NavMenuItem`, `NavItem`, `NavCheckItem`, `NavSection`, `NavList`, `NavSearch`, `NavSwitcher`, `NavUser`, `NavCalendar`, `NavStackScreen`, `NavShell`, `SectionedDrawer`, `NestedDrawer`, `WorkspaceDrawer`, `MailLayout`, `CalendarDrawer`, `FileTreeDrawer`, `SettingsSheet` |
 | Application components | `ApplicationShell`, `ApplicationMetrics`, `ApplicationChart`, `ApplicationTable`, `ApplicationBoard`, `ApplicationProjects`, `ApplicationPlanner`, `ApplicationIdentity`, `ApplicationProducts`, `ApplicationReceipt`, `ApplicationConversation`, `ApplicationForm`, `ApplicationPhoto`, `ApplicationArticle` |
 
 Shared conventions:
@@ -123,6 +123,7 @@ These exist in the web catalog and were left out on purpose, because they do not
 | Keyboard key, command palette | Keyboard-driven desktop patterns |
 | Hover card | No hover on a touch screen |
 | Resizable panes, navigation menu, breadcrumb | Desktop layouts; phones use a back button and the vertical `Menu` |
+| Nine of the sixteen sidebar blocks | They differed only by desktop traits (floating panel, icon rail, right-hand or double sidebar, sticky site header). The seven phone layouts in "Navigation layouts" replace all sixteen |
 | Sticky, scroll area, aspect ratio, direction | Built into React Native (`stickyHeaderIndices`, `ScrollView`, `aspectRatio`, `I18nManager`) |
 | Accessible icon, label, separator, native select | Covered by `accessibilityLabel`, `Field`, `Divider` and `Select` |
 | Reparent and the twelve Colibri CSS entries | Web-only mechanics and CSS documentation |
