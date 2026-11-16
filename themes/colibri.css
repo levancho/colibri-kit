@@ -61,7 +61,10 @@ html[data-theme=dark][data-ui-theme=violet]{--ui-primary:#8b5cf6}
 :where(.ui-root) :is(input,select,textarea):disabled{opacity:.5;cursor:not-allowed}
 :where(.ui-root) input[type=checkbox],:where(.ui-root) input[type=radio]{accent-color:var(--ui-primary);width:16px;height:16px;margin:0;vertical-align:-3px}
 :where(.ui-root) label{display:inline-flex;align-items:center;gap:.5rem;font-weight:500}
-:where(.ui-root) fieldset{border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:.75rem 1rem;display:flex;gap:1rem;flex-wrap:wrap}:where(.ui-root) legend{padding:0 .3rem}
+/* Semantic groups preserve normal block flow; row layout must be explicit. */
+:where(.ui-root) fieldset{min-inline-size:0;border:1px solid var(--ui-border);border-radius:var(--ui-radius);padding:.75rem 1rem;display:block}
+:where(.ui-root) fieldset[data-layout=row]{display:flex;gap:1rem;flex-wrap:wrap}
+:where(.ui-root) legend{padding:0 .3rem}
 /* generic button look (zero-specificity via :where so variants win) */
 :where(.ui-root) :where(:is(button,[data-ui=button]):not([data-ui-part]):not([data-ui=switch],[data-ui=checkbox],[data-ui=toggle],[data-ui=theme-switch],.sink-info),:is([data-ui-part=trigger],[data-ui-part=close],[data-ui-part=prev],[data-ui-part=next],[data-ui-part=finish],[data-ui-part=add],[data-ui-part=change],[data-ui-part=remove]):is(button):not(:is([data-ui=chain-of-thought],[data-ui=task],[data-ui=plan],[data-ui=tool],[data-ui=reasoning],[data-ui=sources],[data-ui=subagent],[data-ui=stack-trace],[data-ui=test-results],[data-ui=terminal],[data-ui=trace],[data-ui=sidebar],[data-ui-part=icon-rail],[data-ui-part=inset-header],[data-ui-part=site-header],[data-ui=prompt-input],[data-ui=attachment],[data-ui=questionnaire] [data-ui-part=choices],.ai-ctx-btn) *,.ai-ctx-btn,[data-ui=menubar] *,[data-ui=tabs] *,[data-ui=navigation-menu] *,[data-ui=calendar] *,[data-ui=combobox] *,[data-ui=badge] *,[data-ui=carousel] *),[data-ui=theme-switch]){
   display:inline-flex;align-items:center;justify-content:center;gap:.4rem;height:var(--ui-control-h);padding:0 1rem;border-radius:var(--ui-radius);border:1px solid var(--ui-primary);background:var(--ui-primary);color:var(--ui-primary-foreground);font:500 var(--ui-text-sm)/1 var(--ui-font);cursor:pointer;white-space:nowrap;transition:opacity .15s,background .15s}
