@@ -66,6 +66,8 @@ try {
  assert.equal(await (await byText('button','Disabled')).evaluate(el=>el.getAttribute('aria-disabled')),'true');
  await tap('back');await app.waitForSelector('[data-testid=home]');
  assert.equal(await page.evaluate(()=>location.hash),'','going back inside the phone updates the page address');
+ // Sortable sits beside Repeater in the catalog: leaving it used to blank the phone (an effect returned a Map as its cleanup).
+ await open('sortable');await open('repeater');assert.ok(await app.$('[data-testid=lines-add]'),'Repeater opens straight after Sortable');assert.deepEqual(errors,[],'leaving Sortable throws nothing');await open('');
  await app.click('[aria-label="Hue 150"]');await open('button');assert.notEqual(await solid(),blue,'a different hue re-brands the button');
  await open('text-field');await app.type('[data-testid=name]','Ada');assert.equal(await app.$eval('[data-testid=name]',i=>i.value),'Ada');
  await open('checkbox');

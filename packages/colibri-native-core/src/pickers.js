@@ -536,7 +536,8 @@ function SortableRow({ itemKey, label, index, count, active, shift, animate, dra
     offset.setValue(settle.offset);
     Animated.timing(offset, { toValue: 0, duration: 160, useNativeDriver: NATIVE }).start();
   }, [settle, itemKey, offset]);
-  useEffect(() => control.current.grips.set(itemKey, grip), [control, itemKey]);
+  // Braces matter: Map.set returns the map, and React would call a returned value as the cleanup when the row unmounts.
+  useEffect(() => { control.current.grips.set(itemKey, grip); }, [control, itemKey]);
   useEffect(() => () => { control.current.grips.delete(itemKey); }, [control, itemKey]);
   const pan = useRef(PanResponder.create({
     onStartShouldSetPanResponder: () => !control.current.disabled,

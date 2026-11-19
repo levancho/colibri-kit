@@ -5,7 +5,7 @@
 //   node tools/native-smoke.mjs forms --shots /tmp/shots    also save a screenshot of each demo (light and dark)
 //
 // It builds its own bundle in a temporary folder, so several runs can go on at once.
-// A demo fails if it throws, logs an error or warning, or renders nothing.
+// A demo fails if it throws, logs an error or warning, renders nothing, or breaks the app when you leave it.
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import http from "node:http";
@@ -57,6 +57,9 @@ try {
         await page.screenshot({ path: path.join(shots, `${group.id}-${demo.id}-dark.png`) });
         await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: "light" }]);
       }
+      // Leave the demo the way a visitor does (the reload above never unmounts it): a broken effect cleanup blanks the whole app.
+      await page.evaluate(() => { location.hash = ""; });
+      if (!(await page.waitForSelector('[data-testid="home"]', { timeout: 5000 }).catch(() => null))) problems.push("leaving the demo broke the app");
       if (problems.length) failed++;
       console.log(`${problems.length ? "FAIL" : "ok  "} ${group.id}/${demo.id}${problems.length ? "\n       " + [...new Set(problems)].join("\n       ") : ""}`);
     }
