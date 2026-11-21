@@ -82,9 +82,27 @@ try {
       assert.deepEqual(await surface(workbook), theme);
       assert.equal(await workbook.$eval('.wb', el => getComputedStyle(el).getPropertyValue('--ui-primary').trim()), theme.primary);
     }
+    const range = () => workbook.$eval('.wb-page-range', el => el.textContent);
+    const pagerButton = action => '.wb-pager [data-page-action="' + action + '"]';
+    assert.equal(await range(), 'Records from 1 to 20 of 1,000');
+    assert(await workbook.$eval(pagerButton('first'), el => el.disabled));
+    await workbook.click(pagerButton('next'));
+    assert.equal(await range(), 'Records from 21 to 40 of 1,000');
+    await workbook.click(pagerButton('previous'));
+    await workbook.select(pagerButton('size'), '30');
+    await workbook.click(pagerButton('last'));
+    assert.equal(await range(), 'Records from 991 to 1,000 of 1,000');
+    assert.equal(await workbook.$eval('.wb-page-number', el => el.value), '34');
+    assert(await workbook.$eval(pagerButton('next'), el => el.disabled));
+    await workbook.click(pagerButton('first'));
+    assert.equal(await range(), 'Records from 1 to 30 of 1,000');
+    await workbook.select(pagerButton('size'), '20');
     await workbook.click('.wb-filters [data-filter="property"]');
     await workbook.type('.wb-filters [data-filter="property"]', 'R-320.');
     await workbook.waitForFunction(() => document.querySelector('.wb-foot').textContent.includes('2 / 1,000'));
+    assert.equal(await range(), 'Records from 1 to 2 of 2');
+    await workbook.type('.wb-filters [data-filter="property"]', 'no-match');
+    assert.equal(await range(), '0 records');
     for (const [kind, count] of [['application', 4], ['sample', 10], ['react', 10]]) {
       assert.equal((await page.$$(rail + '[data-kind="' + kind + '"]')).length, count);
     }

@@ -474,6 +474,25 @@
     font-size: 12px;
     font-variant-numeric: tabular-nums;
   }
+  .wb-pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    margin-inline-end: auto;
+  }
+  .wb-pager button {
+    min-width: 28px;
+    font-size: 19px;
+    line-height: 1;
+    color: var(--ui-primary);
+  }
+  .wb-page-range {
+    margin-inline: 4px;
+    padding-inline-start: 10px;
+    border-inline-start: 1px solid var(--ui-border);
+  }
   .wb-foot output {
     color: var(--ui-primary);
   }
@@ -630,7 +649,7 @@
   .wb-row[data-match] {
     background: color-mix(in srgb, var(--ui-ring) 23%, var(--ui-card));
   }
-  .wb-foot input[aria-label='Page number'] {
+  .wb-foot .wb-page-number {
     width: 5rem;
   }
 

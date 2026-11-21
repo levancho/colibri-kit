@@ -133,6 +133,17 @@ window.ColibriGrid.Workbench = (() => {
     'Clear filters': 'Filter entfernen',
     'Drop columns to group rows': 'Spalten zum Gruppieren hierher ziehen',
     'Rows per page': 'Zeilen pro Seite',
+    'rows per page': 'Zeilen pro Seite',
+    'First page': 'Erste Seite',
+    'Last page': 'Letzte Seite',
+    'Page number': 'Seitennummer',
+    'Records from': 'Datensätze von',
+    'Rows from': 'Zeilen von',
+    to: 'bis',
+    of: 'von',
+    '0 records': '0 Datensätze',
+    '0 rows': '0 Zeilen',
+    pinned: 'fixiert',
     Previous: 'Zurück',
     Next: 'Weiter',
     Actions: 'Aktionen',
@@ -2560,61 +2571,69 @@ window.ColibriGrid.Workbench = (() => {
       this.foot.replaceChildren(el('span', '', parts.join('   ·   ')));
       if (this.status) this.foot.append(el('output', '', this.status));
       if (this.paged) {
-        const pages = Math.max(1, Math.ceil((this.recordCount - this.pinRows.length) / this.pageSize));
-        const prev = button(
-            '‹',
-            () => {
-              this.page--;
-              this.redraw();
-            },
-            this.t('Previous'),
-          ),
-          next = button(
-            '›',
-            () => {
-              this.page++;
-              this.redraw();
-            },
-            this.t('Next'),
-          );
-        prev.disabled = this.page === 0;
-        next.disabled = this.page >= pages - 1;
-        const jump = el('input');
+        const count = this.recordCount - this.pinRows.length;
+        const pages = Math.max(1, Math.ceil(count / this.pageSize));
+        const pager = el('div', 'wb-pager');
+        pager.setAttribute('role', 'group');
+        pager.setAttribute('aria-label', this.t('Pagination'));
+        const go = (index, action) => {
+          this.page = index;
+          this.port.scrollTop = 0;
+          this.redraw();
+          const control = this.foot.querySelector('[data-page-action="' + action + '"]');
+          (control?.disabled ? this.foot.querySelector('.wb-page-number') : control)?.focus({ preventScroll: true });
+        };
+        const step = (glyph, label, index, action) => {
+          const control = button(glyph, () => go(index, action), this.t(label));
+          control.dataset.pageAction = action;
+          control.disabled = index < 0 || index >= pages || index === this.page;
+          return control;
+        };
+        const jump = el('input', 'wb-page-number');
         jump.type = 'number';
         jump.min = 1;
         jump.max = pages;
         jump.value = this.page + 1;
-        jump.setAttribute('aria-label', 'Page number');
-        const go = () => {
-          if (jump.reportValidity() && Number.isInteger(jump.valueAsNumber)) {
-            this.page = jump.valueAsNumber - 1;
-            this.port.scrollTop = 0;
-            this.redraw();
-          }
+        jump.dataset.pageAction = 'jump';
+        jump.setAttribute('aria-label', this.t('Page number'));
+        const jumpToPage = () => {
+          if (jump.reportValidity() && Number.isInteger(jump.valueAsNumber) && jump.valueAsNumber !== this.page + 1)
+            go(jump.valueAsNumber - 1, 'jump');
         };
-        jump.onchange = go;
+        jump.onchange = jumpToPage;
         jump.onkeydown = (e) => {
           if (e.key === 'Enter') {
             e.preventDefault();
-            go();
+            jumpToPage();
           }
         };
-        this.foot.append(
-          prev,
-          jump,
-          el('span', '', '/ ' + pages),
-          next,
-          select(
-            [20, 25, 30, 40, 50, 100, 500].map((n) => [n, n]),
-            this.pageSize,
-            (n) => {
-              this.pageSize = +n;
-              this.page = 0;
-              this.redraw();
-            },
-            this.t('Rows per page'),
-          ),
+        const offset = this.page * this.pageSize;
+        const grouped = this.groups.length > 0 || this.pivot;
+        const format = value => value.toLocaleString(this.lang);
+        let range = count
+          ? [this.t(grouped ? 'Rows from' : 'Records from'), format(offset + 1), this.t('to'),
+             format(offset + this.list.length), this.t('of'), format(count)].join(' ')
+          : this.t(grouped ? '0 rows' : '0 records');
+        if (this.pinRows.length) range += ' · ' + format(this.pinRows.length) + ' ' + this.t('pinned');
+        const pageSize = select(
+          [20, 25, 30, 40, 50, 100, 500].map(n => [n, n + ' ' + this.t('rows per page')]),
+          this.pageSize,
+          value => {
+            this.pageSize = Number(value);
+            go(0, 'size');
+          },
+          this.t('Rows per page'),
         );
+        pageSize.dataset.pageAction = 'size';
+        pager.append(
+          step('«', 'First page', 0, 'first'),
+          step('‹', 'Previous', this.page - 1, 'previous'),
+          jump, el('span', '', '/ ' + format(pages)),
+          step('›', 'Next', this.page + 1, 'next'),
+          step('»', 'Last page', pages - 1, 'last'),
+          el('span', 'wb-page-range', range), pageSize,
+        );
+        this.foot.prepend(pager);
       }
     }
     exportFile(format) {
