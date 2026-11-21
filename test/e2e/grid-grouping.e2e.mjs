@@ -32,6 +32,29 @@ try {
   const leaf = page.locator('.wb-content .wb-row').filter({ has: page.locator('[aria-label="Pin row"]') }).first();
   await leaf.waitFor();
   assert.match(await leaf.locator('[data-field="property"]').innerText(), /^R-/);
+  async function verifyLeaf() {
+    const label = leaf.locator('.wb-tree-leaf > span');
+    assert.equal(await label.innerText(), await leaf.locator('[data-field="property"]').innerText());
+    const xs = await groups.locator('.wb-tree-label').evaluateAll(nodes =>
+      nodes.slice(0, 3).map(el => el.getBoundingClientRect().left));
+    xs.push((await label.boundingBox()).x);
+    assert(xs.slice(1).every((x, i) => x >= xs[i] + 14), 'Each child label must sit one indent beyond its parent');
+    assert.deepEqual(await page.getByRole('treegrid').locator('.wb-content > [role=row]').evaluateAll(rows =>
+      rows.slice(0, 4).map(row => row.getAttribute('aria-level'))), ['1', '2', '3', '4']);
+    assert.equal(await leaf.getAttribute('aria-expanded'), null);
+  }
+  await verifyLeaf();
+  await groups.nth(2).click();
+  assert.equal(await leaf.count(), 0);
+  assert.equal(await groups.nth(1).getAttribute('aria-expanded'), 'true');
+  await groups.nth(2).click();
+  await verifyLeaf();
+  const pager = page.getByRole('group', { name: 'Pagination' });
+  await pager.locator('[data-page-action="next"]').click();
+  assert.equal(await leaf.getAttribute('aria-level'), '4');
+  assert.match(await leaf.locator('.wb-tree-leaf').innerText(), /^R-/);
+  await pager.locator('[data-page-action="first"]').click();
+
   const groupHeader = page.getByRole('columnheader', { name: 'Group', exact: true });
   const bounds = await groupHeader.boundingBox();
   assert(bounds.width >= 200);
@@ -89,6 +112,23 @@ try {
   assert.equal(await groups.count(), 0);
   assert.equal(await heading('Status').count(), 1);
   assert.match(await page.locator('.wb-page-range').innerText(), /of 1,000/);
+  assert.equal(await page.getByRole('treegrid').count(), 0);
+  await page.reload();
+  if (await page.locator('html').getAttribute('data-theme') === 'dark') await page.locator('#theme').click();
+  for (const name of ['Team', 'Status', 'Client']) await dropAtEnd(heading(name));
+  for (const [i, label] of ['Maya Reed, Iris Hall', 'In progress', 'Theo Brown'].entries()) {
+    assert.equal(await groups.nth(i).locator('.wb-tree-label').innerText(), label);
+    await groups.nth(i).click();
+  }
+  await verifyLeaf();
+  assert.equal(await leaf.locator('.wb-tree-leaf').innerText(), 'R-320.100');
+  if (process.env.NESTED_SCREENSHOT) {
+    const rows = await page.locator('.wb-content').boundingBox();
+    const header = await page.locator('.wb-titles').boundingBox();
+    await page.screenshot({ path: process.env.NESTED_SCREENSHOT, animations: 'disabled', clip: {
+      x: header.x, y: header.y, width: 790, height: rows.y - header.y + 8 * 35,
+    } });
+  }
   console.log('Passed three header drops, nested counts and leaves, collapse, drag and keyboard reordering, sorting, Kit themes, and restoration of the flat grid.');
 } finally {
   await browser.close();

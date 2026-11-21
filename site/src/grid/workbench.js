@@ -239,7 +239,6 @@ window.ColibriGrid.Workbench = (() => {
       this.element.setAttribute('aria-expanded', this.owner.openGroups.has(this.data._groupKey));
       this.caption.textContent = this.label;
       this.count.textContent = '(' + this.data._rows.length.toLocaleString(this.owner.lang) + ')';
-      this.element.style.marginInlineStart = this.data._depth * 12 + 'px';
     }
   }
   class TrendRenderer {
@@ -732,6 +731,8 @@ window.ColibriGrid.Workbench = (() => {
               g[b.key + 'm' + i] = aggregate(g.bins.get(a) || [], field, op);
             });
       } else if (this.groups.length) {
+        this.leafLabelColumn = this.baseCols.find(c => c.rowLabel && !c.hidden);
+        this.treeColumn.width = Math.max(220, this.groups.length * 16 + 130);
         cols = [this.treeColumn, ...cols.filter(c => !this.groups.includes(c.field))];
         const flat = [];
         const walk = (rows, depth, path) => {
@@ -792,6 +793,7 @@ window.ColibriGrid.Workbench = (() => {
       )
         this.anchor = this.active = null;
       this.content.style.height = this.list.length * this.rowHeight + 'px';
+      this.port.setAttribute('role', this.groups.length && !this.pivot ? 'treegrid' : 'grid');
       this.port.setAttribute('aria-rowcount', this.visible.length + 3);
       this.port.setAttribute('aria-colcount', this.cols.length + 2);
     }
@@ -1636,6 +1638,10 @@ window.ColibriGrid.Workbench = (() => {
       this.positionEditor();
     }
     display(r, c) {
+      if (c === this.treeColumn && !r._rows) {
+        const label = this.leafLabelColumn && this.display(r, this.leafLabelColumn);
+        return label || String(r._key);
+      }
       if (c.labelFunction) return String(c.labelFunction(r, c) ?? '');
       const v = r[c.field];
       if (v == null) return '';
@@ -1698,6 +1704,14 @@ window.ColibriGrid.Workbench = (() => {
         cell.dataset.r = i;
         cell.dataset.c = j;
         this.pinStyle(cell, c);
+        if (c === this.treeColumn) {
+          const depth = r._rows ? r._depth : this.groups.length;
+          line.setAttribute('aria-level', depth + 1);
+          if (r._rows) line.setAttribute('aria-expanded', this.openGroups.has(r._groupKey));
+          cell.classList.add('wb-tree-cell');
+          cell.style.setProperty('--wb-tree-indent', depth * 16 + 'px');
+          if (!r._rows) cell.classList.add('wb-tree-leaf');
+        }
         if (c.type === 'number') cell.classList.add('wb-num');
         const val = r[c.field],
           text = this.display(r, c);

@@ -53,6 +53,7 @@ export function mountWorkbench(container) {
         c('pinned', 'Pin', 'Projects', { kind: 'pin', options: ['true', 'false'], width: 80, editable: false }),
         c('team', 'Team', 'Projects', { kind: 'team', options: names, width: 115 }),
         c('property', 'Property', 'Projects', {
+          rowLabel: true,
           summary: 'count',
           itemEditor: new ColibriGrid.ClassFactory(PropertyEditor),
           validator: (v) => !v || /^R-\d{3}\.\d{3}$/.test(v) || 'Use R-000.000',
@@ -66,7 +67,7 @@ export function mountWorkbench(container) {
         c('country', 'Country', 'Projects', { flags, options: countries }),
       ];
     return [
-      c('name', 'Name', 'Participant', { width: 165 }),
+      c('name', 'Name', 'Participant', { width: 165, rowLabel: true }),
       c('language', 'Language', 'Participant', { options: languages }),
       c('country', 'Country', 'Participant', { flags, options: countries }),
       c('game', 'Game', 'Game of choice', { options: games }),

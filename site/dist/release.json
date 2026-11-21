@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "d97925f12efd1846b8d754d0965a6b96880329a2c63306766f455bb4d09b0d97",
+  "release": "9d1bbc3a0fa78237f48c2e1041088884595af1fa4e8f6e7dbe400f91853e0c93",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -51,7 +51,7 @@
     "grid/kit-page.js": "fffac2a641ced4427eb120c8f6a0cd723867b708288c703ee89de1f353ad23d0",
     "grid/kit-theme.js": "b6f3414789f69cf52ccfa3bce7e092ec02254953969efa97328c4b3e5507ebc7",
     "grid/pivot.js": "6ff66d6b26b3477dc7f0a532722dcb3fa373c4b91a3c34d8e6a5f480922e8e2d",
-    "grid/sample.js": "08c0d0bb9f3e880a0e9804192cdcbe7723b9359c3b40f7e26bee573afb9b9906",
+    "grid/sample.js": "d3467546050f038c5160d62a4a2e124c94e7f775c4225dc5b97d86d7fd7834ab",
     "grid/samples/applications.js": "09666a75ea81d741d79d8741b9d9cfe7521de1481523dc74dda115fd1dbbfbeb",
     "grid/samples/catalog.js": "0693ee35c9c4d49f5ff01521b80f07add4960350179ae00e3bd5685127a14990",
     "grid/samples/cells.css": "c94f3f86b6c345e29789f399405e28ae271201ed5cd864826abd3f2749e58be5",
@@ -93,9 +93,9 @@
     "grid/vendor/jspdf.min.js": "db83fc811c81a9c9c218f1787ba52fc9b4d0d0fbe51184ce3a4a4f8a7ba9a091",
     "grid/vendor/jszip.LICENSE": "566c953c6090b1218ca6217dd7359d45dde46581968586dc607d59a78af6a9c4",
     "grid/vendor/jszip.min.js": "acc7e41455a80765b5fd9c7ee1b8078a6d160bbbca455aeae854de65c947d59e",
-    "grid/workbench.css": "7d238d5d044563b87b0051efb3a32fea87d5dd76821da45b76c9d041d9dabc8b",
+    "grid/workbench.css": "1b6d9a5a4c8ed64c6811d0bcf121a98569e98ec4f2c1ef1c200e5f7ae8327768",
     "grid/workbench.html": "eee91074f6a69a289e11cd1f2353bf5d3a622c050162d0ac6a034af1618a9f30",
-    "grid/workbench.js": "c9cdd91e8ed09baba36e69e8bced57e72f3d74da5aa7fb32b053488a2c37cc46",
+    "grid/workbench.js": "ca2c5eb363a9cadad43589ce47753e682a47df54c74cb97c24f844a4f1bf8c12",
     "index.html": "b382ce037cee316e83ea52aa7ef3a125832825495e730cba8fd3d34372e9d2b3",
     "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
