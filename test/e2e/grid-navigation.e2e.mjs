@@ -41,11 +41,26 @@ try {
     const rail = '#samples a';
     async function application(id, title) {
       await page.waitForSelector(rail + '[href="#' + id + '"][aria-current="page"]');
-      const element = await page.waitForSelector('#stage iframe[title="' + title + '"]');
-      return element.contentFrame();
+      await page.waitForSelector('#stage > [data-application="' + id + '"][aria-label="' + title + '"]');
+      assert.equal(await page.$('#stage iframe'), null);
+      return page;
     }
     const workbook = await application('full-grid', 'Full grid workbench');
     await workbook.waitForSelector('.wb-content .wb-row');
+    const geometry = await page.evaluate(() => {
+      const table = document.querySelector('.wb-port');
+      const shell = document.querySelector('.studio');
+      const side = document.querySelector('.wb-side');
+      const scrollers = [];
+      for (let el = table.parentElement; el && el !== document.body; el = el.parentElement) {
+        if (/(auto|scroll)/.test(getComputedStyle(el).overflowY) && el.scrollHeight > el.clientHeight + 1) scrollers.push(el.className);
+      }
+      return {width: table.clientWidth, shellWidth: shell.clientWidth, viewport: document.documentElement.clientWidth, sideClosed: side.hidden, scrollers};
+    });
+    assert(Math.abs(geometry.shellWidth - geometry.viewport) < 2);
+    assert(geometry.width >= width * .75, JSON.stringify(geometry));
+    assert(geometry.sideClosed);
+    assert.deepEqual(geometry.scrollers, []);
     const surface = doc => doc.evaluate(() => ({
       bg: getComputedStyle(document.body).backgroundColor,
       primary: getComputedStyle(document.documentElement).getPropertyValue('--ui-primary').trim(),

@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="/grid/kit-grid-theme.css">
   </head>
   <body class="ui-root">
-    <main class="grid-demo">
+    <main class="workbench-app">
       <header class="demo-head">
         <div class="demo-options">
           <label
@@ -53,8 +53,9 @@
       <div id="workbook"></div>
     </main>
     <script src="grid.js"></script>
-    <script src="files.js"></script>
-    <script src="workbench.js"></script>
-    <script src="sample.js"></script>
+    <script type="module">
+      import { mountWorkbench } from './sample.js';
+      mountWorkbench(document.querySelector('main'));
+    </script>
   </body>
 </html>

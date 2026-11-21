@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/grid/kit-grid-theme.css">
   </head>
   <body class="ui-root">
-    <main id="grid-content" tabindex="-1">
+    <main class="trading-app ui-root" id="grid-content" tabindex="-1">
       <div class="top">
         <div>
           <h1>Trading desk</h1>
@@ -122,6 +122,9 @@
       </footer>
     </main>
     <script src="../../grid.js"></script>
-    <script type="module" src="trading.js"></script>
+    <script type="module">
+      import { mountTrading } from './trading.js';
+      mountTrading(document.querySelector('main'));
+    </script>
   </body>
 </html>

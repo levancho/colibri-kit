@@ -1,4 +1,7 @@
-(() => {
+import './files.js';
+import './workbench.js';
+
+export function mountWorkbench(container) {
   const names = [
     'Maya Reed',
     'Jon Bell',
@@ -87,10 +90,10 @@
       ...months.map((m) => c(m, m, 'Monthly breakdown', money)),
     ];
   }
-  const dataset = document.querySelector('#dataset'),
-    size = document.querySelector('#size'),
-    skin = document.querySelector('#skin'),
-    host = document.querySelector('#workbook');
+  const dataset = container.querySelector('#dataset'),
+    size = container.querySelector('#size'),
+    skin = container.querySelector('#skin'),
+    host = container.querySelector('#workbook');
   let book, previousDataset;
   function load() {
     const projects = dataset.value === 'projects',
@@ -143,7 +146,7 @@
     if (book) book.setDataProvider(dataProvider, columns);
     else {
       book = new ColibriGrid.Workbench(host, { columns, dataProvider, label: 'Data grid' });
-      if (innerWidth < 700) {
+      if (container.closest('#stage') || container.clientWidth < 850) {
         book.panel = '';
         book.redraw();
       }
@@ -167,14 +170,30 @@
     const value = params.get(key);
     if ([...control.options].some((option) => option.value === value)) control.value = value;
   }
-  if (params.get('rtl') === 'true') document.documentElement.dir = 'rtl';
+  if (params.get('rtl') === 'true') container.dir = 'rtl';
   dataset.onchange = size.onchange = load;
   skin.onchange = () => book.setTheme(skin.value);
+  const standalone = !container.closest('#stage');
+  const root = document.documentElement;
+  function syncTheme() {
+    if (skin.value === 'Colibri') {
+      book.root.dataset.theme = root.dataset.theme;
+      container.dataset.theme = root.dataset.theme;
+    }
+  }
   host.addEventListener('themeChange', ({ detail }) => {
     skin.value = detail.skin;
-    document.documentElement.dataset.theme = detail.theme;
-    document.documentElement.dataset.skin = detail.style;
+    container.dataset.skin = detail.style;
+    container.dataset.theme = detail.theme;
+    if (standalone) root.dataset.theme = detail.theme;
+    syncTheme();
   });
   load();
   book.setTheme(skin.value);
-})();
+  const observer = new MutationObserver(syncTheme);
+  observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+  return () => {
+    observer.disconnect();
+    book.destroy();
+  };
+}

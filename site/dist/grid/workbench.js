@@ -15,7 +15,7 @@ window.ColibriGrid.Workbench = (() => {
     Combination: ['Column & Line', 'Area & Column'],
   };
 
-  const chartModule = new URL('charts.js', document.currentScript.src);
+  const chartModule = new URL('charts.js', document.currentScript?.src || new URL('/grid/workbench.js', location.href));
   const el = (tag, cls, text) => {
     const n = document.createElement(tag);
     if (cls) n.className = cls;

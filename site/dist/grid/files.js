@@ -1,6 +1,6 @@
 // Local file I/O for the workbench. No records leave the browser.
 window.ColibriGrid.files = (() => {
-  const base = new URL('.', document.currentScript.src);
+  const base = new URL('.', document.currentScript?.src || new URL('/grid/files.js', location.href));
   const libraries = new Map();
   function library(file) {
     if (!libraries.has(file))

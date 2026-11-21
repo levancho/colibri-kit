@@ -4,12 +4,13 @@
 }
 .studio {
   display: grid;
-  grid-template-columns: clamp(190px, 19vw, 240px) minmax(0, 1fr);
-  max-width: var(--k-max);
+  grid-template-columns: clamp(184px, 15vw, 224px) minmax(0, 1fr);
+  max-width: none;
+  width: 100%;
   margin-inline: auto;
   min-height: calc(100dvh - var(--grid-bar-height));
 }
-aside {
+.studio > aside {
   background: var(--kb-soft);
   border-right: 1px solid var(--kb-line);
   padding: 22px 13px;
@@ -52,21 +53,21 @@ aside {
   width: 100%;
   height: 32px;
 }
-.studio nav {
+.studio > aside nav {
   overflow: auto;
   scrollbar-width: thin;
 }
-.studio nav details {
+.studio > aside nav details {
   margin-bottom: 4px;
 }
-.studio nav summary {
+.studio > aside nav summary {
   padding: 9px 6px;
   font-size: 12px;
   font-weight: 650;
   cursor: pointer;
   color: var(--kb-fg);
 }
-.studio nav a {
+.studio > aside nav a {
   display: block;
   font-size: 13px;
   line-height: 20px;
@@ -75,18 +76,18 @@ aside {
   color: var(--kb-muted);
   border-radius: 5px;
 }
-.studio nav a:hover {
+.studio > aside nav a:hover {
   background: var(--kb-pop);
 }
-.studio nav a[aria-current] {
+.studio > aside nav a[aria-current] {
   background: var(--kb-pop);
   color: var(--kb-acc);
   font-weight: 650;
   box-shadow: inset 3px 0 var(--kb-acc);
 }
-.studio main {
+.studio > main {
   min-width: 0;
-  padding: 29px clamp(16px, 2.4vw, 44px) 32px;
+  padding: 18px clamp(12px, 1.4vw, 24px) 24px;
 }
 #stage {
   margin-block-start: 16px;
@@ -167,7 +168,7 @@ aside {
 #bottom:empty {
   display: none;
 }
-#stage footer {
+#stage > footer {
   padding: 9px 14px;
   display: flex;
   justify-content: space-between;
@@ -201,7 +202,7 @@ aside {
   .studio {
     display: block;
   }
-  aside {
+  .studio > aside {
     position: static;
     height: auto;
     display: grid;
@@ -214,14 +215,14 @@ aside {
   .sample-filter {
     margin: 0 6px;
   }
-  .studio nav {
+  .studio > aside nav {
     grid-column: 1/-1;
     max-height: 135px;
   }
-  .studio nav details:not([open]) {
+  .studio > aside nav details:not([open]) {
     display: inline-block;
   }
-  .studio main {
+  .studio > main {
     padding: 17px 10px;
   }
   #surface {
@@ -276,6 +277,12 @@ aside {
 .implementation pre { max-height: 26rem; overflow: auto; padding: 1rem; color: var(--ui-foreground); background: var(--ui-muted); }
 .implementation code { color: inherit; }
 
-.application-frame { display: block; width: 100%; height: clamp(460px, 76dvh, 1000px); border: 0; }
 #application-source { margin-block: 1rem; }
 #application-code { white-space: pre; }
+
+#stage:has([data-application]) { overflow: visible; border: 0; }
+#stage > [data-application] { width: 100%; max-width: none; margin: 0; padding: 0; }
+#stage .demo-options label { white-space: nowrap; }
+#stage .wb-port, #stage .wb-side { --workbench-height: clamp(340px, calc(100dvh - 370px), 900px); }
+#stage .wb-port { height: var(--workbench-height); }
+#stage .wb-side { max-height: var(--workbench-height); }
