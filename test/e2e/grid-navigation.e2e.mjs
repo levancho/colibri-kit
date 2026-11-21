@@ -63,6 +63,11 @@ try {
     if (width >= 721) {
       const bottom = await page.$eval('.wb-foot', el => el.getBoundingClientRect().bottom);
       assert(bottom <= 851, 'Pagination should fit in the initial desktop viewport');
+      const aligned = await page.$eval('.wb-pager', pager => {
+        const controls = Array.from(pager.children, el => el.getBoundingClientRect());
+        return Math.max(...controls.map(rect => rect.top)) < Math.min(...controls.map(rect => rect.bottom));
+      });
+      assert(aligned, 'Pager controls and record range should share one line on desktop');
     }
     assert.deepEqual(geometry.scrollers, []);
     const surface = doc => doc.evaluate(() => ({

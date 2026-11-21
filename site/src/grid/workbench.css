@@ -488,6 +488,10 @@
     line-height: 1;
     color: var(--ui-primary);
   }
+  .wb-pager select {
+    width: auto;
+    max-width: 100%;
+  }
   .wb-page-range {
     margin-inline: 4px;
     padding-inline-start: 10px;
