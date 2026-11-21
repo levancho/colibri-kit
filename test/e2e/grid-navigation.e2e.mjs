@@ -60,6 +60,10 @@ try {
     assert(Math.abs(geometry.shellWidth - geometry.viewport) < 2);
     assert(geometry.width >= width * .75, JSON.stringify(geometry));
     assert(geometry.sideClosed);
+    if (width >= 721) {
+      const bottom = await page.$eval('.wb-foot', el => el.getBoundingClientRect().bottom);
+      assert(bottom <= 851, 'Pagination should fit in the initial desktop viewport');
+    }
     assert.deepEqual(geometry.scrollers, []);
     const surface = doc => doc.evaluate(() => ({
       bg: getComputedStyle(document.body).backgroundColor,

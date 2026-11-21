@@ -242,7 +242,7 @@
   .detail > header {
     border-bottom: 1px solid var(--ui-border);
   }
-  .detail-:scope {
+  .detail-body {
     padding: 14px 18px 12px;
   }
   .identity {
@@ -321,7 +321,7 @@
     .panel > header {
       padding: 0 10px;
     }
-    .detail-:scope {
+    .detail-body {
       padding: 12px;
     }
     .controls {
@@ -342,7 +342,7 @@
     .controls summary {
       padding: 7px;
     }
-    .detail-:scope {
+    .detail-body {
       padding: 14px;
     }
     #history {

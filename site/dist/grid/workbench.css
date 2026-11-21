@@ -247,8 +247,9 @@
   .wb-filters > div {
     padding: 3px 5px;
   }
-  .wb-filters input,
+  .wb .wb-filters input:not([type='checkbox']),
   .wb-filters button {
+    min-height: 0;
     width: 100%;
     height: 24px;
     font-size: 11px;

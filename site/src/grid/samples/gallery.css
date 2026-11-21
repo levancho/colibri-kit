@@ -286,3 +286,21 @@
 #stage .wb-port, #stage .wb-side { --workbench-height: clamp(340px, calc(100dvh - 370px), 900px); }
 #stage .wb-port { height: var(--workbench-height); }
 #stage .wb-side { max-height: var(--workbench-height); }
+
+@media (min-width: 721px) and (min-height: 680px) {
+  .gallery-preview:has([data-application='full-grid']) {
+    height: calc(100dvh - var(--grid-bar-height) - 32px);
+    display: flex;
+    flex-direction: column;
+  }
+  .gallery-preview:has([data-application='full-grid']) .kpage-head { gap: 5px; padding-bottom: 12px; }
+  .gallery-preview:has([data-application='full-grid']) .kpage-head p { max-width: none; }
+  #stage:has(> [data-application='full-grid']), #stage > [data-application='full-grid'], #stage #workbook, #stage #workbook > .wb {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-height: 0;
+  }
+  #stage .wb-layout { flex: 1; min-height: 0; }
+  #stage .wb-port, #stage .wb-side { height: auto; max-height: none; }
+}
