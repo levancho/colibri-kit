@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Grid samples · Colibri Kit</title>
+    <link rel="stylesheet" href="/ui/themes/colibri.css" />
+    <link rel="stylesheet" href="../grid.css" />
+    <link rel="stylesheet" href="gallery.css" />
+  </head>
+  <body class="ui-root">
+    <header class="mast">
+      <a class="wordmark" href="../"><i class="brandmark" aria-hidden="true"></i> Colibri Grid</a
+      ><span class="divider"></span><span>Sample library</span
+      ><a class="kitlink" href="/">Colibri Kit</a>
+    </header>
+    <div class="studio">
+      <aside>
+        <div class="railhead">
+          <h2>Samples</h2>
+          <span id="total"></span>
+        </div>
+        <label class="sample-filter"
+          ><span aria-hidden="true">⌕</span
+          ><input id="find" type="search" aria-label="Find a sample" placeholder="Find a sample…"
+        /></label>
+        <nav id="samples" aria-label="Grid samples"></nav>
+      </aside>
+      <main>
+        <div class="heading">
+          <div id="crumb"></div>
+          <h1></h1>
+          <p id="description"></p>
+        </div>
+        <div class="tabs">
+          <button id="local" aria-pressed="true">Colibri sample</button
+          ><button id="reference" aria-pressed="false">Glide reference</button
+          ><button id="compare" aria-pressed="false">Compare both</button
+          ><a id="upstream" target="_blank" rel="noopener">Open original ↗</a>
+        </div>
+        <div id="engines">
+          <section id="stage" aria-label="Interactive sample"></section>
+          <div id="external" hidden></div>
+        </div>
+        <details id="source">
+          <summary>Source code</summary>
+          <label
+            >Source format
+            <select id="format">
+              <option value="html">HTML</option>
+              <option value="freemarker">FreeMarker</option>
+              <option value="thymeleaf">Thymeleaf</option>
+              <option value="react">React component example</option>
+            </select></label
+          ><button type="button" id="copy-source">Copy source</button>
+          <pre><code id="code"></code></pre>
+        </details>
+        <details class="sample-checks"><summary>Browser test results</summary><dl id="checked"></dl></details>
+        <p class="integration-link">
+          <a href="../integrations/">React component &amp; framework integrations →</a>
+        </p>
+      </main>
+    </div>
+    <script src="../grid.js"></script>
+    <script type="module" src="gallery.js"></script>
+  </body>
+</html>

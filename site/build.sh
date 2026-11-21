@@ -13,6 +13,7 @@ python3 tools/registry.py >/dev/null
 python3 tools/readme-catalog.py >/dev/null
 rm -rf site/dist && mkdir -p site/dist/css site/dist/ui site/dist/kitchen-sink
 cp -R site/src/* site/dist/
+node tools/build-grid-demo.mjs
 # The embeddable widget script: renderer + Colibri CSS in one file (see site/src/widgets/).
 node tools/build-widgets.mjs >/dev/null
 # The React Native showcase, compiled for browsers with react-native-web (see site/src/native/).
