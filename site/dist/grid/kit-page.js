@@ -20,6 +20,14 @@ toggle.addEventListener('click', () => {
 });
 labelTheme();
 
+const pack = document.getElementById('kit-theme');
+pack.value = root.dataset.kitTheme || '';
+pack.addEventListener('change', () => {
+  if (pack.value) root.dataset.kitTheme = pack.value;
+  else delete root.dataset.kitTheme;
+  try { localStorage.setItem('colibri.kit.pack', pack.value); } catch {}
+});
+
 const subnav = document.querySelector('.kbar-sub');
 const samplesLink = subnav.querySelector('[data-section=samples]');
 const reactLink = subnav.querySelector('[data-section=react]');

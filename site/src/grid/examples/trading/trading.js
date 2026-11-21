@@ -213,9 +213,10 @@ function drawChart(points, isFX, asOf) {
     bottom = h - 22,
     x = (t) => left + ((t - (asOf - minutes * 60000)) / (minutes * 60000)) * (right - left),
     y = (v) => bottom - ((v - lo + pad) / (hi - lo + 2 * pad)) * (bottom - top);
-  ctx.font = '10px ui-monospace, monospace';
-  ctx.fillStyle = '#687974';
-  ctx.strokeStyle = '#dde5e1';
+  const colors = getComputedStyle(canvas);
+  ctx.font = '10px ' + colors.getPropertyValue('--ui-font-mono');
+  ctx.fillStyle = colors.outlineColor;
+  ctx.strokeStyle = colors.borderTopColor;
   ctx.lineWidth = 1;
   for (let i = 0; i < 3; i++) {
     const yy = top + ((bottom - top) * i) / 2;
@@ -232,18 +233,20 @@ function drawChart(points, isFX, asOf) {
   fill.lineTo(left, bottom);
   fill.closePath();
   const gradient = ctx.createLinearGradient(0, top, 0, bottom);
-  gradient.addColorStop(0, 'rgba(18,133,103,.24)');
-  gradient.addColorStop(1, 'rgba(18,133,103,.02)');
+  gradient.addColorStop(0, colors.color);
+  gradient.addColorStop(1, 'transparent');
   ctx.fillStyle = gradient;
+  ctx.globalAlpha = 0.24;
   ctx.fill(fill);
-  ctx.strokeStyle = '#117f67';
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = colors.color;
   ctx.lineWidth = 1.8;
   ctx.stroke(line);
   ctx.fillStyle = ctx.strokeStyle;
   ctx.beginPath();
   ctx.arc(right, y(values.at(-1)), 3, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = '#687974';
+  ctx.fillStyle = colors.outlineColor;
   for (let i = 0; i < 3; i++) {
     const t = asOf - minutes * 60000 * (1 - i / 2);
     ctx.textAlign = ['left', 'center', 'right'][i];
@@ -331,6 +334,9 @@ const chartSize = new ResizeObserver(() => {
   if (feed) renderDetail();
 });
 chartSize.observe($('history'));
+new MutationObserver(() => { if (feed) renderDetail(); }).observe(document.documentElement, {
+  attributes: true, attributeFilter: ['data-theme', 'data-kit-theme'],
+});
 document.addEventListener('visibilitychange', () => {
   last = performance.now();
 });

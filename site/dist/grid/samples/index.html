@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Grid samples · Colibri Kit</title>
+    <link rel="stylesheet" href="/css/colibri.css">
     <link rel="stylesheet" href="/ui/themes/colibri.css" />
     <link rel="stylesheet" href="../grid.css" />
     <link rel="stylesheet" href="gallery.css" />
@@ -13,11 +14,13 @@
     <link rel="stylesheet" href="/grid/kit-page.css">
     <script src="/grid/kit-theme.js"></script>
     <script type="module" src="/grid/kit-page.js"></script>
+  <link rel="stylesheet" href="/grid/kit-grid-theme.css">
   </head>
   <body class="ui-root">
     <a class="grid-skip" href="#grid-content">Skip to grid content</a>
     <header class="kbar" data-active="grid">
       <button type="button" class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Toggle dark mode">◐</button>
+  <div data-kbar-custom data-title="Theme" hidden><label>Theme pack <select id="kit-theme" aria-label="Theme pack"><option value="">Colibri</option><option value="glacier">Glacier</option><option value="ember">Ember</option><option value="midnight">Midnight</option></select></label></div>
     </header>
     <nav class="kbar-sub" aria-label="Colibri Grid">
       <a data-section="samples" href="/grid/samples/" aria-current="page">Samples</a>

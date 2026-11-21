@@ -46,6 +46,23 @@ try {
     }
     const workbook = await application('full-grid', 'Full grid workbench');
     await workbook.waitForSelector('.wb-content .wb-row');
+    const surface = doc => doc.evaluate(() => ({
+      bg: getComputedStyle(document.body).backgroundColor,
+      primary: getComputedStyle(document.documentElement).getPropertyValue('--ui-primary').trim(),
+      mode: document.documentElement.dataset.theme,
+    }));
+    const themePack = await page.waitForSelector('#kit-theme');
+    await page.click('[aria-controls="kbar-custom"]');
+    await themePack.select('ember');
+    await workbook.waitForFunction(() => document.documentElement.dataset.kitTheme === 'ember');
+    await page.keyboard.press('Escape');
+    for (let i = 0; i < 2; i++) {
+      await page.click('#theme');
+      const theme = await surface(page);
+      await workbook.waitForFunction(mode => document.querySelector('.wb').dataset.theme === mode, {}, theme.mode);
+      assert.deepEqual(await surface(workbook), theme);
+      assert.equal(await workbook.$eval('.wb', el => getComputedStyle(el).getPropertyValue('--ui-primary').trim()), theme.primary);
+    }
     await workbook.click('.wb-filters [data-filter="property"]');
     await workbook.type('.wb-filters [data-filter="property"]', 'R-320.');
     await workbook.waitForFunction(() => document.querySelector('.wb-foot').textContent.includes('2 / 1,000'));

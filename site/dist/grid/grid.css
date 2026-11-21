@@ -63,9 +63,9 @@
 .react-grid-editor {
   background: var(--ui-card, white);
   padding: 10px;
-  border: 1px solid #b4c9c2;
+  border: 1px solid var(--ui-border);
   border-radius: 6px;
-  box-shadow: 0 4px 16px #133b2826;
+  box-shadow: var(--ui-shadow);
   z-index: 10;
 }
 .react-grid-menu button {
@@ -88,10 +88,10 @@
 .react-grid [role='alert'] {
   display: block;
   padding: 7px;
-  color: #9c2922;
+  color: var(--ui-destructive);
 }
 .react-grid .cg-port:focus-visible {
-  outline: 2px solid #1b8b72;
+  outline: 2px solid var(--ui-ring);
   outline-offset: -2px;
 }
 

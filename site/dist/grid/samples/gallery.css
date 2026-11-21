@@ -273,7 +273,7 @@ aside {
 .implementation summary { width: fit-content; cursor: pointer; text-decoration: underline; }
 .implementation label, .implementation a { display: inline-block; margin: .5rem .5rem .25rem 0; }
 .implementation select { max-width: 100%; }
-.implementation pre { max-height: 26rem; overflow: auto; padding: 1rem; color: #24292f; background: #f4f7f7; }
+.implementation pre { max-height: 26rem; overflow: auto; padding: 1rem; color: var(--ui-foreground); background: var(--ui-muted); }
 .implementation code { color: inherit; }
 
 .application-frame { display: block; width: 100%; height: clamp(460px, 76dvh, 1000px); border: 0; }

@@ -1,0 +1,21 @@
+/* Use the Kit site's semantic colors for the default grid. Each optional kit pack
+   provides its own UI tokens, including typography, contrast and control shapes. */
+:root:not([data-kit-theme]) {
+  --ui-background: var(--c-bg);
+  --ui-foreground: var(--c-fg);
+  --ui-card: var(--c-surface);
+  --ui-popover: var(--c-surface);
+  --ui-border: var(--c-line);
+  --ui-input: var(--c-control-line);
+  --ui-muted: var(--c-sunken);
+  --ui-muted-foreground: var(--c-muted);
+  --ui-accent: color-mix(in srgb, var(--c-accent) 12%, var(--c-surface));
+  --ui-primary: var(--c-accent);
+  --ui-primary-foreground: var(--c-brand-fg);
+  --ui-ring: var(--c-accent);
+  --ui-font: var(--c-font);
+  --ui-radius: var(--c-radius);
+  --ui-radius-sm: var(--c-radius-s);
+  --ui-radius-lg: var(--c-radius-l);
+  --ui-shadow: var(--c-shadow);
+}

@@ -890,7 +890,10 @@ window.ColibriGrid.Workbench = (() => {
       }
     }
     setTheme(skin) {
-      this.root.dataset.theme = skin.includes('Dark') || skin === 'Marine' ? 'dark' : 'light';
+      const mode = skin === 'Colibri'
+        ? document.documentElement.dataset.kitMode
+        : skin.includes('Dark') || skin === 'Marine' ? 'dark' : 'light';
+      this.root.dataset.theme = mode || 'light';
       this.root.dataset.skin = skin.includes('contrast') ? 'contrast' : skin.toLowerCase();
       cells.event(this, 'themeChange', { skin, theme: this.root.dataset.theme, style: this.root.dataset.skin });
     }

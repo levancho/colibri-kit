@@ -7,5 +7,6 @@
     pack = new URLSearchParams(location.search).get('theme') ?? localStorage.getItem('colibri.kit.pack');
   } catch {}
   root.dataset.theme = mode || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  root.dataset.kitMode = root.dataset.theme;
   if (pack) root.dataset.kitTheme = pack;
 })();

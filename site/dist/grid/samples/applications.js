@@ -27,11 +27,21 @@ export function mountApplication(stage, example) {
   stage.replaceChildren(frame);
   const syncTheme = () => {
     const doc = frame.contentDocument;
-    if (doc) doc.documentElement.dataset.theme = document.documentElement.dataset.theme;
+    if (!doc) return;
+    const root = doc.documentElement;
+    const kit = document.documentElement.dataset;
+    if (kit.kitTheme) root.dataset.kitTheme = kit.kitTheme;
+    else delete root.dataset.kitTheme;
+    root.dataset.kitMode = kit.theme;
+    const workbook = doc.querySelector('.wb');
+    if (!workbook || workbook.dataset.skin === 'colibri') {
+      root.dataset.theme = kit.theme;
+      if (workbook) workbook.dataset.theme = kit.theme;
+    }
   };
   frame.onload = syncTheme;
   const observer = new MutationObserver(syncTheme);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-kit-theme'] });
 
   picker.replaceChildren(...example.sources.map(path => new Option(path, path)));
   let request;
