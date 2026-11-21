@@ -1026,7 +1026,8 @@ window.ColibriGrid = (() => {
       const cell = this.canvas.children[this.index - this.start]?.children[this.column];
       if (c.rendererIsEditor) {
         const item = this.renderPool.active.get(cell)?.item;
-        (item?.focusTarget || item?.element)?.focus();
+        if (item?.beginInlineEdit) item.beginInlineEdit();
+        else (item?.focusTarget || item?.element)?.focus();
         return true;
       }
       const api = ColibriGrid.cells,

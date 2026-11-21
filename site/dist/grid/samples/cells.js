@@ -1,3 +1,5 @@
+import { choiceRenderer } from './choice-editor.js';
+
 // Flex-style factories used by both the catalog and the individual cell stories.
 const node = (tag, cls) => Object.assign(document.createElement(tag), { className: cls || '' });
 export const teams = ['Design', 'Platform', 'Research', 'Operations', 'Finance'];
@@ -70,11 +72,6 @@ function renderer(render) {
     },
   });
 }
-export const statusCell = renderer((el, { value }) => {
-  const chip = node('span', 'chip phase-' + phases.indexOf(value));
-  chip.textContent = value;
-  el.append(chip);
-});
 export const identityCell = renderer((el, { value }) => {
   const avatar = node('span', 'avatar');
   avatar.textContent = String(value || '')
@@ -84,16 +81,6 @@ export const identityCell = renderer((el, { value }) => {
     .slice(0, 2);
   avatar.dataset.tone = String(String(value).length % 4);
   el.append(avatar, String(value ?? ''));
-});
-const tagsCell = renderer((el, { value }) => {
-  for (const v of String(value || '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)) {
-    const chip = node('span', 'tag');
-    chip.textContent = v;
-    el.append(chip);
-  }
 });
 const progressCell = renderer((el, { value }) => {
   const track = node('progress');
@@ -189,11 +176,10 @@ function spark(trend) {
     el.append(chart, number);
   });
 }
-function control(kind, options = []) {
+function control(kind) {
   return () => {
-    const input = node(kind === 'select' ? 'select' : 'input');
-    if (kind === 'select') options.forEach((v) => input.append(new Option(v, v)));
-    else input.type = kind;
+    const input = node('input');
+    input.type = kind;
     return {
       element: input,
       prepare() {
@@ -209,87 +195,26 @@ function control(kind, options = []) {
     };
   };
 }
-function tagEditor(options, duplicates = false) {
-  return () => {
-    const el = node('div', 'tag-editor'),
-      input = node('input'),
-      list = node('div'),
-      choices = node('div');
-    input.placeholder = 'New tag';
-    input.setAttribute('aria-label', 'New tag');
-    const add = node('button');
-    add.type = 'button';
-    add.textContent = 'Add tag';
-    let selected = [];
-    function draw() {
-      list.replaceChildren();
-      for (const [i, v] of selected.entries()) {
-        const b = node('button');
-        b.type = 'button';
-        b.textContent = v + ' ×';
-        b.onclick = () => {
-          selected.splice(i, 1);
-          draw();
-        };
-        list.append(b);
-      }
-    }
-    function append(v) {
-      if (v.trim() && (duplicates || !selected.includes(v.trim()))) selected.push(v.trim());
-      input.value = '';
-      draw();
-    }
-    for (const v of options) {
-      const b = node('button');
-      b.type = 'button';
-      b.textContent = v;
-      b.onclick = () => append(v);
-      choices.append(b);
-    }
-    add.onclick = () => append(input.value);
-    input.onkeydown = (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        append(input.value);
-      }
-    };
-    el.append(list, choices, input, add);
-    return {
-      element: el,
-      focusTarget: input,
-      prepare() {
-        selected = String(this.value || '')
-          .split(',')
-          .map((s) => s.trim())
-          .filter(Boolean);
-        draw();
-      },
-      get editedValue() {
-        append(input.value);
-        return selected.join(', ');
-      },
-    };
-  };
-}
 const col = (field, label, width, props = {}) => ({ field, label, width, editable: true, ...props });
+export function choiceColumn(field, label, width, choices, options = {}) {
+  const definition = col(field, label, width, {
+    itemRenderer: choiceRenderer(choices, options),
+    rendererIsEditor: true,
+  });
+  if (!options.multiple) definition.validator = value => choices.includes(value) || 'Choose a listed ' + label.toLowerCase() + '.';
+  return definition;
+}
 export const baseColumns = [
   col('project', 'Project', 205),
   col('owner', 'Owner', 156, { itemRenderer: identityCell }),
-  col('status', 'Status', 136, {
-    itemRenderer: statusCell,
-    itemEditor: control('select', phases),
-    validator: (v) => phases.includes(v) || 'Choose a listed stage.',
-  }),
+  choiceColumn('status', 'Status', 136, phases, { status: true }),
   col('progress', 'Progress', 136, {
     type: 'number',
     itemRenderer: progressCell,
     itemEditor: control('range'),
     validator: (v) => (Number.isInteger(v) && v >= 0 && v <= 100) || 'Enter a percentage from 0 to 100.',
   }),
-  col('team', 'Team', 130, {
-    itemEditor: control('select', teams),
-    validator: (v) => teams.includes(v) || 'Choose a listed team.',
-  }),
+  choiceColumn('team', 'Team', 130, teams),
   col('amount', 'Budget', 112, { type: 'number' }),
   col('date', 'Due date', 122, { type: 'date' }),
   col('rating', 'Rating', 139, {
@@ -303,11 +228,8 @@ export const baseColumns = [
   col('note', 'Release notes', 270, { multiline: true }),
 ];
 const by = Object.fromEntries(baseColumns.map((c) => [c.field, c]));
-export const tagColumn = col('tags', 'Tags', 194, { itemRenderer: tagsCell, itemEditor: tagEditor(teams) });
-export const freeTags = col('freeTags', 'Freeform tags', 180, {
-  itemRenderer: tagsCell,
-  itemEditor: tagEditor([], true),
-});
+export const tagColumn = choiceColumn('tags', 'Team tags', 240, teams, { multiple: true });
+export const freeTags = choiceColumn('freeTags', 'Freeform tags', 215, [], { multiple: true, duplicates: true });
 const eventButton = (text, fn) => {
   const b = node('button', 'cell-button');
   b.type = 'button';
@@ -372,6 +294,5 @@ export function customColumns(notice, toggle, expanded) {
     freeTags,
   ];
 }
-export const selectEditors = [by.status, tagColumn, freeTags];
 export const extendedColumn = (i) =>
   i < baseColumns.length ? baseColumns[i] : col('metric' + (i + 1), 'Measure ' + (i + 1), 120, { type: 'number' });

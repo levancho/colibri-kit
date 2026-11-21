@@ -1,41 +1,15 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { ColibriGrid } from '@colibri-kit/ui/react/grid';
-import { projectRows, selectEditors } from '../cells.js';
+import { choiceColumn, phases, projectRows, teams } from '../cells.js';
 import { reactColumn } from './columns.jsx';
 
-const columns = selectEditors.map(reactColumn);
+const columns = [
+  { field: 'project', label: 'Project', width: 205, editable: false },
+  choiceColumn('status', 'Status', 170, phases, { status: true }),
+  choiceColumn('tags', 'Team tags', 240, teams, { multiple: true }),
+  choiceColumn('freeTags', 'Freeform tags', 215, [], { multiple: true, duplicates: true }),
+].map(reactColumn);
 export default function CustomCellEditing() {
   const [rows, setRows] = useState(() => projectRows('custom-cell-editing'));
-  const [field, setField] = useState(0);
-  const grid = useRef(null);
-  return (
-    <>
-      <label>
-        Go to cell{' '}
-        <select
-          value={field}
-          onChange={(e) => {
-            const index = Number(e.target.value);
-            setField(index);
-            grid.current.selectCell(grid.current.getSelection().top, index);
-          }}
-        >
-          {columns.map((c, i) => (
-            <option key={c.field} value={i}>
-              {c.label}
-            </option>
-          ))}
-        </select>
-      </label>
-      <button
-        onClick={() => {
-          const cell = grid.current.getSelection();
-          grid.current.editCell(cell.top, cell.left);
-        }}
-      >
-        Open editor
-      </button>
-      <ColibriGrid ref={grid} label="Custom cell editing" rows={rows} columns={columns} onRowsChange={setRows} />
-    </>
-  );
+  return <ColibriGrid label="Dropdown and tag editors" rows={rows} columns={columns} onRowsChange={setRows} />;
 }

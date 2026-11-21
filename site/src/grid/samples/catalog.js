@@ -9,7 +9,7 @@ const groups = {
   'Cells and editors': {
     'custom-cells':
       'Explore ratings, three chart types, tags, people, dates, actions and a collapsible hierarchy.',
-    'custom-cell-editing': 'Choose a stage, edit team tags, or create freeform tags. Save or cancel each draft.',
+    'custom-cell-editing': 'Click a status to choose it. Add or remove tags in the cell. Tab applies your tags and Escape discards the draft.',
     'validate-data': 'Edit the budget or paste a block of values. Budgets must be nonnegative whole numbers.',
   },
   'Spreadsheet operations': {

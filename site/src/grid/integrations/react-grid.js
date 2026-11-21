@@ -214,7 +214,8 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
         );
         const control =
           target?.querySelector('[aria-checked=true]') ?? target?.querySelector('button,input,select,[tabindex]');
-        control?.focus({ preventScroll: true });
+        if (control?.hasAttribute('data-inline-trigger')) control.click();
+        else control?.focus({ preventScroll: true });
         return !!control;
       };
       if (!focusInline()) requestAnimationFrame(focusInline);
@@ -350,7 +351,9 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
               'data-fill': r === region.bottom && c === region.right ? '' : undefined,
               style: pin(c),
               onPointerDown: (e) => {
-                if (e.button !== 0 || e.target.closest('button,input,select,a')) return;
+                if (e.button !== 0) return;
+                if (e.target.closest('[data-inline-trigger]')) { select(r,c,false,false); return; }
+                if (e.target.closest('button,input,select,a')) return;
                 e.preventDefault();
                 const b = e.currentTarget.getBoundingClientRect();
                 const fill =
@@ -388,6 +391,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
                   column: col,
                   value: val,
                   startEdit,
+                  moveFocus: offset => { select(r, c + offset); port.current?.focus({preventScroll:true}); },
                   commit: (value) => {
                     select(r, c);
                     return change([[row, col, value]]);

@@ -17,7 +17,7 @@ export const checks = {
     "Glide": "Opened tags on an editable row and read its choices: Bug, Feature, Enhancement"
   },
   "custom-cell-editing": {
-    "Colibri": "Stage saved, duplicate tag suppressed, canceled draft discarded",
+    "Colibri": "Inline status choice saved, team tags added and removed, freeform draft canceled, edits retained after scrolling",
     "Glide": "Changed dropdown to B, reopened a multiselect editor and canceled it"
   },
   "validate-data": {
