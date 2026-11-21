@@ -7,7 +7,7 @@ const split = (value) =>
     .filter(Boolean);
 let sequence = 0;
 
-export function choiceRenderer(choices, { multiple = false, duplicates = false, status = false } = {}) {
+export function choiceRenderer(choices, { multiple = false, duplicates = false, status = false, searchable = true, allowNew = true } = {}) {
   function token(label) {
     const chip = make('span', 'choice-chip');
     chip.dataset.tone = String(choices.indexOf(label) % 5);
@@ -32,6 +32,7 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
         if (session) return;
         const labels = multiple ? split(item.value) : [item.value].filter(Boolean);
         trigger.replaceChildren(...labels.map(token));
+        trigger.title = labels.join(', ');
         trigger.setAttribute('aria-label', 'Edit ' + item.column.label);
         if (choices.length) trigger.setAttribute('aria-expanded', 'false');
         trigger.disabled = !item.column.editable;
@@ -69,22 +70,31 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
       session = { scope, input, list };
       list.id = 'choice-list-' + ++sequence;
       list.setAttribute('popover', 'manual');
-      list.setAttribute('role', 'listbox');
+      const optionsBox = make('div', 'choice-options');
+      optionsBox.id = list.id + '-options';
+      optionsBox.setAttribute('role', 'listbox');
+      list.append(optionsBox);
       // Keep option presses in the editor, outside the grid's range-selection gesture.
       list.onpointerdown = (event) => event.stopPropagation();
-      list.setAttribute('aria-label', item.column.label);
-      if (multiple) list.setAttribute('aria-multiselectable', 'true');
+      optionsBox.setAttribute('aria-label', item.column.label);
+      if (multiple) optionsBox.setAttribute('aria-multiselectable', 'true');
       input.type = 'text';
+      input.readOnly = !searchable;
       input.autocomplete = 'off';
       if (choices.length) {
         input.setAttribute('role', 'combobox');
-        input.setAttribute('aria-autocomplete', 'list');
-        input.setAttribute('aria-controls', list.id);
+        input.setAttribute('aria-autocomplete', searchable ? 'list' : 'none');
+        input.setAttribute('aria-controls', optionsBox.id);
       }
       input.setAttribute('aria-label', item.column.label);
-      input.placeholder = multiple ? 'Add tag…' : 'Find ' + item.column.label.toLowerCase() + '…';
+      input.placeholder = multiple ? 'Select…' : !searchable ? 'Choose…' : 'Find ' + item.column.label.toLowerCase() + '…';
       element.classList.add('editing');
-      element.replaceChildren(tokens, input, list);
+      const counter = make('span', 'choice-count');
+      const fixedChoices = multiple && choices.length > 0;
+      if (fixedChoices) {
+        list.prepend(tokens);
+        element.replaceChildren(counter, input, list);
+      } else element.replaceChildren(tokens, input, list);
 
       function drawTokens() {
         tokens.replaceChildren(
@@ -105,10 +115,11 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
             return chip;
           }),
         );
-        tokens.scrollLeft = tokens.scrollWidth;
+        counter.textContent = selected.length + ' selected';
+        if (!fixedChoices) tokens.scrollLeft = tokens.scrollWidth;
       }
       function add(text) {
-        for (const value of split(text)) if (duplicates || !selected.includes(value)) selected.push(value);
+        for (const value of split(text)) if ((allowNew || choices.includes(value)) && (duplicates || !selected.includes(value))) selected.push(value);
       }
       function finish(focus = true) {
         if (multiple) add(input.value);
@@ -155,32 +166,41 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
         drawTokens();
         const term = input.value.trim();
         const matches = choices.filter((value) => value.toLowerCase().includes(term.toLowerCase()));
-        list.replaceChildren();
+        optionsBox.replaceChildren();
         function option(label, create = false) {
           const entry = make('div', 'choice-option');
           entry.setAttribute('role', 'option');
-          entry.id = list.id + '-' + list.children.length;
+          entry.id = list.id + '-' + optionsBox.children.length;
+          entry.setAttribute('aria-label', create ? 'Add ' + label : label);
           entry.setAttribute('aria-selected', String(!create && selected.includes(label)));
           if (status && !create) entry.append(token(label));
           else entry.textContent = create ? 'Add “' + label + '”' : label;
           entry.onmousedown = (event) => event.preventDefault();
           entry.onclick = () => choose(label, create);
-          list.append(entry);
+          optionsBox.append(entry);
         }
         matches.forEach((label) => option(label));
-        if (multiple && choices.length && term && ![...choices, ...selected].includes(term)) option(term, true);
-        if (!list.childElementCount && choices.length) {
+        if (multiple && allowNew && choices.length && term && ![...choices, ...selected].includes(term)) option(term, true);
+        if (!optionsBox.childElementCount && choices.length) {
           const empty = make('div', 'choice-empty');
           empty.textContent = 'No matches';
-          list.append(empty);
+          optionsBox.append(empty);
         }
-        const visible = list.childElementCount > 0;
+        const visible = optionsBox.childElementCount > 0;
         if (visible) {
           if (!list.matches(':popover-open')) list.showPopover();
           position();
         } else if (list.matches(':popover-open')) list.hidePopover();
         if (choices.length) input.setAttribute('aria-expanded', String(visible));
         highlight(term && !multiple && matches.length ? 0 : -1);
+      }
+      if (multiple && choices.length) {
+        const done = make('button', 'choice-done');
+        done.type = 'button';
+        done.textContent = 'Done';
+        done.onmousedown = event => event.preventDefault();
+        done.onclick = () => finish();
+        list.append(done);
       }
       input.oninput = refresh;
       input.onkeydown = (event) => {

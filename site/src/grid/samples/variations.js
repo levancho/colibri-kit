@@ -9,7 +9,12 @@ import * as customCellEditing from './examples/custom-cell-editing.js';
 import * as customCells from './examples/custom-cells.js';
 import * as addColumns from './examples/add-columns.js';
 
+import { controls as colorControls, createColorPalette } from './examples/color-palette.js';
+import { controls as editorControls, createProjectEditors } from './examples/project-editors.js';
+
 export const examples = {
+  'color-palette': { controls: colorControls, create: createColorPalette },
+  'project-editors': { controls: editorControls, create: createProjectEditors },
   'search-as-filter': { controls: searchAsFilter.controls, create: searchAsFilter.createSearchAsFilter },
   'header-menus': { controls: headerMenus.controls, create: headerMenus.createHeaderMenus },
   'validate-data': { controls: validateData.controls, create: validateData.createValidateData },

@@ -12,7 +12,12 @@ import PasteSupport from '../samples/react/paste-support.jsx';
 import FillHandle from '../samples/react/fill-handle.jsx';
 import RapidUpdates from '../samples/react/rapid-updates.jsx';
 
+import ColorPalette from '../samples/react/color-palette.jsx';
+import ProjectEditors from '../samples/react/project-editors.jsx';
+
 const samples = {
+  'color-palette': ColorPalette,
+  'project-editors': ProjectEditors,
   'add-columns': AddColumns,
   'freeze-columns': FreezeColumns,
   'search-as-filter': SearchAsFilter,

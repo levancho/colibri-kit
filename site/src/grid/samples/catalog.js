@@ -6,6 +6,8 @@ const groups = {
     'search-as-filter': 'Find a project, owner or team. Clear the search to restore every record.',
   },
   'Cells and editors': {
+    'color-palette': 'Choose a swatch or add a custom hex color. In Accent colors, select several swatches and choose Done.',
+    'project-editors': 'Edit hours, owners, status, renewals, payment and dates. Choose several renewals before applying them with Done.',
     'custom-cells':
       'Explore ratings, three chart types, tags, people, dates, actions and a collapsible hierarchy.',
     'custom-cell-editing': 'Click a status to choose it. Add or remove tags in the cell. Tab applies your tags and Escape discards the draft.',

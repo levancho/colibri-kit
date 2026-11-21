@@ -21,7 +21,7 @@ function documentSource(language, story, example) {
   const imports = example
     .slice(0, example.indexOf('export const controls'))
     .trim()
-    .replaceAll("'../cells.js'", "'/grid/samples/cells.js'");
+    .replaceAll("from '../", "from '/grid/samples/");
   const setup = example.slice(example.indexOf('export function ')).replace('export function ', 'function ');
   const directive = language === 'ftl' ? '[#ftl output_format="HTML" auto_esc=true]\n' : '';
   const controls = definition.controls ? '<div id="controls">' + definition.controls + '</div>\n' : '';

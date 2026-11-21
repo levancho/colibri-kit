@@ -11,7 +11,7 @@ export function mountSample(stage, storyId) {
   const dimensions = stage.querySelector('#dimensions');
   toolbar.innerHTML = example.controls || '<strong>Project register</strong>';
   const dispose = example.create(host, toolbar, status, (row, column) => {
-    status.textContent = row.project + ' · ' + column.label;
+    status.textContent = (row.project ?? row.name ?? row.id) + ' · ' + column.label;
   });
   const saved = ({ detail }) => {
     status.textContent = 'Saved ' + detail.field + ' · ' + String(detail.value ?? '');
