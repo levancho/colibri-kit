@@ -18,7 +18,8 @@ export type GridColumn<Row> = {
   parse?: (input: unknown) => unknown;
   validate?: (value: any, row: Row) => boolean | string | void;
   compare?: (left: any, right: any) => number;
-  renderCell?: (cell: { row: Row; column: GridColumn<Row>; value: any; startEdit(): void }) => ReactNode;
+  rendererIsEditor?: boolean;
+  renderCell?: (cell: { row: Row; column: GridColumn<Row>; value: any; commit(value: unknown): boolean; startEdit(): void }) => ReactNode;
   renderEditor?: (editor: { row: Row; column: GridColumn<Row>; value: any; onChange(value: any): void; save(): void; cancel(): void }) => ReactNode;
 };
 export interface GridProps<Row> extends RefAttributes<GridRef<Row>> {

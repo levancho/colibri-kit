@@ -207,6 +207,19 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
     if (!row || !col?.editable) return;
     select(r, c);
     setError('');
+    if (col.rendererIsEditor) {
+      const focusInline = () => {
+        const target = port.current?.querySelector(
+          '[aria-rowindex="' + (r + 2) + '"] [aria-colindex="' + (c + 1) + '"]',
+        );
+        const control =
+          target?.querySelector('[aria-checked=true]') ?? target?.querySelector('button,input,select,[tabindex]');
+        control?.focus({ preventScroll: true });
+        return !!control;
+      };
+      if (!focusInline()) requestAnimationFrame(focusInline);
+      return;
+    }
     setEdit({ key: getRowId(row), field: col.field });
     setDraft(raw(row, col));
   }
@@ -370,7 +383,16 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
               onDoubleClick: startEdit,
             },
             col.renderCell
-              ? col.renderCell({ row, column: col, value: val, startEdit })
+              ? col.renderCell({
+                  row,
+                  column: col,
+                  value: val,
+                  startEdit,
+                  commit: (value) => {
+                    select(r, c);
+                    return change([[row, col, value]]);
+                  },
+                })
               : col.type === 'boolean'
                 ? h('input', {
                     type: 'checkbox',

@@ -50,8 +50,16 @@ export function record(i) {
   };
 }
 export function projectRows(story) {
-  const count = story === 'add-columns' ? 10000 : ['custom-cells', 'custom-cell-editing'].includes(story) ? 500 : 240;
-  return Array.from({ length: count }, (_, index) => record(index + 1));
+  const count =
+    story === 'add-columns' ? 10000 : ['custom-cells', 'custom-cell-editing'].includes(story) ? 500 : 240;
+  return Array.from({ length: count }, (_, index) => {
+    const row = record(index + 1);
+    if (story === 'custom-cells') {
+      row.history = spendingHistory(row);
+      for (const trend of trends) row[trend.field] = row.history[trend.series].at(-1);
+    }
+    return row;
+  });
 }
 function renderer(render) {
   return () => ({
@@ -93,42 +101,92 @@ const progressCell = renderer((el, { value }) => {
   track.value = Number(value);
   el.append(track, String(value ?? 0) + '%');
 });
-const stars = renderer((el, { value }) => {
-  el.classList.add('stars');
-  const n = Math.max(0, Math.min(5, Math.round(Number(value) || 0)));
-  el.textContent = '★'.repeat(n) + '☆'.repeat(5 - n);
-  el.title = n + ' of 5 stars';
+const dollars = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+const compactDollars = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  notation: 'compact',
+  maximumFractionDigits: 1,
 });
-function spark(mode) {
+const percent = (value) => (value > 0 ? '+' : '') + value + '%';
+
+// Eight weeks of sample spending. The three charts are different views of the same ledger.
+function spendingHistory(row) {
+  let state = row.id * 9973;
+  const planned = Math.max(1, Math.round(row.amount / 9));
+  const weekly = Array.from({ length: 8 }, () => {
+    state = (Math.imul(state, 1664525) + 1013904223) >>> 0;
+    return Math.round(planned * (0.5 + state / 4294967296));
+  });
+  let total = 0;
+  const cumulative = weekly.map((spend) => (total += spend));
+  const variance = weekly.map((spend) => Math.round(((spend - planned) / planned) * 100));
+  return { cumulative, weekly, variance };
+}
+
+const trends = [
+  { field: 'area', label: 'Cumulative spend', series: 'cumulative' },
+  { field: 'line', label: 'Weekly spend', series: 'weekly' },
+  { field: 'bars', label: 'Spend vs. plan', series: 'variance' },
+];
+
+function svgElement(name, attributes) {
+  const element = document.createElementNS('http://www.w3.org/2000/svg', name);
+  for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, value);
+  return element;
+}
+
+function spark(trend) {
   return renderer((el, { data }) => {
-    const canvas = node('canvas');
-    canvas.width = 105;
-    canvas.height = 25;
-    const ctx = canvas.getContext('2d');
-    const pts = Array.from(
-      { length: 18 },
-      (_, i) => 13 + 9 * Math.sin(i * 0.72 + data.id) * Math.cos(i * 0.29 + data.id * 0.5),
-    );
-    ctx.strokeStyle = '#007c70';
-    ctx.fillStyle = mode === 'bars' ? '#36a393' : '#c2e5dd';
-    ctx.lineWidth = 1.7;
-    ctx.beginPath();
-    pts.forEach((y, i) => {
-      const x = i * 6;
-      if (mode === 'bars') ctx.fillRect(x, Math.min(13, y), 4, Math.abs(13 - y) + 1);
-      else if (i === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
+    el.className = 'sample-trend trend-' + trend.field;
+    const values = data.history[trend.series];
+    const latest = values.at(-1);
+    const signed = trend.field === 'bars';
+    const format = signed ? percent : (value) => dollars.format(value);
+    const chart = svgElement('svg', {
+      viewBox: '0 0 96 28',
+      role: 'img',
+      preserveAspectRatio: 'none',
+      'aria-label': trend.label + ' for ' + data.project + ', eight weeks, latest ' + format(latest),
     });
-    if (mode !== 'bars') ctx.stroke();
-    if (mode === 'area') {
-      ctx.lineTo(102, 24);
-      ctx.lineTo(0, 24);
-      ctx.fill();
+    const title = svgElement('title', {});
+    title.textContent = trend.label + ' · weeks 1–8: ' + values.map(format).join(' · ');
+    chart.append(title);
+    if (signed) {
+      const zero = 14;
+      chart.append(svgElement('path', { d: 'M1 14H95', class: 'trend-baseline' }));
+      values.forEach((value, i) => {
+        if (!value) return;
+        const height = Math.max(1, (Math.abs(value) / 50) * 11);
+        chart.append(
+          svgElement('rect', {
+            x: 3 + i * 12,
+            y: value > 0 ? zero - height : zero,
+            width: 7,
+            height,
+            rx: 1,
+            class: value > 0 ? 'over-plan' : 'under-plan',
+          }),
+        );
+      });
+    } else {
+      const area = trend.field === 'area';
+      const low = area ? 0 : Math.min(...values);
+      const high = area ? Math.max(data.amount, latest) : Math.max(...values);
+      const points = values.map((value, i) => [
+        3 + (i * 90) / 7,
+        high === low ? 14 : 24 - ((value - low) / (high - low)) * 20,
+      ]);
+      const path = 'M' + points.map(([x, y]) => x.toFixed(2) + ' ' + y.toFixed(2)).join(' L');
+      if (area) chart.append(svgElement('path', { d: path + ' L93 26 H3 Z', class: 'trend-area' }));
+      chart.append(svgElement('path', { d: path, class: 'trend-stroke' }));
+      const [cx, cy] = points.at(-1);
+      chart.append(svgElement('circle', { cx, cy, r: 2.1, fill: 'currentColor' }));
     }
-    canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', mode + ' trend for ' + data.project);
-    canvas.title = pts.map((n) => Math.round(n)).join(' · ');
-    el.append(canvas);
+    const number = node('span', 'trend-value');
+    number.textContent = signed ? percent(latest) : compactDollars.format(latest);
+    number.title = format(latest);
+    el.append(chart, number);
   });
 }
 function control(kind, options = []) {
@@ -234,11 +292,11 @@ export const baseColumns = [
   }),
   col('amount', 'Budget', 112, { type: 'number' }),
   col('date', 'Due date', 122, { type: 'date' }),
-  col('rating', 'Rating', 108, {
+  col('rating', 'Rating', 139, {
     type: 'number',
     max: 5,
-    itemRenderer: stars,
-    itemEditor: control('range'),
+    itemRenderer: () => ColibriGrid.cells.rating.newInstance(),
+    rendererIsEditor: true,
     validator: (v) => (Number.isInteger(v) && v >= 0 && v <= 5) || 'Use 0 to 5.',
   }),
   col('approved', 'Approved', 100, { type: 'boolean' }),
@@ -263,10 +321,11 @@ const eventButton = (text, fn) => {
 export function customColumns(notice, toggle, expanded) {
   return [
     by.rating,
-    ...['area', 'line', 'bars'].map((kind) =>
-      col(kind, kind[0].toUpperCase() + kind.slice(1) + ' trend', 120, {
+    ...trends.map((trend) =>
+      col(trend.field, trend.label, 166, {
+        type: 'number',
         editable: false,
-        itemRenderer: spark(kind),
+        itemRenderer: spark(trend),
       }),
     ),
     tagColumn,

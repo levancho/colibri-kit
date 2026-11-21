@@ -13,7 +13,7 @@ export const checks = {
     "Glide": "Search reduced the scrollable rows and clearing it restored them"
   },
   "custom-cells": {
-    "Colibri": "17 fields, rating saved at 2/5, hierarchy collapsed and restored",
+    "Colibri": "17 fields, three eight-week charts, inline rating retained after scrolling, hierarchy collapsed and restored",
     "Glide": "Opened tags on an editable row and read its choices: Bug, Feature, Enhancement"
   },
   "custom-cell-editing": {

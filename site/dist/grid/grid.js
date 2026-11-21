@@ -1449,6 +1449,73 @@ window.ColibriGrid = (() => {
       }
     }
   }
+  class RatingRenderer {
+    constructor() {
+      this.element = document.createElement('span');
+      this.element.className = 'cg-stars';
+      this.element.setAttribute('role', 'radiogroup');
+      for (let score = 1; score <= 5; score++) {
+        const star = document.createElement('button');
+        star.type = 'button';
+        star.setAttribute('role', 'radio');
+        star.setAttribute('aria-label', score + (score === 1 ? ' star' : ' stars'));
+        star.tabIndex = -1;
+        star.onclick = (event) => {
+          event.stopPropagation();
+          if (event.detail < 2) this.rate(score === this.value ? 0 : score);
+        };
+        this.element.append(star);
+      }
+      this.element.ondblclick = (event) => event.stopPropagation();
+      this.element.onkeydown = (event) => {
+        const index = Array.from(this.element.children).indexOf(event.target) + 1;
+        const next = {
+          ArrowRight: Math.min(5, index + 1),
+          ArrowLeft: Math.max(1, index - 1),
+          ArrowUp: Math.min(5, index + 1),
+          ArrowDown: Math.max(1, index - 1),
+          Home: 0,
+          End: 5,
+          Delete: 0,
+          Backspace: 0,
+        }[event.key];
+        if (event.key === 'Escape') this.owner.port.focus();
+        else if (next !== undefined || /^[0-5]$/.test(event.key)) this.rate(next ?? Number(event.key));
+        else {
+          if (event.key === 'Enter' || event.key === ' ') event.stopPropagation();
+          return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+      };
+    }
+    rate(score) {
+      const { owner, rowIndex, columnIndex, data, column } = this;
+      if (owner.activate) owner.activate(rowIndex, columnIndex);
+      else owner.choose(rowIndex, columnIndex);
+      this.commit(score);
+      // The workbench rebuilds its row nodes on commit. Resolve the new editor by record key.
+      const key = owner.key ?? '_key';
+      for (const { item } of owner.renderPool.active.values()) {
+        if (item.column.field === column.field && item.data[key] === data[key] && item.focusTarget) {
+          item.focusTarget.focus({ preventScroll: true });
+          return;
+        }
+      }
+      owner.port.focus({ preventScroll: true });
+    }
+    prepare() {
+      const score = Number(this.value) || 0;
+      this.element.setAttribute('aria-label', this.column.label + ': ' + score + ' of 5');
+      this.focusTarget = this.element.children[Math.max(0, Math.min(4, score - 1))];
+      Array.from(this.element.children).forEach((star, i) => {
+        star.dataset.filled = String(i < score);
+        star.setAttribute('aria-checked', String(i + 1 === score));
+        star.disabled = !this.column.editable || !!this.data._rows;
+        star.title = i + 1 === score ? 'Clear rating' : 'Rate ' + (i + 1) + ' of 5';
+      });
+    }
+  }
   class CheckboxRenderer {
     constructor() {
       this.element = document.createElement('input');
@@ -1560,6 +1627,7 @@ window.ColibriGrid = (() => {
       text: new ClassFactory(LabelRenderer),
       uriEditor: new ClassFactory(UriEditor),
       images: new ClassFactory(ImageRenderer),
+      rating: new ClassFactory(RatingRenderer),
       checkbox: new ClassFactory(CheckboxRenderer),
       input: new ClassFactory(InputEditor),
       multiline: new ClassFactory(MultilineEditor),
