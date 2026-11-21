@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "a108adbb6213b18a862ef7606befd4508e0919e9ed9cc38a7d740153506bf9fa",
+  "release": "b9649aa0d356a17fb6156c510bba85d4ab92c4593d0b3515d1eb627a6d906b2c",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -82,7 +82,7 @@
     "grid/samples/react/search-as-filter.jsx": "3fee1ea959f072d60cb57a4215086e394da1a6b5934a9938c57f19e54da77a64",
     "grid/samples/react/validate-data.jsx": "6be0d3ed31766b73fedc52be8fd226ffc8363cda871ca5b94f7b62c8d3fdc542",
     "grid/samples/sample.js": "50340baecd7d74de7716c8cd1627508dce8cb0ab5d1b10ace2129516080be7cf",
-    "grid/samples/source.js": "57b13a0a9cafb34e21b14f73823c940851ddc4de1035f40728354e27e279c195",
+    "grid/samples/source.js": "bb396889a3863f7df3c56cf5bcb5b81be1ae0dd0c03fc10e117bc0d7c98d34c6",
     "grid/samples/variations.js": "6923d87965140f3d7eb2d0e6f53fff13caf3e317b48f80adf0383db138146c56",
     "grid/vendor/echarts-6.0.0.esm.min.js": "b920493ac9036ac02fcb0de0a907ff9709e7bd1ff92b333c46c61b34589265ac",
     "grid/vendor/echarts-LICENSE-d3.txt": "e1211892da0b0e0585b7aebe8f98c1274fba15bafe47fa1f4ee8a7a502c06304",

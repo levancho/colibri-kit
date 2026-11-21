@@ -8,8 +8,6 @@ if (requested) controller.select(requested);
 for (const button of tabs.querySelectorAll('.sink-copy')) createClipboard(button);
 
 function documentSource(language, story, example) {
-  const theme = document.querySelector('link[rel=stylesheet]').getAttribute('href');
-  const themePath = new URL(theme, location.href).pathname;
   const hosts = {
     html: '<section id="stage" aria-label="Grid sample"></section>',
     ftl:
@@ -30,6 +28,14 @@ function documentSource(language, story, example) {
   return (
     directive +
     `<!doctype html>
+<link rel="stylesheet" href="/css/colibri.css">
+<link rel="stylesheet" href="/ui/themes/colibri.css">
+<link rel="stylesheet" href="/ui/themes/packs/index.css">
+<link rel="stylesheet" href="/grid/kit-grid-theme.css">
+<link rel="stylesheet" href="/grid/grid.css">
+<link rel="stylesheet" href="/grid/samples/cells.css">
+<script src="/grid/kit-theme.js"></script>
+<body class="ui-root">
 ${controls}${hosts[language]}
 <output id="activity" aria-live="polite"></output>
 <script src="/grid/grid.js"></script>
@@ -44,9 +50,7 @@ ${definition.create.name}(
   document.getElementById("activity"),
 );
 </script>
-<link rel="stylesheet" href="${themePath}">
-<link rel="stylesheet" href="/grid/grid.css">
-<link rel="stylesheet" href="/grid/samples/cells.css">`
+</body>`
   );
 }
 
