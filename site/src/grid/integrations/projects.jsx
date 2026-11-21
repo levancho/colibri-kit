@@ -31,8 +31,17 @@ function show() {
   document.title = story.name + ' · React · Colibri Grid';
   root.render(
     <main className="frameworks">
-      <a href={'../samples/?source=react#' + story.id}>← {story.name} sample and source</a>
-      <h1>{story.name}</h1>
+      <header className="kpage-head">
+        <span className="kpage-eyebrow">Colibri Grid / React</span>
+        <h1>{story.name}</h1>
+        <p>{story.description}</p>
+      </header>
+      <div className="integration-tools">
+        <label>Example <select value={story.id} onChange={event => { location.hash = event.target.value; }}>
+          {stories.map(entry => <option key={entry.id} value={entry.id}>{entry.name}</option>)}
+        </select></label>
+        <a href={'../samples/?source=react#' + story.id}>View sample source</a>
+      </div>
       <Sample />
     </main>,
   );

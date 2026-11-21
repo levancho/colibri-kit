@@ -1,5 +1,5 @@
 .frameworks {
-  max-width: 1250px;
+  max-width: var(--k-max);
   margin: auto;
   padding: 24px;
 }
@@ -9,11 +9,11 @@
   margin: 16px 0 5px;
 }
 .frameworks a {
-  color: #126b5d;
+  color: var(--kb-acc);
   font-size: 13px;
 }
 .frameworks p {
-  color: #536562;
+  color: var(--kb-muted);
 }
 .frameworks iframe {
   width: 100%;

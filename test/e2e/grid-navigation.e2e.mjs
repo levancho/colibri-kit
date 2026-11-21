@@ -1,0 +1,62 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import puppeteer from "puppeteer-core";
+import { serveBuild } from "./server.mjs";
+
+const server = process.env.KIT_GRID_ORIGIN ? null : await serveBuild();
+const origin = process.env.KIT_GRID_ORIGIN || server.origin;
+const executablePath = process.env.CHROME || ["/usr/bin/google-chrome", "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"].find(fs.existsSync);
+let browser;
+try {
+  browser = await puppeteer.launch({ executablePath, args: ["--no-sandbox"] });
+  for (const width of [1360, 390]) {
+    const page = await browser.newPage();
+    await page.setViewport({ width, height: 850 });
+    await page.goto(origin, { waitUntil: "domcontentloaded" });
+    const nav = ".kbar-nav";
+    const gridLink = nav + ' a[href="/grid/samples/"]';
+    await page.waitForSelector(gridLink);
+    const links = () => page.$$eval(nav + " a", a => a.map(i => [i.textContent, i.pathname]));
+    const kitLinks = await links();
+    const go = async selector => {
+      await Promise.all([page.waitForNavigation({ waitUntil: "domcontentloaded" }), page.click(selector)]);
+    };
+    async function checkSection(id) {
+      const current = '.kbar .kbar-row2 a[aria-current="page"]';
+      await page.waitForSelector(current);
+      assert.deepEqual(await links(), kitLinks);
+      assert.equal(await page.$eval(nav + ' [aria-current="page"]', a => a.textContent.trim()), "Colibri Grid Beta");
+      assert.equal(await page.$eval(current, a => a.dataset.section), id);
+      const layout = await page.evaluate(() => {
+        const header = document.querySelector(".kbar").getBoundingClientRect();
+        const sub = document.querySelector(".kbar-row2").getBoundingClientRect();
+        const content = document.querySelector("#grid-content").getBoundingClientRect();
+        return { gap: sub.top - header.bottom, overlap: sub.bottom - content.top, overflow: document.documentElement.scrollWidth - innerWidth };
+      });
+      assert(Math.abs(layout.gap) < 2 && layout.overlap <= 1 && layout.overflow <= 1, JSON.stringify(layout));
+    }
+    await go(gridLink);
+    await checkSection("samples");
+    await page.click('#samples a[href="#custom-cell-editing"]');
+    await page.waitForSelector('#run-react[href$="#custom-cell-editing"]');
+    const nextTheme = await page.$eval("html", e => e.dataset.theme === "dark" ? "light" : "dark");
+    await page.click("#theme");
+    await go('.kbar-sub [data-section="react"]');
+    await checkSection("react");
+    assert.equal(new URL(page.url()).hash, "#custom-cell-editing");
+    assert.equal(await page.$eval("html", e => e.dataset.theme), nextTheme);
+    await page.waitForSelector('[role="grid"]');
+    await go('.kbar-sub [data-section="samples"]');
+    assert.equal(new URL(page.url()).hash, "#custom-cell-editing");
+    await go('.kbar-sub [data-section="trading"]');
+    await checkSection("trading");
+    await page.waitForSelector("#symbol");
+    await go('.kbar-brand');
+    await page.waitForSelector('header[data-active="docs"]');
+    console.log(width + "px: Kit home → grid sample → React → same sample → trading → Kit home");
+    await page.close();
+  }
+} finally {
+  await browser?.close();
+  await server?.close();
+}

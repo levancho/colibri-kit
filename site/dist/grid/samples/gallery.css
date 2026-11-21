@@ -2,77 +2,22 @@
 * {
   box-sizing: border-box;
 }
-body.ui-root {
-  --ui-font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --ui-primary: #00776a;
-  --ui-ring: #008378;
-  --ui-border: #dbe2e4;
-  --ui-muted: #f4f7f7;
-  font-family: var(--ui-font);
-  color: #182a32;
-  background: #fff;
-  margin: 0;
-}
-.mast {
-  height: 55px;
-  background: #122e32;
-  color: #d1dfdd;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  padding: 0 26px;
-  font-size: 13px;
-}
-.mast a {
-  color: inherit;
-  text-decoration: none;
-}
-.mast .wordmark {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  font-weight: 650;
-  color: white;
-}
-.brandmark {
-  width: 23px;
-  height: 23px;
-  display: block;
-  border: 2px solid #80ddc5;
-  border-radius: 5px;
-  background:
-    linear-gradient(90deg, transparent 42%, #80ddc5 42% 50%, transparent 50%),
-    linear-gradient(0deg, transparent 54%, #80ddc5 54% 62%, transparent 62%);
-}
-.divider {
-  height: 19px;
-  width: 1px;
-  background: #466063;
-}
-.kitlink {
-  margin-left: auto;
-}
 .studio {
   display: grid;
-  grid-template-columns: 244px minmax(0, 1fr);
-  min-height: calc(100dvh - 55px);
+  grid-template-columns: clamp(190px, 19vw, 240px) minmax(0, 1fr);
+  max-width: var(--k-max);
+  margin-inline: auto;
+  min-height: calc(100dvh - var(--grid-bar-height));
 }
 aside {
-  background: #f6f8f8;
-  border-right: 1px solid #dce4e4;
+  background: var(--kb-soft);
+  border-right: 1px solid var(--kb-line);
   padding: 22px 13px;
   position: sticky;
-  top: 0;
-  height: calc(100dvh - 55px);
+  top: var(--grid-bar-height);
+  height: calc(100dvh - var(--grid-bar-height));
   display: flex;
   flex-direction: column;
-}
-.trading-link {
-  grid-column: 1 / -1;
-  margin: 8px 9px;
-  color: var(--ui-primary);
-  font-size: 13px;
 }
 .railhead {
   display: flex;
@@ -85,8 +30,8 @@ aside {
   margin: 0;
 }
 .railhead span {
-  color: #52716b;
-  background: #e3ece9;
+  color: var(--kb-muted);
+  background: var(--kb-pop);
   border-radius: 5px;
   padding: 2px 6px;
   font-size: 11px;
@@ -94,8 +39,8 @@ aside {
 .sample-filter {
   display: flex;
   align-items: center;
-  border: 1px solid #cad8d5;
-  background: white;
+  border: 1px solid var(--kb-line);
+  background: var(--kb-pop);
   border-radius: 6px;
   margin: 0 6px 14px;
   padding-left: 9px;
@@ -119,7 +64,7 @@ aside {
   font-size: 12px;
   font-weight: 650;
   cursor: pointer;
-  color: #425452;
+  color: var(--kb-fg);
 }
 .studio nav a {
   display: block;
@@ -127,68 +72,52 @@ aside {
   line-height: 20px;
   padding: 5px 12px 5px 21px;
   text-decoration: none;
-  color: #435452;
+  color: var(--kb-muted);
   border-radius: 5px;
 }
 .studio nav a:hover {
-  background: #e7eeec;
+  background: var(--kb-pop);
 }
 .studio nav a[aria-current] {
-  background: #d9eee8;
-  color: #005e51;
+  background: var(--kb-pop);
+  color: var(--kb-acc);
   font-weight: 650;
-  box-shadow: inset 3px 0 #00826c;
+  box-shadow: inset 3px 0 var(--kb-acc);
 }
 .studio main {
   min-width: 0;
   padding: 29px clamp(16px, 2.4vw, 44px) 32px;
 }
-.heading h1 {
-  font-size: clamp(26px, 3.2vw, 43px);
-  line-height: 1.08;
-  letter-spacing: -0.045em;
-  margin: 8px 0 9px;
-  color: #182e31;
-}
-.heading p {
-  color: #4d6263;
-  font-size: 14px;
-  margin: 0 0 22px;
-}
-.heading #crumb {
-  color: #52746e;
-  font-size: 12px;
-  font-weight: 600;
-}
 .tabs {
   display: flex;
   align-items: center;
   gap: 19px;
-  border-bottom: 1px solid #dbe3e0;
+  margin-top: 16px;
+  border-bottom: 1px solid var(--kb-line);
   margin-bottom: 17px;
 }
 .studio .tabs button {
   padding: 8px 1px;
   border-radius: 0;
   background: none;
-  color: #536564;
+  color: var(--kb-muted);
   border: 0;
   border-bottom: 2px solid transparent;
   font-size: 13px;
 }
 .studio .tabs button[aria-pressed='true'] {
-  border-bottom-color: #007665;
-  color: #006653;
+  border-bottom-color: var(--kb-acc);
+  color: var(--kb-acc);
   font-weight: 650;
 }
 .tabs a {
   margin-left: auto;
   font-size: 12px;
-  color: #38625b;
+  color: var(--kb-acc);
   text-decoration: none;
 }
 #stage {
-  border: 1px solid #cfdcda;
+  border: 1px solid var(--kb-line);
   border-radius: 8px;
   overflow: hidden;
 }
@@ -202,8 +131,8 @@ aside {
 #toolbar {
   min-height: 44px;
   padding: 8px 14px;
-  background: #f8faf9;
-  border-bottom: 1px solid #d9e2df;
+  background: var(--kb-soft);
+  border-bottom: 1px solid var(--kb-line);
 }
 #toolbar label {
   display: inline-flex;
@@ -211,10 +140,10 @@ aside {
   gap: 8px;
   font-size: 12px;
   font-weight: 550;
-  color: #324946;
+  color: var(--kb-fg);
 }
 #toolbar input[type='range'] {
-  accent-color: #00846e;
+  accent-color: var(--kb-acc);
   width: 150px;
 }
 #toolbar input[type='number'] {
@@ -245,8 +174,8 @@ aside {
 }
 #surface .cg-head {
   font-size: 12px;
-  color: #425450;
-  background: #edf3f1;
+  color: var(--kb-fg);
+  background: var(--kb-soft);
 }
 #surface .cg-head button {
   align-items: center;
@@ -255,11 +184,11 @@ aside {
   font-size: 13px;
 }
 #surface .cg-canvas .cg-row:hover {
-  background: var(--hover-color, #f4f9f7);
+  background: var(--hover-color, var(--kb-soft));
 }
 #surface .cg .cg-menu-trigger {
   width: 18px;
-  color: #758b86;
+  color: var(--kb-muted);
 }
 #surface .cg-range-status:empty,
 #bottom:empty {
@@ -270,16 +199,16 @@ aside {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  border-top: 1px solid #dce4e1;
+  border-top: 1px solid var(--kb-line);
   font-size: 12px;
-  color: #58706a;
+  color: var(--kb-muted);
 }
 #activity {
   overflow-wrap: anywhere;
 }
 #bottom:not(:empty) {
   padding: 7px 12px;
-  border-top: 1px solid #dce4e1;
+  border-top: 1px solid var(--kb-line);
 }
 .external-frame {
   border: 1px solid #dbe2df;
@@ -298,25 +227,20 @@ aside {
 .sample-empty {
   padding: 10px;
   font-size: 13px;
-  color: #596c66;
+  color: var(--kb-muted);
 }
 @media (max-width: 720px) {
-  .mast {
-    padding: 0 14px;
-    height: 46px;
-    gap: 10px;
-  }
   .studio {
     display: block;
   }
   aside {
-    position: relative;
+    position: static;
     height: auto;
     display: grid;
     grid-template-columns: auto 1fr;
     padding: 9px 12px;
     border-right: 0;
-    border-bottom: 1px solid #ccd9d3;
+    border-bottom: 1px solid var(--kb-line);
   }
   .railhead,
   .sample-filter {
@@ -331,9 +255,6 @@ aside {
   }
   .studio main {
     padding: 17px 10px;
-  }
-  .heading p {
-    margin-bottom: 12px;
   }
   .tabs {
     gap: 12px;

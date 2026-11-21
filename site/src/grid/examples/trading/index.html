@@ -7,18 +7,28 @@
     <link rel="stylesheet" href="/ui/themes/colibri.css" />
     <link rel="stylesheet" href="../../grid.css" />
     <link rel="stylesheet" href="trading.css" />
+
+    <link rel="stylesheet" href="/ui/themes/packs/index.css">
+    <link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
+    <link rel="stylesheet" href="/grid/kit-page.css">
+    <script src="/grid/kit-theme.js"></script>
+    <script type="module" src="/grid/kit-page.js"></script>
   </head>
   <body class="ui-root">
-    <header class="sitebar">
-      <a href="../../samples/" class="brand"
-        ><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span>Colibri Grid</a
-      ><span class="crumb">/</span><span>Examples</span><span class="session"><i></i>Simulated feed</span>
+    <a class="grid-skip" href="#grid-content">Skip to grid content</a>
+    <header class="kbar" data-active="grid">
+      <button type="button" class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Toggle dark mode">◐</button>
     </header>
-    <main>
+    <nav class="kbar-sub" aria-label="Colibri Grid">
+      <a data-section="samples" href="/grid/samples/">Samples</a>
+      <a data-section="react" href="/grid/integrations/react.html">React examples</a>
+      <a data-section="trading" href="/grid/examples/trading/" aria-current="page">Trading desk</a>
+    </nav>
+    <main id="grid-content" tabindex="-1">
       <div class="top">
         <div>
           <h1>Trading desk</h1>
-          <p>Equity quotes and foreign exchange</p>
+          <p>Equity quotes and foreign exchange · <span class="session">Simulated feed</span></p>
         </div>
         <div class="controls">
           <label

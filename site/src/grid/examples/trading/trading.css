@@ -1,18 +1,3 @@
-:root {
-  --ui-font: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --ui-background: #f2f5f3;
-  --ui-foreground: #142c25;
-  --ui-muted: #f4f7f5;
-  --ui-muted-foreground: #52675f;
-  --ui-card: #fff;
-  --ui-border: #d9e2dc;
-  --ui-primary: #126850;
-  --ui-ring: #26937b;
-  --ui-radius: 5px;
-  --ui-text-sm: 13px;
-  color: var(--ui-foreground);
-  font-family: var(--ui-font);
-}
 * {
   box-sizing: border-box;
 }
@@ -28,65 +13,8 @@ select {
 a {
   color: inherit;
 }
-.sitebar {
-  height: 56px;
-  background: #142e27;
-  color: #d7e8e0;
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  padding: 0 clamp(16px, 3vw, 52px);
-  font-size: 13px;
-}
-.brand {
-  font-size: 17px;
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  letter-spacing: -0.045em;
-  font-weight: 700;
-  text-decoration: none;
-}
-.mark {
-  display: flex;
-  gap: 3px;
-  align-items: flex-end;
-  height: 18px;
-  transform: skew(-15deg);
-}
-.mark i {
-  height: 9px;
-  width: 4px;
-  background: #81d7b3;
-}
-.mark i:nth-child(2) {
-  height: 14px;
-}
-.mark i:nth-child(3) {
-  height: 18px;
-}
-.crumb {
-  color: #709284;
-}
-.session {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-}
-.session i {
-  height: 7px;
-  width: 7px;
-  border-radius: 50%;
-  background: #8edbb6;
-}
-[data-paused] .session i {
-  background: #e6be72;
-}
 main {
-  max-width: 1760px;
+  max-width: var(--k-max);
   margin: auto;
   padding: 24px clamp(14px, 3vw, 52px) 14px;
 }
@@ -131,7 +59,7 @@ main {
 .ui-root .controls select,
 .ui-root .controls summary {
   font-size: 13px;
-  background: white;
+  background: var(--ui-card);
   border: 1px solid var(--ui-border);
   border-radius: 5px;
   padding: 7px 10px;
@@ -155,7 +83,7 @@ main {
   right: 0;
   top: calc(100% + 5px);
   width: 250px;
-  background: white;
+  background: var(--ui-card);
   border: 1px solid var(--ui-border);
   border-radius: 6px;
   box-shadow: var(--ui-shadow);
@@ -221,7 +149,7 @@ main {
   font: 12px var(--ui-font);
   border-radius: 5px;
   padding: 3px 8px;
-  background: #f7faf8;
+  background: var(--ui-muted);
 }
 .cg {
   border: 0;
@@ -245,8 +173,8 @@ main {
 }
 .cg .cg-head {
   font-size: 11px;
-  background: #f4f7f5;
-  color: #586c62;
+  background: var(--ui-muted);
+  color: var(--ui-muted-foreground);
   box-shadow: inset 0 -1px var(--ui-border);
 }
 .cg .cg-head button {
@@ -265,10 +193,10 @@ main {
   border-color: #e7ede9;
 }
 .cg .cg-row:hover {
-  background: #f4f9f5;
+  background: var(--ui-muted);
 }
 .cg .cg-row:has(.ticker[data-chosen]) {
-  background: #e4f4eb;
+  background: color-mix(in srgb, var(--ui-card) 85%, var(--kb-acc));
   box-shadow: inset 3px 0 #278d67;
 }
 .ticker {
@@ -283,7 +211,7 @@ main {
   font-size: 12px;
 }
 .ticker small {
-  color: #5d7066;
+  color: var(--ui-muted-foreground);
   font: 10px var(--ui-font);
   white-space: nowrap;
   overflow: hidden;
@@ -352,8 +280,8 @@ main {
   min-height: 0;
 }
 .chart-head button[aria-pressed='true'] {
-  background: #e4f4eb;
-  color: #125940;
+  background: color-mix(in srgb, var(--ui-card) 85%, var(--kb-acc));
+  color: var(--kb-fg);
   border-radius: 4px;
 }
 #history {

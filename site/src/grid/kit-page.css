@@ -1,0 +1,15 @@
+:root { --grid-bar-height: calc(var(--kb-h) + 40px); }
+html[data-theme=dark] { color-scheme: dark; }
+html[data-theme=light] { color-scheme: light; }
+body.ui-root {
+  margin: 0;
+  font-family: var(--kb-font);
+  background: var(--ui-background);
+  color: var(--ui-foreground);
+}
+.grid-skip:not(:focus) { position: absolute; clip-path: inset(100%); width: 1px; height: 1px; overflow: hidden; }
+.grid-skip:focus { position: fixed; z-index: 110; padding: 10px; background: var(--kb-pop); color: var(--kb-fg); }
+.kbar-sub [aria-current=page] { background: var(--kb-soft); color: var(--kb-fg); font-weight: 650; }
+@media (max-width: 720px) {
+  .kbar .kbar-row2 { justify-content: flex-start; }
+}
