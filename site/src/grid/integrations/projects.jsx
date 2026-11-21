@@ -20,7 +20,7 @@ const columns = [
     label: 'Stage',
     width: 157,
     editable: true,
-    renderCell: ({ value }) => <span className="chip">{value}</span>,
+    renderCell: ({ value }) => <span className={'chip phase-' + statuses.indexOf(value)}>{value}</span>,
     renderEditor: ({ value, onChange }) => (
       <select value={value} onChange={(e) => onChange(e.target.value)}>
         {statuses.map((s) => (

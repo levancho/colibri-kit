@@ -269,7 +269,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
     setMenu(null);
     port.current?.focus();
   }
-  const tracks = columns.map((c) => (c.width ?? 140) + 'px').join(' '),
+  const tracks = columns.map((c) => 'minmax(' + (c.width ?? 140) + 'px,1fr)').join(' '),
     width = columns.reduce((n, c) => n + (c.width ?? 140), 0);
   const pin = (i, header = false) =>
     i < pinnedColumns
@@ -305,6 +305,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
               role: 'gridcell',
               id: id + '-' + r + '-' + c,
               'aria-colindex': c + 1,
+              'data-numeric': col.type === 'number' ? '' : undefined,
               'aria-readonly': !col.editable,
               'aria-selected': selected,
               'data-range': selected ? '' : undefined,
@@ -412,6 +413,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
                 key: col.field,
                 'data-head': i,
                 role: 'columnheader',
+                'data-numeric': col.type === 'number' ? '' : undefined,
                 className: 'cg-menu-head',
                 'aria-sort':
                   order?.field === col.field ? (order.direction === 1 ? 'ascending' : 'descending') : undefined,
