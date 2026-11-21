@@ -24,6 +24,8 @@ export function createCollapsible(root, o = {}) {
     const trigger = part(root, "trigger"), content = part(root, "content");
     let open = !!(o.defaultOpen ?? root.hasAttribute("data-default-open"));
     if (trigger && content) wirePair(trigger, content, id);
+    // Styling follows this controller's trigger, never nested tabs/selects.
+    trigger?.setAttribute("data-ui-collapsible-trigger", "");
     const render = () => show([root, trigger, content], open, trigger, content);
     const set = (v) => {
       if (v === open || (root.dataset.disabled != null)) return;
@@ -31,7 +33,7 @@ export function createCollapsible(root, o = {}) {
     };
     if (trigger) b.on(trigger, "click", () => set(!open));
     render();
-    return { get open() { return open; }, set open(v) { set(!!v); }, toggle: () => set(!open), destroy: b.off };
+    return { get open() { return open; }, set open(v) { set(!!v); }, toggle: () => set(!open), destroy() { b.off(); trigger?.removeAttribute("data-ui-collapsible-trigger"); } };
   });
 }
 
