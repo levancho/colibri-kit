@@ -53,6 +53,19 @@ try {
       await page.emulateMedia({reducedMotion:'reduce'});
       assert.equal(await page.locator('#spinner').evaluate(e=>getComputedStyle(e,'::before').animationName),'none');
       assert.equal(await page.locator('#hidden').evaluate(e=>getComputedStyle(e).display),'none');
+      await page.goto(server.origin + '/grid/samples/#full-grid');
+      const firstRow = page.locator('.wb-content .wb-row').first();
+      for (const [column, label] of [[5, 'Start date'], [6, 'End date']]) {
+        await firstRow.locator('[data-c="' + column + '"]').dblclick();
+        const date = page.getByLabel('Edit ' + label, { exact: true });
+        assert(await date.evaluate(input => {
+          const icon = getComputedStyle(input.parentElement, '::after');
+          const box = input.getBoundingClientRect();
+          const target = document.elementFromPoint(box.right - 16, box.top + box.height / 2);
+          return icon.maskImage.includes('svg') && icon.width === '16px' && target === input;
+        }), name + ': calendar icon and native picker target');
+        await date.press('Escape');
+      }
       assert.deepEqual(errors,[],`${name}: uncaught errors`);
       console.log(`ok ${name}: setup guides + homepage + dashboards, 2 widths × 2 schemes, axe WCAG A/AA checks, modal/menu focus, native CSS and keyboard tabs`);
     } finally { await browser.close(); }
