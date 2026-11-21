@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "059e1bc0df8c7b33a6586e40a8161cc9e3275483e3e2948742e21ea4b4096ac5",
+  "release": "1e6e96f79e20828b5abdfeb5474a04f20794515ab47a888d49b4c35c45e4da7c",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -24,7 +24,7 @@
     "grid/examples/trading/trading.css": "30a148ba37d53118d98c6aa0024929c4225946ee001d26d368f4b9785ca7a47e",
     "grid/examples/trading/trading.js": "2c799105d0e30b6973dcd1b372803d5deb35fd8c6a6daae33f36d73a025ec88d",
     "grid/files.js": "0590a976bf9905f0301097590515f59afba12412e6e17a090f49efa411706d9f",
-    "grid/grid.css": "d0b35b16acf021b3f137f1c76ef8dab95c145cf469499537ab78ec5686194f29",
+    "grid/grid.css": "62dc2c2fba4f6700c7d3fd007caf491ba6f498e6067ce81ee21837a18f435196",
     "grid/grid.js": "83e966e2fb4741ed1070500c4d68feb2db2927cd1904a7acbe4329d4235f97bc",
     "grid/index.html": "4612ec55630cfa4cb9a811c4c6531c456ab86432654082d67a5125ee58aa68a0",
     "grid/integrations/React-LICENSE.txt": "52412d7bc7ce4157ea628bbaacb8829e0a9cb3c58f57f99176126bc8cf2bfc85",
