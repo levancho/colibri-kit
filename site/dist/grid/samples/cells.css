@@ -1,0 +1,93 @@
+.sample-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  vertical-align: middle;
+  line-height: 1.25;
+}
+.chip,
+.tag {
+  display: inline-block;
+  border-radius: 4px;
+  padding: 3px 7px;
+  background: #e4edf3;
+  color: #365571;
+  font-size: 11px;
+  font-weight: 600;
+}
+.phase-0 {
+  background: #d8efe7;
+  color: #126149;
+}
+.phase-1 {
+  background: #e7ebef;
+  color: #4a5765;
+}
+.phase-2 {
+  background: #fff0cb;
+  color: #765412;
+}
+.phase-3 {
+  background: #e7e2f5;
+  color: #604587;
+}
+.avatar {
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 9px;
+  line-height: 1;
+  font-weight: 700;
+  color: #364b60;
+  background: #d8e6ef;
+}
+.avatar[data-tone='0'] {
+  background: #d9e7da;
+  color: #36563c;
+}
+.avatar[data-tone='1'] {
+  background: #efe2d8;
+  color: #714a38;
+}
+.sample-cell progress {
+  width: 59px;
+  height: 6px;
+  accent-color: #228b77;
+}
+.stars {
+  color: #a46b0a;
+  letter-spacing: 1px;
+}
+.tag-editor {
+  display: grid;
+  gap: 6px;
+}
+.spinner {
+  height: 15px;
+  width: 15px;
+  border: 2px solid #cfdfd9;
+  border-top-color: #16886e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}
+.cell-button {
+  height: auto !important;
+  min-height: 20px !important;
+  font-size: 11px !important;
+  padding: 2px 5px !important;
+}
+
+.tag-editor button { font-size: 12px; }

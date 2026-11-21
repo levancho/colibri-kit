@@ -1,4 +1,5 @@
 import { createTabs, createClipboard, highlightAll } from './kit-source.js';
+import { examples } from './variations.js';
 
 const tabs = document.querySelector('.sink-code-tabs');
 const requested = new URLSearchParams(location.search).get('source');
@@ -18,31 +19,61 @@ function documentSource(language, story, example) {
       story +
       '\')}"></section>',
   };
-  const logic = example
-    .replaceAll("'../cells.js'", "'/grid/samples/cells.js'")
-    .replace('export function ', 'function ');
-  const name = /export function (\w+)/.exec(example)[1];
+  const definition = examples[story];
+  const imports = example
+    .slice(0, example.indexOf('export const controls'))
+    .trim()
+    .replaceAll("'../cells.js'", "'/grid/samples/cells.js'");
+  const setup = example.slice(example.indexOf('export function ')).replace('export function ', 'function ');
   const directive = language === 'ftl' ? '[#ftl output_format="HTML" auto_esc=true]\n' : '';
-  const argument = language === 'html' ? JSON.stringify(story) : 'host.dataset.gridStory';
+  const controls = definition.controls ? '<div id="controls">' + definition.controls + '</div>\n' : '';
   return (
     directive +
     `<!doctype html>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-${hosts[language]}
-<link rel="stylesheet" href="${themePath}">
-<link rel="stylesheet" href="/grid/grid.css">
-<link rel="stylesheet" href="/grid/samples/gallery.css">
+${controls}${hosts[language]}
+<output id="activity" aria-live="polite"></output>
 <script src="/grid/grid.js"></script>
 <script type="module">
-import { mountSample } from "/grid/samples/sample.js";
+${imports}
 
-${logic.trimEnd()}
+${setup.trimEnd()}
 
-const host = document.getElementById("stage");
-mountSample(host, ${argument}, ${name});
-</script>`
+${definition.create.name}(
+  document.getElementById("stage"),
+  document.getElementById("controls"),
+  document.getElementById("activity"),
+);
+</script>
+<link rel="stylesheet" href="${themePath}">
+<link rel="stylesheet" href="/grid/grid.css">
+<link rel="stylesheet" href="/grid/samples/cells.css">`
   );
 }
+
+const implementation = document.querySelector('#implementation');
+const file = document.querySelector('#implementation-file');
+const rawCode = document.querySelector('#implementation-code');
+let loadedFile;
+async function showFile() {
+  if (!implementation.open || loadedFile === file.value) return;
+  const selected = file.value;
+  loadedFile = selected;
+  document.querySelector('#open-file').href = selected;
+  rawCode.textContent = 'Loading source…';
+  try {
+    const response = await fetch(selected);
+    if (!response.ok) throw Error(response.statusText);
+    const source = await response.text();
+    if (file.value === selected) rawCode.textContent = source;
+  } catch {
+    if (file.value === selected) {
+      loadedFile = undefined;
+      rawCode.textContent = 'Could not load this file.';
+    }
+  }
+}
+implementation.addEventListener('toggle', showFile);
+file.addEventListener('change', showFile);
 
 function write(panel, value) {
   const code = panel.querySelector('code');

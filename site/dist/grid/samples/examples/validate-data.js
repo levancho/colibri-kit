@@ -1,12 +1,18 @@
-import { baseColumns } from '../cells.js';
+import { baseColumns, projectRows } from '../cells.js';
 
-export function configureValidateData(c) {
-  c.columns = [
-    baseColumns[0],
-    {
-      ...baseColumns[5],
-      validator: (v) => (Number.isInteger(v) && v >= 0) || 'Enter a whole number of zero or more.',
-    },
-    ...baseColumns.slice(1, 4),
-  ];
+export const controls = '';
+
+export function createValidateData(host, toolbar, status, onActivate) {
+  const budget = {
+    ...baseColumns.find((column) => column.field === 'amount'),
+    validator: (value) => (Number.isInteger(value) && value >= 0) || 'Enter a whole number of zero or more.',
+  };
+  const grid = new ColibriGrid(host, {
+    columns: [baseColumns[0], budget, ...baseColumns.slice(1, 4)],
+    rows: projectRows('validate-data'),
+    label: 'Validated edits',
+    onActivate,
+    rangeSelection: true,
+  });
+  return () => grid.destroy();
 }

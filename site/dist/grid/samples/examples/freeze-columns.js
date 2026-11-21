@@ -1,19 +1,40 @@
-export function configureFreezeColumns(c) {
+import { baseColumns, projectRows } from '../cells.js';
+
+export const controls = '<label>Pinned columns <input type="range" min="0" max="3" value="1"></label>';
+
+export function createFreezeColumns(host, toolbar, status, onActivate) {
+  const grid = new ColibriGrid(host, {
+    columns: baseColumns,
+    rows: projectRows('freeze-columns'),
+    label: 'Freeze columns',
+    onActivate,
+    rangeSelection: true,
+  });
   const style = document.createElement('style');
-  c.surface.append(style);
-  const apply = (n) => {
+  host.append(style);
+  const slider = toolbar.querySelector('input');
+  function pin() {
     let left = 0;
-    style.textContent = Array.from({ length: n }, (_, i) => {
-      const out =
-        '#surface .cg-row > :nth-child(' +
-        (i + 1) +
-        '){position:sticky;left:' +
-        left +
-        'px;z-index:1;background:#edf6f1}';
-      left += c.columns[i].width;
-      return out;
-    }).join('\n');
+    style.textContent = grid.columns
+      .slice(0, slider.valueAsNumber)
+      .map((column, index) => {
+        const rule =
+          '#' +
+          host.id +
+          ' .cg-row > :nth-child(' +
+          (index + 1) +
+          '){position:sticky;left:' +
+          left +
+          'px;z-index:1;background:#edf6f1}';
+        left += column.width;
+        return rule;
+      })
+      .join('\n');
+  }
+  slider.oninput = pin;
+  pin();
+  return () => {
+    style.remove();
+    grid.destroy();
   };
-  c.input('Pinned columns', 'range', 1, apply, { min: 0, max: 3 });
-  apply(1);
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -44,6 +44,19 @@
         </div>
         <details id="source" class="sink-code" open>
           <summary>Code</summary>
+          <details class="implementation" id="implementation">
+            <summary>View grid implementation</summary>
+            <label>Source file
+              <select id="implementation-file">
+                <option value="../grid.js">JavaScript grid · grid.js</option>
+                <option value="../integrations/react-grid.js">React grid · react-grid.js</option>
+                <option value="cells.js">Sample rows, columns and cell factories · cells.js</option>
+                <option value="react/columns.jsx">React columns and editors · columns.jsx</option>
+              </select>
+            </label>
+            <a id="open-file" href="../grid.js" target="_blank" rel="noopener">Open file ↗</a>
+            <pre tabindex="0"><code id="implementation-code"></code></pre>
+          </details>
           <div data-ui="tabs" class="sink-code-tabs" data-default-value="html">
             <div data-ui-part="list" aria-label="Sample source code">
               <button data-ui-part="trigger" data-value="html">HTML</button>

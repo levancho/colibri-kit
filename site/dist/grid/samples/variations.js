@@ -1,23 +1,26 @@
-import { configureFreezeColumns } from './examples/freeze-columns.js';
-import { configureValidateData } from './examples/validate-data.js';
-import { configurePasteSupport } from './examples/paste-support.js';
-import { configureFillHandle } from './examples/fill-handle.js';
-import { configureSearchAsFilter } from './examples/search-as-filter.js';
-import { configureRapidUpdates } from './examples/rapid-updates.js';
-import { configureAddColumns } from './examples/add-columns.js';
-import { configureCustomCells } from './examples/custom-cells.js';
-import { configureCustomCellEditing } from './examples/custom-cell-editing.js';
-import { configureHeaderMenus } from './examples/header-menus.js';
+import * as searchAsFilter from './examples/search-as-filter.js';
+import * as headerMenus from './examples/header-menus.js';
+import * as validateData from './examples/validate-data.js';
+import * as fillHandle from './examples/fill-handle.js';
+import * as pasteSupport from './examples/paste-support.js';
+import * as freezeColumns from './examples/freeze-columns.js';
+import * as rapidUpdates from './examples/rapid-updates.js';
+import * as customCellEditing from './examples/custom-cell-editing.js';
+import * as customCells from './examples/custom-cells.js';
+import * as addColumns from './examples/add-columns.js';
 
-export const configurations = {
-  'freeze-columns': configureFreezeColumns,
-  'validate-data': configureValidateData,
-  'paste-support': configurePasteSupport,
-  'fill-handle': configureFillHandle,
-  'search-as-filter': configureSearchAsFilter,
-  'rapid-updates': configureRapidUpdates,
-  'add-columns': configureAddColumns,
-  'custom-cells': configureCustomCells,
-  'custom-cell-editing': configureCustomCellEditing,
-  'header-menus': configureHeaderMenus,
+export const examples = {
+  'search-as-filter': { controls: searchAsFilter.controls, create: searchAsFilter.createSearchAsFilter },
+  'header-menus': { controls: headerMenus.controls, create: headerMenus.createHeaderMenus },
+  'validate-data': { controls: validateData.controls, create: validateData.createValidateData },
+  'fill-handle': { controls: fillHandle.controls, create: fillHandle.createFillHandle },
+  'paste-support': { controls: pasteSupport.controls, create: pasteSupport.createPasteSupport },
+  'freeze-columns': { controls: freezeColumns.controls, create: freezeColumns.createFreezeColumns },
+  'rapid-updates': { controls: rapidUpdates.controls, create: rapidUpdates.createRapidUpdates },
+  'custom-cell-editing': {
+    controls: customCellEditing.controls,
+    create: customCellEditing.createCustomCellEditing,
+  },
+  'custom-cells': { controls: customCells.controls, create: customCells.createCustomCells },
+  'add-columns': { controls: addColumns.controls, create: addColumns.createAddColumns },
 };
