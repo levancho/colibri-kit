@@ -90,6 +90,9 @@ window.ColibriGrid.Workbench = (() => {
     'Row summary': 'Zeilensumme',
     Off: 'Aus',
     'Row groups': 'Zeilengruppen',
+    Group: 'Gruppe',
+    'Remove group': 'Gruppe entfernen',
+    '(Blanks)': '(Leer)',
     Values: 'Werte',
     'Pivot columns': 'Pivot-Spalten',
     'Pivot mode': 'Pivot-Modus',
@@ -219,18 +222,23 @@ window.ColibriGrid.Workbench = (() => {
       this.element = button('', () => {
         const g = this.owner.openGroups,
           key = this.data._groupKey;
+        const owner = this.owner;
         if (g.has(key)) g.delete(key);
         else g.add(key);
-        this.owner.redraw();
+        owner.redraw();
+        owner.content.querySelector('[data-id="' + CSS.escape('group' + key) + '"] .wb-tree-toggle')?.focus({ preventScroll: true });
       });
+      this.element.className = 'wb-tree-toggle';
+      this.caption = el('span', 'wb-tree-label');
+      this.count = el('span', 'wb-tree-count');
+      this.element.append(this.caption, this.count);
     }
     prepare() {
-      this.element.textContent =
-        (this.owner.openGroups.has(this.data._groupKey) ? '▾ ' : '▸ ') +
-        this.data._label +
-        ' (' +
-        this.data._rows.length +
-        ')';
+      this.element.title = this.label;
+      this.element.setAttribute('aria-label', this.label + ' (' + this.data._rows.length + ')');
+      this.element.setAttribute('aria-expanded', this.owner.openGroups.has(this.data._groupKey));
+      this.caption.textContent = this.label;
+      this.count.textContent = '(' + this.data._rows.length.toLocaleString(this.owner.lang) + ')';
       this.element.style.marginInlineStart = this.data._depth * 12 + 'px';
     }
   }
@@ -372,6 +380,7 @@ window.ColibriGrid.Workbench = (() => {
       this.values = [];
       this.axes = [];
       this.openGroups = new Set();
+      this.treeColumn = { field: '_label', label: 'Group', group: 'Group', width: 220, pin: 'left', editable: false };
       this.sorts = [];
       this.query = '';
       this.panel = 'Columns';
@@ -723,22 +732,31 @@ window.ColibriGrid.Workbench = (() => {
               g[b.key + 'm' + i] = aggregate(g.bins.get(a) || [], field, op);
             });
       } else if (this.groups.length) {
+        cols = [this.treeColumn, ...cols.filter(c => !this.groups.includes(c.field))];
         const flat = [];
         const walk = (rows, depth, path) => {
           if (depth === this.groups.length) {
             for (const r of rows) flat.push(r);
             return;
           }
+          const field = this.groups[depth];
+          const column = this.col(field);
           const bins = new Map();
           for (const r of rows) {
-            const v = r[this.groups[depth]] ?? '';
+            const v = column.kind === 'pin' ? this.pinned.has(r._key) : r[field] ?? '';
             if (!bins.has(v)) bins.set(v, []);
             bins.get(v).push(r);
           }
-          for (const [v, items] of bins) {
-            const next = [...path, v],
+          const entries = [...bins];
+          const order = this.sorts.find(s => s.field === field);
+          if (order) entries.sort(([a, ar], [b, br]) => order.dir * (column.sortCompareFunction
+            ? column.sortCompareFunction(ar[0], br[0], column)
+            : typeof a === 'number' && typeof b === 'number' ? a - b
+            : String(a).localeCompare(String(b), this.lang, { numeric: true })));
+          for (const [v, items] of entries) {
+            const next = [...path, [field, v]],
               key = JSON.stringify(next);
-            const node = { _key: 'group' + key, _groupKey: key, _label: String(v), _rows: items, _depth: depth };
+            const node = { _key: 'group' + key, _groupKey: key, _label: String(v) || this.t('(Blanks)'), _rows: items, _depth: depth };
             for (const m of this.values) node[m.field] = aggregate(items, m.field, m.op);
             flat.push(node);
             if (this.openGroups.has(key)) walk(items, depth + 1, next);
@@ -934,6 +952,8 @@ window.ColibriGrid.Workbench = (() => {
         e.dataTransfer.effectAllowed = 'move';
       };
       node.ondragend = () => {
+        this.groupbar.classList.remove('wb-over');
+        this.groupbar.querySelector('[data-insert]')?.removeAttribute('data-insert');
         this.drag = null;
       };
     }
@@ -945,19 +965,85 @@ window.ColibriGrid.Workbench = (() => {
       this.resetPosition();
       this.redraw();
     }
+    setGroupOrder(fields) {
+      this.groups = fields;
+      this.resetPosition();
+      this.redraw();
+    }
+    focusGroup(field) {
+      (field && this.groupbar.querySelector('[data-group-field="' + CSS.escape(field) + '"] button') || this.port).focus({ preventScroll: true });
+    }
     groupZone() {
-      this.groupbar.replaceChildren();
-      this.groupbar.append(el('strong', '', this.t('Row groups')));
+      const label = this.t('Group by');
+      this.groupbar.setAttribute('role', 'group');
+      this.groupbar.setAttribute('aria-label', label);
+      this.groupbar.replaceChildren(el('strong', '', label));
       if (!this.groups.length) this.groupbar.append(el('span', 'wb-hint', this.t('Drop columns to group rows')));
-      this.groups.forEach((f) =>
-        this.groupbar.append(
-          button(this.t(this.col(f).label) + ' ×', () => {
-            this.groups = this.groups.filter((k) => k !== f);
-            this.redraw();
-          }),
-        ),
-      );
-      this.drop(this.groupbar, 'col', (f) => this.addField('groups', f));
+      this.groups.forEach((field, index) => {
+        const name = this.t(this.col(field).label);
+        const chip = el('span', 'wb-group-chip');
+        chip.dataset.groupField = field;
+        this.draggable(chip, 'group', field);
+        const sort = this.sorts.find(s => s.field === field);
+        const sortName = this.t(sort?.dir === 1 ? 'Sort descending' : 'Sort ascending') + ' · ' + name;
+        const title = this.pivot ? el('span', '', name) : button(name, () => {
+          this.sort(this.col(field), sort?.dir === 1 ? -1 : 1, true);
+          this.focusGroup(field);
+        }, sortName);
+        if (!this.pivot) title.append(el('span', 'wb-group-sort', sort ? (sort.dir === 1 ? '↑' : '↓') : '↕'));
+        chip.append(title, button('×', () => {
+          this.setGroupOrder(this.groups.filter(f => f !== field));
+          this.focusGroup(this.groups[Math.min(index, this.groups.length - 1)]);
+        }, this.t('Remove group') + ' ' + name));
+        chip.onkeydown = e => {
+          if (!e.altKey || !['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+          e.preventDefault();
+          const dest = index + (e.key === 'ArrowLeft' ? -1 : 1);
+          if (dest < 0 || dest >= this.groups.length) return;
+          const fields = this.groups.slice();
+          [fields[index], fields[dest]] = [fields[dest], fields[index]];
+          this.setGroupOrder(fields);
+          this.focusGroup(field);
+        };
+        if (index) this.groupbar.append(el('span', 'wb-group-separator', '›'));
+        this.groupbar.append(chip);
+      });
+      const accepts = () => ['col', 'group'].includes(this.drag?.kind);
+      const placement = e => {
+        const chip = e.target.closest('[data-group-field]');
+        if (!chip) return {};
+        const bounds = chip.getBoundingClientRect();
+        return { chip, after: e.clientX >= bounds.left + bounds.width / 2 };
+      };
+      const clear = () => {
+        this.groupbar.classList.remove('wb-over');
+        this.groupbar.querySelector('[data-insert]')?.removeAttribute('data-insert');
+      };
+      this.groupbar.ondragover = e => {
+        if (!accepts()) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        clear();
+        this.groupbar.classList.add('wb-over');
+        const { chip, after } = placement(e);
+        if (chip) chip.dataset.insert = after ? 'after' : 'before';
+      };
+      this.groupbar.ondragleave = e => {
+        if (!this.groupbar.contains(e.relatedTarget)) clear();
+      };
+      this.groupbar.ondrop = e => {
+        if (!accepts()) return;
+        e.preventDefault();
+        const { chip, after } = placement(e);
+        const field = this.drag.value;
+        this.drag = null;
+        clear();
+        if (chip?.dataset.groupField === field) return;
+        const fields = this.groups.filter(f => f !== field);
+        const index = chip ? fields.indexOf(chip.dataset.groupField) + Number(after) : fields.length;
+        fields.splice(index, 0, field);
+        this.setGroupOrder(fields);
+      };
     }
     numberFilter(target, column, apply) {
       this.closeMenu();
@@ -1308,7 +1394,7 @@ window.ColibriGrid.Workbench = (() => {
       this.cols.forEach((c) => {
         const group = c.group || 'Fields';
         if (last !== group) {
-          cell = el('strong', '', this.t(group));
+          cell = el('strong', '', c === this.treeColumn ? '' : this.t(group));
           if (group === 'Monthly breakdown' && !this.pivot) {
             const collapsed = this.collapsedBands.has(group);
             cell.append(
@@ -1354,6 +1440,15 @@ window.ColibriGrid.Workbench = (() => {
         h.setAttribute('role', 'columnheader');
         if (c.type === 'number') h.classList.add('wb-number-title');
         this.pinStyle(h, c);
+        if (c === this.treeColumn) {
+          h.classList.add('wb-tree-title');
+          h.textContent = this.t('Group');
+          row.append(h);
+          const blank = el('div');
+          this.pinStyle(blank, c);
+          filters.append(blank);
+          continue;
+        }
         const order = this.pivot
           ? this.pivotSort?.field === c.field
             ? this.pivotSort
@@ -1611,10 +1706,10 @@ window.ColibriGrid.Workbench = (() => {
           active: i === this.active?.r && j === this.active?.c,
         });
         const defaultRenderer =
-          r._rows && !this.pivot && j === 0
+          r._rows && c === this.treeColumn
             ? renderers.group
             : (!r._rows && (renderers[c.kind] || renderers[c.type])) || cells.text;
-        const cellFactory = c.itemRendererFunction?.(r, c) ?? c.itemRenderer ?? defaultRenderer;
+        const cellFactory = r._rows ? defaultRenderer : c.itemRendererFunction?.(r, c) ?? c.itemRenderer ?? defaultRenderer;
         ctx.commit = (value) =>
           this.renderPool.active.get(cell)?.item.data === r && this.commitRenderer(r, c, value);
         this.renderPool.attach(cell, cellFactory, ctx);

@@ -161,7 +161,63 @@
   .wb-hint {
     color: var(--ui-muted-foreground);
   }
-  .wb-groups button,
+  .wb-groups { gap: 6px; }
+  .wb-groups.wb-over {
+    background: var(--ui-accent);
+    outline: 2px dashed var(--ui-ring);
+    outline-offset: -3px;
+  }
+  .wb-group-chip {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    padding: 0 2px;
+    border: 1px solid var(--ui-border);
+    border-radius: 999px;
+    background: var(--ui-card);
+    cursor: grab;
+  }
+  .wb-group-chip button {
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 999px;
+    cursor: inherit;
+  }
+  .wb-group-chip button:last-child { cursor: pointer; }
+  .wb-group-chip > span:first-child { padding-inline-start: 6px; }
+  .wb-group-sort { margin-inline-start: 5px; color: var(--ui-primary); }
+  .wb-group-separator { color: var(--ui-muted-foreground); }
+  .wb-group-chip[data-insert]::after {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    border-inline-start: 3px solid var(--ui-primary);
+  }
+  .wb-group-chip[data-insert='before']::after { inset-inline-start: -5px; }
+  .wb-group-chip[data-insert='after']::after { inset-inline-end: -5px; }
+  .wb-tree-title { padding-inline-start: 9px; font-weight: 650; }
+  .wb-cell .wb-tree-toggle {
+    display: inline-flex;
+    gap: 5px;
+    min-width: 0;
+    align-items: center;
+    justify-content: flex-start;
+    padding-inline: 3px;
+  }
+  .wb-tree-toggle::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    flex: none;
+    border-block-end: 1.5px solid currentColor;
+    border-inline-end: 1.5px solid currentColor;
+    transform: rotate(-45deg);
+  }
+  .wb-tree-toggle[aria-expanded='true']::before { transform: rotate(45deg); }
+  .wb-tree-label { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+  .wb-tree-count { flex: none; color: var(--ui-muted-foreground); }
+  .wb-title [draggable='true'] { cursor: grab; }
+
   .wb-zone-line {
     background: var(--ui-card);
     border: 1px solid var(--ui-border);
