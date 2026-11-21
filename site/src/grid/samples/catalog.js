@@ -1,4 +1,3 @@
-// Story keys mirror the public Glide DataEditor and Extra Packages / Cells catalog.
 const groups = {
   'Columns and navigation': {
     'add-columns':
@@ -34,12 +33,5 @@ export const stories = Object.entries(groups).flatMap(([group, items]) =>
     group,
     description,
     name: names[id] || id[0].toUpperCase() + id.slice(1).replaceAll('-', ' '),
-    reference:
-      'https://glideapps.github.io/glide-data-grid/?path=/story/' +
-      (['custom-cells', 'custom-cell-editing'].includes(id)
-        ? 'extra-packages-cells'
-        : 'glide-data-grid-dataeditor-demos') +
-      '--' +
-      id,
   })),
 );

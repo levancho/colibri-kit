@@ -88,35 +88,8 @@ aside {
   min-width: 0;
   padding: 29px clamp(16px, 2.4vw, 44px) 32px;
 }
-.tabs {
-  display: flex;
-  align-items: center;
-  gap: 19px;
-  margin-top: 16px;
-  border-bottom: 1px solid var(--kb-line);
-  margin-bottom: 17px;
-}
-.studio .tabs button {
-  padding: 8px 1px;
-  border-radius: 0;
-  background: none;
-  color: var(--kb-muted);
-  border: 0;
-  border-bottom: 2px solid transparent;
-  font-size: 13px;
-}
-.studio .tabs button[aria-pressed='true'] {
-  border-bottom-color: var(--kb-acc);
-  color: var(--kb-acc);
-  font-weight: 650;
-}
-.tabs a {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--kb-acc);
-  text-decoration: none;
-}
 #stage {
+  margin-block-start: 16px;
   border: 1px solid var(--kb-line);
   border-radius: 8px;
   overflow: hidden;
@@ -210,11 +183,6 @@ aside {
   padding: 7px 12px;
   border-top: 1px solid var(--kb-line);
 }
-.external-frame {
-  border: 1px solid #dbe2df;
-  width: 100%;
-  height: 68vh;
-}
 #surface .cg dialog::backdrop {
   background: #102c3033;
 }
@@ -256,12 +224,6 @@ aside {
   .studio main {
     padding: 17px 10px;
   }
-  .tabs {
-    gap: 12px;
-  }
-  .tabs a {
-    font-size: 11px;
-  }
   #surface {
     --cg-height: 50vh;
   }
@@ -270,44 +232,6 @@ aside {
   }
 }
 
-#engines.split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 12px;
-  align-items: start;
-}
-#engines.split .external-frame {
-  height: calc(clamp(340px, 56vh, 730px) + 90px);
-}
-#engines.split #stage::before,
-#engines.split #external::before {
-  display: block;
-  padding: 8px 12px;
-  color: #365853;
-  font-size: 12px;
-  font-weight: 600;
-  background: #edf5f1;
-}
-#engines.split #stage::before {
-  content: 'Colibri Grid';
-}
-#engines.split #external::before {
-  content: 'Glide Data Grid';
-}
-@media (max-width: 950px) {
-  #engines.split {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-@media (max-width: 540px) {
-  .tabs {
-    flex-wrap: wrap;
-    gap: 9px;
-  }
-  .tabs a {
-    margin-left: 0;
-  }
-}
 /* Source panels use the Kitchen Sink example styles and theme tokens. */
 .sink-code {
   --s-fg: var(--ui-foreground, #18181b);
@@ -343,7 +267,6 @@ aside {
   .sink-code-tabs > [data-ui-part=list] { flex-wrap: wrap; }
   .sink-pre { padding: 2.8rem .6rem .8rem; }
 }
-.sample-checks{margin-top:9px;padding:12px 16px;border:1px solid #d4dfdb;border-radius:6px;font-size:13px}.sample-checks summary{cursor:pointer;font-weight:600}.sample-checks dl{display:grid;grid-template-columns:55px 1fr;gap:6px 9px}.sample-checks dt{font-weight:600}.sample-checks dd{margin:0;white-space:pre-wrap}
 
 .sink-code .hl .hl-ln::before, .sink-code .hl-pre::after { opacity: 1; }
 .implementation { margin-block: .4rem; font-size: 13px; }
