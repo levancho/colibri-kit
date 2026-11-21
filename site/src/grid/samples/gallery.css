@@ -27,13 +27,13 @@ body.ui-root {
   color: inherit;
   text-decoration: none;
 }
-.wordmark {
+.mast .wordmark {
   display: flex;
   align-items: center;
   gap: 10px;
   font-size: 17px;
   font-weight: 650;
-  color: white !important;
+  color: white;
 }
 .brandmark {
   width: 23px;
@@ -100,12 +100,12 @@ aside {
   margin: 0 6px 14px;
   padding-left: 9px;
 }
-.sample-filter input {
-  background: transparent !important;
-  border: 0 !important;
+.studio .sample-filter input {
+  background: transparent;
+  border: 0;
   min-width: 0;
   width: 100%;
-  height: 32px !important;
+  height: 32px;
 }
 .studio nav {
   overflow: auto;
@@ -167,18 +167,18 @@ aside {
   border-bottom: 1px solid #dbe3e0;
   margin-bottom: 17px;
 }
-.tabs button {
-  padding: 8px 1px !important;
-  border-radius: 0 !important;
-  background: none !important;
-  color: #536564 !important;
-  border: 0 !important;
-  border-bottom: 2px solid transparent !important;
+.studio .tabs button {
+  padding: 8px 1px;
+  border-radius: 0;
+  background: none;
+  color: #536564;
+  border: 0;
+  border-bottom: 2px solid transparent;
   font-size: 13px;
 }
-.tabs button[aria-pressed='true'] {
-  border-bottom-color: #007665 !important;
-  color: #006653 !important;
+.studio .tabs button[aria-pressed='true'] {
+  border-bottom-color: #007665;
+  color: #006653;
   font-weight: 650;
 }
 .tabs a {

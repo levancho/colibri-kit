@@ -128,9 +128,9 @@ main {
   font-size: 12px;
   color: var(--ui-muted-foreground);
 }
-.controls select,
-.controls summary {
-  font-size: 13px !important;
+.ui-root .controls select,
+.ui-root .controls summary {
+  font-size: 13px;
   background: white;
   border: 1px solid var(--ui-border);
   border-radius: 5px;
