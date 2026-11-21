@@ -20,7 +20,7 @@ export function enhanceGrid(table) {
     ]),
   );
   const host = document.createElement('div');
-  const grid = new ColibriGrid(host, { columns, rows, label: table.caption?.textContent || 'Project register' });
+  const grid = new ColibriGrid(host, { editorPresentation: 'inline', columns, rows, label: table.caption?.textContent || 'Project register' });
   table.replaceWith(host);
   return grid;
 }

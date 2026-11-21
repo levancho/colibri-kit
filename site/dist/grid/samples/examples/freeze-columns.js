@@ -4,6 +4,7 @@ export const controls = '<label>Pinned columns <input type="range" min="0" max="
 
 export function createFreezeColumns(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: baseColumns,
     rows: projectRows('freeze-columns'),
     label: 'Freeze columns',

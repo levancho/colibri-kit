@@ -5,5 +5,5 @@ import { projectColumns } from './columns.jsx';
 
 export default function HeaderMenus() {
   const [rows, setRows] = useState(() => projectRows('header-menus'));
-  return <ColibriGrid label="Header menus" rows={rows} columns={projectColumns} onRowsChange={setRows} />;
+  return <ColibriGrid editorPresentation="inline" label="Header menus" rows={rows} columns={projectColumns} onRowsChange={setRows} />;
 }

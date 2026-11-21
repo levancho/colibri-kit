@@ -4,6 +4,7 @@ export const controls = '';
 
 export function createHeaderMenus(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: baseColumns,
     rows: projectRows('header-menus'),
     label: 'Header menus',

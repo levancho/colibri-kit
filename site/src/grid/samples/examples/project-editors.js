@@ -4,6 +4,7 @@ export const controls = '<label><input type="checkbox" checked> Enable editing</
 
 export function createProjectEditors(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     label: 'Project editors', rows: editorRows(), columns: editorColumns(true), rangeSelection: true, onActivate,
   });
   const toggle = toolbar.querySelector('input');

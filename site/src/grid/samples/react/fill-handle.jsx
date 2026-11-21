@@ -16,7 +16,7 @@ export default function FillHandle() {
       >
         Select A1:B3
       </button>
-      <ColibriGrid ref={grid} label="Fill handle" rows={rows} columns={projectColumns} onRowsChange={setRows} />
+      <ColibriGrid editorPresentation="inline" ref={grid} label="Fill handle" rows={rows} columns={projectColumns} onRowsChange={setRows} />
     </>
   );
 }

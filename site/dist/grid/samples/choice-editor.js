@@ -1,3 +1,5 @@
+import { selectionSummary } from './selection-summary.js';
+
 // Renderers own their cell. Only the active cell creates an input and an option list.
 const make = (tag, cls) => Object.assign(document.createElement(tag), { className: cls });
 const split = (value) =>
@@ -19,6 +21,7 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
     const element = make('span', 'cell-choice');
     const trigger = make('button', 'choice-trigger');
     trigger.type = 'button';
+    const summary = multiple ? selectionSummary(trigger) : null;
     trigger.tabIndex = -1;
     trigger.dataset.inlineTrigger = '';
     if (choices.length) trigger.setAttribute('aria-haspopup', 'listbox');
@@ -33,13 +36,14 @@ export function choiceRenderer(choices, { multiple = false, duplicates = false, 
         const labels = multiple ? split(item.value) : [item.value].filter(Boolean);
         trigger.replaceChildren(...labels.map(token));
         trigger.title = labels.join(', ');
+        summary?.refresh();
         trigger.setAttribute('aria-label', 'Edit ' + item.column.label);
         if (choices.length) trigger.setAttribute('aria-expanded', 'false');
         trigger.disabled = !item.column.editable;
       },
       beginInlineEdit: open,
-      discard: () => close(false),
-      destroy: () => close(false),
+      discard() { close(false); summary?.disconnect(); },
+      destroy() { close(false); summary?.disconnect(); },
     };
 
     function close(restoreFocus) {

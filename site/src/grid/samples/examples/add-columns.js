@@ -22,7 +22,7 @@ export function createAddColumns(host, toolbar, status, onActivate) {
       left = grid?.port.scrollLeft ?? 0;
     grid?.destroy();
     const columns = Array.from({ length: count }, (_, i) => extendedColumn(i));
-    grid = new ColibriGrid(host, { rows, columns, label: 'Add columns', onActivate, rangeSelection: true });
+    grid = new ColibriGrid(host, { editorPresentation: 'inline', rows, columns, label: 'Add columns', onActivate, rangeSelection: true });
     if (order && columns.some((column) => column.field === order.field))
       grid.sort(order.field, order.asc ? 'asc' : 'desc');
     grid.port.scrollTop = top;

@@ -23,11 +23,13 @@ window.ColibriGrid = (() => {
         onInspect,
         onActivate,
         rangeSelection,
+        editorPresentation = 'dialog',
         pageSize = 100,
       },
     ) {
       columns = columns?.map(ColibriGrid.cells.normalizeColumn);
       this.host = host;
+      this.inlineEditing = editorPresentation === 'inline';
       this.renderPool = new ColibriGrid.cells.RendererPool();
       this.headerPool = new ColibriGrid.cells.RendererPool();
       this.life = new AbortController();
@@ -556,6 +558,32 @@ window.ColibriGrid = (() => {
           item.prepare?.(true);
         }
       }
+      this.positionInlineEditor();
+    }
+
+    positionInlineEditor() {
+      const session = this.session;
+      if (!session?.form || session.saving) return;
+      const { ctx, form } = session;
+      const i = ctx.rowIndex;
+      const cell = this.canvas.children[i - this.start]?.children[ctx.columnIndex];
+      if (!cell || this.view[i] !== ctx.data) {
+        this.endItemEditorSession(true);
+        return;
+      }
+      const box = cell.getBoundingClientRect(), port = this.port.getBoundingClientRect();
+      if (box.bottom <= this.header.getBoundingClientRect().bottom || box.top >= port.bottom ||
+          box.right <= port.left || box.left >= port.right) {
+        this.endItemEditorSession(true);
+        return;
+      }
+      const origin = this.root.getBoundingClientRect();
+      Object.assign(form.style, {
+        left: box.left - origin.left - this.root.clientLeft + 'px',
+        top: box.top - origin.top - this.root.clientTop + 'px',
+        width: box.width + 'px',
+        height: box.height + 'px',
+      });
     }
 
     installColumnMenu(head, column) {
@@ -966,19 +994,25 @@ window.ColibriGrid = (() => {
     }
     endItemEditorSession(cancel = false) {
       if (!this.session) return true;
-      const { editor, ctx } = this.session;
+      const session = this.session;
+      const { editor, ctx } = session;
       if (!cancel) {
         try {
           const valid = editor.validate?.();
           if (valid === false || (typeof valid === 'string' && valid)) throw Error(valid || 'Invalid value');
           if (editor.save?.() === false) return false;
           const prop = ctx.column.editorDataField ?? ('editedValue' in editor ? 'editedValue' : 'value');
-          if (!this.commitValue(ctx.data, ctx.column, prop in editor ? editor[prop] : editor.element[prop]))
-            return false;
+          session.saving = true;
+          try {
+            if (!this.commitValue(ctx.data, ctx.column, prop in editor ? editor[prop] : editor.element[prop])) return false;
+          } finally {
+            session.saving = false;
+          }
         } catch (error) {
           const input = editor.focusTarget || editor.element;
           input.setCustomValidity?.(error.message);
-          input.reportValidity?.();
+          if (!session.form) input.reportValidity?.();
+          input.setAttribute('aria-invalid', 'true');
           this.editError.textContent = error.message;
           return false;
         }
@@ -987,14 +1021,16 @@ window.ColibriGrid = (() => {
       editor.discard?.(cancel ? 'cancel' : 'save');
       editor.destroy?.();
       if (cancel) ColibriGrid.cells.event(this, 'itemEditCancel', ctx);
-      this.dialog.close();
+      session.scope?.abort();
+      session.form?.remove();
+      if (this.dialog.open) this.dialog.close();
       this.port.focus({ preventScroll: true });
       return true;
     }
     edit() {
       const c = this.columns[this.column],
         row = this.byId.get(this.activeId);
-      if (!row || this.dialog.open) return false;
+      if (!row || this.session || this.dialog.open) return false;
       if (c.type === 'image' || c.type === 'drilldown') {
         const body = element('div'),
           close = element('button', null, 'Close preview');
@@ -1024,6 +1060,7 @@ window.ColibriGrid = (() => {
       if (!c.editable || c.field === this.key) return false;
       this.dialog.setAttribute('aria-label', 'Edit cell');
       const cell = this.canvas.children[this.index - this.start]?.children[this.column];
+      if (this.inlineEditing && !cell) return false;
       if (c.rendererIsEditor) {
         const item = this.renderPool.active.get(cell)?.item;
         if (item?.beginInlineEdit) item.beginInlineEdit();
@@ -1046,7 +1083,7 @@ window.ColibriGrid = (() => {
         label = element('label'),
         save = element('button'),
         cancel = element('button');
-      label.textContent = c.label;
+      if (!this.inlineEditing) label.textContent = c.label;
       label.append(editor.element);
       save.textContent = 'Save';
       cancel.type = 'button';
@@ -1069,19 +1106,50 @@ window.ColibriGrid = (() => {
       this.editError = element('output');
       this.editError.setAttribute('role', 'alert');
       form.append(label, this.editError, cancel, save);
-      this.dialog.replaceChildren(form);
-      this.dialog.oncancel = (e) => {
-        e.preventDefault();
-        this.endItemEditorSession(true);
-      };
-      this.dialog.showModal();
+      if (this.inlineEditing) {
+        const scope = new AbortController();
+        Object.assign(this.session, { form, scope });
+        form.className = 'cg-inline-editor';
+        form.setAttribute('aria-label', 'Edit ' + c.label);
+
+        save.textContent = '✓';
+        save.setAttribute('aria-label', 'Save');
+        cancel.textContent = '×';
+        cancel.setAttribute('aria-label', 'Cancel');
+        form.noValidate = true;
+        form.addEventListener('keydown', e => {
+          if (!e.isComposing && e.key === 'Escape') {
+            e.preventDefault();
+            this.endItemEditorSession(true);
+          }
+        });
+        this.root.append(form);
+        this.positionInlineEditor();
+        if (!this.session) return false;
+        document.addEventListener('pointerdown', e => {
+          if (form.contains(e.target) || !this.session) return;
+          if (!this.endItemEditorSession()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }, {capture: true, signal: scope.signal});
+      } else {
+        this.dialog.replaceChildren(form);
+        this.dialog.oncancel = (e) => {
+          e.preventDefault();
+          this.endItemEditorSession(true);
+        };
+        this.dialog.showModal();
+      }
       editor.initialize?.();
       editor.prepare?.();
       editor.element.oninput = () => {
         (editor.focusTarget || editor.element).setCustomValidity?.('');
+        (editor.focusTarget || editor.element).removeAttribute('aria-invalid');
         this.editError.textContent = '';
       };
       const control = editor.focusTarget || editor.element;
+      if (this.inlineEditing && !control.hasAttribute('aria-label')) control.setAttribute('aria-label', c.label);
       control.focus();
       control.select?.();
       api.event(this, 'itemEditBegin', { ...ctx, editor });

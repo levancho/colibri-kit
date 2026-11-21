@@ -4,6 +4,7 @@ export const controls = '<button type="button">Pause feed</button>';
 
 export function createRapidUpdates(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: [0, 5, 1, 2, 6, 4].map((index) => baseColumns[index]),
     rows: projectRows('rapid-updates'),
     label: 'Viewport streaming',

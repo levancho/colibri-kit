@@ -4,6 +4,7 @@ export const controls = '<label>Search records <input type="search" placeholder=
 
 export function createSearchAsFilter(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: baseColumns,
     rows: projectRows('search-as-filter'),
     label: 'Search as filter',

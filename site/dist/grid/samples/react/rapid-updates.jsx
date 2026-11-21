@@ -27,7 +27,7 @@ export default function RapidUpdates() {
   return (
     <>
       <button onClick={() => setRunning(!running)}>{running ? 'Pause feed' : 'Resume feed'}</button>
-      <ColibriGrid label="Rapid updates" ref={grid} rows={rows} columns={columns} onRowsChange={setRows} />
+      <ColibriGrid editorPresentation="inline" label="Rapid updates" ref={grid} rows={rows} columns={columns} onRowsChange={setRows} />
       <output>{updates} updates</output>
     </>
   );

@@ -10,6 +10,7 @@ export function createCustomCellEditing(host, toolbar, status, onActivate) {
     choiceColumn('freeTags', 'Freeform tags', 215, [], { multiple: true, duplicates: true }),
   ];
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns,
     rows: projectRows('custom-cell-editing'),
     label: 'Dropdown and tag editors',

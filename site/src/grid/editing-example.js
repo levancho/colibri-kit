@@ -44,5 +44,5 @@ export function sampleRows() {
   }));
 }
 export function createExample(host, rows = sampleRows()) {
-  return new ColibriGrid(host, { label: 'Employee directory', columns, rows });
+  return new ColibriGrid(host, { editorPresentation: 'inline', label: 'Employee directory', columns, rows });
 }

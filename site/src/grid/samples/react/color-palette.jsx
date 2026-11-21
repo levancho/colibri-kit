@@ -6,5 +6,5 @@ import { reactColumn } from './columns.jsx';
 export default function ColorPalette() {
   const [rows, setRows] = useState(colorRows);
   const columns = useMemo(() => colorColumns().map(reactColumn), []);
-  return <ColibriGrid label="Color palette" rows={rows} columns={columns} onRowsChange={setRows} />;
+  return <ColibriGrid editorPresentation="inline" label="Color palette" rows={rows} columns={columns} onRowsChange={setRows} />;
 }

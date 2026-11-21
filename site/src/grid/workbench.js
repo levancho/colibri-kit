@@ -2384,6 +2384,7 @@ window.ColibriGrid.Workbench = (() => {
       const host = el('div');
       d.append(host);
       const sub = new ColibriGrid(host, {
+        editorPresentation: 'inline',
         label: 'Contributing records',
         key: '_key',
         rows,

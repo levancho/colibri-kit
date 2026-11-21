@@ -9,6 +9,6 @@ export default function ProjectEditors() {
   const columns = useMemo(() => editorColumns(editable).map(reactColumn), [editable]);
   return <>
     <label><input type="checkbox" checked={editable} onChange={event => setEditable(event.target.checked)} /> Enable editing</label>
-    <ColibriGrid label="Project editors" rows={rows} columns={columns} onRowsChange={setRows} />
+    <ColibriGrid editorPresentation="inline" label="Project editors" rows={rows} columns={columns} onRowsChange={setRows} />
   </>;
 }

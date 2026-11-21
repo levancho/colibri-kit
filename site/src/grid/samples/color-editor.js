@@ -1,3 +1,5 @@
+import { selectionSummary } from './selection-summary.js';
+
 const initialColors = [
   ['Apricot', '#FFCDB2'], ['Melon', '#FFB4A2'], ['Salmon pink', '#E5989B'],
   ['Old rose', '#C492AC'], ['Wisteria', '#9F97C1'], ['French gray', '#B0B8CD'], ['Naples yellow', '#FFE08A'],
@@ -38,6 +40,7 @@ function colorRenderer(custom, multiple) {
   return () => {
     const element = node('span', 'palette-cell');
     const trigger = node('button', 'palette-trigger');
+    const summary = multiple ? selectionSummary(trigger) : null;
     trigger.tabIndex = -1;
     trigger.dataset.inlineTrigger = '';
     trigger.setAttribute('aria-haspopup', 'dialog');
@@ -45,8 +48,8 @@ function colorRenderer(custom, multiple) {
     let close;
     const item = {
       element, focusTarget: trigger, beginInlineEdit: open,
-      discard() { close?.(false, false); },
-      destroy() { close?.(false, false); },
+      discard() { close?.(false, false); summary?.disconnect(); },
+      destroy() { close?.(false, false); summary?.disconnect(); },
       prepare() {
         if (close) return;
         const colors = String(item.value ?? '').toUpperCase().split(/,\s*/).filter(color => hexPattern.test(color));
@@ -67,6 +70,7 @@ function colorRenderer(custom, multiple) {
         }
         if (!colors.length) trigger.textContent = 'Choose color';
         trigger.classList.toggle('palette-single', !multiple);
+        summary?.refresh();
     }
     function open() {
       if (close || trigger.disabled) return;

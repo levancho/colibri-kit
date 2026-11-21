@@ -51,6 +51,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
     rowHeight = 36,
     pinnedColumns = 0,
     overscan = 3,
+    editorPresentation = 'dialog',
   },
   ref,
 ) {
@@ -234,8 +235,14 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
   useEffect(() => {
     if (edit && (!editingColumn || !editingRow)) setEdit(null);
   }, [edit, editingRow, editingColumn]);
+  function updateDraft(value) {
+    setDraft(value);
+    setError('');
+  }
   function save() {
-    if (change([[editingRow, editingColumn, draft]])) close();
+    if (!change([[editingRow, editingColumn, draft]])) return false;
+    close();
+    return true;
   }
   function values(rect = region) {
     return result
@@ -318,6 +325,77 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
           zIndex: header ? 3 : 1,
         }
       : undefined;
+  const inline = editorPresentation === 'inline';
+  useEffect(() => {
+    if (!inline || !edit) return;
+    const outside = e => {
+      if (focusEditor.current?.contains(e.target)) return;
+      if (editingRow && editingColumn && !save()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }
+    };
+    document.addEventListener('pointerdown', outside, true);
+    return () => document.removeEventListener('pointerdown', outside, true);
+  }, [inline, edit, draft, editingRow, editingColumn]);
+  useEffect(() => {
+    if (inline && edit && !focusEditor.current) setEdit(null);
+  }, [inline, edit, first, last, result]);
+  const editorForm = edit &&
+      editingColumn &&
+      editingRow &&
+      h(
+        'form',
+        {
+          ref: focusEditor,
+          className: inline ? 'cg-inline-editor' : 'react-grid-editor',
+          onPointerDown: e => e.stopPropagation(),
+          onDoubleClick: e => e.stopPropagation(),
+          'aria-label': 'Edit ' + editingColumn.label,
+          onSubmit: (e) => {
+            e.preventDefault();
+            save();
+          },
+          onKeyDown: (e) => {
+            e.stopPropagation();
+            if (e.nativeEvent.isComposing) return;
+            if (inline && e.key === 'Tab') {
+              e.preventDefault();
+              if (save()) select(cell.r, cell.c + (e.shiftKey ? -1 : 1));
+            } else if (inline && e.key === 'Enter' && !e.shiftKey && e.target.tagName === 'TEXTAREA') {
+              e.preventDefault();
+              save();
+            } else if (e.key === 'Escape') {
+              e.preventDefault();
+              close();
+            }
+          },
+        },
+        h(
+          'label',
+          null,
+          !inline && editingColumn.label,
+          editingColumn.renderEditor
+            ? editingColumn.renderEditor({
+                row: editingRow,
+                column: editingColumn,
+                value: draft,
+                onChange: updateDraft,
+                save,
+                cancel: close,
+              })
+            : h('input', {
+                'aria-label': editingColumn.label,
+                'aria-invalid': Boolean(error),
+                type: editingColumn.type === 'number' ? 'number' : editingColumn.type === 'date' ? 'date' : 'text',
+                value: draft ?? '',
+                onChange: (e) => updateDraft(e.target.value),
+              }),
+        ),
+        h('button', { type: 'button', onClick: close, 'aria-label': 'Cancel' }, inline ? '×' : 'Cancel'),
+        h('button', { type: 'submit', 'aria-label': 'Save' }, inline ? '✓' : 'Save'),
+        inline && error && h('output', { role: 'alert' }, error),
+      );
   const body = [];
   for (let r = first; r < last; r++) {
     const row = result[r];
@@ -385,7 +463,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
               },
               onDoubleClick: startEdit,
             },
-            col.renderCell
+            inline && edit?.key === getRowId(row) && edit.field === col.field ? editorForm : col.renderCell
               ? col.renderCell({
                   row,
                   column: col,
@@ -544,48 +622,7 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
               ),
             ),
       ),
-    edit &&
-      editingColumn &&
-      editingRow &&
-      h(
-        'form',
-        {
-          ref: focusEditor,
-          className: 'react-grid-editor',
-          'aria-label': 'Edit ' + editingColumn.label,
-          onSubmit: (e) => {
-            e.preventDefault();
-            save();
-          },
-          onKeyDown: (e) => {
-            if (e.key === 'Escape') {
-              e.preventDefault();
-              close();
-            }
-          },
-        },
-        h(
-          'label',
-          null,
-          editingColumn.label,
-          editingColumn.renderEditor
-            ? editingColumn.renderEditor({
-                row: editingRow,
-                column: editingColumn,
-                value: draft,
-                onChange: setDraft,
-                save,
-                cancel: close,
-              })
-            : h('input', {
-                type: editingColumn.type === 'number' ? 'number' : editingColumn.type === 'date' ? 'date' : 'text',
-                value: draft ?? '',
-                onChange: (e) => setDraft(e.target.value),
-              }),
-        ),
-        h('button', { type: 'button', onClick: close }, 'Cancel'),
-        h('button', { type: 'submit' }, 'Save'),
-      ),
-    error && h('output', { role: 'alert' }, error),
+    !inline && editorForm,
+    error && !(inline && edit) && h('output', { role: 'alert' }, error),
   );
 });

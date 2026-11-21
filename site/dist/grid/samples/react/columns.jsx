@@ -80,11 +80,11 @@ function Rating({ value, column, commit }) {
 function editorFor(column) {
   const { field } = column;
   if (column.multiline)
-    return ({ value, onChange }) => <textarea value={value} onChange={(e) => onChange(e.target.value)} />;
+    return ({ value, onChange }) => <textarea aria-label={column.label} value={value} onChange={(e) => onChange(e.target.value)} />;
   if (field === 'time' || field === 'datetime' || field === 'progress') {
     const type = field === 'time' ? 'time' : field === 'datetime' ? 'datetime-local' : 'range';
     return ({ value, onChange }) => (
-      <input type={type} max={column.max ?? 100} value={value} onChange={(e) => onChange(e.target.value)} />
+      <input aria-label={column.label} type={type} max={column.max ?? 100} value={value} onChange={(e) => onChange(e.target.value)} />
     );
   }
 }

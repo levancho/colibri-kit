@@ -14,5 +14,5 @@ const columns = [
 
 export default function ValidateData() {
   const [rows, setRows] = useState(() => projectRows('validate-data'));
-  return <ColibriGrid label="Validate data" rows={rows} columns={columns} onRowsChange={setRows} />;
+  return <ColibriGrid editorPresentation="inline" label="Validate data" rows={rows} columns={columns} onRowsChange={setRows} />;
 }

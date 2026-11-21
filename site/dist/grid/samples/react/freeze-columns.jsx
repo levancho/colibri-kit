@@ -12,7 +12,7 @@ export default function FreezeColumns() {
         Pinned columns{' '}
         <input type="range" min="0" max="3" value={pinned} onChange={(e) => setPinned(e.target.valueAsNumber)} />
       </label>
-      <ColibriGrid
+      <ColibriGrid editorPresentation="inline"
         label="Freeze columns"
         rows={rows}
         columns={projectColumns}

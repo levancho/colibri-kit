@@ -4,6 +4,7 @@ export const controls = '<button type="button">Copy 2 × 2 sample</button>';
 
 export function createPasteSupport(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: baseColumns,
     rows: projectRows('paste-support'),
     label: 'Copy and paste',

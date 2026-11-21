@@ -2,6 +2,7 @@ import './pivot.js';
 
 export function mountInventory(container) {
   const settings = {
+    editorPresentation: 'inline',
     label: 'Inventory', columns: [
       {field:'id',label:'SKU'}, {field:'item',label:'Item',editable:true,width:220},
       {field:'warehouse',label:'Warehouse'}, {field:'qty',label:'Quantity',editable:true,type:'number',

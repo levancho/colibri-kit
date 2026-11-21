@@ -31,7 +31,7 @@ export default function AddColumns() {
       <button disabled={count >= 200} onClick={() => resize(count + 1)}>
         + Add column
       </button>
-      <ColibriGrid label="Add columns" rows={rows} columns={columns} onRowsChange={setRows} />
+      <ColibriGrid editorPresentation="inline" label="Add columns" rows={rows} columns={columns} onRowsChange={setRows} />
     </>
   );
 }

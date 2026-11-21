@@ -17,7 +17,7 @@ export default function PasteSupport() {
   return (
     <>
       <button onClick={copyExample}>Copy 2 × 2 sample</button>
-      <ColibriGrid label="Paste support" rows={rows} columns={projectColumns} onRowsChange={setRows} />
+      <ColibriGrid editorPresentation="inline" label="Paste support" rows={rows} columns={projectColumns} onRowsChange={setRows} />
       <output>{message}</output>
     </>
   );

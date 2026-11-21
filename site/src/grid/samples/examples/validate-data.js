@@ -8,6 +8,7 @@ export function createValidateData(host, toolbar, status, onActivate) {
     validator: (value) => (Number.isInteger(value) && value >= 0) || 'Enter a whole number of zero or more.',
   };
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: [baseColumns[0], budget, ...baseColumns.slice(1, 4)],
     rows: projectRows('validate-data'),
     label: 'Validated edits',

@@ -33,6 +33,7 @@ export interface GridProps<Row> extends RefAttributes<GridRef<Row>> {
   query?: string;
   height?: number;
   rowHeight?: number;
+  editorPresentation?: 'dialog' | 'inline';
   pinnedColumns?: number;
   overscan?: number;
 }

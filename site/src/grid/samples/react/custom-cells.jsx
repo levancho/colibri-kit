@@ -57,7 +57,7 @@ export default function CustomCells() {
       >
         Open editor
       </button>
-      <ColibriGrid ref={grid} label="Custom cells" rows={visible} columns={columns} onRowsChange={save} />
+      <ColibriGrid editorPresentation="inline" ref={grid} label="Custom cells" rows={visible} columns={columns} onRowsChange={save} />
       <output>{message}</output>
     </>
   );

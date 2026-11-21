@@ -4,6 +4,7 @@ export const controls = '<button type="button">Select A1:B3</button>';
 
 export function createFillHandle(host, toolbar, status, onActivate) {
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     columns: baseColumns,
     rows: projectRows('fill-handle'),
     label: 'Fill handle',

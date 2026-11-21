@@ -17,7 +17,7 @@ export default function SearchAsFilter() {
           onChange={(event) => setQuery(event.target.value)}
         />
       </label>
-      <ColibriGrid
+      <ColibriGrid editorPresentation="inline"
         label="Search as filter"
         columns={projectColumns}
         rows={rows}

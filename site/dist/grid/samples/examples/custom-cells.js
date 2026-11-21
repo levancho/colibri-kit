@@ -7,6 +7,7 @@ export function createCustomCells(host, toolbar, status, onActivate) {
   const rows = projectRows('custom-cells');
   const expanded = new Set(rows.filter((row) => row.id % 4 === 1).map((row) => row.id));
   const grid = new ColibriGrid(host, {
+    editorPresentation: 'inline',
     rows,
     columns: customColumns((message) => (status.textContent = message), togglePortfolio, expanded),
     label: 'Custom cells',

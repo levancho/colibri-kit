@@ -11,5 +11,5 @@ const columns = [
 ].map(reactColumn);
 export default function CustomCellEditing() {
   const [rows, setRows] = useState(() => projectRows('custom-cell-editing'));
-  return <ColibriGrid label="Dropdown and tag editors" rows={rows} columns={columns} onRowsChange={setRows} />;
+  return <ColibriGrid editorPresentation="inline" label="Dropdown and tag editors" rows={rows} columns={columns} onRowsChange={setRows} />;
 }

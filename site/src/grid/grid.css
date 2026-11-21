@@ -109,3 +109,32 @@
 }
 .cg-stars button:focus-visible { outline: 2px solid var(--ui-ring, #007b71); outline-offset: -2px; }
 .cg-stars button:disabled { cursor: default; }
+
+.cg { position: relative; }
+.cg form.cg-inline-editor {
+  position: absolute; z-index: 5; box-sizing: border-box; display: flex; align-items: center;
+  gap: 2px; margin: 0; padding: 2px 3px 2px 7px; border: 2px solid var(--ui-primary);
+  border-radius: 5px; background: var(--ui-card); color: var(--ui-foreground);
+  line-height: normal; text-align: start; user-select: text;
+}
+.cg .cg-inline-editor > label { flex: 1; min-width: 0; height: 100%; display: flex; align-items: center; margin: 0; }
+.cg .cg-inline-editor label :is(input,select,textarea) {
+  width: 100%; min-width: 0; height: 100%; min-height: 0; box-sizing: border-box;
+  padding: 0; margin: 0; border: 0; border-radius: 0; outline: 0; box-shadow: none;
+  font: inherit; color: inherit; background: transparent; resize: none;
+}
+.cg .cg-inline-editor > button {
+  flex: none; display: grid; place-items: center; width: 23px; height: 24px; min-height: 0;
+  padding: 0; border: 0; border-radius: 4px; font: 600 15px/1 system-ui; cursor: pointer;
+  background: var(--ui-muted); color: var(--ui-muted-foreground);
+}
+.cg .cg-inline-editor > button:last-of-type { background: var(--ui-primary); color: var(--ui-primary-foreground); }
+.cg .cg-inline-editor > output:empty { display: none; }
+.cg .cg-inline-editor > output:not(:empty) {
+  position: absolute; inset: calc(100% + 3px) auto auto 0; z-index: 1;
+  width: max-content; max-width: min(240px, 80vw); padding: 5px 8px; border: 1px solid var(--ui-destructive);
+  border-radius: 4px; color: var(--ui-foreground); background: var(--ui-popover);
+  font-size: 12px; white-space: normal; box-shadow: var(--ui-shadow);
+}
+.react-grid [role=gridcell]:has(> .cg-inline-editor) { position: relative; overflow: visible; z-index: 4; }
+.react-grid .cg-inline-editor { inset: 0; }
