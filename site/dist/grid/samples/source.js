@@ -27,28 +27,20 @@ function documentSource(language, story, example) {
   return (
     directive +
     `<!doctype html>
-<html lang="en"${language === 'thymeleaf' ? ' xmlns:th="http://www.thymeleaf.org"' : ''}>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Colibri Grid · ${story}</title>
-  <link rel="stylesheet" href="${themePath}">
-  <link rel="stylesheet" href="/grid/grid.css">
-  <link rel="stylesheet" href="/grid/samples/gallery.css">
-</head>
-<body class="ui-root">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 ${hosts[language]}
+<link rel="stylesheet" href="${themePath}">
+<link rel="stylesheet" href="/grid/grid.css">
+<link rel="stylesheet" href="/grid/samples/gallery.css">
 <script src="/grid/grid.js"></script>
 <script type="module">
-  import { mountSample } from "/grid/samples/sample.js";
+import { mountSample } from "/grid/samples/sample.js";
 
 ${logic.trimEnd()}
 
-  const host = document.getElementById("stage");
-  mountSample(host, ${argument}, ${name});
-</script>
-</body>
-</html>`
+const host = document.getElementById("stage");
+mountSample(host, ${argument}, ${name});
+</script>`
   );
 }
 

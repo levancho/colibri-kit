@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "ead625ef9a00b783bda6e9168a8d0cb56f0b8d2d6e57f51adf1cebfde62e2dd5",
+  "release": "9fc93dd490a96c25918a1b9262eb6237d8d90a39017f458d241baf8d202ce8ec",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -49,9 +49,9 @@
     "grid/samples/examples/rapid-updates.js": "6c40b9347846d6b37fe9744c79bf39f9a00e6be44cd983190bcfc74d574101bd",
     "grid/samples/examples/search-as-filter.js": "0ac83520e2721ac56b211ff28c1b4fd32a53874a1790ad54efff7d56c4b48a44",
     "grid/samples/examples/validate-data.js": "20b334d7db78e39cf84ae295679c7269dfeabec372b992df55e189d43a07a875",
-    "grid/samples/gallery.css": "a5cac347aa431a730e4d969fcdb45dad9399d9bc0c7e9feee66e6fe83430617e",
+    "grid/samples/gallery.css": "b29fccb07abd0d34aadff474d42665f00234887a85500c40a66f534f87b70c53",
     "grid/samples/gallery.js": "b20bcd01e5cd962bdf38775689cbe230500e4f9aad50a438d3a9752d72f2c723",
-    "grid/samples/index.html": "3c923d98f76a604da7a84f4cbcdb1a54ba6c716e4136202f17c20f50483964ed",
+    "grid/samples/index.html": "5afa86563947013f14c69f3aea794002d1388d67e5326b0bf14effa0ba5a0a29",
     "grid/samples/kit-source.js": "d63b40ef3ae64ed6d347322f823159313241add19781a37cf5805a853af1de9e",
     "grid/samples/react/add-columns.jsx": "a1bc52d0e3bdae3060b00ba57c13ffcf3f240e14be5789bd6c57a872cb2b92ad",
     "grid/samples/react/columns.jsx": "43b4f4a0ca3fa7de0c8c8764c2191f36a4c02b49f48b0cc1d5d19b59eb75733c",
@@ -65,7 +65,7 @@
     "grid/samples/react/search-as-filter.jsx": "3fee1ea959f072d60cb57a4215086e394da1a6b5934a9938c57f19e54da77a64",
     "grid/samples/react/validate-data.jsx": "6be0d3ed31766b73fedc52be8fd226ffc8363cda871ca5b94f7b62c8d3fdc542",
     "grid/samples/sample.js": "aa8c6f6cb559be06b102cc3628b51938cb58420a27cf7f9b991fdd6ae7369c3c",
-    "grid/samples/source.js": "42484afd7d705abcff17a67bb2709b43dd247826084c28e263449b654b04bad7",
+    "grid/samples/source.js": "de391a1099227d830ea405d5df34ca05a1d04cfa3fb315e099c4927186579766",
     "grid/samples/variations.js": "4ef3e4a9b4ffed6388e2d0aa1dab636d78f1b02c99e07e9ed88528e43cb5bba0",
     "index.html": "b382ce037cee316e83ea52aa7ef3a125832825495e730cba8fd3d34372e9d2b3",
     "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
