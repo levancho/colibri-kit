@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Editable directory · Colibri Grid</title>
+    <link rel="stylesheet" href="/ui/themes/colibri.css" />
+    <script src="/grid/kit-theme.js"></script>
+    <link rel="stylesheet" href="grid.css" />
+    <link rel="stylesheet" href="workbench.css" />
+  </head>
+  <body class="ui-root">
+    <main class="grid-demo">
+      <p>
+        Open a column menu to sort. Double-click a cell to edit. Drag across cells or use Shift and the arrow keys
+        to select a range, then copy or paste. Use Ctrl/Cmd+D to fill down or Ctrl/Cmd+R to fill right.
+      </p>
+      <div id="directory"></div>
+    </main>
+    <script src="grid.js"></script>
+    <script type="module">
+      import { createExample } from './editing-example.js';
+      createExample(document.getElementById('directory'));
+    </script>
+  </body>
+</html>

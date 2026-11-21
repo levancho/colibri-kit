@@ -24,7 +24,14 @@ const samples = {
   'fill-handle': FillHandle,
   'rapid-updates': RapidUpdates,
 };
-const root = createRoot(document.getElementById('app'));
+export function mountReactSample(host, id) {
+  const root = createRoot(host);
+  const Sample = samples[id];
+  root.render(<Sample />);
+  return () => root.unmount();
+}
+const host = document.getElementById('app');
+const root = host && createRoot(host);
 function show() {
   const story = stories.find((story) => story.id === location.hash.slice(1)) ?? stories[0];
   const Sample = samples[story.id];
@@ -46,5 +53,7 @@ function show() {
     </main>,
   );
 }
-window.addEventListener('hashchange', show);
-show();
+if (root) {
+  window.addEventListener('hashchange', show);
+  show();
+}

@@ -486,11 +486,11 @@ window.ColibriGrid = (() => {
 
     // Rows intersecting the browser viewport and the scrollport below its sticky header.
     // The four extra rows mounted on each side are only a rendering buffer.
-    getVisibleRows() {
+    getVisibleRows(viewport) {
       if (document.hidden || !this.view.length) return [];
       const port = this.port.getBoundingClientRect();
-      const top = Math.max(0, this.header.getBoundingClientRect().bottom);
-      const bottom = Math.min(window.innerHeight, port.top + this.port.clientTop + this.port.clientHeight);
+      const top = Math.max(viewport?.top ?? 0, this.header.getBoundingClientRect().bottom);
+      const bottom = Math.min(viewport?.bottom ?? window.innerHeight, port.top + this.port.clientTop + this.port.clientHeight);
       if (bottom <= top || port.right <= 0 || port.left >= window.innerWidth || !port.width) return [];
       const origin = this.canvas.getBoundingClientRect().top;
       const first = Math.max(0, Math.floor((top - origin) / height));

@@ -12,7 +12,9 @@
     <link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
     <link rel="stylesheet" href="/grid/kit-page.css">
     <script src="/grid/kit-theme.js"></script>
-    <script type="module" src="/grid/kit-page.js"></script>
+    <script>
+      if (self === top) location.replace('/grid/samples/#react-' + (location.hash.slice(1) || 'add-columns'));
+    </script>
   </head>
   <body class="ui-root">
     <a class="grid-skip" href="#grid-content">Skip to grid content</a>

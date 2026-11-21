@@ -85,7 +85,9 @@ function write(panel, value) {
 }
 
 let revision = 0;
-export async function showSource(id) {
+export async function showSource(id, language) {
+  if (language) controller.select(language);
+  document.getElementById('run-react').hidden = language === 'react';
   const version = ++revision;
   const react = tabs.querySelector('[data-ui-part=panel][data-value=react]');
   const panels = [...tabs.querySelectorAll('[data-ui-part=panel]')];
@@ -115,7 +117,7 @@ export async function showSource(id) {
   const copy = react.querySelector('.sink-copy');
   copy.disabled = true;
   react.querySelector('code').textContent = 'Loading source…';
-  document.querySelector('#run-react').href = '../integrations/react.html#' + id;
+  document.querySelector('#run-react').href = '#react-' + id;
   try {
     const source = await load('./react/' + id + '.jsx');
     if (version === revision) {

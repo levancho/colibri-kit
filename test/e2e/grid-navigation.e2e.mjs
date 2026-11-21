@@ -19,11 +19,12 @@ try {
     const links = () => page.$$eval(nav + " a", a => a.map(i => [i.textContent, i.pathname]));
     const kitLinks = await links();
     const go = async selector => {
-      await Promise.all([page.waitForNavigation({ waitUntil: "domcontentloaded" }), page.click(selector)]);
+      await Promise.all([page.waitForNavigation({ waitUntil: "domcontentloaded" }), page.locator(selector).click()]);
     };
     async function checkSection(id) {
       const current = '.kbar .kbar-row2 a[aria-current="page"]';
-      await page.waitForSelector(current);
+      await page.waitForSelector(current + '[data-section="' + id + '"]');
+      await page.evaluate(() => scrollTo(0, 0));
       assert.deepEqual(await links(), kitLinks);
       assert.equal(await page.$eval(nav + ' [aria-current="page"]', a => a.textContent.trim()), "Colibri Grid Beta");
       assert.equal(await page.$eval(current, a => a.dataset.section), id);
@@ -37,20 +38,43 @@ try {
     }
     await go(gridLink);
     await checkSection("samples");
+    const rail = '#samples a';
+    async function application(id, title) {
+      await page.waitForSelector(rail + '[href="#' + id + '"][aria-current="page"]');
+      const element = await page.waitForSelector('#stage iframe[title="' + title + '"]');
+      return element.contentFrame();
+    }
+    const workbook = await application('full-grid', 'Full grid workbench');
+    await workbook.waitForSelector('.wb-content .wb-row');
+    await workbook.click('.wb-filters [data-filter="property"]');
+    await workbook.type('.wb-filters [data-filter="property"]', 'R-320.');
+    await workbook.waitForFunction(() => document.querySelector('.wb-foot').textContent.includes('2 / 1,000'));
+    for (const [kind, count] of [['application', 4], ['sample', 10], ['react', 10]]) {
+      assert.equal((await page.$$(rail + '[data-kind="' + kind + '"]')).length, count);
+    }
+    assert.doesNotMatch(await page.$eval('body', b => b.innerText), /glide|compare both/i);
     await page.click('#samples a[href="#custom-cell-editing"]');
-    await page.waitForSelector('#run-react[href$="#custom-cell-editing"]');
+    await page.waitForSelector('#run-react[href="#react-custom-cell-editing"]');
     const nextTheme = await page.$eval("html", e => e.dataset.theme === "dark" ? "light" : "dark");
     await page.click("#theme");
     await go('.kbar-sub [data-section="react"]');
     await checkSection("react");
-    assert.equal(new URL(page.url()).hash, "#custom-cell-editing");
+    assert.equal(new URL(page.url()).hash, "#react-custom-cell-editing");
     assert.equal(await page.$eval("html", e => e.dataset.theme), nextTheme);
     await page.waitForSelector('[role="grid"]');
     await go('.kbar-sub [data-section="samples"]');
     assert.equal(new URL(page.url()).hash, "#custom-cell-editing");
-    await go('.kbar-sub [data-section="trading"]');
+    await page.waitForSelector('#samples a[href="#custom-cell-editing"][aria-current="page"]');
+    await go('#samples a[href="#trading-desk"]');
     await checkSection("trading");
-    await page.waitForSelector("#symbol");
+    const trading = await application('trading-desk', 'Trading desk');
+    await trading.waitForFunction(() => document.querySelector('#symbol')?.textContent === 'NVDA');
+    await trading.click('#pause');
+    await trading.waitForFunction(() => /resume/i.test(document.querySelector('#pause').textContent));
+    await go('#samples a[href="#editable-directory"]');
+    await (await application('editable-directory', 'Editable directory')).waitForSelector('[role=gridcell]');
+    await go('#samples a[href="#inventory"]');
+    await (await application('inventory', 'Inventory and pivot tables')).waitForSelector('[role=gridcell]');
     await go('.kbar-brand');
     await page.waitForSelector('header[data-active="docs"]');
     console.log(width + "px: Kit home → grid sample → React → same sample → trading → Kit home");

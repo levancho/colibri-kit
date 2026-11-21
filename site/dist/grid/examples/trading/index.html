@@ -12,18 +12,14 @@
     <link rel="stylesheet" href="/kitchen-sink/examples/kit-bar.css">
     <link rel="stylesheet" href="/grid/kit-page.css">
     <script src="/grid/kit-theme.js"></script>
-    <script type="module" src="/grid/kit-page.js"></script>
+    <script>
+      document.documentElement.toggleAttribute('data-embedded', self !== top);
+      if (self === top && !new URLSearchParams(location.search).has('standalone')) {
+        location.replace('/grid/samples/#trading-desk');
+      }
+    </script>
   </head>
   <body class="ui-root">
-    <a class="grid-skip" href="#grid-content">Skip to grid content</a>
-    <header class="kbar" data-active="grid">
-      <button type="button" class="kbar-btn kbar-icon" data-kbar-tool id="theme" aria-label="Toggle dark mode">◐</button>
-    </header>
-    <nav class="kbar-sub" aria-label="Colibri Grid">
-      <a data-section="samples" href="/grid/samples/">Samples</a>
-      <a data-section="react" href="/grid/integrations/react.html">React examples</a>
-      <a data-section="trading" href="/grid/examples/trading/" aria-current="page">Trading desk</a>
-    </nav>
     <main id="grid-content" tabindex="-1">
       <div class="top">
         <div>

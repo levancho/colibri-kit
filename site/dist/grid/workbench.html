@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Full grid workbench</title>
+    <link rel="stylesheet" href="/ui/themes/colibri.css" />
+    <script src="/grid/kit-theme.js"></script>
+    <link rel="stylesheet" href="grid.css" />
+    <link rel="stylesheet" href="workbench.css" />
+  </head>
+  <body>
+    <main class="grid-demo">
+      <header class="demo-head">
+        <div class="demo-options">
+          <label
+            >Dataset
+            <select id="dataset">
+              <option value="projects">Projects</option>
+              <option value="participants">Participants</option>
+            </select></label
+          >
+          <label
+            >Data size
+            <select id="size">
+              <option value="100">100 rows</option>
+              <option value="1000" selected>1,000 rows</option>
+              <option value="10000">10,000 rows × 100 columns</option>
+              <option value="50000">50,000 rows</option>
+              <option value="100000">100,000 rows</option>
+            </select></label
+          >
+          <label
+            >Theme
+            <select id="skin">
+              <option>Colibri</option>
+              <option>Light</option>
+              <option>Dark</option>
+              <option>Light contrast</option>
+              <option>Dark contrast</option>
+              <option>Marine</option>
+              <option>Quartz</option>
+              <option>Alpine</option>
+              <option>Balham</option>
+              <option>Material</option>
+            </select></label
+          >
+        </div>
+      </header>
+      <div id="workbook"></div>
+    </main>
+    <script src="grid.js"></script>
+    <script src="files.js"></script>
+    <script src="workbench.js"></script>
+    <script src="sample.js"></script>
+  </body>
+</html>

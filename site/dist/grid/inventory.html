@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inventory · Colibri Grid</title>
+<link rel="stylesheet" href="/ui/themes/colibri.css"><script src="/grid/kit-theme.js"></script>
+    <link rel="stylesheet" href="grid.css">
+<style>:root{--ui-font:system-ui,sans-serif}body{margin:0;background:var(--ui-background);color:var(--ui-foreground);font-family:var(--ui-font)}main{max-width:72rem;margin:1rem auto;padding:0 4vw}h1{font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.045em;margin:0}p{color:var(--ui-muted-foreground);margin:1rem 0 2rem}</style>
+<main class="ui-root"><label>View <select id="mode"><option value="records">Records</option><option value="group">Grouped summary</option><option value="pivot">Pivot table</option></select></label>
+<label id="axis" hidden>Group by <select id="dimension"><option value="category">Product category</option><option value="warehouse">Warehouse</option></select></label>
+<label id="aggregate" hidden>Quantity calculation <select id="operation"><option>sum</option><option>mean</option><option>count</option><option>min</option><option>max</option></select></label>
+<p id="help">Search or sort 50,000 sample records. Double-click an item or quantity to edit it, or use the arrow keys and Enter. Edits last until you reload.</p><button type="button" id="return" hidden>Back to summary</button><div id="inventory"></div></main>
+<script src="grid.js"></script><script src="pivot.js"></script><script>
+const settings = {
+  label: 'Inventory', columns: [
+    {field:'id',label:'SKU'}, {field:'item',label:'Item',editable:true,width:220},
+    {field:'warehouse',label:'Warehouse'}, {field:'qty',label:'Quantity',editable:true,type:'number',
+      validate: value => Number.isInteger(value) && value >= 0 ? '' : 'Enter a whole quantity of zero or more.'}
+  ],
+  rows: Array.from({length:50000}, (_,i) => ({
+    id:'CB-'+String(i+1).padStart(5,'0'), item:['Notebook','Desk tray','Folio','Binder','Archive box'][i%5]+' '+(i+1),
+    category:['Notebook','Desk tray','Folio','Binder','Archive box'][i%5], warehouse:['East','West','Central'][i%3], qty:(i*7919)%10007
+  }))
+};
+const records = new Map(settings.rows.map(row => [row.id,row]));
+const help = document.querySelector('#help'), originalHelp = help.textContent;
+const mode = document.querySelector('#mode'), operation = document.querySelector('#operation');
+const dimension = document.querySelector('#dimension');
+const host = document.querySelector('#inventory');
+let grid;
+const back = document.querySelector('#return');
+back.onclick = () => { render(); grid.port.focus(); };
+host.addEventListener('colibri-change', e => records.set(e.detail.id,e.detail.row));
+function render() {
+  grid?.destroy();
+  back.hidden = true;
+  document.querySelector('#aggregate').hidden = !['pivot','group'].includes(mode.value);
+  document.querySelector('#axis').hidden = document.querySelector('#aggregate').hidden;
+  if (mode.value === 'records') {
+    help.textContent = originalHelp;
+    grid = new ColibriGrid(host,{...settings,rows:[...records.values()]});
+  } else {
+    const across = mode.value === 'pivot' ? (dimension.value === 'category' ? 'warehouse' : 'category') : undefined;
+    help.textContent = across ? 'Each cell summarizes the records at its row and column intersection.' : 'Each row summarizes all records in its group.';
+    const projection = ColibriGrid.pivot(records.values(),{group:dimension.value,groupLabel:dimension.selectedOptions[0].text,across,measure:'qty',operation:operation.value});
+    grid = new ColibriGrid(host,{...projection,label:'Inventory summary',onInspect:(summary,column) => {
+      const source = [...records.values()].filter(row => row[dimension.value] === summary.group && (!across || row[across] === column.bucket));
+      grid.destroy();
+      back.hidden = false;
+      help.textContent = [summary.group, across && column.label].filter(Boolean).join(' · ') + ' — ' + source.length.toLocaleString() + ' contributing records';
+      grid = new ColibriGrid(host,{...settings,label:'Contributing records',rows:source});
+      grid.port.focus();
+    }});
+    help.textContent += ' Select a figure to inspect its records.';
+  }
+}
+mode.onchange = dimension.onchange = operation.onchange = render;
+render();
+</script></html>

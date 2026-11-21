@@ -275,3 +275,7 @@ aside {
 .implementation select { max-width: 100%; }
 .implementation pre { max-height: 26rem; overflow: auto; padding: 1rem; color: #24292f; background: #f4f7f7; }
 .implementation code { color: inherit; }
+
+.application-frame { display: block; width: 100%; height: clamp(460px, 76dvh, 1000px); border: 0; }
+#application-source { margin-block: 1rem; }
+#application-code { white-space: pre; }

@@ -261,10 +261,11 @@ function run(t) {
   if (!paused && !document.hidden) {
     now += elapsed;
     if (t - lastBatch >= 45) {
-      const equities = stocks.getVisibleRows();
+      const viewport = window.frameElement?.visibleViewport?.();
+      const equities = stocks.getVisibleRows(viewport);
       const updateFx = t - lastFx >= 250;
-      const bases = updateFx ? fx.getVisibleRows().map((r) => r.id) : [];
-      const pairs = updateFx ? movers.getVisibleRows().map((r) => r.id) : [];
+      const bases = updateFx ? fx.getVisibleRows(viewport).map((r) => r.id) : [];
+      const pairs = updateFx ? movers.getVisibleRows(viewport).map((r) => r.id) : [];
       const scheduled = new Map(),
         changes = [];
       for (const { id } of equities) {

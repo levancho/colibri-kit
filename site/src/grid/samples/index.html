@@ -21,18 +21,18 @@
     </header>
     <nav class="kbar-sub" aria-label="Colibri Grid">
       <a data-section="samples" href="/grid/samples/" aria-current="page">Samples</a>
-      <a data-section="react" href="/grid/integrations/react.html">React examples</a>
-      <a data-section="trading" href="/grid/examples/trading/">Trading desk</a>
+      <a data-section="react" href="#react-add-columns">React examples</a>
+      <a data-section="trading" href="#trading-desk">Trading desk</a>
     </nav>
     <div class="studio">
       <aside>
         <div class="railhead">
-          <h2>Samples</h2>
+          <h2>Examples</h2>
           <span id="total"></span>
         </div>
         <label class="sample-filter"
           ><span aria-hidden="true">⌕</span
-          ><input id="find" type="search" aria-label="Find a sample" placeholder="Find a sample…"
+          ><input id="find" type="search" aria-label="Find a sample" placeholder="Find an example…"
         /></label>
         <nav id="samples" aria-label="Grid samples"></nav>
       </aside>
@@ -43,6 +43,11 @@
           <p id="description"></p>
         </div>
         <section id="stage" aria-label="Interactive sample"></section>
+        <details id="application-source" class="implementation" hidden>
+          <summary>Application source</summary>
+          <label>File <select id="application-file"></select></label>
+          <pre tabindex="0"><code id="application-code"></code></pre>
+        </details>
         <details id="source" class="sink-code" open>
           <summary>Code</summary>
           <details class="implementation" id="implementation">
