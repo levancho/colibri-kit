@@ -1126,13 +1126,16 @@ window.ColibriGrid = (() => {
         this.root.append(form);
         this.positionInlineEditor();
         if (!this.session) return false;
-        document.addEventListener('pointerdown', e => {
+        const outside = e => {
           if (form.contains(e.target) || !this.session) return;
-          if (!this.endItemEditorSession()) {
-            e.preventDefault();
-            e.stopImmediatePropagation();
-          }
-        }, {capture: true, signal: scope.signal});
+          if ((e.type === 'pointerdown' || e.detail === 0) && this.endItemEditorSession()) return;
+          // A rejected pointerdown still produces a click on the other cell.
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          (editor.focusTarget || editor.element).focus({preventScroll: true});
+        };
+        for (const type of ['pointerdown', 'click'])
+          document.addEventListener(type, outside, {capture: true, signal: scope.signal});
       } else {
         this.dialog.replaceChildren(form);
         this.dialog.oncancel = (e) => {

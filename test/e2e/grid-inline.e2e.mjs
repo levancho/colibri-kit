@@ -37,6 +37,9 @@ try {
     await number.fill('-3');
     await number.press('Tab');
     assert.match(await form.getByRole('alert').innerText(), /whole number/);
+    await owner.click();
+    assert(await number.evaluate(input => document.activeElement === input));
+    assert.match(await form.getByRole('alert').innerText(), /whole number/);
     await number.fill('4123');
     await number.press('Tab');
     await form.waitFor({state:'detached'});

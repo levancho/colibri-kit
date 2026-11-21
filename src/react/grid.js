@@ -330,13 +330,16 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
     if (!inline || !edit) return;
     const outside = e => {
       if (focusEditor.current?.contains(e.target)) return;
-      if (editingRow && editingColumn && !save()) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-      }
+      if (!editingRow || !editingColumn) return;
+      if ((e.type === 'pointerdown' || e.detail === 0) && save()) return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      focusEditor.current?.querySelector('input,select,textarea')?.focus({preventScroll:true});
     };
-    document.addEventListener('pointerdown', outside, true);
-    return () => document.removeEventListener('pointerdown', outside, true);
+    const scope = new AbortController();
+    for (const type of ['pointerdown', 'click'])
+      document.addEventListener(type, outside, {capture:true, signal:scope.signal});
+    return () => scope.abort();
   }, [inline, edit, draft, editingRow, editingColumn]);
   useEffect(() => {
     if (inline && edit && !focusEditor.current) setEdit(null);
