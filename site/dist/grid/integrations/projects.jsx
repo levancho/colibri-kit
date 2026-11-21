@@ -1,0 +1,41 @@
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { stories } from '../samples/catalog.js';
+import AddColumns from '../samples/react/add-columns.jsx';
+import FreezeColumns from '../samples/react/freeze-columns.jsx';
+import SearchAsFilter from '../samples/react/search-as-filter.jsx';
+import CustomCells from '../samples/react/custom-cells.jsx';
+import CustomCellEditing from '../samples/react/custom-cell-editing.jsx';
+import ValidateData from '../samples/react/validate-data.jsx';
+import HeaderMenus from '../samples/react/header-menus.jsx';
+import PasteSupport from '../samples/react/paste-support.jsx';
+import FillHandle from '../samples/react/fill-handle.jsx';
+import RapidUpdates from '../samples/react/rapid-updates.jsx';
+
+const samples = {
+  'add-columns': AddColumns,
+  'freeze-columns': FreezeColumns,
+  'search-as-filter': SearchAsFilter,
+  'custom-cells': CustomCells,
+  'custom-cell-editing': CustomCellEditing,
+  'validate-data': ValidateData,
+  'header-menus': HeaderMenus,
+  'paste-support': PasteSupport,
+  'fill-handle': FillHandle,
+  'rapid-updates': RapidUpdates,
+};
+const root = createRoot(document.getElementById('app'));
+function show() {
+  const story = stories.find((story) => story.id === location.hash.slice(1)) ?? stories[0];
+  const Sample = samples[story.id];
+  document.title = story.name + ' · React · Colibri Grid';
+  root.render(
+    <main className="frameworks">
+      <a href={'../samples/?source=react#' + story.id}>← {story.name} sample and source</a>
+      <h1>{story.name}</h1>
+      <Sample />
+    </main>,
+  );
+}
+window.addEventListener('hashchange', show);
+show();

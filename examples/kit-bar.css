@@ -9,6 +9,7 @@ html[data-theme=dark],html[data-chrome=dark]{--kb-fg:#e8ecf2;--kb-muted:#8f99a8;
 .kbar-brand i{width:26px;height:26px;border-radius:7px;background:url(/colibri-mark.svg) center/contain no-repeat;flex:none}
 .kbar-nav{display:flex;align-items:center;gap:2px;min-width:0;overflow-x:auto;scrollbar-width:none}
 .kbar-nav a{position:relative;padding:8px 11px;border-radius:8px;color:var(--kb-muted);text-decoration:none;white-space:nowrap;transition:color .15s,background .15s}
+.kbar-badge{display:inline-block;vertical-align:middle;padding:2px 5px;border:1px solid currentColor;border-radius:999px;color:var(--kb-acc);font:650 10px/1.1 var(--kb-font)}
 .kbar-nav a:hover{color:var(--kb-fg);background:var(--kb-soft)}
 .kbar-nav a[aria-current=page]{color:var(--kb-fg)}
 .kbar-nav a[aria-current=page]::after{content:"";position:absolute;left:11px;right:11px;bottom:-11px;height:2px;border-radius:2px;background:var(--kb-acc)}

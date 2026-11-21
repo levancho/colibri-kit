@@ -196,3 +196,5 @@ export const Callout = named("callout");
 export const Inset = named("inset");
 export { ChartPanel } from './chart-panel.js';
 export { ApplicationShell, MetricRail, RecordTable, OpportunityBoard, ProjectCards, DayPlanner, IdentityCard, ProductCollection, OrderReceipt, ConversationDesk, ApplicationForm, PhotoFeature, KnowledgeArticle } from './application-components.js';
+
+export { ColibriGrid } from "./grid.js";

@@ -1,0 +1,13 @@
+<table xmlns:th="http://www.thymeleaf.org" th:fragment="grid(id, columns, rows, label)"
+       th:id="${id}" data-colibri-grid>
+  <caption th:text="${label}">Project register</caption>
+  <thead><tr>
+    <th th:each="col : ${columns}" scope="col" th:text="${col.label}"
+        th:attr="data-field=${col.field},data-type=${col.type},data-editable=${col.editable},data-width=${col.width}">Project</th>
+  </tr></thead>
+  <tbody>
+    <tr th:each="row : ${rows}" th:attr="data-key=${row.id}">
+      <td th:each="col : ${columns}" th:text="${row[col.field]}"></td>
+    </tr>
+  </tbody>
+</table>

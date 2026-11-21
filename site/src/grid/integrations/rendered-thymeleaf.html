@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Project register</title>
+  <link rel="stylesheet" href="/ui/themes/colibri.css">
+  <link rel="stylesheet" href="../grid.css">
+</head>
+<body class="ui-root">
+<table id="projects" data-colibri-grid>
+  <caption>Project register</caption>
+  <thead><tr>
+    <th scope="col" data-field="project" data-type="text" data-editable="true" data-width="150">Project</th>
+    <th scope="col" data-field="owner" data-type="text" data-editable="true" data-width="150">Owner</th>
+    <th scope="col" data-field="budget" data-type="number" data-editable="true" data-width="150">Budget</th>
+    <th scope="col" data-field="approved" data-type="boolean" data-editable="true" data-width="150">Approved</th>
+  </tr></thead>
+  <tbody>
+    <tr data-key="atlas">
+      <td>Atlas &lt;search&gt;</td>
+      <td>Maya Reed</td>
+      <td>7200</td>
+      <td>true</td>
+    </tr>
+    <tr data-key="relay">
+      <td>Relay console</td>
+      <td>Jon West</td>
+      <td>4800</td>
+      <td>false</td>
+    </tr>
+    <tr data-key="beacon">
+      <td>Beacon maps</td>
+      <td>Ada Bell</td>
+      <td>6500</td>
+      <td>true</td>
+    </tr>
+  </tbody>
+</table>
+<script src="../grid.js"></script>
+<script type="module">
+  import { enhanceGrid } from './enhance.js';
+  enhanceGrid(document.getElementById('projects'));
+</script>
+</body>
+</html>

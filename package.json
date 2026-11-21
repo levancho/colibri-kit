@@ -45,6 +45,7 @@
     "./core/*.js": "./src/core/*.js",
     "./elements/*": "./src/elements/*.js",
     "./elements/*.js": "./src/elements/*.js",
+    "./react/grid": { "types": "./src/react/grid.d.ts", "default": "./src/react/grid.js" },
     "./react": "./src/react/index.js",
     "./themes/*": "./themes/*",
     "./min": "./dist/colibri-ui.min.js",
