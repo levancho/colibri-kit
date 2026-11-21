@@ -195,6 +195,21 @@
   }
   .wb-group-chip[data-insert='before']::after { inset-inline-start: -5px; }
   .wb-group-chip[data-insert='after']::after { inset-inline-end: -5px; }
+  .wb-group-actions {
+    display: inline-flex;
+    gap: 4px;
+    margin-inline-start: auto;
+  }
+  .wb-group-actions button {
+    border: 1px solid var(--ui-border);
+    background: var(--ui-card);
+  }
+  .wb-tree-cell .wb-branch-menu {
+    flex: none;
+    margin-inline-start: auto;
+    padding-inline: 5px;
+    color: var(--ui-muted-foreground);
+  }
   .wb-tree-title { padding-inline-start: 9px; font-weight: 650; }
   .wb-cell.wb-tree-cell {
     padding-inline-start: calc(9px + var(--wb-tree-indent));

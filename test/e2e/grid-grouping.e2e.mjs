@@ -129,6 +129,53 @@ try {
       x: header.x, y: header.y, width: 790, height: rows.y - header.y + 8 * 35,
     } });
   }
+  const collapseAll = bar.getByRole('button', { name: 'Collapse all', exact: true });
+  const expandAll = bar.getByRole('button', { name: 'Expand all', exact: true });
+  const range = page.locator('.wb-page-range');
+  await expandAll.click();
+  assert.equal(await range.innerText(), 'Rows from 1 to 20 of 1,036');
+  await pager.locator('[data-page-action="last"]').click();
+  assert.equal(await range.innerText(), 'Rows from 1,021 to 1,036 of 1,036');
+  assert(await page.locator('.wb-tree-leaf').count() > 0);
+  await collapseAll.click();
+  assert.equal(await range.innerText(), 'Rows from 1 to 12 of 12');
+  assert.equal(await groups.count(), 12);
+  const roots = page.locator('.wb-row[aria-level="1"]');
+  const branch = index => roots.nth(index).getByRole('button', { name: /^Group actions/ });
+  async function branchAction(index, name) {
+    await branch(index).click();
+    await page.getByRole('menuitem', { name, exact: true }).click();
+  }
+  await branchAction(1, 'Expand this branch');
+  assert.equal(await roots.first().getAttribute('aria-expanded'), 'false');
+  const siblingRange = await range.innerText();
+  assert.equal(siblingRange, 'Rows from 1 to 20 of 98');
+  await branchAction(0, 'Expand this branch');
+  await verifyLeaf();
+  assert.equal(await range.innerText(), 'Rows from 1 to 20 of 184');
+  await branchAction(0, 'Collapse this branch');
+  assert.equal(await range.innerText(), siblingRange);
+  assert.equal(await roots.nth(1).getAttribute('aria-expanded'), 'true');
+  // An ordinary disclosure after a recursive collapse opens just the first level.
+  await roots.first().locator('.wb-tree-toggle').click();
+  assert.equal(await groups.nth(1).getAttribute('aria-expanded'), 'false');
+  assert.equal(await range.innerText(), 'Rows from 1 to 20 of 99');
+  const child = page.locator('.wb-row[aria-level="2"]').first();
+  await child.locator('.wb-branch-menu').press('Enter');
+  await page.getByRole('menuitem', { name: 'Expand this branch' }).press('Enter');
+  assert.equal(await range.innerText(), 'Rows from 1 to 20 of 184');
+  await child.locator('.wb-branch-menu').click();
+  if (process.env.BRANCH_SCREENSHOT) {
+    const bounds = await bar.boundingBox();
+    await page.screenshot({ path: process.env.BRANCH_SCREENSHOT, animations: 'disabled', clip: {
+      x: bounds.x, y: bounds.y, width: bounds.width, height: 430,
+    } });
+  }
+  await page.getByRole('menuitem', { name: 'Collapse this branch' }).click();
+  assert.equal(await roots.first().getAttribute('aria-expanded'), 'true');
+  assert.equal(await roots.nth(1).getAttribute('aria-expanded'), 'true');
+  assert.equal(await range.innerText(), 'Rows from 1 to 20 of 99');
+  console.log('Verified global expansion across 52 pages, global collapse to 12 roots, independent sibling branches, and nested branch actions.');
   console.log('Passed three header drops, nested counts and leaves, collapse, drag and keyboard reordering, sorting, Kit themes, and restoration of the flat grid.');
 } finally {
   await browser.close();

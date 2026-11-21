@@ -90,6 +90,11 @@ window.ColibriGrid.Workbench = (() => {
     'Row summary': 'Zeilensumme',
     Off: 'Aus',
     'Row groups': 'Zeilengruppen',
+    'Expand all': 'Alle aufklappen',
+    'Collapse all': 'Alle zuklappen',
+    'Expand this branch': 'Diesen Zweig aufklappen',
+    'Collapse this branch': 'Diesen Zweig zuklappen',
+    'Group actions': 'Gruppenaktionen',
     Group: 'Gruppe',
     'Remove group': 'Gruppe entfernen',
     '(Blanks)': '(Leer)',
@@ -565,9 +570,9 @@ window.ColibriGrid.Workbench = (() => {
       box.style.top = Math.max(4, Math.min(innerHeight - box.offsetHeight - 6, r.bottom)) + 'px';
       box.querySelector('button:not(:disabled)')?.focus();
     }
-    redraw() {
+    redraw(expandFrom) {
       this.discardEditor('redraw');
-      this.model();
+      this.model(expandFrom);
       this.drawTotals();
       this.toolbar();
       this.groupZone();
@@ -659,7 +664,7 @@ window.ColibriGrid.Workbench = (() => {
         });
       return records;
     }
-    model() {
+    model(expandFrom) {
       this.source = this.rows.filter(
         (r) =>
           (this.searchBehavior === 'highlight' ||
@@ -735,7 +740,7 @@ window.ColibriGrid.Workbench = (() => {
         this.treeColumn.width = Math.max(220, this.groups.length * 16 + 130);
         cols = [this.treeColumn, ...cols.filter(c => !this.groups.includes(c.field))];
         const flat = [];
-        const walk = (rows, depth, path) => {
+        const walk = (rows, depth, path, expandDescendants) => {
           if (depth === this.groups.length) {
             for (const r of rows) flat.push(r);
             return;
@@ -760,10 +765,12 @@ window.ColibriGrid.Workbench = (() => {
             const node = { _key: 'group' + key, _groupKey: key, _label: String(v) || this.t('(Blanks)'), _rows: items, _depth: depth };
             for (const m of this.values) node[m.field] = aggregate(items, m.field, m.op);
             flat.push(node);
-            if (this.openGroups.has(key)) walk(items, depth + 1, next);
+            const expand = expandDescendants || key === expandFrom;
+            if (expand) this.openGroups.add(key);
+            if (this.openGroups.has(key)) walk(items, depth + 1, next, expand);
           }
         };
-        walk(records, 0, []);
+        walk(records, 0, [], expandFrom === null);
         records = flat;
       }
       if (this.pivot && this.pivotSort) {
@@ -975,6 +982,22 @@ window.ColibriGrid.Workbench = (() => {
     focusGroup(field) {
       (field && this.groupbar.querySelector('[data-group-field="' + CSS.escape(field) + '"] button') || this.port).focus({ preventScroll: true });
     }
+    setGroupsExpanded(expanded, group = null) {
+      const key = group?._groupKey ?? null;
+      if (!expanded && group) {
+        // Keys encode complete JSON paths. Match only children of this exact path.
+        const childPrefix = key.slice(0, -1) + ',';
+        for (const open of this.openGroups) {
+          if (open === key || open.startsWith(childPrefix)) this.openGroups.delete(open);
+        }
+      } else if (!expanded) this.openGroups.clear();
+      if (!group) this.resetPosition();
+      this.redraw(expanded ? key : undefined);
+      const control = group
+        ? this.content.querySelector('[data-id="' + CSS.escape(group._key) + '"] .wb-branch-menu')
+        : this.groupbar.querySelector('[data-expand="' + expanded + '"]');
+      control?.focus({ preventScroll: true });
+    }
     groupZone() {
       const label = this.t('Group by');
       this.groupbar.setAttribute('role', 'group');
@@ -1010,6 +1033,15 @@ window.ColibriGrid.Workbench = (() => {
         if (index) this.groupbar.append(el('span', 'wb-group-separator', '›'));
         this.groupbar.append(chip);
       });
+      if (this.groups.length && !this.pivot) {
+        const actions = el('span', 'wb-group-actions');
+        for (const [label, expanded] of [['Expand all', true], ['Collapse all', false]]) {
+          const control = button(this.t(label), () => this.setGroupsExpanded(expanded));
+          control.dataset.expand = expanded;
+          actions.append(control);
+        }
+        this.groupbar.append(actions);
+      }
       const accepts = () => ['col', 'group'].includes(this.drag?.kind);
       const placement = e => {
         const chip = e.target.closest('[data-group-field]');
@@ -1727,6 +1759,15 @@ window.ColibriGrid.Workbench = (() => {
         ctx.commit = (value) =>
           this.renderPool.active.get(cell)?.item.data === r && this.commitRenderer(r, c, value);
         this.renderPool.attach(cell, cellFactory, ctx);
+        if (c === this.treeColumn && r._rows) {
+          const more = button('⋯', () => this.menu(more, [
+            ['Expand this branch', () => this.setGroupsExpanded(true, r)],
+            ['Collapse this branch', () => this.setGroupsExpanded(false, r)],
+          ]), this.t('Group actions') + ' · ' + text);
+          more.className = 'wb-branch-menu';
+          more.setAttribute('aria-haspopup', 'menu');
+          cell.append(more);
+        }
         if (c.heat && Number.isFinite(val))
           cell.style.background =
             'color-mix(in srgb, var(--wb-heat) ' +

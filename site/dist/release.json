@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "9d1bbc3a0fa78237f48c2e1041088884595af1fa4e8f6e7dbe400f91853e0c93",
+  "release": "6c780d937fc9177bb513939fa459bc0470a4a5c6a7ca73e8655e5f18acce633d",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -93,9 +93,9 @@
     "grid/vendor/jspdf.min.js": "db83fc811c81a9c9c218f1787ba52fc9b4d0d0fbe51184ce3a4a4f8a7ba9a091",
     "grid/vendor/jszip.LICENSE": "566c953c6090b1218ca6217dd7359d45dde46581968586dc607d59a78af6a9c4",
     "grid/vendor/jszip.min.js": "acc7e41455a80765b5fd9c7ee1b8078a6d160bbbca455aeae854de65c947d59e",
-    "grid/workbench.css": "1b6d9a5a4c8ed64c6811d0bcf121a98569e98ec4f2c1ef1c200e5f7ae8327768",
+    "grid/workbench.css": "6ffd1e8614ad7c26f82de3bf68195ac12746dd12e79f49b906a1d59a641b49b7",
     "grid/workbench.html": "eee91074f6a69a289e11cd1f2353bf5d3a622c050162d0ac6a034af1618a9f30",
-    "grid/workbench.js": "ca2c5eb363a9cadad43589ce47753e682a47df54c74cb97c24f844a4f1bf8c12",
+    "grid/workbench.js": "d1af3bdce20f8425717d071aa5021561250338ee5dd1256575632d4941281a0d",
     "index.html": "b382ce037cee316e83ea52aa7ef3a125832825495e730cba8fd3d34372e9d2b3",
     "java-templates.html": "f00a829adb31c393e5f989fb6d895c6cecabd1996c998b1007324d76de127071",
     "kitchen-sink/examples/application-models.json": "7cf5c2e277ef46feae994385bffbc33bbed45aae5d523e16c13f54f4b03e98d8",
