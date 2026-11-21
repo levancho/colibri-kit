@@ -1,9 +1,12 @@
 import type { ReactElement, ReactNode, RefAttributes } from 'react';
 
 export type GridBounds = { top: number; bottom: number; left: number; right: number };
-export type GridRef = {
+export type GridRef<Row = object> = {
   focus(): void;
   selectCell(row: number, column: number): void;
+  selectRange(top: number, left: number, bottom: number, right: number): void;
+  editCell(row: number, column: number): void;
+  getVisibleRows(): Row[];
   getSelection(): GridBounds;
 };
 export type GridColumn<Row> = {
@@ -18,7 +21,7 @@ export type GridColumn<Row> = {
   renderCell?: (cell: { row: Row; column: GridColumn<Row>; value: any; startEdit(): void }) => ReactNode;
   renderEditor?: (editor: { row: Row; column: GridColumn<Row>; value: any; onChange(value: any): void; save(): void; cancel(): void }) => ReactNode;
 };
-export interface GridProps<Row> extends RefAttributes<GridRef> {
+export interface GridProps<Row> extends RefAttributes<GridRef<Row>> {
   columns: readonly GridColumn<Row>[];
   rows?: readonly Row[];
   defaultRows?: readonly Row[];

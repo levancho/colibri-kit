@@ -147,8 +147,32 @@ export const ColibriGrid = forwardRef(function ColibriGrid(
   }
   useImperativeHandle(
     ref,
-    () => ({ focus: () => port.current?.focus(), selectCell: (r, c) => select(r, c), getSelection: () => region }),
-    [result, columns, anchor, active, pinnedColumns],
+    () => ({
+      focus: () => port.current?.focus(),
+      selectCell: (r, c) => select(r, c),
+      selectRange: (top, left, bottom, right) => {
+        const origin = safe({r: top, c: left});
+        const end = safe({r: bottom, c: right});
+        setAnchor(origin);
+        setActive(end);
+        onSelectionChange?.(rectangle(origin, end));
+      },
+      editCell: (r, c) => start(r, c),
+      getSelection: () => region,
+      getVisibleRows: () => {
+        const el = port.current;
+        if (!el || !el.clientHeight) return [];
+        const box = el.getBoundingClientRect();
+        const top = Math.max(0, -box.top);
+        const bottom = Math.min(el.clientHeight, window.innerHeight - box.top);
+        if (bottom <= Math.max(rowHeight, top) || box.right <= 0 || box.left >= window.innerWidth) return [];
+        return result.slice(
+          Math.floor((el.scrollTop + Math.max(0, top - rowHeight)) / rowHeight),
+          Math.ceil((el.scrollTop + bottom - rowHeight) / rowHeight),
+        );
+      },
+    }),
+    [result, columns, anchor, active, pinnedColumns, rowHeight, onSelectionChange, getRowId],
   );
   function change(entries) {
     try {

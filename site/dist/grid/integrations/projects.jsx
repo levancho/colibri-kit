@@ -1,77 +1,41 @@
-// Load @colibri-kit/ui/themes/colibri.css and @colibri-kit/ui/themes/grid.css in the app.
-import React, { useState } from 'react';
+import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ColibriGrid } from '@colibri-kit/ui/react/grid';
+import { stories } from '../samples/catalog.js';
+import AddColumns from '../samples/react/add-columns.jsx';
+import FreezeColumns from '../samples/react/freeze-columns.jsx';
+import SearchAsFilter from '../samples/react/search-as-filter.jsx';
+import CustomCells from '../samples/react/custom-cells.jsx';
+import CustomCellEditing from '../samples/react/custom-cell-editing.jsx';
+import ValidateData from '../samples/react/validate-data.jsx';
+import HeaderMenus from '../samples/react/header-menus.jsx';
+import PasteSupport from '../samples/react/paste-support.jsx';
+import FillHandle from '../samples/react/fill-handle.jsx';
+import RapidUpdates from '../samples/react/rapid-updates.jsx';
 
-const statuses = ['Planned', 'In progress', 'In review', 'Released'];
-const columns = [
-  { field: 'project', label: 'Project', width: 226, editable: true },
-  { field: 'owner', label: 'Owner', width: 150, editable: true },
-  {
-    field: 'budget',
-    label: 'Budget',
-    width: 120,
-    type: 'number',
-    editable: true,
-    validate: (value) => (Number.isInteger(value) && value >= 0) || 'Enter a nonnegative whole number.',
-  },
-  {
-    field: 'status',
-    label: 'Stage',
-    width: 157,
-    editable: true,
-    renderCell: ({ value }) => <span className={'chip phase-' + statuses.indexOf(value)}>{value}</span>,
-    renderEditor: ({ value, onChange }) => (
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {statuses.map((s) => (
-          <option key={s}>{s}</option>
-        ))}
-      </select>
-    ),
-    validate: (value) => statuses.includes(value) || 'Choose a listed stage.',
-  },
-  { field: 'approved', label: 'Approved', width: 110, type: 'boolean', editable: true },
-];
-const initial = Array.from({ length: 10000 }, (_, i) => ({
-  id: i + 1,
-  project: ['Atlas search', 'Relay console', 'Beacon maps'][i % 3] + ' / ' + (i + 1),
-  owner: ['Maya Reed', 'Jon West', 'Ada Bell'][i % 3],
-  budget: 4800 + i * 7,
-  status: statuses[i % 4],
-  approved: i % 3 === 0,
-}));
-function Projects() {
-  const [rows, setRows] = useState(initial),
-    [query, setQuery] = useState(''),
-    [pinned, setPinned] = useState(true),
-    [last, setLast] = useState('');
-  return (
-    <>
-      <div className="integration-tools">
-        <label>
-          Search projects <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} />
-        </label>
-        <label>
-          <input type="checkbox" checked={pinned} onChange={(e) => setPinned(e.target.checked)} /> Pin project
-        </label>
-      </div>
-      <ColibriGrid
-        label="React project register"
-        rows={rows}
-        columns={columns}
-        query={query}
-        pinnedColumns={pinned ? 1 : 0}
-        onRowsChange={(next, changes) => {
-          setRows(next);
-          setLast('Saved ' + changes.length + ' cell' + (changes.length === 1 ? '' : 's'));
-        }}
-      />
-      <output aria-live="polite">{last}</output>
-    </>
+const samples = {
+  'add-columns': AddColumns,
+  'freeze-columns': FreezeColumns,
+  'search-as-filter': SearchAsFilter,
+  'custom-cells': CustomCells,
+  'custom-cell-editing': CustomCellEditing,
+  'validate-data': ValidateData,
+  'header-menus': HeaderMenus,
+  'paste-support': PasteSupport,
+  'fill-handle': FillHandle,
+  'rapid-updates': RapidUpdates,
+};
+const root = createRoot(document.getElementById('app'));
+function show() {
+  const story = stories.find((story) => story.id === location.hash.slice(1)) ?? stories[0];
+  const Sample = samples[story.id];
+  document.title = story.name + ' · React · Colibri Grid';
+  root.render(
+    <main className="frameworks">
+      <a href={'../samples/?source=react#' + story.id}>← {story.name} sample and source</a>
+      <h1>{story.name}</h1>
+      <Sample />
+    </main>,
   );
 }
-createRoot(document.getElementById('app')).render(
-  <React.StrictMode>
-    <Projects />
-  </React.StrictMode>,
-);
+window.addEventListener('hashchange', show);
+show();

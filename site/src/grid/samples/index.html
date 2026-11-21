@@ -12,7 +12,7 @@
     <header class="mast">
       <a class="wordmark" href="../"><i class="brandmark" aria-hidden="true"></i> Colibri Grid</a
       ><span class="divider"></span><span>Sample library</span
-      ><a class="kitlink" href="/">Colibri Kit</a>
+      ><a class="kitlink" href="/">Colibri Kit ↗</a>
     </header>
     <div class="studio">
       <aside>
@@ -42,23 +42,35 @@
           <section id="stage" aria-label="Interactive sample"></section>
           <div id="external" hidden></div>
         </div>
-        <details id="source">
-          <summary>Source code</summary>
-          <label
-            >Source format
-            <select id="format">
-              <option value="html">HTML</option>
-              <option value="freemarker">FreeMarker</option>
-              <option value="thymeleaf">Thymeleaf</option>
-              <option value="react">React component example</option>
-            </select></label
-          ><button type="button" id="copy-source">Copy source</button>
-          <pre><code id="code"></code></pre>
+        <details id="source" class="sink-code" open>
+          <summary>Code</summary>
+          <div data-ui="tabs" class="sink-code-tabs" data-default-value="html">
+            <div data-ui-part="list" aria-label="Sample source code">
+              <button data-ui-part="trigger" data-value="html">HTML</button>
+              <button data-ui-part="trigger" data-value="react">React</button>
+              <button data-ui-part="trigger" data-value="ftl">FreeMarker</button>
+              <button data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button>
+            </div>
+            <div data-ui-part="panel" data-value="html" hidden>
+              <button class="sink-copy" data-ui="clipboard" data-target="#code-html" aria-label="Copy HTML code"><span class="sink-copy-l">Copy</span></button>
+              <pre class="sink-pre" tabindex="0"><code id="code-html"></code></pre>
+            </div>
+            <div data-ui-part="panel" data-value="react" hidden>
+              <button class="sink-copy" data-ui="clipboard" data-target="#code-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button>
+              <pre class="sink-pre" tabindex="0"><code id="code-react"></code></pre>
+              <a id="run-react" target="_blank" rel="noopener">Open this React example ↗</a>
+            </div>
+            <div data-ui-part="panel" data-value="ftl" hidden>
+              <button class="sink-copy" data-ui="clipboard" data-target="#code-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button>
+              <pre class="sink-pre" tabindex="0"><code id="code-ftl"></code></pre>
+            </div>
+            <div data-ui-part="panel" data-value="thymeleaf" hidden>
+              <button class="sink-copy" data-ui="clipboard" data-target="#code-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button>
+              <pre class="sink-pre" tabindex="0"><code id="code-thymeleaf"></code></pre>
+            </div>
+          </div>
         </details>
         <details class="sample-checks"><summary>Browser test results</summary><dl id="checked"></dl></details>
-        <p class="integration-link">
-          <a href="../integrations/">React component &amp; framework integrations →</a>
-        </p>
       </main>
     </div>
     <script src="../grid.js"></script>

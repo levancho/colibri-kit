@@ -49,6 +49,10 @@ export function record(i) {
     tree: (n % 4 === 0 ? 'Portfolio ' : 'Work item ') + i,
   };
 }
+export function projectRows(story) {
+  const count = story === 'add-columns' ? 10000 : ['custom-cells', 'custom-cell-editing'].includes(story) ? 500 : 240;
+  return Array.from({ length: count }, (_, index) => record(index + 1));
+}
 function renderer(render) {
   return () => ({
     element: node('span', 'sample-cell'),

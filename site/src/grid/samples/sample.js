@@ -1,9 +1,9 @@
 import { stories } from './catalog.js';
-import { baseColumns, customColumns, extendedColumn, record, selectEditors } from './cells.js';
-import { configureSample } from './variations.js';
+import { baseColumns, projectRows } from './cells.js';
+import { configurations } from './variations.js';
 
 const customIds = new Set(['custom-cells', 'custom-cell-editing']);
-export function mountSample(stage, storyId) {
+export function mountSample(stage, storyId, configure = configurations[storyId]) {
   const current = stories.find((s) => s.id === storyId);
   if (!current) throw new RangeError('Unknown grid sample: ' + storyId);
   stage.innerHTML =
@@ -13,8 +13,7 @@ export function mountSample(stage, storyId) {
     toolbar = $('toolbar');
   const id = current.id,
     scope = new AbortController(),
-    cleanup = [],
-    expanded = new Set();
+    cleanup = [];
   let grid;
   toolbar.replaceChildren();
   surface.replaceChildren();
@@ -58,9 +57,8 @@ export function mountSample(stage, storyId) {
   function notice(message) {
     $('activity').textContent = message;
   }
-  let rows = [],
-    columns = baseColumns.slice(),
-    rowCount = id === 'add-columns' ? 10000 : customIds.has(id) ? 500 : 240;
+  let rows = projectRows(id),
+    columns = baseColumns.slice();
   let query = '';
   const dimensions = (r, c) => {
     $('dimensions').textContent = r.toLocaleString() + ' rows  ·  ' + c.toLocaleString() + ' columns';
@@ -95,6 +93,14 @@ export function mountSample(stage, storyId) {
     notice,
     listen,
     cleanup,
+    toolbar,
+    mount,
+    select,
+    rows,
+    setVisibleRows(next) {
+      rows = next;
+      this.refresh();
+    },
     get grid() {
       return grid;
     },
@@ -119,68 +125,8 @@ export function mountSample(stage, storyId) {
     cleanup.forEach((fn) => fn());
     grid?.destroy();
   };
-  rows = Array.from({ length: rowCount }, (_, i) => record(i + 1));
   const allRows = rows;
-  if (customIds.has(id)) {
-    const custom = customColumns(
-      notice,
-      (key) => {
-        expanded.has(key) ? expanded.delete(key) : expanded.add(key);
-        rows = allRows.filter((r) => (r.id - 1) % 4 === 0 || expanded.has(r.id - ((r.id - 1) % 4)));
-        ctx.refresh();
-      },
-      expanded,
-    );
-    if (id === 'custom-cells') {
-      for (let i = 1; i <= rowCount; i += 4) expanded.add(i);
-      columns = custom;
-    } else columns = selectEditors;
-    const jump = select(
-      'Go to cell',
-      columns.map((c) => c.label),
-      (label) =>
-        grid.activate(
-          Math.max(0, grid.index),
-          columns.findIndex((c) => c.label === label),
-        ),
-    );
-    jump.value = columns[0].label;
-    button('Open editor', () => grid.edit());
-  }
-  if (id === 'add-columns') {
-    let size = 10,
-      generated = 10;
-    const limit = 200;
-    const setSize = (n) => {
-      size = Math.max(2, Math.min(limit, n));
-      columns = Array.from({ length: size }, (_, i) => extendedColumn(i));
-      if (size > generated)
-        for (const r of rows)
-          for (let i = generated; i < size; i++) {
-            const key = 'metric' + (i + 1);
-            if (!(key in r)) r[key] = (r.id * (i + 5)) % 1000;
-          }
-      generated = Math.max(generated, size);
-      mount();
-      bar.value = size;
-      out.value = size;
-      less.disabled = size === 2;
-      more.disabled = size === limit;
-    };
-    const bar = input('Columns', 'range', size, setSize, { min: 2, max: limit }),
-      out = document.createElement('output');
-    out.value = size;
-    toolbar.append(out);
-    const less = button('− Remove', () => setSize(size - 1)),
-      more = button(
-        '+ Add column',
-        () => {
-          setSize(size + 1);
-          grid.activate(grid.index, size - 1);
-        },
-          );
-  }
-  configureSample(ctx);
+  configure(ctx);
   if (!toolbar.children.length) {
     const label = document.createElement('strong');
     label.textContent = customIds.has(id) ? 'Cell library' : 'Project register';
