@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TreeGrid · Colibri Grid</title>
+  <link rel="stylesheet" href="/css/colibri.css">
+  <link rel="stylesheet" href="/ui/themes/colibri.css">
+  <link rel="stylesheet" href="/ui/themes/packs/index.css">
+  <script src="/grid/kit-theme.js"></script>
+  <link rel="stylesheet" href="grid.css">
+  <link rel="stylesheet" href="/grid/kit-grid-theme.css">
+</head>
+<body class="ui-root">
+  <main class="tree-example">
+    <div data-tree-actions>
+      <button type="button" data-variant="secondary" data-tree-expand>Expand all</button>
+      <button type="button" data-variant="secondary" data-tree-collapse>Collapse all</button>
+    </div>
+    <div data-tree></div>
+  </main>
+  <script src="grid.js"></script>
+  <script type="module">
+    import { mountTreeGrid } from './tree-example.js';
+    mountTreeGrid(document.querySelector('main'));
+  </script>
+</body>
+</html>

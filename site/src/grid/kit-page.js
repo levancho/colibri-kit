@@ -35,7 +35,7 @@ const tradingLink = subnav.querySelector('[data-section=trading]');
 function linkCurrentSample() {
   const id = location.hash.slice(1) || 'full-grid';
   const react = id.startsWith('react-');
-  const app = ['full-grid', 'trading-desk', 'editable-directory', 'inventory'].includes(id);
+  const app = ['full-grid', 'trading-desk', 'editable-directory', 'inventory', 'tree-grid'].includes(id);
   const sample = react ? id.slice(6) : app ? 'add-columns' : id;
   samplesLink.href = '/grid/samples/#' + (react ? sample : 'full-grid');
   reactLink.href = '/grid/samples/#react-' + sample;

@@ -181,3 +181,5 @@
 }
 [dir=rtl] .cg-tree-toggle::before { transform: rotate(45deg); }
 .cg [aria-expanded=true] > .cg-tree-cell > .cg-tree-toggle::before { transform: rotate(45deg); }
+.tree-example .cg-port { height: auto; max-height: var(--cg-height, min(60vh, 480px)); }
+.tree-example [data-tree-actions] { display: inline-flex; gap: .375rem; }

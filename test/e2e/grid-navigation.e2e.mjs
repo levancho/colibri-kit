@@ -108,7 +108,7 @@ try {
     assert.equal(await range(), 'Records from 1 to 2 of 2');
     await workbook.type('.wb-filters [data-filter="property"]', 'no-match');
     assert.equal(await range(), '0 records');
-    for (const [kind, count] of [['application', 4], ['sample', 12], ['react', 12]]) {
+    for (const [kind, count] of [['application', 5], ['sample', 12], ['react', 12]]) {
       assert.equal((await page.$$(rail + '[data-kind="' + kind + '"]')).length, count);
     }
     assert.doesNotMatch(await page.$eval('body', b => b.innerText), /glide|compare both/i);

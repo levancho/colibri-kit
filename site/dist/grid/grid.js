@@ -16,6 +16,7 @@ window.ColibriGrid = (() => {
         columns,
         rows = [],
         dataProvider,
+        rowModel,
         key = 'id',
         label = 'Records',
         locale,
@@ -29,6 +30,7 @@ window.ColibriGrid = (() => {
     ) {
       columns = columns?.map(ColibriGrid.cells.normalizeColumn);
       this.host = host;
+      this.rowModel = rowModel;
       this.inlineEditing = editorPresentation === 'inline';
       this.renderPool = new ColibriGrid.cells.RendererPool();
       this.headerPool = new ColibriGrid.cells.RendererPool();
@@ -310,6 +312,7 @@ window.ColibriGrid = (() => {
         if (id == null || byId.has(id)) throw new TypeError('Each row needs a unique key');
         byId.set(id, row);
       }
+      this.rowModel?.index(byId);
       if (this.session) this.endItemEditorSession(true);
       else if (this.dialog.open) this.dialog.close();
       this.byId = byId;
@@ -334,6 +337,11 @@ window.ColibriGrid = (() => {
         changed.set(id, { ...prior, ...patch });
       }
       if (!changed.size) return 0;
+      if (this.rowModel) {
+        const next = new Map(this.byId);
+        for (const [id, row] of changed) next.set(id, row);
+        this.rowModel.index(next);
+      }
       if (this.dataProvider) {
         this.dataProvider.replaceAll(
           this.dataProvider.source.map((r) => changed.get(r[this.key]) || r),
@@ -348,7 +356,7 @@ window.ColibriGrid = (() => {
       if (
         this.query ||
         this.conditions.length ||
-        reorder ||
+        reorder || this.rowModel ||
         (this.order && this.columns.find((c) => c.field === this.order.field)?.sortCompareFunction)
       ) {
         this.refresh(true);
@@ -410,10 +418,11 @@ window.ColibriGrid = (() => {
             return test.op === 'eq' ? text === needle : text.includes(needle);
           }),
         );
+      let compare;
       if (!this.readPage && this.order) {
         const { field, asc } = this.order;
         const sortColumn = this.columns.find((c) => c.field === field);
-        this.view.sort((a, b) => {
+        compare = (a, b) => {
           const x = a[field],
             y = b[field];
           if (x == null || y == null) return Number(x == null) - Number(y == null);
@@ -424,8 +433,12 @@ window.ColibriGrid = (() => {
               ? x - y
               : this.collator.compare(x, y);
           return asc ? cmp : -cmp;
-        });
+        };
       }
+      if (this.rowModel) {
+        const filterKey = this.query || this.conditions.length ? JSON.stringify([this.query, this.conditions]) : '';
+        this.view = this.rowModel.project(this.byId, this.view, compare, filterKey);
+      } else if (compare) this.view.sort(compare);
       this.columns.forEach((c, i) => {
         const head = this.header.children[i];
         if (this.order?.field === c.field)
@@ -962,8 +975,10 @@ window.ColibriGrid = (() => {
           'update',
         );
       this.byId.set(id, updated);
-      if (this.dataProvider instanceof ColibriGrid.ListCollectionView)
+      if (this.dataProvider instanceof ColibriGrid.ListCollectionView) {
         this.byId = new Map(this.dataProvider.source.map((r) => [r[this.key], r]));
+        this.rowModel?.index(this.byId);
+      }
       if (
         this.dataProvider instanceof ColibriGrid.ListCollectionView ||
         this.conditions.length ||

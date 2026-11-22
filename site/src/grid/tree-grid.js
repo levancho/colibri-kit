@@ -79,7 +79,8 @@ class TreeRows {
 
 export class ColibriTreeGrid extends window.ColibriGrid {
   constructor(host, options) {
-    const { columns, treeField = columns[0].field, parentField = 'parentId', expanded = [] } = options;
+    const columns = options.columns.map(window.ColibriGrid.cells.normalizeColumn);
+    const { treeField = columns[0]?.field, parentField = 'parentId', expanded = [] } = options;
     const columnIndex = columns.findIndex(column => column.field === treeField);
     if (columnIndex < 0) throw new TypeError('Unknown tree column: ' + treeField);
     if (options.readPage) throw new TypeError('TreeGrid requires a complete parent-linked collection');
