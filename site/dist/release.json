@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "acdef2985895d8a3aa50176517ae3f1b248a8f32220ad63de60ec6c851794efe",
+  "release": "736021b07115087bd648aab42c650bb8055b4600f13533c4ee7cf886fe09bc53",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -72,7 +72,7 @@
     "grid/samples/examples/validate-data.js": "2db953a7921fc43e584220d4d45807546f174aa2b51b6325b2721e25c8224b48",
     "grid/samples/gallery.css": "085cb2e3f08749fbe392cf5e7809458721fd0e01735004feda60dfbab16189cf",
     "grid/samples/gallery.js": "eca65cfc4b31a4df5b08e8a6a44ff877c3529bd26fefedef3ef89fbb59df47dd",
-    "grid/samples/index.html": "d0948d39b3175d6d944e02937cd7403c6603e3622cf350012a478aab178431a4",
+    "grid/samples/index.html": "873e9debcb8674cf5dae21c657ac741e482753b619f6649e1e93914114fa5dbd",
     "grid/samples/kit-source.js": "d63b40ef3ae64ed6d347322f823159313241add19781a37cf5805a853af1de9e",
     "grid/samples/project-editors.js": "dd539c7851c140636bde1815ddb8a772d6d84005828233f9b27168dd31c72aba",
     "grid/samples/react/add-columns.jsx": "b67de71ab8423f50c30cd28a4dc1272438c52e71f146fe743fb9bc3b1c9250cc",
