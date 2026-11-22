@@ -71,9 +71,8 @@ try {
   await editor.fill('Iris Hall');
   await editor.press('Enter');
   assert.match(await leaf.innerText(), /Iris Hall/);
-  await page.locator('#application-source summary').click();
-  await page.locator('#application-file').selectOption('tree-example.js');
-  await page.waitForFunction(() => document.querySelector('#application-code')?.textContent.includes('new ColibriTreeGrid('));
+  await page.locator('#source .source-files:visible').getByRole('link', { name: 'tree-example.js', exact: true }).click();
+  await page.waitForFunction(() => document.querySelector('#code-html')?.textContent.includes('new ColibriTreeGrid('));
 
   // Exercise the public API with out-of-order records, numeric keys and a recycled viewport.
   const checks = await page.evaluate(async () => {

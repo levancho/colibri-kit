@@ -30,17 +30,14 @@ pack.addEventListener('change', () => {
 
 const subnav = document.querySelector('.kbar-sub');
 const samplesLink = subnav.querySelector('[data-section=samples]');
-const reactLink = subnav.querySelector('[data-section=react]');
 const tradingLink = subnav.querySelector('[data-section=trading]');
 function linkCurrentSample() {
-  const id = location.hash.slice(1) || 'full-grid';
-  const react = id.startsWith('react-');
-  const app = ['full-grid', 'trading-desk', 'editable-directory', 'inventory', 'tree-grid'].includes(id);
-  const sample = react ? id.slice(6) : app ? 'add-columns' : id;
-  samplesLink.href = '/grid/samples/#' + (react ? sample : 'full-grid');
-  reactLink.href = '/grid/samples/#react-' + sample;
-  tradingLink.href = '/grid/samples/#trading-desk';
-  const active = react ? reactLink : id === 'trading-desk' ? tradingLink : samplesLink;
+  const hash = location.hash.slice(1);
+  const react = hash.startsWith('react-');
+  const prefix = react ? 'react-' : '';
+  samplesLink.href = '/grid/samples/#' + prefix + 'full-grid';
+  tradingLink.href = '/grid/samples/#' + prefix + 'trading-desk';
+  const active = hash === prefix + 'trading-desk' ? tradingLink : samplesLink;
   for (const link of subnav.querySelectorAll('a')) {
     if (link === active) link.setAttribute('aria-current', 'page');
     else link.removeAttribute('aria-current');

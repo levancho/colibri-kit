@@ -2,14 +2,11 @@ import { stories } from './catalog.js';
 import { mountSample } from './sample.js';
 import { showSource } from './source.js';
 import { applications, mountApplication } from './applications.js';
-const reactExamples = stories.map(story => ({
-  ...story, id: 'react-' + story.id, react: story.id, group: 'React examples',
-}));
-const entries = [...applications, ...stories, ...reactExamples];
+const entries = [...applications, ...stories];
 const $ = (id) => document.getElementById(id),
   nav = $('samples');
 let dispose = () => {},
-  current;
+  current, react;
 function navigation() {
   const query = $('find').value.trim().toLowerCase();
   nav.replaceChildren();
@@ -18,13 +15,13 @@ function navigation() {
     if (!matches.length) continue;
     const section = document.createElement('details'),
       head = document.createElement('summary');
-    section.open = group !== 'React examples' || current.group === group || Boolean(query);
+    section.open = true;
     head.textContent = group;
     section.append(head);
     for (const story of matches) {
       const a = document.createElement('a');
-      a.href = '#' + story.id;
-      a.dataset.kind = story.file ? 'application' : story.react ? 'react' : 'sample';
+      a.href = '#' + (react ? 'react-' : '') + story.id;
+      a.dataset.kind = story.file ? 'application' : 'sample';
       a.textContent = story.name;
       if (story === current) a.setAttribute('aria-current', 'page');
       section.append(a);
@@ -40,7 +37,17 @@ function navigation() {
 }
 function load() {
   dispose();
-  current = entries.find((s) => s.id === location.hash.slice(1)) || (new URLSearchParams(location.search).has('source') ? stories[0] : applications[0]);
+  const hash = location.hash.slice(1);
+  react = hash.startsWith('react-');
+  current = entries.find((s) => s.id === (react ? hash.slice(6) : hash)) || (new URLSearchParams(location.search).has('source') ? stories[0] : applications[0]);
+  for (const mode of ['html', 'react']) {
+    const link = $('preview-' + mode);
+    const selected = (mode === 'react') === react;
+    link.href = '#' + (mode === 'react' ? 'react-' : '') + current.id;
+    link.setAttribute('aria-selected', selected);
+    link.tabIndex = selected ? 0 : -1;
+    if (selected) $('stage').setAttribute('aria-labelledby', link.id);
+  }
   navigation();
   document.title = current.name + ' · Colibri Grid samples';
   document.querySelector('h1').textContent = current.name;
@@ -48,23 +55,31 @@ function load() {
   $('description').textContent = current.description;
   const stage = $('stage');
   stage.replaceChildren();
-  $('application-source').hidden = !current.file;
-  $('source').hidden = Boolean(current.file);
-  if (current.file) {
-    dispose = mountApplication(stage, current);
-  } else if (current.react) {
+  const hideSource = showSource(current, react ? 'react' : 'html');
+  let unmount, canceled = false;
+  dispose = () => { canceled = true; hideSource(); unmount?.(); };
+  if (react) {
     const selected = current;
-    let canceled = false, unmount;
-    dispose = () => { canceled = true; unmount?.(); };
-    import('../integrations/projects.bundle.js').then(({ mountReactSample }) => {
-      if (!canceled) unmount = mountReactSample(stage, selected.react);
+    const loader = selected.file
+      ? import('../integrations/applications.bundle.js').then(m => m.mountReactApplication)
+      : import('../integrations/projects.bundle.js').then(m => m.mountReactSample);
+    loader.then(mount => {
+      if (!canceled) unmount = mount(stage, selected.id);
     }).catch(() => { if (!canceled) stage.textContent = 'Could not load this React example.'; });
-    showSource(current.react, 'react');
   } else {
-    dispose = mountSample(stage, current.id);
-    showSource(current.id);
+    unmount = current.file ? mountApplication(stage, current) : mountSample(stage, current.id);
   }
 }
+document.querySelector('.preview-tabs').onkeydown = event => {
+  if (!['ArrowLeft', 'ArrowRight', 'Home', 'End', ' '].includes(event.key)) return;
+  event.preventDefault();
+  let link = event.target;
+  if (event.key === 'Home') link = $('preview-html');
+  else if (event.key === 'End') link = $('preview-react');
+  else if (event.key !== ' ') link = $(react ? 'preview-html' : 'preview-react');
+  link.focus();
+  link.click();
+};
 $('total').textContent = entries.length;
 $('find').oninput = navigation;
 window.addEventListener('hashchange', load);

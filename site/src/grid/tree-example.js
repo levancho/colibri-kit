@@ -31,8 +31,12 @@ export function mountTreeGrid(host) {
     rows,
   });
   grid.search.placeholder = 'Search the project plan';
-  grid.search.insertAdjacentElement('afterend', host.querySelector('[data-tree-actions]'));
+  const actions = host.querySelector('[data-tree-actions]');
+  grid.search.insertAdjacentElement('afterend', actions);
   host.querySelector('[data-tree-expand]').onclick = () => grid.expandAll();
   host.querySelector('[data-tree-collapse]').onclick = () => grid.collapseAll();
-  return () => grid.destroy();
+  return () => {
+    host.prepend(actions);
+    grid.destroy();
+  };
 }

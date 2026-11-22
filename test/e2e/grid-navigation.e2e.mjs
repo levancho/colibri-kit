@@ -108,20 +108,20 @@ try {
     assert.equal(await range(), 'Records from 1 to 2 of 2');
     await workbook.type('.wb-filters [data-filter="property"]', 'no-match');
     assert.equal(await range(), '0 records');
-    for (const [kind, count] of [['application', 5], ['sample', 12], ['react', 12]]) {
+    for (const [kind, count] of [['application', 5], ['sample', 12], ['react', 0]]) {
       assert.equal((await page.$$(rail + '[data-kind="' + kind + '"]')).length, count);
     }
     assert.doesNotMatch(await page.$eval('body', b => b.innerText), /glide|compare both/i);
     await page.click('#samples a[href="#custom-cell-editing"]');
-    await page.waitForSelector('#run-react[href="#react-custom-cell-editing"]');
+    await page.waitForSelector('#preview-react[href="#react-custom-cell-editing"]');
     const nextTheme = await page.$eval("html", e => e.dataset.theme === "dark" ? "light" : "dark");
     await page.click("#theme");
-    await go('.kbar-sub [data-section="react"]');
-    await checkSection("react");
+    await go('#preview-react');
+    await checkSection("samples");
     assert.equal(new URL(page.url()).hash, "#react-custom-cell-editing");
     assert.equal(await page.$eval("html", e => e.dataset.theme), nextTheme);
     await page.waitForSelector('[role="grid"]');
-    await go('.kbar-sub [data-section="samples"]');
+    await go('#preview-html');
     assert.equal(new URL(page.url()).hash, "#custom-cell-editing");
     await page.waitForSelector('#samples a[href="#custom-cell-editing"][aria-current="page"]');
     await go('#samples a[href="#trading-desk"]');

@@ -26,7 +26,6 @@
     </header>
     <nav class="kbar-sub" aria-label="Colibri Grid">
       <a data-section="samples" href="/grid/samples/" aria-current="page">Samples</a>
-      <a data-section="react" href="#react-add-columns">React examples</a>
       <a data-section="trading" href="#trading-desk">Trading desk</a>
     </nav>
     <div class="studio">
@@ -48,59 +47,16 @@
             <h1></h1>
             <p id="description"></p>
           </div>
-          <section id="stage" aria-label="Interactive sample"></section>
+          <div class="preview-tabs" role="tablist" aria-label="Example framework">
+            <a id="preview-html" role="tab" aria-controls="stage" href="#">HTML</a>
+            <a id="preview-react" role="tab" aria-controls="stage" href="#">React</a>
+          </div>
+          <section id="stage" role="tabpanel" aria-labelledby="preview-html"></section>
         </div>
-        <details id="application-source" class="implementation" hidden>
-          <summary>Application source</summary>
-          <label>File <select id="application-file"></select></label>
-          <pre tabindex="0"><code id="application-code"></code></pre>
-        </details>
         <details id="source" class="sink-code" open>
-          <summary>Code</summary>
-          <details class="implementation" id="implementation">
-            <summary>View grid implementation</summary>
-            <label>Source file
-              <select id="implementation-file">
-                <option value="../grid.js">JavaScript grid · grid.js</option>
-                <option value="../integrations/react-grid.js">React grid · react-grid.js</option>
-                <option value="color-editor.js">Color palette renderer and editor · color-editor.js</option>
-                <option value="project-editors.js">Project editor columns and data · project-editors.js</option>
-                <option value="choice-editor.js">Inline dropdown and tag editor · choice-editor.js</option>
-                <option value="cells.js">Sample rows, columns and cell factories · cells.js</option>
-                <option value="react/columns.jsx">React columns and editors · columns.jsx</option>
-              </select>
-            </label>
-            <a id="open-file" href="../grid.js" target="_blank" rel="noopener">Open file ↗</a>
-            <pre tabindex="0"><code id="implementation-code"></code></pre>
-          </details>
-          <div data-ui="tabs" class="sink-code-tabs" data-default-value="html">
-            <div data-ui-part="list" aria-label="Sample source code">
-              <button data-ui-part="trigger" data-value="html">HTML</button>
-              <button data-ui-part="trigger" data-value="react">React</button>
-              <button data-ui-part="trigger" data-value="ftl">FreeMarker</button>
-              <button data-ui-part="trigger" data-value="thymeleaf">Thymeleaf</button>
-            </div>
-            <div data-ui-part="panel" data-value="html" hidden>
-              <button class="sink-copy" data-ui="clipboard" data-target="#code-html" aria-label="Copy HTML code"><span class="sink-copy-l">Copy</span></button>
-              <pre class="sink-pre" tabindex="0"><code id="code-html"></code></pre>
-            </div>
-            <div data-ui-part="panel" data-value="react" hidden>
-              <button class="sink-copy" data-ui="clipboard" data-target="#code-react" aria-label="Copy React code"><span class="sink-copy-l">Copy</span></button>
-              <pre class="sink-pre" tabindex="0"><code id="code-react"></code></pre>
-              <div class="source-links">
-                <a id="run-react">Open this React example</a>
-                <a href="react/columns.jsx" download>Column definitions and editors</a>
-                <a href="cells.js" download>Sample data and cell renderers</a>
-              </div>
-            </div>
-            <div data-ui-part="panel" data-value="ftl" hidden>
-              <button class="sink-copy" data-ui="clipboard" data-target="#code-ftl" aria-label="Copy FreeMarker code"><span class="sink-copy-l">Copy</span></button>
-              <pre class="sink-pre" tabindex="0"><code id="code-ftl"></code></pre>
-            </div>
-            <div data-ui-part="panel" data-value="thymeleaf" hidden>
-              <button class="sink-copy" data-ui="clipboard" data-target="#code-thymeleaf" aria-label="Copy Thymeleaf code"><span class="sink-copy-l">Copy</span></button>
-              <pre class="sink-pre" tabindex="0"><code id="code-thymeleaf"></code></pre>
-            </div>
+          <summary>Source code</summary>
+          <div class="sink-code-tabs" data-ui="tabs">
+            <div data-ui-part="list" aria-label="Source language"></div>
           </div>
         </details>
       </main>
