@@ -1,0 +1,157 @@
+{
+  "editing-example.js": [],
+  "examples/trading/feed.js": [],
+  "examples/trading/trading.js": [
+    "examples/trading/feed.js"
+  ],
+  "files.js": [],
+  "integrations/clipboard.js": [],
+  "integrations/react-grid.js": [
+    "integrations/clipboard.js"
+  ],
+  "inventory.js": [
+    "pivot.js"
+  ],
+  "pivot.js": [],
+  "sample.js": [
+    "files.js",
+    "workbench.js"
+  ],
+  "samples/cells.js": [
+    "samples/choice-editor.js"
+  ],
+  "samples/choice-editor.js": [
+    "samples/selection-summary.js"
+  ],
+  "samples/color-editor.js": [
+    "samples/selection-summary.js"
+  ],
+  "samples/examples/add-columns.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/color-palette.js": [
+    "samples/color-editor.js"
+  ],
+  "samples/examples/custom-cell-editing.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/custom-cells.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/fill-handle.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/freeze-columns.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/header-menus.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/paste-support.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/project-editors.js": [
+    "samples/project-editors.js"
+  ],
+  "samples/examples/rapid-updates.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/search-as-filter.js": [
+    "samples/cells.js"
+  ],
+  "samples/examples/validate-data.js": [
+    "samples/cells.js"
+  ],
+  "samples/project-editors.js": [
+    "samples/cells.js"
+  ],
+  "samples/react/add-columns.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/color-palette.jsx": [
+    "integrations/react-grid.js",
+    "samples/color-editor.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/columns.jsx": [
+    "samples/cells.js"
+  ],
+  "samples/react/custom-cell-editing.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/custom-cells.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/editable-directory.jsx": [
+    "editing-example.js"
+  ],
+  "samples/react/fill-handle.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/freeze-columns.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/full-grid.jsx": [
+    "sample.js"
+  ],
+  "samples/react/header-menus.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/inventory.jsx": [
+    "inventory.js"
+  ],
+  "samples/react/paste-support.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/project-editors.jsx": [
+    "integrations/react-grid.js",
+    "samples/project-editors.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/rapid-updates.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/search-as-filter.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/react/trading-desk.jsx": [
+    "examples/trading/trading.js"
+  ],
+  "samples/react/tree-grid.jsx": [
+    "tree-example.js"
+  ],
+  "samples/react/validate-data.jsx": [
+    "integrations/react-grid.js",
+    "samples/cells.js",
+    "samples/react/columns.jsx"
+  ],
+  "samples/selection-summary.js": [],
+  "tree-example.js": [
+    "tree-grid.js"
+  ],
+  "tree-grid.js": [],
+  "workbench.js": [],
+  "/ui/themes/packs/index.css": [
+    "/ui/themes/packs/glacier.css",
+    "/ui/themes/packs/ember.css",
+    "/ui/themes/packs/midnight.css"
+  ]
+}

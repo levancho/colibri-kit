@@ -10,9 +10,6 @@ export const applications = [
 ];
 
 export function mountApplication(stage, example) {
-  const panel = document.getElementById('application-source');
-  const picker = document.getElementById('application-file');
-  const code = document.getElementById('application-code');
   const lifecycle = new AbortController();
   const applicationsById = {
     'full-grid': () => import('../sample.js').then(m => m.mountWorkbench),
@@ -49,29 +46,10 @@ export function mountApplication(stage, example) {
     if (!lifecycle.signal.aborted) stage.removeAttribute('aria-busy');
   });
 
-  picker.replaceChildren(...example.sources.map(path => new Option(path, path)));
-  let request;
-  async function showFile() {
-    request?.abort();
-    if (!panel.open) return;
-    request = new AbortController();
-    code.textContent = 'Loading source…';
-    try {
-      const result = await fetch('../' + picker.value, { signal: request.signal });
-      if (!result.ok) throw Error(result.statusText);
-      code.textContent = await result.text();
-    } catch (err) {
-      if (err.name !== 'AbortError') code.textContent = 'Could not load this source file.';
-    }
-  }
-  picker.onchange = panel.ontoggle = showFile;
-  showFile();
   return () => {
-    request?.abort();
     lifecycle.abort();
     unmount?.();
     stage.removeAttribute('aria-busy');
-    picker.onchange = panel.ontoggle = null;
     stage.replaceChildren();
   };
 }
