@@ -152,6 +152,7 @@ window.ColibriGrid.Workbench = (() => {
     '0 records': '0 Datensätze',
     '0 rows': '0 Zeilen',
     pinned: 'fixiert',
+    selected: 'ausgewählt',
     Previous: 'Zurück',
     Next: 'Weiter',
     Actions: 'Aktionen',
@@ -203,7 +204,15 @@ window.ColibriGrid.Workbench = (() => {
       this.element = el('input');
       this.element.type = 'checkbox';
       this.element.onchange = () => {
-        if (!this.commit(this.element.checked)) this.element.checked = !!this.value;
+        const {owner, data, column} = this;
+        const checked = this.element.checked;
+        owner.choose(this.rowIndex, this.columnIndex);
+        if (!this.commit(checked)) this.element.checked = !!this.value;
+        else {
+          const cell = owner.port.querySelector('[data-id="' + CSS.escape(String(data._key)) +
+            '"] [data-field="' + CSS.escape(column.field) + '"] input');
+          (cell || owner.port).focus({preventScroll:true});
+        }
       };
     }
     prepare() {
@@ -272,7 +281,7 @@ window.ColibriGrid.Workbench = (() => {
     constructor() {
       this.element = el('div', 'wb-choice-editor');
       this.focusTarget = el('input');
-      this.list = el('div');
+      this.list = el('div', 'wb-editor-options');
       this.list.id = 'choices-' + crypto.randomUUID();
       this.list.setAttribute('role', 'listbox');
       this.focusTarget.setAttribute('role', 'combobox');
@@ -330,24 +339,49 @@ window.ColibriGrid.Workbench = (() => {
   class TeamEditor {
     constructor() {
       this.element = el('div', 'wb-team-editor');
+      this.focusTarget = el('input');
+      this.focusTarget.type = 'search';
+      this.list = el('div', 'wb-editor-options');
+      this.list.id = 'team-' + crypto.randomUUID();
+      this.list.setAttribute('role', 'group');
+      this.focusTarget.setAttribute('aria-controls', this.list.id);
     }
     prepare() {
-      const chosen = new Set(
-        String(this.value || '')
-          .split(',')
-          .map((n) => n.trim())
-          .filter(Boolean),
-      );
-      this.element.replaceChildren(
-        ...this.column.options.map((name) => check(name, chosen.has(name), () => {})),
-        button(this.owner.t('Save'), () => this.owner.endItemEditorSession()),
-        button(this.owner.t('Cancel'), () => this.owner.endItemEditorSession(true)),
-      );
+      const input = this.focusTarget;
+      const chosen = new Set(String(this.value || '').split(',').map(name => name.trim()).filter(Boolean));
+      const update = () => {
+        input.placeholder = chosen.size + ' ' + this.owner.t('selected');
+      };
+      input.setAttribute('aria-label', this.column.label);
+      this.list.setAttribute('aria-label', this.column.label);
+      this.list.replaceChildren(...this.column.options.map(name => check(name, chosen.has(name), on => {
+        if (on) chosen.add(name);
+        else chosen.delete(name);
+        update();
+      })));
+      input.oninput = () => {
+        const term = input.value.trim().toLowerCase();
+        for (const label of this.list.children) label.hidden = !label.textContent.toLowerCase().includes(term);
+      };
+      // WebKit otherwise moves focus to the grid before a checkbox click completes.
+      this.element.onmousedown = event => {
+        if (event.target.closest('label, button')) event.preventDefault();
+      };
+      this.element.onkeydown = event => {
+        if (!['ArrowDown', 'ArrowUp'].includes(event.key)) return;
+        const options = [...this.list.querySelectorAll('label:not([hidden]) input')];
+        if (!options.length) return;
+        event.preventDefault();
+        const index = options.indexOf(document.activeElement);
+        const next = event.key === 'ArrowDown' ? index + 1 : (index <= 0 ? options.length - 1 : index - 1);
+        options[next % options.length].focus();
+      };
+      const save = button('✓', () => this.owner.endItemEditorSession(), this.owner.t('Save'));
+      this.element.replaceChildren(input, save, this.list);
+      update();
     }
     get editedValue() {
-      return [...this.element.querySelectorAll('input:checked')]
-        .map((n) => n.parentElement.textContent)
-        .join(', ');
+      return [...this.list.querySelectorAll('input:checked')].map(n => n.parentElement.textContent).join(', ');
     }
   }
   const renderers = {
@@ -1733,6 +1767,7 @@ window.ColibriGrid.Workbench = (() => {
         cell.setAttribute('role', 'gridcell');
         cell.dataset.cell = '';
         cell.dataset.field = c.field;
+        cell.setAttribute('aria-readonly', String(!c.editable || !!r._rows || c.field === this.dataProvider?.key));
         cell.dataset.r = i;
         cell.dataset.c = j;
         this.pinStyle(cell, c);
@@ -1976,14 +2011,19 @@ window.ColibriGrid.Workbench = (() => {
     commitRenderer(row, column, value) {
       if (!column.editable || this.dataProvider?.key === column.field) return false;
       const detail = { data: row, column, oldValue: row[column.field], value };
-      if (!cells.event(this, 'itemEditBeginning', detail, true) || !cells.event(this, 'itemEditEnd', detail, true))
+      if (!cells.event(this, 'itemEditBeginning', detail, true)) return false;
+      cells.event(this, 'itemEditBegin', detail);
+      if (!cells.event(this, 'itemEditEnd', detail, true)) {
+        cells.event(this, 'itemEditCancel', detail);
         return false;
+      }
       try {
         this.write([[row, column, detail.value]]);
         cells.event(this, 'itemEditSave', detail);
         return true;
       } catch (error) {
         this.notice(error.message);
+        cells.event(this, 'itemEditCancel', detail);
         return false;
       }
     }
@@ -2005,7 +2045,6 @@ window.ColibriGrid.Workbench = (() => {
       const ctx = cells.context(this, row, column, i, j, this.display(row, column), {
         itemRenderer: this.renderPool.active.get(cell)?.item,
       });
-      if (!cells.event(this, 'itemEditBeginning', ctx, true)) return false;
       if (
         column.rendererIsEditor ||
         (column.type === 'boolean' && !column.itemEditor && !column.itemEditorFunction)
@@ -2014,6 +2053,7 @@ window.ColibriGrid.Workbench = (() => {
         (item?.focusTarget || item?.element)?.focus();
         return true;
       }
+      if (!cells.event(this, 'itemEditBeginning', ctx, true)) return false;
       const selected =
         column.itemEditorFunction?.(row, column) ??
         column.itemEditor ??
@@ -2023,44 +2063,43 @@ window.ColibriGrid.Workbench = (() => {
       this.sheet.append(layer);
       layer.append(editor.element);
       Object.assign(editor, ctx);
-      this.session = { editor, layer, ctx, key: row._key };
+      const scope = new AbortController();
+      this.session = { editor, layer, ctx, key: row._key, scope };
       this.positionEditor();
       editor.initialize?.();
       editor.prepare?.();
       editor.element.setAttribute('aria-label', 'Edit ' + column.label);
       const focus =
         editor.focusTarget || editor.element.querySelector('input,select,textarea,button') || editor.element;
+      layer.addEventListener('input', () => {
+        focus.removeAttribute('aria-invalid');
+        focus.removeAttribute('aria-errormessage');
+        layer.querySelector('.wb-edit-error')?.remove();
+      });
       focus.focus();
       if (focus.type !== 'checkbox') focus.select?.();
+      const outside = e => {
+        if (layer.contains(e.target)) return;
+        if ((e.type === 'pointerdown' || e.detail === 0) && this.endItemEditorSession(false, 'blur')) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        focus.focus({preventScroll: true});
+      };
+      for (const type of ['pointerdown', 'click'])
+        document.addEventListener(type, outside, {capture: true, signal: scope.signal});
       layer.onkeydown = (e) => {
+        if (e.isComposing || e.defaultPrevented) return;
         if (e.key === 'Escape') {
           e.preventDefault();
           e.stopPropagation();
           this.endItemEditorSession(true);
         } else if (
           (e.key === 'Enter' && e.target.tagName !== 'BUTTON') ||
-          (e.key === 'Tab' && !editor.element.querySelector('button'))
+          (e.key === 'Tab' && (editor instanceof TeamEditor || !editor.element.querySelector('button')))
         ) {
           e.preventDefault();
           e.stopPropagation();
-          if (this.endItemEditorSession() && e.key === 'Tab') {
-            const step = e.shiftKey ? -1 : 1,
-              width = this.cols.length;
-            for (let at = i * width + j + step; at >= 0 && at < width * this.visible.length; at += step) {
-              const r = Math.floor(at / width),
-                c = at % width;
-              if (!this.cols[c].editable || this.cols[c].field === this.dataProvider?.key || this.visible[r]._rows)
-                continue;
-              this.choose(r, c);
-              if (r >= this.pinRows.length && !this.port.querySelector('[data-r="' + r + '"]')) {
-                this.port.scrollTop = (r - this.pinRows.length) * this.rowHeight;
-                this.paintRows();
-              }
-              this.port.querySelector('[data-active]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-              this.startItemEditorSession(r, c);
-              break;
-            }
-          }
+          if (this.endItemEditorSession() && e.key === 'Tab') this.editNextCell(i, j, e.shiftKey);
         }
       };
       layer.onfocusout = (e) => {
@@ -2069,6 +2108,25 @@ window.ColibriGrid.Workbench = (() => {
       };
       cells.event(this, 'itemEditBegin', { ...ctx, editor });
       return true;
+    }
+    editNextCell(i, j, backward) {
+      const step = backward ? -1 : 1,
+        width = this.cols.length;
+      for (let at = i * width + j + step; at >= 0 && at < width * this.visible.length; at += step) {
+        const r = Math.floor(at / width),
+          c = at % width;
+        if (!this.cols[c].editable || this.cols[c].field === this.dataProvider?.key || this.visible[r]._rows)
+          continue;
+        this.choose(r, c);
+        if (r >= this.pinRows.length && !this.port.querySelector('[data-r="' + r + '"]')) {
+          this.port.scrollTop = (r - this.pinRows.length) * this.rowHeight;
+          this.paintRows();
+        }
+        this.port.querySelector('[data-active]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        this.startItemEditorSession(r, c);
+        return true;
+      }
+      return false;
     }
     get itemEditorInstance() {
       return this.session?.editor ?? null;
@@ -2086,14 +2144,28 @@ window.ColibriGrid.Workbench = (() => {
       s.editor.itemRenderer = this.renderPool.active.get(cell)?.item;
       const box = cell.getBoundingClientRect(),
         port = this.port.getBoundingClientRect();
-      s.layer.style.left = box.left - port.left + this.port.scrollLeft + 'px';
-      s.layer.style.top = box.top - port.top + this.port.scrollTop + 'px';
+      const sheet = this.sheet.getBoundingClientRect();
+      s.layer.style.left = box.left - sheet.left + 'px';
+      s.layer.style.top = box.top - sheet.top + 'px';
+      s.layer.style.height = box.height + 'px';
       s.layer.style.width = box.width + 'px';
+      if (s.editor instanceof TeamEditor || s.editor instanceof ChoiceEditor) {
+        const below = Math.min(port.bottom, innerHeight) - box.bottom;
+        const above = box.top - Math.max(this.head.getBoundingClientRect().bottom, port.top, 0);
+        const up = below < 180 && above > below;
+        s.layer.toggleAttribute('data-up', up);
+        s.layer.style.setProperty('--wb-options-height', Math.max(0, Math.min(220, (up ? above : below) - 4)) + 'px');
+        const width = Math.min(Math.max(182, box.width), port.width);
+        const left = Math.max(port.left, Math.min(port.right - width, box.left));
+        s.layer.style.setProperty('--wb-options-width', width + 'px');
+        s.layer.style.setProperty('--wb-options-left', left - box.left + 'px');
+      }
     }
     discardEditor(reason) {
       const s = this.session;
       if (!s) return;
       this.session = null;
+      s.scope.abort();
       s.layer.onfocusout = null;
       try {
         s.editor.discard?.(reason);
@@ -2140,9 +2212,18 @@ window.ColibriGrid.Workbench = (() => {
         if (reason !== 'blur') this.port.focus({ preventScroll: true });
         return true;
       } catch (error) {
-        this.notice(error.message);
-        editor.element.setAttribute('aria-invalid', 'true');
-        (editor.focusTarget || editor.element).focus();
+        const focus = editor.focusTarget || editor.element;
+        let message = s.layer.querySelector('.wb-edit-error');
+        if (!message) {
+          message = el('output', 'wb-edit-error');
+          message.setAttribute('role', 'alert');
+          message.id = 'edit-error-' + crypto.randomUUID();
+          s.layer.append(message);
+        }
+        message.textContent = error.message;
+        focus.setAttribute('aria-invalid', 'true');
+        focus.setAttribute('aria-errormessage', message.id);
+        focus.focus({preventScroll:true});
         return false;
       }
     }
@@ -2280,7 +2361,13 @@ window.ColibriGrid.Workbench = (() => {
       }
     }
     key(e) {
-      if (e.target !== this.port) return;
+      if (e.target !== this.port) {
+        const cell = e.target.closest('[data-r][data-c]');
+        if (cell && e.key === 'Tab' && e.target.matches('[role=radio], input[type=checkbox]')) {
+          if (this.editNextCell(Number(cell.dataset.r), Number(cell.dataset.c), e.shiftKey)) e.preventDefault();
+        } else if (cell && e.key === 'Escape') this.port.focus({preventScroll:true});
+        return;
+      }
       const cmd = e.ctrlKey || e.metaKey;
       if (cmd && e.key.toLowerCase() === 'z') {
         e.preventDefault();
@@ -2361,7 +2448,7 @@ window.ColibriGrid.Workbench = (() => {
           ]),
         ],
         ['Export', ['CSV', 'XLSX'].map((format) => [format, () => this.exportFile(format)])],
-        ['Edit cell', () => this.editCell(this.active.r, this.active.c)],
+        ['Edit cell', () => this.editCell(+cell.dataset.r, +cell.dataset.c), cell.getAttribute('aria-readonly') === 'true'],
       ]);
     }
     dialog(title, modal = true) {
