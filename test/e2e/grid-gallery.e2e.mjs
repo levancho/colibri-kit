@@ -33,14 +33,31 @@ try {
       assert.equal(await rail.locator('[aria-current]').textContent(), title);
       const files = panel.getByRole('navigation').getByRole('link');
       const refs = await files.evaluateAll(links => links.map(a => [a.getAttribute('title'), a.href, a.target]));
-      assert(refs.length >= 4, id);
-      for (const [path, href, target] of refs) {
+      const titles = await panel.locator('.source-files > *').evaluateAll(nodes => nodes.map(n => n.title));
+      const apps = {
+        'full-grid': ['workbench.html', 'sample.js'],
+        'tree-grid': ['tree.html', 'tree-example.js'],
+        'inventory': ['inventory.html', 'inventory.js'],
+        'editable-directory': ['editing.html', 'editing-example.js'],
+        'trading-desk': ['examples/trading/index.html', 'examples/trading/trading.js', 'examples/trading/feed.js', 'examples/trading/trading.css'],
+      };
+      const editors = ['cells.js', 'choice-editor.js', 'selection-summary.js', 'cells.css'];
+      const helpers = {
+        'custom-cells': editors, 'custom-cell-editing': editors,
+        'project-editors': ['project-editors.js', ...editors],
+        'color-palette': ['color-editor.js', 'selection-summary.js', 'cells.css'],
+      };
+      let expected = apps[id]?.slice();
+      if (!expected) {
+        expected = [id + '.html', ...(helpers[id] || ['cells.js']).map(file => 'samples/' + file)];
+        if (mode === 'react') expected.push('samples/react/columns.jsx');
+      }
+      if (mode === 'react') expected[0] = 'samples/react/' + id + '.jsx';
+      assert.deepEqual(titles, expected, id + ' ' + mode);
+      assert.equal(await panel.locator('code a[href$="/grid/grid.js"], code a[href$="/integrations/react-grid.js"]').count(), 0);
+      for (const [path, href] of refs) {
         if (checkedFiles.has(href)) continue;
         checkedFiles.add(href);
-        if (target === '_blank') {
-          assert((await page.request.head(href)).ok(), path);
-          continue;
-        }
         await panel.getByTitle(path, {exact:true}).first().click();
         await panel.locator('button[aria-label^=Copy]:enabled').waitFor();
         const response = await page.request.get(href);
@@ -79,8 +96,10 @@ try {
     await source.getByRole('tab', {name: lang, exact:true}).click();
     const panel = source.locator('[role=tabpanel]:visible');
     await panel.locator('code .language-javascript .token.keyword').first().waitFor();
-    const name = lang === 'FreeMarker' ? 'grid-sample.ftl' : 'grid-sample.html';
-    await panel.getByRole('link',{name,exact:true}).click();
+    assert.deepEqual(await panel.locator('.source-files > *').allTextContents(), [
+      lang === 'FreeMarker' ? 'add-columns.ftl' : 'add-columns.th.html', 'cells.js',
+    ]);
+    await panel.getByRole('link',{name:'cells.js',exact:true}).first().click();
     await panel.locator('code .token').first().waitFor();
   }
   await source.getByRole('tab', {name: 'HTML', exact:true}).click();

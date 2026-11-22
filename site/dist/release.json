@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "release": "f39db8967d32d7bc52fd54e91b8ece41c59ffb71e8c42745651f7e79f36a679d",
+  "release": "b4b1d193e1effd4d70d5a79882b5c8d43a306afe64f9d57b29c79bb9a38e5b75",
   "files": {
     "404.html": "113b6ef1ebef513b37cdeec8c28c161811bc71e3f0afe9d00df1974cde352a9e",
     "application-components.html": "0f12e9982ab9e6684312913962bb7e98f15568edb50c7bbfa2cfd91e3808c08b",
@@ -54,7 +54,7 @@
     "grid/kit-theme.js": "b6f3414789f69cf52ccfa3bce7e092ec02254953969efa97328c4b3e5507ebc7",
     "grid/pivot.js": "6ff66d6b26b3477dc7f0a532722dcb3fa373c4b91a3c34d8e6a5f480922e8e2d",
     "grid/sample.js": "d3467546050f038c5160d62a4a2e124c94e7f775c4225dc5b97d86d7fd7834ab",
-    "grid/samples/applications.js": "8f2b2cfc2573ab86b3d77e61743d56e3694b9d82764f586c31b0e14e23971411",
+    "grid/samples/applications.js": "8d76eccb91fb310092783b298fc1de2e8d99740456256b953fd58ca1b15a2318",
     "grid/samples/catalog.js": "c46722efeaf57bbab5de4df4744141fdf1d26649d031b71c560cddea9d6f1650",
     "grid/samples/cells.css": "ec74303df3e813caee00b2f2927b0b8abacfb18d9386e2e43d66d67a6c037022",
     "grid/samples/cells.js": "1b6053e6f987df3197e1b3deb7bce127575678764ed814bac7c5d74ad309f172",
@@ -98,8 +98,7 @@
     "grid/samples/react/validate-data.jsx": "2b96ac32bbb939c1c45ec4eefdd7db82d7a71c2041b817e84599c67c6af40879",
     "grid/samples/sample.js": "881dcb92850fb0934bb8613909d1d8c4ff6e5f49e03c030fe1271d911e201aab",
     "grid/samples/selection-summary.js": "ea6098e033565cacaef3744dae3d848ae951e42e9b43050c0cb8a94c82acc6b8",
-    "grid/samples/source-files.json": "33945a2837751e9634f3f3c6442254da944bc01688d32a9d61f1e887ed11325c",
-    "grid/samples/source.js": "c23a68ec8ad30d6ca17987fc8eba920b154e9d70a81ea663adbc20308dc9ad1e",
+    "grid/samples/source.js": "f33bc226ddcf03e28efb1bc5ff972adbd3a4f95d2d50e96b2d5751518d179196",
     "grid/samples/variations.js": "56e18428f63d27d3620bcc7f1003e9abbab5f3fb06c0435f705f6d67b1c87aff",
     "grid/tree-example.js": "50a402eb907242d4e257cbbccca907d439c2a00d9af93a85e797e0b43c41392d",
     "grid/tree-grid.js": "1321074e330cc1e51c509734a818c8c3b45d44e6bf6dff86c3afc95fe17ced6e",

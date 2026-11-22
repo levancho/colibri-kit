@@ -51,42 +51,30 @@ const cssFiles = [...document.querySelectorAll('link[rel=stylesheet]')]
   .map(link => new URL(link.href).pathname)
   .filter(path => /\/ui\/themes\/|\/css\/colibri\.css$|kit-grid-theme\.css$|\/colibri-ui\.css$/.test(path));
 const languages = { html: 'HTML', react: 'React', ftl: 'FreeMarker', thymeleaf: 'Thymeleaf' };
-const templates = { ftl: '/ui/freemarker/grid-sample.ftl', thymeleaf: '/ui/thymeleaf/grid-sample.html' };
-let manifest;
 async function read(url, signal) {
   const result = await fetch(url, { signal });
   if (!result.ok) throw Error(result.statusText);
   return result.text();
 }
-function dependencies(example, language, graph) {
-  const react = language === 'react';
+// List the files that implement the demonstrated feature. Runtime dependencies
+// stay in the runnable example's imports without becoming source-browser tabs.
+const editorFiles = ['cells.js', 'choice-editor.js', 'selection-summary.js', 'cells.css'];
+const storyFiles = {
+  'color-palette': ['color-editor.js', 'selection-summary.js', 'cells.css'],
+  'custom-cells': editorFiles,
+  'custom-cell-editing': editorFiles,
+  'project-editors': ['project-editors.js', ...editorFiles],
+};
+
+function implementationFiles(example, mode) {
+  const react = mode === 'react';
   const jsx = 'samples/react/' + example.id + '.jsx';
-  const entry = 'samples/examples/' + example.id + '.js';
-  const files = new Set();
-  function add(path) {
-    if (files.has(path)) return;
-    files.add(path);
-    for (const dependency of graph[path] || []) add(dependency);
-  }
-  if (react) add(jsx);
-  if (example.file) {
-    for (const path of example.sources) add(path);
-  } else if (!react) add(entry);
-  if (templates[language]) add(templates[language]);
-  if (!react || example.file) add('grid.js');
-  add('grid.css');
-  if (!example.file) add('samples/cells.css');
-  if (example.id === 'full-grid' || example.id === 'editable-directory') add('workbench.css');
-  if (themeScript) add(themeScript);
-  for (const path of cssFiles) add(path);
-  if (example.id === 'trading-desk') {
-    for (const link of document.querySelectorAll('link[href$="kit-page.css"], link[href$="kit-bar.css"]'))
-      add(new URL(link.href).pathname);
-  }
-  if (example.id === 'full-grid') {
-    for (const file of ['jszip.min.js', 'jspdf.min.js', 'echarts-6.0.0.esm.min.js']) add('vendor/' + file);
-  }
-  return [...files];
+  if (example.file) return [react ? jsx : example.file, ...example.sources];
+  const suffix = { html: '.html', ftl: '.ftl', thymeleaf: '.th.html' };
+  const files = [react ? jsx : example.id + suffix[mode]];
+  for (const file of storyFiles[example.id] || ['cells.js']) files.push('samples/' + file);
+  if (react) files.push('samples/react/columns.jsx');
+  return files;
 }
 
 function grammar(path) {
@@ -147,16 +135,9 @@ export function showSource(example, preview) {
     const pending = () => { code.textContent = 'Loading source…'; copy.disabled = true; };
     pending();
     try {
-      manifest ??= fetch(new URL('source-files.json', import.meta.url)).then(response => {
-        if (!response.ok) throw Error(response.statusText);
-        return response.json();
-      }).catch(error => { manifest = null; throw error; });
-      const graph = await manifest;
-      if (signal.aborted) return;
-      const paths = dependencies(example, mode, graph);
+      const paths = implementationFiles(example, mode);
       const generated = !example.file && mode !== 'react';
-      const entry = generated ? example.id + ({html: '.html', ftl: '.ftl', thymeleaf: '.th.html'})[mode] : paths[0];
-      if (generated) paths.unshift(entry);
+      const entry = paths[0];
       const links = new Map();
       nav.replaceChildren();
       for (const path of paths) {
@@ -165,12 +146,7 @@ export function showSource(example, preview) {
         const name = path.split('/').pop();
         link.textContent = paths.some(p => p !== path && p.split('/').pop() === name) ? path : name;
         link.title = path;
-        // Large minified distributions open as raw files without blocking the interactive grid.
-        if (path.startsWith('vendor/')) {
-          link.target = '_blank';
-          link.rel = 'noopener';
-          link.textContent += ' ↗';
-        } else link.onclick = event => {
+        link.onclick = event => {
           if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
           event.preventDefault();
           select(path);
@@ -198,9 +174,8 @@ export function showSource(example, preview) {
           code.innerHTML = highlight(source, grammar(path));
           for (const token of code.querySelectorAll('.token.string, .token.attr-value')) {
             const ref = token.textContent.trim().replace(/^=?\s*["']|["']$/g, '');
-            if (!/^(?:\.\.?\/|\/|@colibri-kit\/)/.test(ref) && !/^[\w-]+\.(js|css|jsx)$/.test(ref)) continue;
-            const resolved = ref === '@colibri-kit/ui/react/grid' ? new URL('integrations/react-grid.js', gridBase)
-              : new URL(ref, synthetic ? gridBase : url);
+            if (!/^(?:\.\.?\/|\/)/.test(ref) && !/^[\w-]+\.(js|css|jsx)$/.test(ref)) continue;
+            const resolved = new URL(ref, synthetic ? gridBase : url);
             const target = paths.find(p => new URL(p, gridBase).href === resolved.href);
             if (!target || target === path) continue;
             const a = document.createElement('a');

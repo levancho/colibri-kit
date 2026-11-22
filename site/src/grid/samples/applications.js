@@ -1,12 +1,12 @@
 const app = (id, name, description, file, sources) => ({
-  id, name, description, group: 'Full examples', file, sources: [file, ...sources],
+  id, name, description, group: 'Full examples', file, sources,
 });
 export const applications = [
-  app('full-grid', 'Full grid workbench', 'Explore the complete grid with row grouping, pivoting, column tools, charts and file import and export.', 'workbench.html', ['sample.js','workbench.js','files.js','charts.js','workbench.css']),
-  app('tree-grid', 'TreeGrid', 'Explore a project plan by branch. Click a column heading to sort siblings, or search for “Screen reader audit” to reveal its parent work items.', 'tree.html', ['tree-example.js','tree-grid.js','grid.js']),
+  app('full-grid', 'Full grid workbench', 'Explore the complete grid with row grouping, pivoting, column tools, charts and file import and export.', 'workbench.html', ['sample.js']),
+  app('tree-grid', 'TreeGrid', 'Explore a project plan by branch. Click a column heading to sort siblings, or search for “Screen reader audit” to reveal its parent work items.', 'tree.html', ['tree-example.js']),
   app('trading-desk', 'Trading desk', 'Stream equity quotes and FX rates, select an instrument, and inspect its price history.', 'examples/trading/index.html', ['examples/trading/trading.js','examples/trading/feed.js','examples/trading/trading.css']),
   app('editable-directory', 'Editable directory', 'Edit records, select cell ranges, paste values and fill across rows or columns.', 'editing.html', ['editing-example.js']),
-  app('inventory', 'Inventory and pivot tables', 'Work with 50,000 inventory records, group quantities, pivot by warehouse and drill into the underlying rows.', 'inventory.html', ['inventory.js','pivot.js']),
+  app('inventory', 'Inventory and pivot tables', 'Work with 50,000 inventory records, group quantities, pivot by warehouse and drill into the underlying rows.', 'inventory.html', ['inventory.js']),
 ];
 
 export function mountApplication(stage, example) {
