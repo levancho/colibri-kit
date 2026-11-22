@@ -69,7 +69,7 @@ const storyFiles = {
 function implementationFiles(example, mode) {
   const react = mode === 'react';
   const jsx = 'samples/react/' + example.id + '.jsx';
-  if (example.file) return [react ? jsx : example.file, ...example.sources];
+  if (example.file) return react ? [jsx, ...example.reactSources] : [example.file, ...example.sources];
   const suffix = { html: '.html', ftl: '.ftl', thymeleaf: '.th.html' };
   const files = [react ? jsx : example.id + suffix[mode]];
   for (const file of storyFiles[example.id] || ['cells.js']) files.push('samples/' + file);

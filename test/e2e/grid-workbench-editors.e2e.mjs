@@ -13,7 +13,7 @@ try {
   page.setDefaultTimeout(6000);
   const errors = [];
   page.on('pageerror', e => errors.push(e.message));
-  await page.goto(origin + '/grid/samples/#full-grid');
+  await page.goto(origin + '/grid/samples/#' + (process.env.GRID_DEMO === 'react' ? 'react-full-grid' : 'full-grid'));
   const app = page.locator('[data-application="full-grid"]');
   const port = app.locator('.wb-port');
   const editor = app.locator('.wb-editor');
@@ -151,6 +151,21 @@ try {
   await editor.locator('input').fill('Click-away edit');
   await property.click();
   assert.match(await at('client').innerText(), /Click-away edit/);
+  // Paste into two records, re-render the application and exercise the edit history.
+  const client = row => port.locator('[data-r="' + row + '"][data-field="client"]');
+  const original = await Promise.all([client(0).innerText(), client(1).innerText()]);
+  await client(0).click();
+  await port.evaluate(element => {
+    const data = new DataTransfer();
+    data.setData('text/plain', 'First pasted client\nSecond pasted client');
+    element.dispatchEvent(new ClipboardEvent('paste', {bubbles: true, clipboardData: data}));
+  });
+  await app.locator('#skin').selectOption('Marine');
+  assert.deepEqual(await Promise.all([client(0).innerText(), client(1).innerText()]), ['First pasted client', 'Second pasted client']);
+  await port.press('Control+z');
+  assert.deepEqual(await Promise.all([client(0).innerText(), client(1).innerText()]), original);
+  await port.press('Control+y');
+  assert.equal(await client(1).innerText(), 'Second pasted client');
   assert.deepEqual(errors,[]);
   console.log('Invalid click-away, property mask, Tab, Shift+Tab, Team search and Escape passed.');
 } finally {await browser.close();await server?.close();}

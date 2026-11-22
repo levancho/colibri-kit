@@ -9,7 +9,7 @@ const browser = process.env.BROWSER === 'webkit'
   : await chromium.launch({ channel: 'chrome' });
 try {
   const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-  await page.goto(origin + '/grid/samples/#full-grid');
+  await page.goto(origin + '/grid/samples/#' + (process.env.GRID_DEMO === 'react' ? 'react-full-grid' : 'full-grid'));
   const bar = page.getByRole('group', { name: 'Group by', exact: true });
   const heading = name => page.locator('.wb-titles').getByRole('button', { name, exact: true });
   const chips = bar.locator('[data-group-field]');

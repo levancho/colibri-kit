@@ -35,7 +35,7 @@ try {
       const refs = await files.evaluateAll(links => links.map(a => [a.getAttribute('title'), a.href, a.target]));
       const titles = await panel.locator('.source-files > *').evaluateAll(nodes => nodes.map(n => n.title));
       const apps = {
-        'full-grid': ['workbench.html', 'sample.js'],
+        'full-grid': ['workbench.html', ...(mode === 'html' ? ['sample.js'] : []), 'property-editor.js'],
         'tree-grid': ['tree.html', 'tree-example.js'],
         'inventory': ['inventory.html', 'inventory.js'],
         'editable-directory': ['editing.html', 'editing-example.js'],
@@ -53,6 +53,11 @@ try {
         if (mode === 'react') expected.push('samples/react/columns.jsx');
       }
       if (mode === 'react') expected[0] = 'samples/react/' + id + '.jsx';
+      if (id === 'full-grid' && mode === 'react') {
+        const jsx = await panel.locator('code').textContent();
+        for (const term of ['<ColibriWorkbenchGrid', 'columns={columns}', 'rows={rows}', 'const projectColumns', 'const participantColumns', 'function createTable']) assert(jsx.includes(term), term);
+        assert(!jsx.includes('mountWorkbench'));
+      }
       assert.deepEqual(titles, expected, id + ' ' + mode);
       assert.equal(await panel.locator('code a[href$="/grid/grid.js"], code a[href$="/integrations/react-grid.js"]').count(), 0);
       for (const [path, href] of refs) {

@@ -396,8 +396,29 @@ window.ColibriGrid.Workbench = (() => {
     choiceEditor = factory(ChoiceEditor);
   ColibriGrid.renderers = Object.freeze({ ...renderers, text: cells.text });
   ColibriGrid.editors = Object.freeze({ input: cells.input, team: teamEditor, choice: choiceEditor });
+  function createStructure(host) {
+    const parts = {};
+    parts.root = el('section', 'wb ui-root');
+    host.replaceChildren(parts.root);
+    parts.bar = el('div', 'wb-menu');
+    parts.groupbar = el('div', 'wb-groups');
+    parts.layout = el('div', 'wb-layout');
+    parts.port = el('div', 'wb-port');
+    parts.sheet = el('div', 'wb-sheet');
+    parts.head = el('div', 'wb-head');
+    parts.pinBody = el('div', 'wb-pins');
+    parts.content = el('div', 'wb-content');
+    parts.summary = el('div', 'wb-summary');
+    parts.sheet.append(parts.head, parts.pinBody, parts.content, parts.summary);
+    parts.port.append(parts.sheet);
+    parts.side = el('aside', 'wb-side');
+    parts.foot = el('div', 'wb-foot');
+    parts.layout.append(parts.port, parts.side);
+    parts.root.append(parts.bar, parts.groupbar, parts.layout, parts.foot);
+    return parts;
+  }
   return class Workbench {
-    constructor(host, { columns, rows = [], dataProvider, label = 'Records', language = 'en' }) {
+    constructor(host, { columns, rows = [], dataProvider, label = 'Records', language = 'en', structure, renderWindow }) {
       this.renderPool = new cells.RendererPool();
       this.headerPool = new cells.RendererPool();
       this.dataProvider = dataProvider;
@@ -436,26 +457,12 @@ window.ColibriGrid.Workbench = (() => {
       this.active = null;
       this.drag = null;
       this.rowHeight = 35;
-      this.root = el('section', 'wb ui-root');
-      host.replaceChildren(this.root);
-      this.bar = el('div', 'wb-menu');
-      this.groupbar = el('div', 'wb-groups');
-      this.layout = el('div', 'wb-layout');
-      this.port = el('div', 'wb-port');
+      this.ownsStructure = !structure;
+      Object.assign(this, structure || createStructure(host));
       this.port.tabIndex = 0;
       this.port.setAttribute('role', 'grid');
       this.port.setAttribute('aria-label', label);
-      this.sheet = el('div', 'wb-sheet');
-      this.head = el('div', 'wb-head');
-      this.pinBody = el('div', 'wb-pins');
-      this.content = el('div', 'wb-content');
-      this.summary = el('div', 'wb-summary');
-      this.sheet.append(this.head, this.pinBody, this.content, this.summary);
-      this.port.append(this.sheet);
-      this.side = el('aside', 'wb-side');
-      this.foot = el('div', 'wb-foot');
-      this.layout.append(this.port, this.side);
-      this.root.append(this.bar, this.groupbar, this.layout, this.foot);
+      this.renderWindow = renderWindow;
       this.life = new AbortController();
       if (dataProvider) this.observeProvider(dataProvider);
       document.addEventListener(
@@ -529,7 +536,11 @@ window.ColibriGrid.Workbench = (() => {
       this.observer.disconnect();
       this.life.abort();
       this.closeMenu();
-      this.root.remove();
+      if (this.ownsStructure) this.root.remove();
+      else {
+        this.port.onscroll = this.port.onkeydown = this.root.oncontextmenu = null;
+        this.root.querySelectorAll('dialog').forEach(dialog => dialog.remove());
+      }
     }
     closeMenu() {
       this.popup?.remove();
@@ -1688,9 +1699,13 @@ window.ColibriGrid.Workbench = (() => {
       this.redraw();
     }
     paintRows() {
-      this.renderPool.recycle();
       const first = Math.max(0, Math.floor(this.port.scrollTop / this.rowHeight) - 4);
       const end = Math.min(this.list.length, first + Math.ceil(this.port.clientHeight / this.rowHeight) + 9);
+      if (this.renderWindow) {
+        this.renderWindow({ book: this, first, end });
+        return;
+      }
+      this.renderPool.recycle();
       const fragment = document.createDocumentFragment();
       for (let i = first; i < end; i++) {
         const row = this.row(this.list[i], i + this.pinRows.length);
@@ -1722,6 +1737,21 @@ window.ColibriGrid.Workbench = (() => {
       if (c.type === 'date' && /^\d{4}-\d\d-\d\d$/.test(v))
         return new Date(v + 'T12:00:00').toLocaleDateString(this.lang);
       return String(v);
+    }
+    attachCellRenderer(cell, r, c, i, j, text) {
+      const val = r[c.field];
+      const ctx = cells.context(this, r, c, i, j, (c.flags?.[val] ? c.flags[val] + '  ' : '') + text, {
+        selected: this.selected.has(r._key) || !!this.within(i, j),
+        active: i === this.active?.r && j === this.active?.c,
+      });
+      const defaultRenderer =
+        r._rows && c === this.treeColumn
+          ? renderers.group
+          : (!r._rows && (renderers[c.kind] || renderers[c.type])) || cells.text;
+      const cellFactory = r._rows ? defaultRenderer : c.itemRendererFunction?.(r, c) ?? c.itemRenderer ?? defaultRenderer;
+      ctx.commit = (value) =>
+        this.renderPool.active.get(cell)?.item.data === r && this.commitRenderer(r, c, value);
+      this.renderPool.attach(cell, cellFactory, ctx);
     }
     row(r, i) {
       const line = el('div', 'wb-line wb-row');
@@ -1782,18 +1812,7 @@ window.ColibriGrid.Workbench = (() => {
         if (c.type === 'number') cell.classList.add('wb-num');
         const val = r[c.field],
           text = this.display(r, c);
-        const ctx = cells.context(this, r, c, i, j, (c.flags?.[val] ? c.flags[val] + '  ' : '') + text, {
-          selected: this.selected.has(r._key) || !!this.within(i, j),
-          active: i === this.active?.r && j === this.active?.c,
-        });
-        const defaultRenderer =
-          r._rows && c === this.treeColumn
-            ? renderers.group
-            : (!r._rows && (renderers[c.kind] || renderers[c.type])) || cells.text;
-        const cellFactory = r._rows ? defaultRenderer : c.itemRendererFunction?.(r, c) ?? c.itemRenderer ?? defaultRenderer;
-        ctx.commit = (value) =>
-          this.renderPool.active.get(cell)?.item.data === r && this.commitRenderer(r, c, value);
-        this.renderPool.attach(cell, cellFactory, ctx);
+        this.attachCellRenderer(cell, r, c, i, j, text);
         if (c === this.treeColumn && r._rows) {
           const more = button('⋯', () => this.menu(more, [
             ['Expand this branch', () => this.setGroupsExpanded(true, r)],
@@ -2921,7 +2940,7 @@ window.ColibriGrid.Workbench = (() => {
                 }),
               ),
             );
-            this.replaceData(this.baseCols, typed);
+            this.importData(this.baseCols, typed);
             return;
           }
           const columns = fields.map((field) => {
@@ -2942,12 +2961,16 @@ window.ColibriGrid.Workbench = (() => {
             ),
           );
           this.searchFields = null;
-          this.replaceData(columns, rows);
+          this.importData(columns, rows);
         } catch (e) {
           this.notice('Import failed: ' + e.message);
         }
       };
       input.click();
+    }
+    importData(columns, rows) {
+      this.replaceData(columns, rows);
+      this.host.dispatchEvent(new CustomEvent('colibri-data-import', { detail: { columns, rows }, bubbles: true }));
     }
     replaceData(columns, rows) {
       for (const chart of this.root.querySelectorAll('.wb-chart-dialog[open]')) chart.close();
